@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DV2 - Data Visualizations</title>
+
+  <!-- Google Fonts: Roboto for main typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Material Symbols: Icon font for Material Design icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  
+  <!-- Main stylesheet with Material Design 3 color tokens and layout -->
+  <link rel="stylesheet" href="_common/style/style.css" />
+
+  <!-- 
+    Import Map: Allows using bare module specifiers for @material/web
+    Instead of full URLs, we can write: import '@material/web/all.js'
+    esm.run provides ESM versions of npm packages via CDN
+  -->
+  <script type="importmap">
+    { "imports": { "@material/web/": "https://esm.run/@material/web/" } }
+  </script>
+
+  <!-- 
+    MODULE SCRIPTS: Modern ES6 module imports
+    These run after the DOM is parsed but before DOMContentLoaded
+  -->
+  <script type="module">
+    // Import all Material Web Components (buttons, cards, lists, etc.)
+    import '@material/web/all.js';
+    
+    // Import Material Design 3 typography styles
+    // These provide utility classes like 'md-typescale-display-small'
+    import { styles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(styles.styleSheet);
+    
+    // Import our custom web components (header, drawer, footer)
+    // These are defined in shell.js and create reusable page structure
+    import './_common/shell.js';
+  </script>
+</head>
+
+<body>
+  <!-- 
+    CUSTOM WEB COMPONENTS
+    These are defined in shell.js and render the page shell
+    They use 'display: contents' in CSS so they don't affect layout
+  -->
+  
+  <!-- Header: Top navigation bar with logo, menu, and theme toggle -->
+  <app-header></app-header>
+  
+  <!-- Drawer: Slide-out mobile navigation with scrim overlay -->
+  <app-drawer></app-drawer>
+
+  <!-- 
+    MAIN CONTENT AREA
+    Container provides max-width and centering for content
+  -->
+  <main class="container">
+    <!-- 
+      INTRO SECTION
+      Hero area with site title and description
+    -->
+    <section class="intro">
+      <!-- Material Design typography scale classes for consistent sizing -->
+      <h1 class="md-typescale-display-small">DV2 – Data Visualizations</h1>
+      <p class="md-typescale-body-large subtitle">
+        A small, modular site demonstrating D3 visualizations and Material Design 3.
+      </p>
+    </section>
+
+    <!-- 
+      BENTO GRID SECTION
+      Grid of clickable cards that link to different sections
+      Auto-fills columns based on available space (responsive)
+    -->
+    <section class="bento-grid">
+      <!-- 
+        CARD COMPONENT
+        Each card is an interactive link with:
+        - md-ripple: Material Design touch ripple effect
+        - Icon and text content
+      -->
+      <a class="card" href="/section1/section1.html">
+        <!-- Ripple effect appears on click/tap -->
+        <md-ripple></md-ripple>
+        
+        <!-- Material icon from Google Fonts -->
+        <md-icon class="card-icon">bar_chart</md-icon>
+        
+        <!-- Card text content -->
+        <div class="card-text">
+          <h3 class="md-typescale-title-medium">Section 1</h3>
+          <p class="md-typescale-body-medium">Interactive plots and examples.</p>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <!-- Footer: Bottom bar with copyright and links -->
+  <app-footer></app-footer>
+</body>
+</html>

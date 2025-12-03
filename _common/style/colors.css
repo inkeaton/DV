@@ -1,0 +1,263 @@
+/*
+  _common/style/colors.css
+  - Canonical color tokens for the site. Keep colors here so the rest of
+    the styles can map MD3 tokens to these variables (see `style.css`).
+  - This file exposes utility classes (`body.dark-theme`, `body.light-theme`)
+    to force a mode, and explicit `:root[data-theme='...']` overrides that
+    take precedence over `prefers-color-scheme` media queries.
+*/
+
+/* Utility class if you want to force dark mode manually via JavaScript
+   (e.g. <body class="dark-theme">) */
+body.dark-theme {
+  --primary: #85D2E7;
+  --on-primary: #003640;
+  --primary-container: #004E5D;
+  --on-primary-container: #ADECFF;
+  --inverse-primary: #00687A;
+  --primary-fixed: #ADECFF;
+  --primary-fixed-dim: #85D2E7;
+  --on-primary-fixed: #001F26;
+  --on-primary-fixed-variant: #004E5D;
+  
+  --secondary: #B2CBD3;
+  --on-secondary: #1D343A;
+  --secondary-container: #334A51;
+  --on-secondary-container: #CEE7EF;
+  --secondary-fixed: #CEE7EF;
+  --secondary-fixed-dim: #B2CBD3;
+  --on-secondary-fixed: #061F25;
+  --on-secondary-fixed-variant: #334A51;
+  
+  --tertiary: #BFC4EB;
+  --on-tertiary: #292E4D;
+  --tertiary-container: #3F4565;
+  --on-tertiary-container: #DEE1FF;
+  --tertiary-fixed: #DEE1FF;
+  --tertiary-fixed-dim: #BFC4EB;
+  --on-tertiary-fixed: #131937;
+  --on-tertiary-fixed-variant: #3F4565;
+  
+  --error: #FFB4AB;
+  --on-error: #690005;
+  --error-container: #93000A;
+  --on-error-container: #FFDAD6;
+  
+  --surface-dim: #0F1416;
+  --surface: #0F1416;
+  --surface-tint: #85D2E7;
+  --surface-bright: #343A3C;
+  --surface-container-lowest: #090F11;
+  --surface-container-low: #171C1E;
+  --surface-container: #1B2022;
+  --surface-container-high: #252B2D;
+  --surface-container-highest: #303638;
+  
+  --on-surface: #DEE3E5;
+  --on-surface-variant: #BFC8CB;
+  
+  --outline: #899295;
+  --outline-variant: #3F484B;
+  
+  --inverse-surface: #DEE3E5;
+  --inverse-on-surface: #2C3133;
+  --surface-variant: #3F484B;
+  
+  --background: #0F1416;
+  --on-background: #DEE3E5;
+  
+  --shadow: #FFFFFF;
+  --scrim: #000000;
+  --source-color: #3A626D;
+}
+
+/* Utility class to force light mode manually via JavaScript (e.g. <body class="light-theme">) */
+body.light-theme {
+  --primary: #00687A;
+  --on-primary: #FFFFFF;
+  --primary-container: #ADECFF;
+  --on-primary-container: #001F26;
+  --inverse-primary: #85D2E7;
+  --primary-fixed: #ADECFF;
+  --primary-fixed-dim: #85D2E7;
+  --on-primary-fixed: #001F26;
+  --on-primary-fixed-variant: #004E5D;
+  
+  --secondary: #4B6269;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #CEE7EF;
+  --on-secondary-container: #061F25;
+  --secondary-fixed: #CEE7EF;
+  --secondary-fixed-dim: #B2CBD3;
+  --on-secondary-fixed: #061F25;
+  --on-secondary-fixed-variant: #334A51;
+  
+  --tertiary: #575C7E;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #DEE1FF;
+  --on-tertiary-container: #131937;
+  --tertiary-fixed: #DEE1FF;
+  --tertiary-fixed-dim: #BFC4EB;
+  --on-tertiary-fixed: #131937;
+  --on-tertiary-fixed-variant: #3F4565;
+  
+  --error: #BA1A1A;
+  --on-error: #FFFFFF;
+  --error-container: #FFDAD6;
+  --on-error-container: #410002;
+  
+  --surface-dim: #D5DBDD;
+  --surface: #F5FAFC;
+  --surface-tint: #00687A;
+  --surface-bright: #F5FAFC;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #EFF4F7;
+  --surface-container: #E9EFF1;
+  --surface-container-high: #E4E9EB;
+  --surface-container-highest: #DEE3E5;
+  
+  --on-surface: #171C1E;
+  --on-surface-variant: #3F484B;
+  
+  --outline: #70797C;
+  --outline-variant: #BFC8CB;
+  
+  --inverse-surface: #2C3133;
+  --inverse-on-surface: #ECF2F4;
+  --surface-variant: #DBE4E7;
+  
+  --background: #F5FAFC;
+  --on-background: #171C1E;
+  
+  /* In light mode shadows should be dark (black-ish) so elevation reads
+     correctly; android/web design systems typically use a dark shadow. */
+  --shadow: #000000;
+  --scrim: #000000;
+  --source-color: #3A626D;
+}
+
+/* Explicit overrides when the page sets a data-theme attribute on <html>.
+   These should take precedence over @media prefers-color-scheme. */
+:root[data-theme='dark'] {
+  --primary: #85D2E7;
+  --on-primary: #003640;
+  --primary-container: #004E5D;
+  --on-primary-container: #ADECFF;
+  --inverse-primary: #00687A;
+  --primary-fixed: #ADECFF;
+  --primary-fixed-dim: #85D2E7;
+  --on-primary-fixed: #001F26;
+  --on-primary-fixed-variant: #004E5D;
+
+  --secondary: #B2CBD3;
+  --on-secondary: #1D343A;
+  --secondary-container: #334A51;
+  --on-secondary-container: #CEE7EF;
+  --secondary-fixed: #CEE7EF;
+  --secondary-fixed-dim: #B2CBD3;
+  --on-secondary-fixed: #061F25;
+  --on-secondary-fixed-variant: #334A51;
+
+  --tertiary: #BFC4EB;
+  --on-tertiary: #292E4D;
+  --tertiary-container: #3F4565;
+  --on-tertiary-container: #DEE1FF;
+  --tertiary-fixed: #DEE1FF;
+  --tertiary-fixed-dim: #BFC4EB;
+  --on-tertiary-fixed: #131937;
+  --on-tertiary-fixed-variant: #3F4565;
+
+  --error: #FFB4AB;
+  --on-error: #690005;
+  --error-container: #93000A;
+  --on-error-container: #FFDAD6;
+
+  --surface-dim: #0F1416;
+  --surface: #0F1416;
+  --surface-tint: #85D2E7;
+  --surface-bright: #343A3C;
+  --surface-container-lowest: #090F11;
+  --surface-container-low: #171C1E;
+  --surface-container: #1B2022;
+  --surface-container-high: #252B2D;
+  --surface-container-highest: #303638;
+
+  --on-surface: #DEE3E5;
+  --on-surface-variant: #BFC8CB;
+
+  --outline: #899295;
+  --outline-variant: #3F484B;
+
+  --inverse-surface: #DEE3E5;
+  --inverse-on-surface: #2C3133;
+  --surface-variant: #3F484B;
+
+  --background: #0F1416;
+  --on-background: #DEE3E5;
+
+  --shadow: #FFFFFF;
+  --scrim: #000000;
+  --source-color: #3A626D;
+}
+
+:root[data-theme='light'] {
+  --primary: #00687A;
+  --on-primary: #FFFFFF;
+  --primary-container: #ADECFF;
+  --on-primary-container: #001F26;
+  --inverse-primary: #85D2E7;
+  --primary-fixed: #ADECFF;
+  --primary-fixed-dim: #85D2E7;
+  --on-primary-fixed: #001F26;
+  --on-primary-fixed-variant: #004E5D;
+
+  --secondary: #4B6269;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #CEE7EF;
+  --on-secondary-container: #061F25;
+  --secondary-fixed: #CEE7EF;
+  --secondary-fixed-dim: #B2CBD3;
+  --on-secondary-fixed: #061F25;
+  --on-secondary-fixed-variant: #334A51;
+
+  --tertiary: #575C7E;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #DEE1FF;
+  --on-tertiary-container: #131937;
+  --tertiary-fixed: #DEE1FF;
+  --tertiary-fixed-dim: #BFC4EB;
+  --on-tertiary-fixed: #131937;
+  --on-tertiary-fixed-variant: #3F4565;
+
+  --error: #BA1A1A;
+  --on-error: #FFFFFF;
+  --error-container: #FFDAD6;
+  --on-error-container: #410002;
+
+  --surface-dim: #D5DBDD;
+  --surface: #F5FAFC;
+  --surface-tint: #00687A;
+  --surface-bright: #F5FAFC;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #EFF4F7;
+  --surface-container: #E9EFF1;
+  --surface-container-high: #E4E9EB;
+  --surface-container-highest: #DEE3E5;
+
+  --on-surface: #171C1E;
+  --on-surface-variant: #3F484B;
+
+  --outline: #70797C;
+  --outline-variant: #BFC8CB;
+
+  --inverse-surface: #2C3133;
+  --inverse-on-surface: #ECF2F4;
+  --surface-variant: #DBE4E7;
+
+  --background: #F5FAFC;
+  --on-background: #171C1E;
+
+  --shadow: #000000;
+  --scrim: #000000;
+  --source-color: #3A626D;
+}

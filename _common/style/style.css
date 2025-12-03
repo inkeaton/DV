@@ -1,0 +1,348 @@
+/* style.css */
+/* ============================================================================
+   MAIN STYLESHEET FOR DV2 DATA VISUALIZATION SITE
+   
+   This file contains:
+   1. Material Design 3 color tokens (light & dark themes)
+   2. Layout variables and base styles
+   3. Component styles (app bar, drawer, cards, footer)
+   4. Responsive design breakpoints
+   
+   The design system uses CSS custom properties (variables) for theming,
+   allowing seamless light/dark mode switching.
+   ============================================================================ */
+
+/* ============================================================================
+   CUSTOM ELEMENT DISPLAY FIX
+   ============================================================================
+   Custom web components (app-header, app-drawer, app-footer) are set to
+   'display: contents' so they don't create extra wrapper elements in the
+   layout. This makes them "invisible" to CSS layout, allowing their children
+   to participate directly in parent layout contexts (flexbox, grid, etc.)
+   ============================================================================ */
+app-header, app-drawer, app-footer {
+  display: contents;
+}
+
+/* ============================================================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ============================================================================
+   Material Design 3 uses a token-based design system with semantic color names
+   that adapt to light/dark themes. The :root selector defines light theme
+   (default), and body.dark-theme overrides these for dark mode.
+   ============================================================================ */
+
+:root {
+  /* --- LAYOUT VARIABLES --- */
+  --app-bar-height: 64px;      /* Fixed height for top navigation */
+  --max-width: 1100px;          /* Maximum content width (centered) */
+
+  /* ============================================================================
+     MATERIAL DESIGN 3 - LIGHT THEME COLORS
+     ============================================================================
+     These tokens follow MD3 naming conventions:
+     - Primary: Main brand color, used for prominent actions
+     - Secondary: Supporting color for less prominent elements
+     - Tertiary: Accent color for highlights and special elements
+     - Surface: Background colors for cards, sheets, etc.
+     - On-[color]: Text/icon colors that appear on that surface
+     - Container: Filled backgrounds (like button backgrounds)
+     - Outline: Border and divider colors
+     ============================================================================ */
+
+  /* PRIMARY COLOR TOKENS */
+  --md-sys-color-primary: #00687A;                    /* Main teal brand color */
+  --md-sys-color-on-primary: #FFFFFF;                 /* White text on primary */
+  --md-sys-color-primary-container: #ADECFF;          /* Light teal container */
+  --md-sys-color-on-primary-container: #001F26;       /* Dark text on light teal */
+
+  /* SECONDARY COLOR TOKENS */
+  --md-sys-color-secondary: #4B6269;                  /* Muted blue-gray */
+  --md-sys-color-on-secondary: #FFFFFF;               /* White text on secondary */
+  --md-sys-color-secondary-container: #CEE7EF;        /* Light blue-gray container */
+  --md-sys-color-on-secondary-container: #061F25;     /* Dark text on light blue-gray */
+
+  /* TERTIARY COLOR TOKENS */
+  --md-sys-color-tertiary: #575C7E;                   /* Purple-gray accent */
+  --md-sys-color-on-tertiary: #FFFFFF;                /* White text on tertiary */
+  --md-sys-color-tertiary-container: #DEE1FF;         /* Light purple container */
+  --md-sys-color-on-tertiary-container: #131937;      /* Dark text on light purple */
+
+  /* SURFACE & BACKGROUND TOKENS */
+  --md-sys-color-surface: #F5FAFC;                    /* Main page background (very light blue) */
+  --md-sys-color-on-surface: #171C1E;                 /* Dark text on surface */
+  --md-sys-color-surface-variant: #DBE4E7;            /* Alternative surface color */
+  --md-sys-color-on-surface-variant: #3F484B;         /* Text on variant surface */
+  
+  /* SURFACE ELEVATION LEVELS */
+  /* MD3 uses different surface tones to create visual hierarchy */
+  --md-sys-color-surface-container-low: #EFF4F7;      /* Lowest elevation (subtle) */
+  --md-sys-color-surface-container: #E9EFF1;          /* Standard elevation */
+  --md-sys-color-surface-container-high: #E4E9EB;     /* Higher elevation (more contrast) */
+
+  /* OUTLINE TOKENS */
+  --md-sys-color-outline: #70797C;                    /* Strong borders/dividers */
+  --md-sys-color-outline-variant: #BFC8CB;            /* Subtle borders/dividers */
+}
+
+/* ============================================================================
+   DARK THEME OVERRIDES
+   ============================================================================
+   When body.dark-theme class is applied, these variables override the light
+   theme values. Dark themes typically use:
+   - Darker backgrounds with lighter text
+   - Reduced color saturation
+   - Higher contrast between surface levels
+   ============================================================================ */
+body.dark-theme {
+  /* PRIMARY COLOR TOKENS (Dark Mode) */
+  --md-sys-color-primary: #85D2E7;                    /* Lighter teal for visibility */
+  --md-sys-color-on-primary: #003640;                 /* Dark teal text */
+  --md-sys-color-primary-container: #004E5D;          /* Dark teal container */
+  --md-sys-color-on-primary-container: #ADECFF;       /* Light teal text */
+
+  /* SECONDARY COLOR TOKENS (Dark Mode) */
+  --md-sys-color-secondary: #B2CBD3;                  /* Light blue-gray */
+  --md-sys-color-on-secondary: #1D343A;               /* Dark blue-gray text */
+  --md-sys-color-secondary-container: #334A51;        /* Dark blue-gray container */
+  --md-sys-color-on-secondary-container: #CEE7EF;     /* Light blue-gray text */
+
+  /* TERTIARY COLOR TOKENS (Dark Mode) */
+  --md-sys-color-tertiary: #BFC4EB;                   /* Light purple */
+  --md-sys-color-on-tertiary: #292E4D;                /* Dark purple text */
+  --md-sys-color-tertiary-container: #3F4565;         /* Dark purple container */
+  --md-sys-color-on-tertiary-container: #DEE1FF;      /* Light purple text */
+
+  /* SURFACE & BACKGROUND TOKENS (Dark Mode) */
+  --md-sys-color-surface: #0F1416;                    /* Very dark background */
+  --md-sys-color-on-surface: #DEE3E5;                 /* Light text on dark */
+  --md-sys-color-surface-variant: #3F484B;            /* Medium dark surface */
+  --md-sys-color-on-surface-variant: #BFC8CB;         /* Light text variant */
+
+  /* SURFACE ELEVATION LEVELS (Dark Mode) */
+  /* In dark mode, higher elevation = lighter color (opposite of light mode) */
+  --md-sys-color-surface-container-low: #171C1E;      /* Slightly lighter than main surface */
+  --md-sys-color-surface-container: #1B2022;          /* Standard elevation */
+  --md-sys-color-surface-container-high: #252B2D;     /* Highest elevation (lightest) */
+
+  /* OUTLINE TOKENS (Dark Mode) */
+  --md-sys-color-outline: #899295;                    /* Lighter borders for dark bg */
+  --md-sys-color-outline-variant: #3F484B;            /* Subtle borders */
+}
+
+/* ============================================================================
+   BASE STYLES
+   ============================================================================ */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  
+  /* Flexbox layout for sticky footer */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  
+  /* Smooth transitions when switching themes */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ============================================================================
+   APP BAR (Top Navigation)
+   ============================================================================ */
+.app-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: var(--app-bar-height);
+  
+  /* Use same background as body for seamless look */
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  
+  /* Sticky positioning keeps it at top when scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  
+  /* Subtle bottom border for definition */
+  border-bottom: 1px solid var(--md-sys-color-surface-container-high);
+}
+
+/* App bar left and right sections */
+.app-bar-start, .app-bar-end { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+/* Site logo/branding text */
+.brand-logo { 
+  font-weight: 700; 
+  font-size: 1.25rem; 
+  padding: 0 8px; 
+}
+
+/* ============================================================================
+   DRAWER (Mobile Navigation)
+   ============================================================================ */
+.drawer {
+  /* Fixed positioning for overlay effect */
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  bottom: 0;
+  width: 300px;
+  
+  /* Slightly different background than main surface for depth */
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  
+  /* Initially hidden off-screen to the left */
+  transform: translateX(-100%);
+  
+  /* Smooth slide-in animation with Material Design easing */
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  
+  /* Layer above scrim */
+  z-index: 20;
+  padding: 12px 0;
+  
+  /* Right border for definition */
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* Open state: slide into view */
+.drawer.open { 
+  transform: translateX(0); 
+}
+
+/* ============================================================================
+   SCRIM (Dark Overlay)
+   ============================================================================
+   The scrim is a semi-transparent overlay that appears behind the drawer,
+   focusing attention on the drawer and providing a click target to close it.
+   ============================================================================ */
+.scrim {
+  position: fixed; 
+  inset: 0;  /* Shorthand for top:0, right:0, bottom:0, left:0 */
+  background: rgba(0,0,0,0.32);  /* 32% opacity black */
+  
+  /* Initially invisible and non-interactive */
+  opacity: 0; 
+  pointer-events: none;
+  
+  /* Fade in/out animation */
+  transition: opacity 0.3s;
+  
+  /* Layer below drawer but above main content */
+  z-index: 15;
+}
+
+/* Open state: fade in and enable clicking */
+.scrim.open { 
+  opacity: 1; 
+  pointer-events: auto; 
+}
+
+/* ============================================================================
+   MAIN LAYOUT CONTAINER
+   ============================================================================ */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;  /* Center horizontally */
+  padding: 24px 16px;
+  
+  /* Flex: 1 makes it grow to fill available space (for sticky footer) */
+  flex: 1;
+  box-sizing: border-box;
+}
+
+/* ============================================================================
+   BENTO GRID (Card Layout)
+   ============================================================================
+   "Bento grid" is a design pattern of card-based layouts, named after
+   Japanese bento boxes with their compartmentalized sections.
+   ============================================================================ */
+.bento-grid {
+  display: grid;
+  
+  /* Auto-fill creates as many columns as fit, each at least 280px */
+  /* This makes the layout responsive without media queries */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* ============================================================================
+   CARD COMPONENT
+   ============================================================================
+   Interactive cards that serve as navigation elements. Uses Material Design
+   principles: surface elevation, rounded corners, hover effects, and ripples.
+   ============================================================================ */
+.card {
+  position: relative;  /* For absolute positioning of ripple effect */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;  /* Large radius for modern, soft appearance */
+  
+  /* Use secondary container colors for cards */
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  
+  text-decoration: none;  /* Remove underline from link */
+  overflow: hidden;  /* Clip ripple effect to rounded corners */
+  
+  /* Smooth hover animations */
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid transparent;
+}
+
+/* Hover state: slight lift and shadow for depth */
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Card icon styling */
+.card-icon {
+  font-size: 40px; 
+  /* Inherit container's text color for consistency */
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+.app-footer {
+  padding: 24px 16px;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* margin-top: auto pushes footer to bottom (with flex parent) */
+  margin-top: auto;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================
+   Mobile-first approach with breakpoints for desktop features
+   ============================================================================ */
+
+/* Mobile: Hide desktop navigation, show hamburger menu */
+@media (max-width: 600px) {
+  .desktop-nav { display: none; }
+}
+
+/* Desktop: Hide hamburger menu, show full navigation */
+@media (min-width: 601px) {
+  #menu-btn { display: none; }
+}
