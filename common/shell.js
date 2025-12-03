@@ -34,8 +34,8 @@ class AppHeader extends HTMLElement {
         <div class="app-bar-end">
           <!-- Desktop navigation (hidden on mobile via CSS) -->
           <nav class="desktop-nav">
-            <md-text-button href="/">Home</md-text-button>
-            <md-text-button href="/section1/section1.html">Section 1</md-text-button>
+            <md-text-button href="/DV/">Home</md-text-button>
+            <md-text-button href="/DV/section1/section1.html">Section 1</md-text-button>
             <md-text-button href="#">About</md-text-button>
           </nav>
           
