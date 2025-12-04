@@ -1,151 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DV2 – Section 1</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DV2 – Section 1</title>
 
-  <!-- Google Fonts: Roboto for consistent typography -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- Material Symbols: Icon font for Material Design icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-  
-  <!-- 
-    Main stylesheet - Note the ../ path to go up one directory
-    This page is in /section1/ folder, stylesheet is in /_common/style/
-  -->
-  <link rel="stylesheet" href="../common/style/style.css" />
+    <!-- Google Fonts: Roboto for consistent typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols: Icon font for Material Design icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />    
+    <!-- 
+        Main stylesheet - Note the ../ path to go up one directory
+        This page is in /section1/ folder, stylesheet is in /_common/style/
+    -->
+    <link rel="stylesheet" href="../common/style/style.css" />
 
-  <!-- Import map for @material/web components -->
-  <script type="importmap">
-    { "imports": { "@material/web/": "https://esm.run/@material/web/" } }
-  </script>
+    <!-- Import map for @material/web components -->
+    <script type="importmap">
+        { "imports": { "@material/web/": "https://esm.run/@material/web/" } }
+    </script>
 
-  <!-- 
-    MODULE SCRIPTS
-    Executed in order, with proper import path adjustments for subfolder
-  -->
-  <script type="module">
-    // 1. Import Material Web Components
-    import '@material/web/all.js';
-    
-    // 2. Import Material Design typography utility classes
-    import { styles } from '@material/web/typography/md-typescale-styles.js';
-    document.adoptedStyleSheets.push(styles.styleSheet);
-    
-    // 3. Import reusable shell components (header, drawer, footer)
-    // Note: ../ path since we're in a subdirectory
-    import '../common/shell.js'; 
-    
-    // 4. Import page-specific visualization code
-    // renderDummyPlot is a function that creates a D3 bar chart
-    import { renderDummyPlot } from './plots/plot.js';
-    
-    // Render the plot into the element with id="plot-1"
-    renderDummyPlot('plot-1');
-  </script>
+    <!-- 
+        MODULE SCRIPTS
+        Executed in order, with proper import path adjustments for subfolder
+    -->
+    <script type="module">
+        // 1. Import Material Web Components
+        import '@material/web/all.js';
+        
+        // 2. Import Material Design typography utility classes
+        import { styles } from '@material/web/typography/md-typescale-styles.js';
+        document.adoptedStyleSheets.push(styles.styleSheet);
+        
+        // 3. Import reusable shell components (header, drawer, footer)
+        // Note: ../ path since we're in a subdirectory
+        import '../common/shell.js'; 
+        
+        // 4. Import page-specific visualization code
+        // renderDummyPlot is a function that creates a D3 bar chart
+        import { renderDummyPlot } from './plots/plot.js';
+        
+        // Render the plot into the element with id="plot-1"
+        renderDummyPlot('plot-1');
+    </script>
 
-  <!-- 
-    PAGE-SPECIFIC STYLES
-    These styles only apply to this section page
-    Could be moved to a separate CSS file if reused
-  -->
-  <style>
-    /* 
-      ARTICLE LAYOUT
-      Flexbox with wrapping for responsive two-column layout
-      Switches to single column on narrow screens
-    */
-    .section-article { 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 24px; 
-      padding: 24px 0; 
-      align-items: start; 
-    }
-    
-    /* 
-      TEXT CARD
-      Contains textual content (introduction, descriptions)
-      flex: 1 1 400px means:
-      - flex-grow: 1 (can expand)
-      - flex-shrink: 1 (can shrink)
-      - flex-basis: 400px (preferred width before growing/shrinking)
-    */
-    .text-card { 
-      flex: 1 1 400px; 
-      background: var(--md-sys-color-surface-container-low); 
-      border-radius: 16px; 
-      padding: 24px; 
-    }
-    
-    /* 
-      PLOT CARD
-      Container for data visualizations
-      flex: 1 1 100% forces full width on its own row
-      Then wraps text and plot side-by-side when space allows
-    */
-    .plot-card { 
-      flex: 1 1 100%; 
-      background: var(--md-sys-color-surface-container); 
-      border-radius: 16px; 
-      padding: 24px; 
-    }
-    
-    /* Placeholder div that D3 will render into */
-    .plot-placeholder { 
-      width: 100%; 
-      height: 400px; 
-    }
-  </style>
+    <!-- 
+        PAGE-SPECIFIC STYLES
+        These styles only apply to this section page
+        Could be moved to a separate CSS file if reused
+    -->
+    <style>
+        /* 
+            ARTICLE LAYOUT
+            Flexbox with wrapping for responsive two-column layout
+            Switches to single column on narrow screens
+        */
+        .section-article { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 24px; 
+            padding: 24px 0; 
+            align-items: start; 
+        }
+        
+        /* 
+            TEXT CARD
+            Contains textual content (introduction, descriptions)
+            flex: 1 1 400px means:
+            - flex-grow: 1 (can expand)
+            - flex-shrink: 1 (can shrink)
+            - flex-basis: 400px (preferred width before growing/shrinking)
+        */
+        .text-card { 
+            flex: 1 1 400px; 
+            background: var(--md-sys-color-surface-container-low); 
+            border-radius: 16px; 
+            padding: 24px; 
+        }
+        
+        /* 
+            PLOT CARD
+            Container for data visualizations
+            flex: 1 1 100% forces full width on its own row
+            Then wraps text and plot side-by-side when space allows
+        */
+        .plot-card { 
+            flex: 1 1 100%; 
+            background: var(--md-sys-color-surface-container); 
+            border-radius: 16px; 
+            padding: 24px; 
+        }
+        
+        /* Placeholder div that D3 will render into */
+        .plot-placeholder { 
+            width: 100%; 
+            height: 400px; 
+        }
+    </style>
 </head>
 
 <body>
-  <!-- 
-    SITE SHELL
-    Reusable components from shell.js
-  -->
-  <app-header></app-header>
-  <app-drawer></app-drawer>
-
-  <!-- 
-    MAIN CONTENT
-    Container centers and constrains max width
-  -->
-  <main class="container">
     <!-- 
-      ARTICLE ELEMENT
-      Semantic HTML5 element for self-contained content
+        SITE SHELL
+        Reusable components from shell.js
     -->
-    <article class="section-article">
-      <!-- 
-        TEXT SECTION
-        Introduction and context for the visualization
-      -->
-      <section class="text-card">
-        <h2 class="md-typescale-headline-small">Introduction</h2>
-        <p class="md-typescale-body-large">Lorem ipsum content...</p>
-      </section>
+    <app-header></app-header>
+    <app-drawer></app-drawer>
 
-      <!-- 
-        VISUALIZATION SECTION
-        Container for D3 chart
-        The plot.js script will find this div by id and render a chart into it
-      -->
-      <section class="plot-card">
-        <h2 class="md-typescale-headline-small">D3 Visualization</h2>
-        
+    <!-- 
+        MAIN CONTENT
+        Container centers and constrains max width
+    -->
+    <main class="container">
         <!-- 
-          Plot container element
-          This div is initially empty; D3 will create SVG inside it
+            ARTICLE ELEMENT
+            Semantic HTML5 element for self-contained content
         -->
-        <div id="plot-1" class="plot-placeholder"></div>
-      </section>
-    </article>
-  </main>
+        <article class="section-article">
+            <!-- 
+                TEXT SECTION
+                Introduction and context for the visualization
+            -->
+            <section class="text-card">
+                <h2 class="md-typescale-headline-small">Introduction</h2>
+                <p class="md-typescale-body-large">Lorem ipsum content...</p>
+            </section>
 
-  <!-- Footer -->
-  <app-footer></app-footer>
+            <!-- 
+                VISUALIZATION SECTION
+                Container for D3 chart
+                The plot.js script will find this div by id and render a chart into it
+            -->
+            <section class="plot-card">
+                <h2 class="md-typescale-headline-small">D3 Visualization</h2>
+                
+                <!-- 
+                    Plot container element
+                    This div is initially empty; D3 will create SVG inside it
+                -->
+                <div id="plot-1" class="plot-placeholder"></div>
+            </section>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
 </body>
 </html>
