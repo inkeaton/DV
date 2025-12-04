@@ -4,97 +4,97 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DV2 – Section 1</title>
-
-    <!-- Google Fonts: Roboto for consistent typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Material Symbols: Icon font for Material Design icons -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-    
-    <!-- 
-        Main stylesheet - Note the ../ path to go up one directory
-        This page is in /section1/ folder, stylesheet is in /_common/style/
-    -->
     <link rel="stylesheet" href="../common/style/style.css" />
-    
-    <!-- Page-specific styles for section1 layout -->
     <link rel="stylesheet" href="../common/style/section.css" />
 
-    <!-- Import map for @material/web components -->
     <script type="importmap">
         { "imports": { "@material/web/": "https://esm.run/@material/web/" } }
     </script>
 
-    <!-- 
-        MODULE SCRIPTS
-        Executed in order, with proper import path adjustments for subfolder
-    -->
     <script type="module">
-        // 1. Import Material Web Components
         import '@material/web/all.js';
-        
-        // 2. Import Material Design typography utility classes
         import { styles } from '@material/web/typography/md-typescale-styles.js';
         document.adoptedStyleSheets.push(styles.styleSheet);
-        
-        // 3. Import reusable shell components (header, drawer, footer)
-        // Note: ../ path since we're in a subdirectory
         import '../common/shell.js'; 
         
-        // 4. Import page-specific visualization code
-        // renderDummyPlot is a function that creates a D3 bar chart
+        // Import all plot renderers
+        // We use 'as' to rename the export if they share the same name 'renderDummyPlot'
+        // But here I defined unique function names in the files above
         import { renderDummyPlot } from './plots/plot.js';
+        import { renderPlot2 } from './plots/plot2.js';
+        import { renderPlot3 } from './plots/plot3.js';
+        import { renderPlot4 } from './plots/plot4.js';
         
-        // Render the plot into the element with id="plot-1"
+        // Initialize all plots
         renderDummyPlot('plot-1');
+        renderPlot2('plot-2');
+        renderPlot3('plot-3');
+        renderPlot4('plot-4');
     </script>
 </head>
 
 <body>
-    <!-- 
-        SITE SHELL
-        Reusable components from shell.js
-    -->
     <app-header></app-header>
     <app-drawer></app-drawer>
 
-    <!-- 
-        MAIN CONTENT
-        Container centers and constrains max width
-    -->
     <main class="container">
-        <!-- 
-            ARTICLE ELEMENT
-            Semantic HTML5 element for self-contained content
-        -->
+        
         <article class="section-article">
-            <!-- 
-                TEXT SECTION
-                Introduction and context for the visualization
-            -->
             <section class="text-card">
-                <h2 class="md-typescale-headline-small">Introduction</h2>
-                <p class="md-typescale-body-large">Lorem ipsum content...</p>
+                <h2 class="md-typescale-headline-small">Categorical Data</h2>
+                <p class="md-typescale-body-large">
+                    This bar chart demonstrates the distribution of categorical variables. 
+                    The vertical height corresponds to the magnitude of the data point.
+                </p>
             </section>
-
-            <!-- 
-                VISUALIZATION SECTION
-                Container for D3 chart
-                The plot.js script will find this div by id and render a chart into it
-            -->
             <section class="plot-card">
-                <h2 class="md-typescale-headline-small">D3 Visualization</h2>
-                
-                <!-- 
-                    Plot container element
-                    This div is initially empty; D3 will create SVG inside it
-                -->
                 <div id="plot-1" class="plot-placeholder"></div>
             </section>
         </article>
+
+        <article class="section-article">
+            <section class="text-card">
+                <h2 class="md-typescale-headline-small">Time Series Analysis</h2>
+                <p class="md-typescale-body-large">
+                    Line charts are optimal for tracking changes over short and long periods of time.
+                    This example shows a sine wave with added noise.
+                </p>
+            </section>
+            <section class="plot-card">
+                <div id="plot-2" class="plot-placeholder"></div>
+            </section>
+        </article>
+
+        <article class="section-article">
+            <section class="text-card">
+                <h2 class="md-typescale-headline-small">Correlation & Distribution</h2>
+                <p class="md-typescale-body-large">
+                    Scatter plots identify relationships between two variables. 
+                    The radius of the circles adds a third dimension to the data.
+                </p>
+            </section>
+            <section class="plot-card">
+                <div id="plot-3" class="plot-placeholder"></div>
+            </section>
+        </article>
+
+        <article class="section-article">
+            <section class="text-card">
+                <h2 class="md-typescale-headline-small">Proportional Data</h2>
+                <p class="md-typescale-body-large">
+                    Donut charts express a "part-to-whole" relationship. 
+                    Segments represent the percentage contribution of each category.
+                </p>
+            </section>
+            <section class="plot-card">
+                <div id="plot-4" class="plot-placeholder"></div>
+            </section>
+        </article>
+
     </main>
 
-    <!-- Footer -->
     <app-footer></app-footer>
 </body>
 </html>
