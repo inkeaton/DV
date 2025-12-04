@@ -1,0 +1,58 @@
+/* section1.css */
+/* ============================================================================
+   SECTION 1 PAGE SPECIFIC STYLES
+   ============================================================================
+   Styles for the section1 article layout with text and visualization cards
+   ============================================================================ */
+
+/* 
+    ARTICLE LAYOUT
+    Flexbox with wrapping for responsive two-column layout
+    Switches to single column on narrow screens
+*/
+.section-article { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 24px; 
+    padding: 24px 0; 
+    align-items: start; 
+}
+
+/* 
+    TEXT CARD
+    Contains textual content (introduction, descriptions)
+    flex: 1 1 350px means:
+    - flex-grow: 1 (can expand)
+    - flex-shrink: 1 (can shrink)
+    - flex-basis: 350px (preferred width - narrower than plot)
+    max-width ensures text cards don't get too wide for readability
+*/
+.text-card { 
+    flex: 1 1 350px; 
+    max-width: 450px;
+    background: var(--md-sys-color-surface-container-low); 
+    border-radius: 16px; 
+    padding: 24px; 
+}
+
+/* 
+    PLOT CARD
+    Container for data visualizations
+    flex: 2 1 500px means:
+    - flex-grow: 2 (grows twice as fast as text cards)
+    - flex-shrink: 1 (can shrink)
+    - flex-basis: 500px (preferred width - wider than text)
+    This makes plot cards take up more space than text cards
+*/
+.plot-card { 
+    flex: 2 1 500px; 
+    background: var(--md-sys-color-surface-container); 
+    border-radius: 16px; 
+    padding: 24px; 
+}
+
+/* Placeholder div that D3 will render into */
+.plot-placeholder { 
+    width: 100%; 
+    height: 400px; 
+}
