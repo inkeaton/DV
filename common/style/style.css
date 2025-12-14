@@ -37,6 +37,14 @@ app-header, app-drawer, app-footer {
     --app-bar-height: 64px;      /* Fixed height for top navigation */
     --max-width: 1100px;          /* Maximum content width (centered) */
 
+    /* --- STACKING ORDER (Z-INDEX) ---
+       Keep these centralized so feature CSS (e.g. scrollytelling) doesn't
+       accidentally create layers above the navbar.
+    */
+    --z-app-bar: 1000;
+    --z-scrim: 1050;
+    --z-drawer: 1100;
+
     /* ============================================================================
        MATERIAL DESIGN 3 - LIGHT THEME COLORS
        ============================================================================
@@ -165,7 +173,7 @@ body {
     /* Sticky positioning keeps it at top when scrolling */
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: var(--z-app-bar);
     
     /* Subtle bottom border for definition */
     border-bottom: 1px solid var(--md-sys-color-surface-container-high);
@@ -207,7 +215,7 @@ body {
     transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
     
     /* Layer above scrim */
-    z-index: 20;
+    z-index: var(--z-drawer);
     padding: 12px 0;
     
     /* Right border for definition */
@@ -238,7 +246,7 @@ body {
     transition: opacity 0.3s;
     
     /* Layer below drawer but above main content */
-    z-index: 15;
+    z-index: var(--z-scrim);
 }
 
 /* Open state: fade in and enable clicking */

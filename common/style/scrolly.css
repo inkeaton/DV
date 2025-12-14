@@ -1,0 +1,317 @@
+/* scrolly.css */
+/* ============================================================================
+   SCROLLYTELLING STYLES
+   ============================================================================
+   This file provides styles for scroll-driven narrative visualizations.
+   Inspired by R2D3 and similar scrollytelling patterns.
+   
+   Layout Structure:
+   - .scrolly-container: Main wrapper for the scrollytelling section
+   - .scrolly-graphic: Sticky visualization that stays fixed during scroll
+   - .scrolly-text: Scrolling narrative text container
+   - .scrolly-step: Individual text sections that trigger visualization states
+   ============================================================================ */
+
+/* ============================================================================
+   SCROLLY CONTAINER
+   ============================================================================
+   Main wrapper that creates the split-view layout
+   ============================================================================ */
+.scrolly-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+/* ============================================================================
+   SCROLLY GRAPHIC (STICKY VISUALIZATION)
+   ============================================================================
+   The visualization panel that remains fixed while text scrolls past
+   ============================================================================ */
+.scrolly-graphic {
+    position: sticky;
+    top: var(--app-bar-height);
+    height: calc(100vh - var(--app-bar-height));
+    width: 55%;
+    flex-shrink: 0;
+    
+    /* Center the visualization within */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Material Design surface styling */
+    background: var(--md-sys-color-surface-container);
+    border-radius: 0 24px 24px 0;
+    overflow: hidden;
+}
+
+/* The actual D3 visualization container */
+.scrolly-vis {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.scrolly-vis svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================================================
+   SCROLLY TEXT (NARRATIVE COLUMN)
+   ============================================================================
+   The scrolling text column with narrative content
+   ============================================================================ */
+.scrolly-text {
+    width: 45%;
+    padding: 0 32px;
+    position: relative;
+    z-index: 0;
+}
+
+/* ============================================================================
+   SCROLLY STEP (INDIVIDUAL NARRATIVE SECTIONS)
+   ============================================================================
+   Each step triggers a different state in the visualization
+   ============================================================================ */
+.scrolly-step {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 0;
+    opacity: 0.3;
+    transition: opacity 0.4s ease;
+}
+
+.scrolly-step.is-active {
+    opacity: 1;
+}
+
+/* Material Design card styling for step content */
+.scrolly-step-content {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    max-width: 400px;
+}
+
+.scrolly-step-content h2 {
+    color: var(--md-sys-color-primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--md-sys-color-primary-container);
+}
+
+.scrolly-step-content p {
+    color: var(--md-sys-color-on-surface);
+    line-height: 1.7;
+    margin: 12px 0;
+}
+
+.scrolly-step-content strong {
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+}
+
+.scrolly-step-content em {
+    color: var(--md-sys-color-tertiary);
+    font-style: italic;
+}
+
+/* ============================================================================
+   SPACERS
+   ============================================================================
+   Vertical spacing between sections
+   ============================================================================ */
+.scrolly-spacer {
+    height: 30vh;
+}
+
+.scrolly-spacer-large {
+    height: 50vh;
+}
+
+/* ============================================================================
+   INTRO SECTION (FULL WIDTH BEFORE SCROLLY)
+   ============================================================================ */
+.scrolly-intro {
+    text-align: center;
+    padding: 80px 32px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.scrolly-intro h1 {
+    color: var(--md-sys-color-primary);
+    margin-bottom: 24px;
+}
+
+.scrolly-intro p {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 48px;
+    color: var(--md-sys-color-on-surface-variant);
+    animation: bounce 1.5s infinite;
+}
+
+.scroll-indicator md-icon {
+    font-size: 32px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+/* ============================================================================
+   CONCLUSION SECTION
+   ============================================================================ */
+.scrolly-conclusion {
+    text-align: center;
+    padding: 80px 32px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.scrolly-conclusion h2 {
+    color: var(--md-sys-color-primary);
+    margin-bottom: 32px;
+}
+
+.scrolly-conclusion ol {
+    text-align: left;
+    display: inline-block;
+    padding-left: 24px;
+}
+
+.scrolly-conclusion li {
+    margin: 16px 0;
+    line-height: 1.6;
+    color: var(--md-sys-color-on-surface);
+}
+
+/* ============================================================================
+   CHART ANNOTATIONS
+   ============================================================================
+   Labels and annotations that appear on the visualization
+   ============================================================================ */
+.vis-annotation {
+    position: absolute;
+    background: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.vis-annotation.is-visible {
+    opacity: 1;
+}
+
+/* ============================================================================
+   LEGEND STYLES
+   ============================================================================ */
+.scrolly-legend {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--md-sys-color-surface-container-high);
+    padding: 16px;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scrolly-legend.is-visible {
+    opacity: 1;
+}
+
+.scrolly-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--md-sys-color-on-surface);
+}
+
+.scrolly-legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================
+   Stack layout on smaller screens
+   ============================================================================ */
+@media (max-width: 1024px) {
+    .scrolly-container {
+        flex-direction: column;
+    }
+    
+    .scrolly-graphic {
+        position: sticky;
+        top: var(--app-bar-height);
+        width: 100%;
+        height: 50vh;
+        border-radius: 0 0 24px 24px;
+    }
+    
+    .scrolly-text {
+        width: 100%;
+        padding: 24px 16px;
+    }
+    
+    .scrolly-step {
+        min-height: 60vh;
+    }
+    
+    .scrolly-step-content {
+        max-width: 100%;
+    }
+}
+
+/* ============================================================================
+   TRANSITIONS FOR VISUALIZATION ELEMENTS
+   ============================================================================
+   Smooth transitions for D3 elements when state changes
+   ============================================================================ */
+.scrolly-vis circle,
+.scrolly-vis rect,
+.scrolly-vis path,
+.scrolly-vis line {
+    transition: all 0.5s ease;
+}
+
+/* Highlight styles for active elements */
+.data-point-highlight {
+    stroke: var(--md-sys-color-primary);
+    stroke-width: 3px;
+}
+
+/* Dim styles for inactive elements */
+.data-point-dim {
+    opacity: 0.2;
+}

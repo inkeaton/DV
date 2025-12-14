@@ -23,6 +23,7 @@ class AppHeader extends HTMLElement {
                     <nav class="desktop-nav">
                         <md-text-button href="/">Home</md-text-button>
                         <md-text-button href="/section1/section1.html">Section 1</md-text-button>
+                        <md-text-button href="/section2/section2.html">Section 2</md-text-button>
                         <md-text-button href="/about.html">About</md-text-button>
                     </nav>
                     
@@ -79,6 +80,11 @@ class AppDrawer extends HTMLElement {
                     <md-list-item type="link" href="/section1/section1.html">
                         <div slot="headline">Section 1</div>
                         <md-icon slot="start">bar_chart</md-icon>
+                    </md-list-item>
+                    
+                    <md-list-item type="link" href="/section2/section2.html">
+                        <div slot="headline">Section 2</div>
+                        <md-icon slot="start">auto_stories</md-icon>
                     </md-list-item>
                     
                     <md-list-item type="link" href="/about.html">
