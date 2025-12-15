@@ -1,0 +1,962 @@
+country_guess,n_papers
+AT,6
+AT&T Labs,1
+AT&T Labs and University of Arizona,1
+AT&T Research Laboratories,1
+AU,4
+Aarhus University,1
+Adobe Research,6
+Adobe Systems Inc.,1
+Advanced Scientific Visualization Laboratory,1
+Agilent Laboratories,1
+AgroParisTech Montpellier,1
+Ain Shams University,1
+Air Flow Consulting,1
+Air Force Research Laboratory,1
+Alexandria University,1
+Alibaba Group,2
+Allen Institute for Artificial Intelligence,1
+Allen Institute for Cell Science,2
+Almaden,1
+Amber Solutions Inc.,1
+American Museum of Natural History,4
+Amherst,2
+Amsterdam,1
+An Independent Researcher,1
+Aptima Inc.,1
+Argentina,4
+Argonne National Laboratory,6
+Arizona State University,13
+Art+Design at Northeastern University,1
+Artefact,1
+Arts Northwestern Switzerland FHNW,1
+Ask.com,1
+Astronautics at Purdue University,1
+Augsburg University,1
+Austin,3
+Australia,37
+Australian National University,1
+Austria,166
+Austria and T. U. Wien,1
+Austrian Academy of Sciences,1
+Austrian Institute of Technology,2
+Autodesk Research,7
+BOSCH Research,1
+BR,3
+Baltimore County,2
+Bangor University,3
+Bangor University and University of Basrah,1
+Barcelona,1
+Barcelona Supercomputing Center,2
+Bauhaus-Universität Weimar,1
+Bayer Technology,1
+Beijing Normal University,1
+Belgian F.R.S.-FNRS.,1
+Belgium,7
+Berkeley,3
+Berlin,1
+Bloomberg L.P.,1
+Bloomington,1
+Boeing Research & Development Europe,1
+Bonn,1
+Bosch RTC,1
+Bosch Research North America,3
+Boston University,1
+Boulder,1
+Brazil,27
+Brigham and Women's Hospital,1
+Brookhaven National Laboratory,2
+Brown University,12
+Brown University Tufts University,1
+Brzil,1
+Bucknell University,3
+Business University,1
+CA,21
+CAS,4
+CBICR Center,1
+CH,5
+CN,14
+CNR of Pisa,1
+CNRS,1
+CNRS (LIP6),2
+CNRS LTCI,1
+CNRS LTCI & Télécom ParisTech,1
+CNRS and Sorbonne Université,1
+CNRS-LIMSI,1
+CSC/NASA Ames,1
+CUSP King's College London,1
+CWI,1
+CZ,1
+Cahners MicroDesign Resources,1
+California Institute of Technology,2
+Caltech,1
+Canada,179
+Canada and University of Victoria,1
+Cardiff University,2
+Carnegie Mellon University,1
+Catharina Hospital Eindhoven,1
+Center for Applied Scientific Computing,1
+Center for Brain Science at Harvard University,2
+Center for Mathematics and Computer Science (CWI),1
+Center of Visual Data Analysis and Computer Graphics (COVIDAG)University of Duisburg-Essen,1
+Central South University,10
+Chapel Hill,6
+Charlotte,3
+Charlotte and UNC Charlotte,1
+Chengdu Sports University,1
+Chicago,3
+Chile,1
+China,219
+China Academy of Art,1
+China Jiliang University,1
+China Petroleum University,1
+Chinese Academy of Science,1
+Chinese Academy of Sciences,5
+Chinese Academy of Sciences and University of Chinese Academy of Sciences,1
+Chinese University of Hong Kong,3
+City University London,6
+City University London and Monash University,1
+City University of Hong Kong,1
+Co-Founder of Aldus and Founder of Visio,1
+College Park,3
+Colombia,1
+Columbia Journalism School and the Associated Press,1
+Columbia University,1
+Computational Engineering International,1
+Computed Tomography,1
+Computer Graphics Laboratory at Stanford University,1
+Computer Graphics LaboratoryETH Zürich,1
+Computer Graphics and Visualization Group at Delft University of Technology,1
+Computer Science Corporation,1
+Computer Science at Purdue University,1
+Congressional Budget Office,1
+Cornell University,2
+Croatia,9
+Czech Republic,8
+Czechia,1
+D. C,1
+DE,27
+DIPF,1
+DK,2
+Dalhousie University,1
+Dana-Farber Cancer Institute,1
+Darmstadt,1
+Dartmouth,2
+Dassault Systèmes,1
+Data Visualization Research Laboratory,1
+Davis,25
+DePaul University,1
+Delft University of Technology,2
+Delhi,1
+Denmark,14
+Department of Computer Science Tufts University,1
+Department of Computer Science U.C. Berkeley,1
+Department of Defense,1
+Department of Geography and Kent State University,1
+Department of Homeland Security,1
+Dept. of Computer Science at Brown University,1
+Detroit,1
+Development and Innovation in ATM),2
+Dortmund,2
+Dowling College,1
+Drexel University,1
+Duke Mathematics,1
+Duke University,2
+Duke University Medical Center,1
+Duke Visualization Technology Group,1
+Duquesne University,1
+EMPA Dübendorf,1
+ENAC,1
+ENACFrench Civil Aviation University,1
+ES,1
+ETH Zurich,4
+ETH Zürich,4
+Earth Decision Sciences,1
+East China Normal University,4
+Edinburgh University,1
+Eindhoven,1
+Eindhoven University,1
+Eindhoven University of Technology,5
+Eindhoven University of Technology and Delft University of Technology,1
+Eindhoven University of Technology and Philips Healthcare,1
+Emory University,1
+England,3
+EnsadLab,2
+EnsadLab and INRIA and Telecom ParisTech,1
+Erste Group IT,1
+Essen,1
+FR,6
+FX Palo Alto Laboratory,5
+Facebook,2
+Federal University of Ceara,1
+Federal University of Rio Grande do Sul,1
+Federal University of Rio Grande do Sul and Simon Fraser University,1
+Finland,6
+Florida State University,1
+Ford Motor Company,1
+France,132
+Fraunhofer IAIS,1
+Fraunhofer IGD,1
+Fraunhofer Institute IAIS,1
+Fraunhofer MEVIS,1
+French Civil Aviation University,2
+Friedrich-Schiller-Universität Jena,1
+Future Applications Laboratory,1
+Futurefarmers,1
+GB,12
+GE Global Research,1
+GFZ German Research Centre for Geosciences,1
+GM R&D,1
+GVU Center,1
+General Electric,1
+General Electric CRD,1
+George Mason University,1
+Georgia,1
+Georgia Aquarium,1
+Georgia Institute of Technology,22
+Georgia Tech,4
+Georgia Tech Research Institute,1
+Georgia Tech.,4
+German Climate Computing Center,1
+Germany,471
+Germany and Research Campus STIMULATE,1
+Gocad Research Group,1
+Google,2
+Google Brain,1
+Google Inc,1
+Google Research,2
+Grand Valley State University,1
+Graz University of Technology,5
+Greece,1
+HK,9
+Hankuk University of Foreign Studies,2
+Harbin Institute of Technology,1
+Harvard Institute for Quantitative Social Sciences,1
+Harvard Medical School,7
+Harvard NLP group,2
+Harvard NLP group and MIT-IBM Watson AI Lab.,1
+Harvard Paulson SEAS,1
+Harvard SEAS,1
+Harvard University,16
+Harvard Visual Computing group,1
+HarvardX,1
+Hatvatd Visual Computing group,1
+Heidelberg University,2
+Hendrik Strobelt and Hanspeter Pfister are with Harvard University.,1
+Hewlett Packard Laboratories,1
+Hewlett-Packard GmbH,1
+Hivemapper,1
+Honeycomb.io,1
+Hong Kong,9
+Hong Kong University of Sccience and Technology,1
+Hong Kong University of Science and Technology,38
+Hong Kong University of Science and Technology (HKUST),1
+Hong Kong University of Science and Technology (HKUST) and Zhejiang University,1
+Hong Kong University of Science and Technology and Bloomberg L.P.,1
+Hospital for Sick Children,1
+Hospital for Sick Children and University of Toronto,1
+Hospital for Sick Children in Toronto,1
+Huawei Co. Ltd.,1
+Huawei Technologies Co. Ltd.,2
+Huawei Technologies Investment Co. Ltd.,1
+Hungary,5
+I4 data,1
+IBM,1
+IBM Almaden Research Center,1
+IBM Corporation,1
+IBM J. Watson Research Center,1
+IBM Japan,1
+IBM Research,4
+IBM Research Cambridge and MIT-IBM Watson AI Lab.,1
+IBM T. J. Watson Research Center,2
+IBM T.J. Watson Research Center,6
+IBM Thomas J. Watson Research Center,1
+IDEA,1
+IEEE Spectrum,1
+IL,3
+IN,1
+IN. e-mail:,1
+INGEOSUR CONICET,1
+INRIA,4
+INRIA and INRIA,1
+INRIA-LRI and Univ. of Sydney,1
+IRI and University of Calgary,1
+IRSTEA Montpellier,1
+IRT SystemX,1
+ISIR,2
+ISIR and INRIA,1
+IT,3
+ITWM Kaiserslautern,1
+Iceland,1
+Imperial College London,1
+Inc,3
+Inc.,30
+Independent,1
+Independent consultant,1
+Independent scholar,1
+India,15
+Indian Institute of Technology Kharagpur,1
+Indiana University,3
+Indiana University-Purdue University Indianapolis,1
+Indianapolis,1
+Information Processing Branch,1
+Infovisible,1
+Inria,15
+Inria Lorraine,1
+Inria and IRI,1
+Inria and Univ. Paris-Saclay,1
+Inria and University of Copenhagen,1
+Inria and Université Paris-Saclay,1
+Institut Polytechnique de Paris,1
+Institute for Computer Applications in Science and Engineering,1
+Institute of BioMedical Research,1
+Institute of Graphics and Image Hangzhou Dianzi University,1
+Institute of Mathematics and Computer Science in Medicine (IMDM),1
+Institute of Software,1
+Institute of Technology,1
+Inte:Ligand,1
+Intel,1
+Intel Corp,1
+Intel Corporation,2
+Intelligent Light,1
+Interdisciplinary Doctoral Program U.C. Berkeley,1
+Intergraph Corporation,1
+Iowa State University,2
+Ireland,5
+Israel,37
+Italy,26
+JHU Applied Physics Lab,1
+Jacobs University Bremen,1
+Japan,26
+Jet Propulsion Laboratory,1
+Johannes Kepler University Linz,2
+KAIST,1
+KAUST,4
+KR,3
+Kaiserslautern,1
+Kapsch TrafficCom AG,1
+Karlsruhe Institute of Technology,2
+Kellogg School of Management,1
+Kent State University,5
+King Abdullah University of Science and Technology (KAUST),4
+Kingdom of Saudi Arabia,1
+Kitware,1
+Kitware Inc.orporate,1
+Knoxville,1
+Kobe University,1
+Kohn Pedersen Fox Associates PC,2
+Korea,2
+Korea University,5
+Kyoto University,1
+LBNL,1
+LIMSICNRSUniv. Paris-SudUniversité Paris-Saclay,1
+LLNL,1
+Lancaster University,1
+Landau,1
+Lawrence,1
+Lawrence Berkeley National Laboratory,1
+Lawrence Berkeley National Laboratory (LBNL),1
+Lawrence Livemore National Laboratory,1
+Lawrence Livermore National Laboratory,11
+Leiden University Medical Center,1
+Leipzig University,3
+Lenox Hill Hospital,1
+Lincoln,1
+Linköping University,8
+Lockheed Advanced Computation Laboratory,1
+Lockheed Martin - United States Environmental Protection Agency’s Scientific Visualization Center,1
+London,4
+Los Alamos National Lab,1
+Los Alamos National Laboratory,5
+Los Alamos National Labs,1
+Los Angeles,1
+Lowell,1
+Ltd,1
+Lucent Technologies,1
+Luxembourg,1
+MA,1
+MAXON Computer,1
+MD,3
+MERL,2
+MI,2
+MIT,3
+MIT CSAIL & Fitnescity Labs,1
+MIT-IBM Watson AI Lab.,1
+MODUL University Vienna,1
+MPI Informatik Saarbrücken,1
+MPI Saarbrücken,1
+MRJ Technology Solutions,2
+MRJ/ NASA Ames#NVIDIA,1
+Macrofocus GmbH,1
+Madison,2
+Maine Medical Center,1
+Maine Medical Center and Tufts Medical School,1
+Malaysia,2
+Maryland,1
+Masaryk University,3
+Masaryk University and Univ. of Bergen,1
+Massachusetts Institute of Technology,5
+Massachusetts Institute of Technology (MIT),1
+Max Planck Institute for Astronomy,1
+Max Planck Institute for Informatics,1
+Mayo Clinic,1
+Melbourne,1
+Mexico,1
+Michigan State University,4
+Microsoft,3
+Microsoft Corporation,2
+Microsoft Live Laboratories,1
+Microsoft Research,29
+Microsoft Research Asia,10
+Microsoft Research Limited,1
+Microsoft Research-Inria Joint Centre,1
+Middlebury College,1
+Middlesex University,1
+Minneapolis College of Art and Design,1
+MishMashMakers,1
+Mississippi,1
+Mississippi State University,4
+Mitsubishi Electric Research Laboratories,1
+Monash University,13
+Monash University and Alfred Health,1
+Monash University and Data61,1
+Monash University and NICTA Victoria,1
+Multimedia Technology Integration Center School of Engineering,1
+NASA Ames Research Center,4
+NASA Goddard Space Flight Center,1
+NASA Langley Research Center,1
+NASA Marshall Space Flight Center,1
+NAVER Corporation,1
+NC State University,1
+NEXThink S.A.,1
+NICTA and NICTA,1
+NL,8
+NO,1
+NOAA Earth System Research Lab,1
+NVIDIA,2
+NVIDIA Corporation,1
+NVidia Corporation,1
+NY,7
+NYU,2
+NYU Center for Genomics and Systems Biology,1
+NYU Langone Medical Center,1
+NYU Poly,1
+NYU Polytechnic Institute,1
+NYU Polytechnic School of Engineering,3
+NYU School of Medicine,1
+NYU Tandon School of Engineering,1
+Nankai University,1
+Nanographics GmbH,1
+Nanyang Technological University,1
+National Center for Atmospheric Research,1
+National Center for Health Statistics,1
+National Chiao Tung University,1
+National Engineering Lab for Big Data Software,1
+National Institute for Standards and Technology,1
+National Institute of Information and Communications Technology,1
+National Institute of Standards and Technology,2
+National Jewish Center for Immunology and Respiratory Medicine,1
+National Meteorological Center of CMA,1
+National University of Singapore,2
+Naval Research Laboratory,1
+Netherlands,90
+Netherlands and MagnaView,1
+Netherlands and Technische Universiteit Eindhoven,1
+Netherlands.,1
+New Jersey Institute of Technology,1
+New York,2
+New York University,18
+New York University and DataONE,1
+New Zealand,4
+Nokia Bell Labs Cambridge (UK),1
+Norrköping,1
+North Carolina State University,2
+Northeastern University,6
+Northeastern University and Georgia Institute of Technology,2
+Northern Arizona University,1
+Northern Illinois University,2
+Northern Illinois University and Argonne National Laboratory,1
+Northwestern Univ.,1
+Northwestern University,15
+Norway,35
+Notre Dame,1
+Novartis Institute of BioMedical Research,1
+Novartis Institutes for BicMedical Research,1
+Now at Mount Holyoke College,1
+OCAD University,1
+OH,3
+Oak Ridge National Laboratory,4
+Office of Research and Development,1
+Ohio,1
+Ohio State University,5
+Ohio Supercomputer Center,1
+Ohio Supercomputing Center,1
+Ontario Tech University,1
+Oregon State University,4
+Ostfalia University of Applied Sciences and IAV GmbH,1
+Oxford University,1
+PA,1
+POSTECH,1
+PUC-Rio,1
+Pacific Data Images (PDI),1
+Pacific Northwest National Lab,1
+Pacific Northwest National Laboratory,11
+Paderborn University,1
+Palo Alto Research Center (PARC),1
+Pekina University,1
+Peking University,18
+Pennsylvania,1
+Pennsylvania State University,1
+Peru,1
+Philips Healthcare,1
+Philips Medical Systems,1
+Platform Digital Limited Liability Company,1
+Plön,1
+Poland,1
+Potsdam University of Applied Sciences,1
+Prague,2
+Pratt School of Engineering,1
+Princeton University,1
+ProCAEss GmbH Landau,1
+Psychological Sciences at Brown University,1
+Purdue U. and Tufts U,1
+Purdue University,15
+Purdue University and University of Colorado,1
+Qatar,4
+Qihoo 360 Technology Co. Ltd.,1
+Qingdao,1
+RI,2
+RIKEN R-CCS,1
+RMIT University,1
+RWTH Aachen University,2
+Republic of Korea,2
+Rice University,1
+RiceQuant Co. Ltd.,1
+Robert Bosch Research and Technology Center,1
+Robert Bosch Research and Technology Center and Robert Bosch Research and Technology Center,1
+Romain Vuillemot is with Harvard University,1
+Roy Family Homeschool,1
+Ruprecht-Karls-University Heidelberg,1
+Russia,6
+Rutgers New Jersey Medical School,1
+SA,1
+SAIC Advanced Systems and Concepts Division,1
+SE,2
+SIAT,2
+SINTEF,1
+SRI International,1
+SUNY at Stony Brook,1
+Saarland University,1
+Salk Institution for Biological Sciences,1
+Salt Lake City,1
+Samsung Medical Center,1
+Samsung Research America,1
+San Diego,2
+San Diego Supercomputer Center,1
+San Diego Supercomputing Center,1
+San Francisco,1
+San Francisco State University,1
+Sandia,1
+Sandia National Laboratories,2
+Sankt Augustin,1
+Santa Barbara,3
+Santa Barbara and Microsoft Research,1
+Santa Cruz,2
+Sao Carlos,1
+Saudi Arabia,19
+School of Computer Science and Center for Spatial Analysis The University of Oklahoma,1
+School of Computing,2
+School of Engineering and Applied Sciences at Harvard University,2
+School of Information at the University of Michigan,1
+School of Library and Information Science Indiana University,1
+Scientific Computing and Imaging Institute,1
+Scotland,5
+Secure Decisions,1
+Sejong University,2
+Seoul,1
+Seoul National University,4
+Seoul National University Bundang Hospital,1
+Seoul National University and Samsung Electronics,1
+Shandong University,9
+Shanghai,1
+Shanghai Jiao Tong University,1
+Shenzhen Institutes of Advanced Technology,1
+Shenzhen University,2
+Sichuan University,2
+Siemens AG,1
+Silicon Graphics Computer Systems,1
+Silicon Graphics Inc.,1
+Simon Fraser University,7
+Singapore,19
+Sinovation Ventures AI Institute,1
+Slovakia,4
+Smith College,2
+Sociology/Anthropology and Health Sciences at Northeastern University,1
+Sonar Research and Development Limited,1
+Soongsil University,2
+Sorbonne University,1
+South Korea,28
+Southeast University,2
+Southern University of Science and Technology,1
+Southwest Electric and Telecom Engineering Institute,1
+Southwest University of Science and Technology,1
+Spain,7
+St.Pölten University of Applied Sciences,1
+Stanford University,13
+Stanford University Medical Center,1
+State Key Lab of CAD&CG,1
+State University of New York at Stony Brook,1
+Statistics Netherlands,1
+Statistics at Iowa State University,1
+Stony Brook University,10
+Stony Brook University and SUNY Korea,1
+Stuttgart Media University,1
+Sungkyunkwan University,1
+Sunnyvale,1
+Swammerdam Inst. for Life Sci.,1
+Swansea University,6
+Sweden,45
+Switzerland,66
+SynerScope B. V.,1
+TH Köln and Delft University of Technology,1
+TU Delft,2
+TU Dresden,2
+TU Eindhoven,3
+TU Graz,2
+TU Kaiserslautern,3
+TU Vienna,1
+TU Wien,9
+TU Wien and Nanographics GmbH,1
+TU Wien and VrVis Research Center,1
+Tableau Research,10
+Tableau Research (retired),1
+Tableau Research and the University of British Columbia,1
+Tableau Software,1
+Taiwan,6
+Taste Analytics,1
+Technical University of Munich,1
+Technical University of Munich (DE),1
+Technische Universitat Dresden,1
+Technische Universitat Kaiserslautern,1
+Technische Universitat Wien,1
+Technische Universiteit Eindhoven,1
+Technische Universität Kaiserslautern,1
+Technische Universität München,5
+Technische Universität Műnchen,1
+Tel Aviv Univeristy,1
+Tel Aviv University,1
+Telecom ParisTech,1
+Texas A&M University,1
+Texas Advanced Computing Center,1
+Texas Advanced Computing Center and Intel Corp,1
+The Charlotte Visualization Center,1
+The Chinese University of Hong Kong,1
+The Exploratorium,1
+The Hong Kong University of Science and Technology,1
+The MITRE Corporation,1
+The Netherlands,18
+The New York Times,1
+The Ohio State University,14
+The Ohio State University and Ohio Supercomputer Center,1
+The Pennsylvania State University,1
+The Scripps Research Institute,1
+The University of Arizona,1
+The University of British Columbia,1
+The University of Edinburgh,1
+The University of Edinburgh and Tianjin University,1
+The University of Melbourne,1
+The University of New Hampshire,2
+The University of Queensland,1
+The University of Tokyo,2
+Tiani Medgraph GesmbH,1
+Tianjin University,4
+Tohoku University,1
+Tongji University,6
+Toronto,2
+Tsinghua University,13
+Tsinghua University and National Engineering Lab for Big Data Software,1
+Tsingua University,1
+Tufts U,1
+Tufts University,11
+Tufts University and Aptima Inc.,1
+Tulane University,1
+Tulane Universiy,1
+Turkey,2
+Twitter Inc.,2
+Twitter Inc. and Georgia Institute of Technology,1
+Télécom ParisTech,1
+U-tad,1
+U. S. Army Engineer Research and Development Center,1
+U. S. EPA Visualization Center,1
+U. Ulm.,1
+U.K.,5
+U.N.C. Charlotte,1
+U.S.,1
+U.S. EPA,1
+U.S. Geological Survey,1
+U.S.A.,1
+UAE,1
+UC Davis,2
+UC Davis and Lawrence Livermore National Laboratory,1
+UC Santa Barbara,1
+UCB,1
+UFES,1
+UFRGS,2
+UIC,1
+UK,121
+UMass Dartmouth,1
+UN Global Pulse,1
+UNC Charlotte,2
+UNC-Charlotte,2
+UNCC,1
+UOIT,1
+UPC Barcelona,1
+UPM,1
+URJC,2
+URJC and CCS,1
+US,91
+US Army Research Office,1
+USA,1747
+USA and Drexel University,1
+USA and Lawrence Livemore National Laboratory,1
+USA and Mitsubuishi Electric Research Labs,1
+USA and Penn State University,1
+USA and Stanford University,1
+USA#University of California at Davis,1
+USDA Forest Service,1
+USTC,1
+UT,2
+Uber AI Labs,1
+Ulm University,6
+Ulsan Nat'l Inst. of Science and Technology (UNIST),1
+Ulsan National Institute of Science and Technology (UNIST),1
+Umm Al-Qura University,1
+Union College,1
+United Arab Emirates,1
+United Kingdom,21
+United States,57
+Univ. Erlangen,1
+Univ. Montpellier 2,1
+Univ. Montpellier 3,1
+Univ. Strasbourg,1
+Univ. Strasbourg/ENGEES,1
+Univ. of Bergen,1
+Universi??t Leipzig,1
+Universidad Católica San Pablo,1
+Universidad Católica San Pablo and University of Washington,1
+Universidad Nacional del SUR and CONICET,1
+Universidade Federal Fluminense,1
+Universidade Federal de Pernambuco,1
+Universit é Paris-Saclay,1
+University Corporation for Atmospheric Research,1
+University Duisburg-Essen,1
+University Hospital of Leipzig,1
+University Linz,1
+University Paris Saclay,1
+University of Alabama Huntsville,1
+University of Alabama in Huntsville,1
+University of Alaska Fairbanks,1
+University of Amsterdam,2
+University of Applied Sciences Upper Austria,1
+University of Applied Sciences and Arts Northwestern Switzerland FHNW,1
+University of Arizona,15
+University of Bergen,8
+University of Bergen and Masaryk University,1
+University of Bergen and Rainfall AS Bergen,1
+University of Bonn,5
+University of Bremen,1
+University of Bristol,1
+University of British Columbia,10
+University of Calgary,11
+University of Calgary and Telecom ParisTech,1
+University of California,1
+University of California Merced in Cognitive + Information Sciences,1
+University of California Santa Cruz,1
+University of California at Davis,2
+University of Campinas,2
+University of Chester,1
+University of Chicago,4
+University of Colorado,2
+University of Colorado Boulder,6
+University of Copenhagen,4
+University of Duisburg-Essen,2
+University of East Anglia,1
+University of FLorida,1
+University of Florida,5
+University of Groningen,3
+University of Haifa,1
+University of Hawai'i at Mänoa,1
+University of Hawai'i at Mänoa and Argonne National Laboratory,1
+University of Houston,1
+University of Idaho,1
+University of Illinois at Chicago,4
+University of Illinois at Urbana-Champaign,6
+University of Iowa,1
+University of Kaiserslautern,2
+University of Kentucky,1
+University of Konstanz,15
+University of Leeds,2
+University of Lethbridge and University of South Africa,1
+University of Lincoln,1
+University of London,4
+University of London and University of Calgary,1
+University of Louisville,1
+University of Macau,2
+University of Magdeburg,5
+University of Manitoba,1
+University of Maryland,7
+University of Maryland Baltimore County,1
+University of Maryland School of Medicine at Baltimore,1
+University of Massachusetts Amherst,1
+University of Massachusetts Lowell,2
+University of Massachusetts at Lowell,1
+University of Memphis,1
+University of Michigan,8
+University of Minnesota,5
+University of Minnesota Computer Scientist,1
+University of Minnesota and Gonzaga University,1
+University of Minnesota at Twin Cities,1
+University of Mississippi,1
+University of Missouri at Columbia,1
+University of Munich (LMU),1
+University of Munich (LMU) and University of British Columbia,1
+University of Nevada,1
+University of New Hampshire,2
+University of New Mexico,1
+University of North Carolina,1
+University of North Carolina at Chapel Hill,6
+University of North Carolina at Charlotte,5
+University of Notre Dame,1
+University of Oklahoma,2
+University of Ontario,1
+University of Ontario Institute of Technology,1
+University of Osnabrück,1
+University of Oxford,2
+University of Pennsylvania,1
+University of Pissburg,1
+University of Pittsburgh,3
+"University of Rome ""La Sapienza""",1
+University of Rome La Sapienza,1
+University of Rostock,3
+University of Sao Paulo,1
+University of South Australia,1
+University of South Carolina,1
+University of South Florida,3
+University of Southern California,1
+University of Stuttgart,17
+University of Sydney,1
+University of São Paulo,4
+University of Texas,1
+University of Texas at Austin,2
+University of Tiibingen,1
+University of Tokyo,1
+University of Toronto,8
+University of Toronto and Rochester Institute of Technology,1
+University of Tübingen,2
+University of Utah,34
+University of Utah Department of English,1
+University of Utah School of Computing,1
+University of Victoria,4
+University of Vienna,6
+University of Virginia,1
+University of Washington,26
+University of Waterloo,2
+University of Wisconisn–Madison,1
+University of Wisconsin-Madison,5
+University of Wisconsin–Madison,1
+University of Wisconsin—Madison,1
+University of Zurich,2
+University of Zürich,1
+University oj Konstanz,1
+Universität Bonn,1
+Universität Heidelberg,1
+Universität Kaiserslautern,2
+Universität Konstanz,1
+Universität Leipzig,1
+Université Laval,1
+Université Paris Diderot,1
+Université Paris Saclay,1
+Université Paris-Saclay,3
+Université Paris-Sud,1
+Université de Bordeaux,1
+Urbana-Champaign,2
+Utah State University,1
+Utrecht University,1
+VA,1
+VA Tech Hydro,1
+VIDi,1
+VISUS,1
+VRVis,3
+VRVis Forschungs GmbH,1
+VRVis Research Center,6
+VRVis Research Center Vienna,1
+VRVis Research Center and TU Wien,1
+VRVis Research Center and Vienna University of Technology,1
+VRVis Vienna,1
+VRVis Zentrum fur Virtual Reality und Visualisierung Forschungs-GmbH,1
+Vancouver Hospital and Health Sciences Centre,1
+Vanderbilt University,2
+Vanderbilt University School of Medicine,1
+Vassar College,1
+Victoria,1
+Vienna University of Technology,12
+Vietnam,1
+Virginia Tech,8
+Virginia Tech Computer Science,1
+Virginia Tech Department of Computer Science,1
+Virginia Tech Department of Computer Science and the Discovery Analytics Center,1
+Virginia Tech Department of Computer Science and the Discovery Analytics Center and Pacific Northwest National Laboratory,1
+Virginia Tech Department of Statistics,1
+Virginia Tech Statistics,1
+Virginia Tech.,2
+Virginia Technology,1
+Visa Research,6
+Visintuit LLC,1
+Visual Communication Laboratory at IBM,1
+Visual Computing Group at the University of Magdeburg,1
+Visualization and Medical Image Analysis Group at University of Bonn,1
+VrVis Research Center,1
+VyGLab,1
+WA,1
+WSI/GRIS,1
+WSI/GRIS University of Tübingen,2
+Washington State University,1
+Washington University,1
+Washington University in St. Louis,1
+Waters Corporation,1
+Wayne State University,2
+Weimar,1
+Western Carolina University,1
+Worcester Polytechnic Institute,4
+Xerox-PARC,1
+Xi 'an Jiaotong University,1
+Xi 'an Jiaotong-Liverpool University.,1
+Xi'an Jiaotong University,2
+Xi'an Jiaotong-Liverpool University,1
+Yale School of Medicine,2
+York University,1
+Zhejiang GongShang University,1
+Zhejiang Lab,1
+Zhejiang Sci-tech University,1
+Zhejiang University,32
+Zhejiang University and Hong Kong University of Science and Technology,1
+Zhejiang University of Finance & Economics,2
+Zhejiang University of Finance and Economics,4
+Zhejiang University of Finance and Economics China,1
+Zhejiang University of Media and Communication,1
+Zhejiang University of Technology,2
+Zhengzhou University,1
+Zimmer Spine,1
+Zurich,1
+Zuse Institute Berlin,2
+Zuse Institute Berlin (ZIB),1
+Zürich,1
+and Media,1
+and Psychological Sciences at Brown University,1
+caesar,1
+currently unaffiliated,1
+eBay Research Labs,1
+iDVx Lab at Tongji University,1
+independant graphic designer and researcher,1
+the Netherlands,3
+the United States,1
