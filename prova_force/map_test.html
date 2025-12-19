@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Map Time Lapse Test</title>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background: #f0f2f5;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Il contatore gigante dell'anno */
+        #year-counter {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            font-size: 10rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.05); /* Molto trasparente */
+            pointer-events: none;
+            z-index: 0;
+            font-family: sans-serif;
+            line-height: 1;
+        }
+
+        /* Pannello info */
+        #controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 250px;
+        }
+
+        h2 { margin: 0 0 10px 0; color: #333; font-size: 1.2rem; }
+        p { font-size: 0.9rem; color: #666; margin: 5px 0; }
+        
+        button {
+            background: #5E60CE;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        button:hover { background: #4a4cb8; }
+
+        /* Stile Mappa */
+        .country {
+            fill: #e0e0e0;
+            stroke: #fff;
+            stroke-width: 0.5px;
+        }
+
+        /* Stile Pallini */
+        circle {
+            transition: all 0.3s ease-out;
+            cursor: pointer;
+        }
+        circle:hover {
+            stroke: #333;
+            stroke-width: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="year-counter">1990</div>
+
+    <div id="controls">
+        <h2>Global Expansion</h2>
+        <p>Simulation of <strong>1,200 papers</strong> published from 1990 to 2024.</p>
+        <div id="progress" style="height:4px; background:#eee; margin:10px 0; width:100%"><div id="bar" style="height:100%; width:0%; background:#5E60CE"></div></div>
+        <button onclick="replay()">Replay Animation</button>
+    </div>
+
+    <script>
+        // --- 1. SETUP ---
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Creiamo i layer: Mappa sotto, Pallini sopra
+        const mapLayer = svg.append("g");
+        const dotsLayer = svg.append("g");
+
+        // Proiezione Geografica (Mercator o Natural Earth)
+        const projection = d3.geoNaturalEarth1()
+            .scale(width / 5.5) // Adatta scala allo schermo
+            .translate([width / 2, height / 1.8]); // Centra
+
+        const path = d3.geoPath().projection(projection);
+
+        // Variabili Globali
+        let nodes = [];
+        let timer = null;
+        
+        // --- 2. GENERAZIONE DATI FINTI (Per testare senza CSV) ---
+        // Se volessi usare il tuo CSV, sostituiresti questa parte con d3.csv(...)
+        function generateMockData() {
+            const mockNodes = [];
+            const tracks = ["Vis", "InfoVis", "VAST"];
+            const colors = {"Vis": "#5E60CE", "InfoVis": "#4EA8DE", "VAST": "#F48C06"};
+            
+            for(let i=0; i<1200; i++) {
+                // Anno: Crescita esponenziale (più dati verso il 2024)
+                const year = Math.floor(2025 - Math.pow(Math.random(), 2) * 35); // 1990-2024
+                
+                // Regione (Probabilità che cambiano nel tempo)
+                let region = "NA"; // Default North America
+                const rand = Math.random();
+                
+                // Logica evolutiva: 
+                // Anni 90: quasi tutto USA/EU
+                // Anni 2020: molta Asia
+                if (year < 2000) {
+                    if (rand > 0.7) region = "EU";
+                    else if (rand > 0.95) region = "Asia";
+                } else {
+                    if (rand > 0.4 && rand < 0.7) region = "EU";
+                    else if (rand >= 0.7) region = "Asia";
+                }
+
+                // Genera coordinate Lat/Long casuali dentro i "box" dei continenti
+                let coords = [];
+                if(region === "NA") coords = [-130 + Math.random()*60, 25 + Math.random()*30]; // USA
+                if(region === "EU") coords = [-10 + Math.random()*40, 35 + Math.random()*25];  // Europe
+                if(region === "Asia") coords = [70 + Math.random()*70, 10 + Math.random()*40]; // Asia
+
+                // Proietta subito in X/Y
+                const pos = projection(coords);
+
+                mockNodes.push({
+                    id: i,
+                    year: Math.max(1990, year),
+                    group: tracks[Math.floor(Math.random()*3)],
+                    color: colors[tracks[Math.floor(Math.random()*3)]],
+                    x: pos[0],
+                    y: pos[1],
+                    r: Math.random() * 4 + 2 // Raggio
+                });
+            }
+            return mockNodes.sort((a,b) => a.year - b.year);
+        }
+
+        // --- 3. CARICAMENTO MAPPA E AVVIO ---
+        // Carichiamo la geometria del mondo da un CDN pubblico
+        d3.json("https://unpkg.com/world-atlas@2.0.2/countries-110m.json").then(world => {
+            
+            // Disegna i paesi
+            const countries = topojson.feature(world, world.objects.countries);
+            
+            mapLayer.selectAll("path")
+                .data(countries.features)
+                .enter().append("path")
+                .attr("class", "country")
+                .attr("d", path);
+
+            // Genera i dati
+            nodes = generateMockData();
+
+            // Disegna TUTTI i pallini (ma nascosti: r=0)
+            dotsLayer.selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("fill", d => d.color)
+                .attr("opacity", 0.8)
+                .attr("r", 0); // Start invisibili
+
+            // Avvia Animazione
+            runAnimation();
+
+        });
+
+        // --- 4. LOGICA ANIMAZIONE ---
+        function runAnimation() {
+            // Reset
+            if(timer) clearInterval(timer);
+            dotsLayer.selectAll("circle").attr("r", 0);
+            
+            let currentYear = 1990;
+            const endYear = 2024;
+            const yearCounter = d3.select("#year-counter");
+            const progressBar = d3.select("#bar");
+
+            timer = setInterval(() => {
+                // Aggiorna testo anno
+                yearCounter.text(currentYear);
+                
+                // Aggiorna progress bar
+                const pct = ((currentYear - 1990) / (endYear - 1990)) * 100;
+                progressBar.style("width", pct + "%");
+
+                // SELEZIONA e MOSTRA i pallini di questo anno
+                dotsLayer.selectAll("circle")
+                    .filter(d => d.year === currentYear)
+                    .transition().duration(600).ease(d3.easeElasticOut) // Effetto "POP"
+                    .attr("r", d => d.r); // Espandi al raggio finale
+
+                currentYear++;
+
+                if(currentYear > endYear) {
+                    clearInterval(timer);
+                }
+
+            }, 300); // 300ms per ogni anno
+        }
+
+        function replay() {
+            runAnimation();
+        }
+
+    </script>
+</body>
+</html>

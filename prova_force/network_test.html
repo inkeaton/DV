@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Test - Author Connections</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            background: #111; /* Sfondo scuro per vedere meglio i link */
+            font-family: sans-serif; 
+            color: white; 
+            overflow: hidden;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 8px;
+            pointer-events: none;
+            max-width: 300px;
+        }
+        h1 { margin: 0 0 10px 0; font-size: 18px; color: #4EA8DE; }
+        p { font-size: 12px; color: #ccc; margin: 5px 0; }
+        
+        /* Stile Link */
+        line {
+            stroke: #555;
+            stroke-opacity: 0.4;
+            stroke-width: 1px;
+        }
+        
+        /* Stile Nodi */
+        circle {
+            stroke: #fff;
+            stroke-width: 1px;
+            cursor: pointer;
+        }
+        circle:hover {
+            stroke: #F48C06;
+            stroke-width: 3px;
+        }
+
+        /* Tooltip */
+        #tooltip {
+            position: absolute;
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="info">
+        <h1>Co-Authorship Network Test</h1>
+        <p><strong>Nodi:</strong> Papers (Palline)</p>
+        <p><strong>Link:</strong> Condividono un autore</p>
+        <p>Caricamento in corso...</p>
+    </div>
+
+    <div id="tooltip"></div>
+
+    <script>
+        // --- CONFIGURAZIONE ---
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const DATA_URL = "data.csv"; // Il tuo file
+
+        // Colori per Conference
+        const colorScale = {
+            "InfoVis": "#4EA8DE", // Blu
+            "Vis": "#5E60CE",     // Viola
+            "SciVis": "#5E60CE",  // Viola
+            "VAST": "#F48C06"     // Arancio
+        };
+
+        // Zoom Setup
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .call(d3.zoom().on("zoom", (event) => {
+                container.attr("transform", event.transform);
+            }));
+
+        const container = svg.append("g");
+        const linkLayer = container.append("g");
+        const nodeLayer = container.append("g");
+        const tooltip = d3.select("#tooltip");
+        const info = d3.select("#info p:last-child");
+
+        // --- CARICAMENTO DATI ---
+        d3.csv(DATA_URL).then(data => {
+            
+            // 1. PULIZIA E PARSING NODI
+            const nodes = data.map((d, i) => {
+                const citations = +d.AminerCitationCount || 0;
+                // Parsing Autori: Rimuove spazi e divide per ;
+                const authors = (d['AuthorNames-Deduped'] || "")
+                    .split(';')
+                    .map(name => name.trim())
+                    .filter(name => name.length > 2); // Rimuove nomi vuoti o sporchi
+
+                return {
+                    id: i, // ID univoco per D3
+                    title: d.Title,
+                    group: d.Conference === 'SciVis' ? 'Vis' : d.Conference,
+                    authors: authors,
+                    citations: citations,
+                    // Raggio: scala logaritmica o radice quadrata
+                    r: Math.sqrt(citations) * 0.5 + 3
+                };
+            });
+
+            info.text(`Analizzati ${nodes.length} papers.`);
+
+            // 2. CALCOLO DEI LINK (Logica Co-Autorship)
+            const links = [];
+            const authorMap = {}; // Mappa: "Nome Autore" -> [ID Paper 1, ID Paper 2...]
+
+            // A. Riempiamo la mappa
+            nodes.forEach(node => {
+                node.authors.forEach(auth => {
+                    if (!authorMap[auth]) authorMap[auth] = [];
+                    authorMap[auth].push(node.id);
+                });
+            });
+
+            // B. Creiamo i link
+            // Se un autore ha scritto [Paper A, Paper B, Paper C], colleghiamo A->B e B->C
+            // Questo crea una "catena" che tiene uniti i paper
+            Object.keys(authorMap).forEach(authName => {
+                const paperIds = authorMap[authName];
+                
+                if (paperIds.length > 1) {
+                    for (let i = 0; i < paperIds.length - 1; i++) {
+                        links.push({
+                            source: paperIds[i],
+                            target: paperIds[i+1],
+                            author: authName // Memorizziamo chi li collega per debug
+                        });
+                    }
+                }
+            });
+
+            info.html(`Nodi: ${nodes.length}<br>Link generati: ${links.length}`);
+
+            // 3. SIMULAZIONE FISICA
+            const simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(0.5))
+                .force("charge", d3.forceManyBody().strength(-20)) // Repulsione per evitare ammassi
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collide", d3.forceCollide().radius(d => d.r + 2));
+
+            // 4. DISEGNO ELEMENTI
+            
+            // Link (Linee)
+            const link = linkLayer.selectAll("line")
+                .data(links)
+                .join("line");
+
+            // Nodi (Cerchi)
+            const node = nodeLayer.selectAll("circle")
+                .data(nodes)
+                .join("circle")
+                .attr("r", d => d.r)
+                .attr("fill", d => colorScale[d.group] || "#999")
+                .call(drag(simulation)); // Abilita trascinamento col mouse
+
+            // 5. INTERAZIONE (Tooltip)
+            node.on("mouseover", (event, d) => {
+                tooltip.style("opacity", 1)
+                       .html(`<strong>${d.title}</strong><br>
+                              <span style="color:#666">${d.authors.length} Autori:</span><br>
+                              ${d.authors.slice(0,3).join(", ")}...`);
+            })
+            .on("mousemove", (event) => {
+                tooltip.style("left", (event.pageX + 10) + "px")
+                       .style("top", (event.pageY + 10) + "px");
+            })
+            .on("mouseout", () => tooltip.style("opacity", 0));
+
+            // 6. TICK LOOP (Animazione)
+            simulation.on("tick", () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+            });
+
+        }).catch(err => {
+            console.error(err);
+            alert("Errore! Assicurati di usare un Local Server e che data.csv sia nella cartella.");
+        });
+
+        // Helper per trascinare i nodi
+        function drag(simulation) {
+            function dragstarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+            function dragged(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+            function dragended(event) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+            return d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended);
+        }
+
+    </script>
+</body>
+</html>

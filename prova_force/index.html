@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Physical Plots - VisPubData</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="tooltip" class="tooltip"></div>
+
+   <header class="hero">
+        <div class="hero-content">
+            <h1>The Shapeshifting Data</h1>
+            <p class="subtitle">1 Dataset, 10 Physical Forms.</p>
+            
+            <p class="attribution">Inspired by R2D3, built with D3.js, visualizing the VisPubData dataset.</p>
+            
+            <div class="scroll-indicator">SCROLL TO START ↓</div>
+        </div>
+    </header>
+
+    <main id="scrolly">
+        <figure id="viz-container">
+            <div id="chart"></div>
+        </figure>
+
+        <article>
+            
+            <div class="step" data-mode="grid">
+                <div class="card">
+                    <h2>1. The Unit Chart (Grid)</h2>
+                    <p>Ogni pallino è un paper. Li disponiamo in una griglia ordinata per apprezzare il volume totale del dataset. Nessun filtro, solo la massa grezza dei dati.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="timeline">
+                <div class="card">
+                    <h2>2. Beeswarm (Timeline)</h2>
+                    <p>Sciogliamo la griglia. Asse X = <strong>Anno</strong>. I pallini si urtano cercando spazio (collisione) ma restano ancorati al loro anno di pubblicazione.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="barchart">
+                <div class="card">
+                    <h2>3. Physical Bar Chart</h2>
+                    <p>Creiamo delle colonne fisiche. Dividiamo per conferenza (<strong>Vis, InfoVis, VAST</strong>) e applichiamo una gravità verso il basso. I cerchi si impilano come tetris.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="butterfly">
+                <div class="card">
+                    <h2>4. Butterfly Chart</h2>
+                    <p>Confronto binario. A sinistra il <strong>Nord America</strong>, a destra il <strong>Resto del Mondo</strong>. I due gruppi si fronteggiano per mostrare l'equilibrio geografico.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="scatter">
+                <div class="card">
+                    <h2>5. Scatter Plot</h2>
+                    <p>Asse X = Anno, Asse Y = <strong>Citazioni</strong> (Scala Logaritmica). I pallini si liberano dalla gravità e fluttuano verso l'alto se sono molto citati.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="histogram">
+                <div class="card">
+                    <h2>6. Dot Histogram</h2>
+                    <p>Raggruppiamo i paper in "secchi" (Bins) di impatto: Basso (<10 cit), Medio (10-50), Alto (50+). Vediamo la classica distribuzione "Long Tail".</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="radial">
+                <div class="card">
+                    <h2>7. Radial / Pie Plot</h2>
+                    <p>Una torta esplosa. Calcoliamo l'angolo per ogni conferenza e spingiamo i cerchi verso l'esterno. Visivamente bellissimo per vedere le proporzioni.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="map">
+                <div class="card">
+                    <h2>8. Geo Map</h2>
+                    <p>Proiettiamo i cerchi su coordinate geografiche simulate. Nord America a sinistra, Europa al centro, Asia a destra. Una mappa fatta di dati.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="network">
+                <div class="card">
+                    <h2>9. Network Clusters</h2>
+                    <p>Attiriamo i nodi verso il loro gruppo di appartenenza (o cluster di autori). La forza di coesione crea queste "nuvole" organiche.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="calendar">
+                <div class="card">
+                    <h2>10. Calendar Heatmap</h2>
+                    <p>Ogni riga è un Anno, ogni colonna un Mese (simulato). I pallini riempiono le caselle temporali creando una texture densa.</p>
+                </div>
+            </div>
+
+            <div class="step" data-mode="grid">
+                <div class="card">
+                    <h2>Esplorazione Terminata</h2>
+                    <p>Grazie per il viaggio attraverso i dati.</p>
+                </div>
+            </div>
+
+        </article>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
