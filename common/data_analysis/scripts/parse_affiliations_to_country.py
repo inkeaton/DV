@@ -1,6 +1,29 @@
 import pandas as pd
 import re
 
+US_MARKER_RE = re.compile(r'(?<!\w)(USA|US|U\.S\.A\.|U\.S\.|United States)(?!\w)', re.IGNORECASE)
+ATT_RE = re.compile(r'(?<!\w)(AT&T|AT\s*&\s*T|AT\s+and\s+T)(?!\w)', re.IGNORECASE)
+
+# --- US states/territories (to avoid DE=Germany, IL=Israel, AR=Argentina, ID=Indonesia, etc.) ---
+US_STATE_CODES = {
+    "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA",
+    "ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK",
+    "OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC",
+    # Optional territories (sometimes appear)
+    "PR","VI","GU","AS","MP"
+}
+
+# Detect state + ZIP e.g. ", CA 94720" or " CA 94720-1234"
+US_STATE_ZIP_RE = re.compile(
+    r"(?:,|\s)\s*(?:"
+    + "|".join(sorted(US_STATE_CODES))
+    + r")\s+\d{5}(?:-\d{4})?\b"
+)
+
+# Detect state context even without ZIP: ", DE" ", IL" ", OR" etc (common in affiliations)
+US_STATE_CONTEXT_RE = re.compile(
+    r"(?:,|\s)\s*(?P<st>" + "|".join(sorted(US_STATE_CODES)) + r")\b"
+)
 
 # -----------------------------
 # 1) Standard Country Map (Official names + common abbreviations)
@@ -32,7 +55,6 @@ COUNTRY_MAP_RAW = {
     "Brazil": "Brazil",
 
     # Canada
-    "CA": "Canada",
     "Canada": "Canada",
 
     # Chile
@@ -70,7 +92,6 @@ COUNTRY_MAP_RAW = {
     "France": "France",
 
     # Germany
-    "DE": "Germany",
     "Deutschland": "Germany",
     "Germany": "Germany",
 
@@ -91,7 +112,6 @@ COUNTRY_MAP_RAW = {
     "India": "India",
 
     # Indonesia
-    "ID": "Indonesia",
     "Indonesia": "Indonesia",
 
     # Iran
@@ -107,7 +127,6 @@ COUNTRY_MAP_RAW = {
     "Ireland": "Ireland",
 
     # Israel
-    "IL": "Israel",
     "Israel": "Israel",
 
     # Italy
@@ -208,10 +227,6 @@ COUNTRY_MAP_RAW = {
     "TH": "Thailand",
     "Thailand": "Thailand",
 
-    # Turkey
-    "TR": "Turkey",
-    "Turkey": "Turkey",
-
     # United Arab Emirates
     "AE": "United Arab Emirates",
     "UAE": "United Arab Emirates",
@@ -253,6 +268,7 @@ KEYWORD_MAP_RAW = {
     # -------- Australia --------
     "Australian National University": "Australia",
     "Monash": "Australia",
+    "Monash University": "Australia",
     "The University of Queensland": "Australia",
     "University of Melbourne": "Australia",
     "University of Sydney": "Australia",
@@ -262,8 +278,10 @@ KEYWORD_MAP_RAW = {
     "Kapsch TrafficCom AG": "Austria",
     "TU Wien": "Austria",
     "Vienna": "Austria",
+    "University of Vienna": "Austria",
     "VRVis": "Austria",
     "VRVis Research Center": "Austria",
+    "University of Applied Sciences Upper Austria": "Austria",
 
     # -------- Bangladesh --------
     "Bangladesh University of Engineering and Technology": "Bangladesh",
@@ -276,6 +294,7 @@ KEYWORD_MAP_RAW = {
     "PUC-Rio": "Brazil",
     "Tecgraf Institute, PUC-Rio": "Brazil",
     "UFES": "Brazil",
+    "UFRGS": "Brazil",
     "Universidade Federal Fluminense": "Brazil",
     "University of Campinas": "Brazil",
     "University of São Paulo": "Brazil",
@@ -283,19 +302,26 @@ KEYWORD_MAP_RAW = {
     # -------- Canada --------
     "An Independent Researcher": "Canada",
     "British Columbia": "Canada",
+    "University of British Columbia": "Canada",
     "Dalhousie University": "Canada",
     "IRI": "Canada",
     "Ontario Tech University": "Canada",
+    "UOIT": "Canada",
     "Simon Fraser University": "Canada",
     "Toronto": "Canada",
+    "University of Toronto": "Canada",
     "Université Laval": "Canada",
     "University of Calgary": "Canada",
     "University of Manitoba": "Canada",
     "University of Ontario Institute of Technology": "Canada",
+    "University of Ontario, Institute of Technology": "Canada",
     "University of Victoria": "Canada",
     "Vancouver": "Canada",
     "OCAD University": "Canada",
     "OCADU": "Canada",
+
+    # -------- Belgium --------
+    "SSS, Belgian F.R.S.-FNRS.": "Belgium", 
 
     # -------- Chile --------
     "Pontificia Universidad Católica de Chile": "Chile",
@@ -304,6 +330,7 @@ KEYWORD_MAP_RAW = {
     # -------- China --------
     "Chinese Academy of Sciences": "China",
     "Peking": "China",
+    "Peking University": "China",
     "Shanghai Jiao Tong University": "China",
     "Shenzhen Institutes of Advanced Technology": "China",
     "Shenzhen University": "China",
@@ -311,8 +338,14 @@ KEYWORD_MAP_RAW = {
     "Tianjin University": "China",
     "Tongji University": "China",
     "Tsinghua": "China",
+    "Tsinghua University": "China",
+    "Dept. of Comp. Sci. & Tech., CBICR Center": "China",
     "Xi'an Jiaotong University": "China",
     "Zhejiang": "China",
+    'Microsoft Research Asia': "China",
+    "Zhejiang University": "China",
+    "University of Macau": "China",
+    "Microsoft Research, Beijing": "China",
 
     # -------- Colombia --------
     "Universidad de los Andes": "Colombia",
@@ -334,13 +367,19 @@ KEYWORD_MAP_RAW = {
     # -------- Finland --------
     "Aalto University": "Finland",
     "University of Helsinki": "Finland",
+    "University of Tampere": "Finland",
 
     # -------- France --------
     "CNRS": "France",
     "ENAC": "France",
     "INRIA": "France",
+    "Inria": "France",
+    "INRIA Futurs": "France",
     "Paris": "France",
     "Sorbonne University": "France",
+    "University of Paris-Sud 11": "France", 
+    "Microsoft Research-Inria Joint Centre" : "France",
+    "IRT SystemX": "France",
 
     # -------- Germany --------
     "Bauhaus-Universität Weimar": "Germany",
@@ -354,22 +393,30 @@ KEYWORD_MAP_RAW = {
     "Hewlett-Packard GmbH": "Germany",
     "Karlsruhe Institute of Technology": "Germany",
     "Konstanz": "Germany",
+    "University of Konstanz": "Germany",
     "Leipzig University": "Germany",
     "Macrofocus GmbH": "Germany",
     "Max Planck Institute for Evolutionary Biology": "Germany",
     "Max Planck Institute for Informatics": "Germany",
     "Munich": "Germany",
+    "Technische Universitat Munchen": "Germany",
+    "Universitat Hamburg": "Germany",
+    "Otto von Guericke Universitat Magdeburg": "Germany",
+    "Westfalische Wilhelms-Universitat Munster": "Germany",
+    "Martin Luther University of Halle-Wittenberg": "Germany",
     "Potsdam University of Applied Sciences": "Germany",
     "Robert Bosch Research": "Germany",
     "Robert Bosch Research and Technology Center": "Germany",
     "Saarland University": "Germany",
     "Stuttgart": "Germany",
+    "University of Stuttgart": "Germany",
     "TU Dresden": "Germany",
     "TU Kaiserslautern": "Germany",
     "Technische Universitat Dresden": "Germany",
     "Technische Universität München": "Germany",
     "Technische Universität Műnchen": "Germany",
     "Technical University of Munich": "Germany",
+    "University of Munich (LMU)": "Germany",
     "TUM": "Germany",
     "Universität Bonn": "Germany",
     "University of Bonn": "Germany",
@@ -381,6 +428,9 @@ KEYWORD_MAP_RAW = {
     "University of Tübingen": "Germany",
     "Ulm University": "Germany",
     "WSI/GRIS University of Tübingen": "Germany",
+    "Technical University of Darmstadt": "Germany",
+    "ZGDV Darmstadt": "Germany",
+    "University of Kaiserslautern": "Germany",
 
     # -------- Greece --------
     "Aristotle University of Thessaloniki": "Greece",
@@ -399,6 +449,15 @@ KEYWORD_MAP_RAW = {
     # -------- Hungary --------
     "Eötvös Loránd University": "Hungary",
     "ELTE": "Hungary",
+
+    # -------- Hong Kong --------
+    "Hong Kong University of Science and Technology": "Hong Kong",
+    "HKUST": "Hong Kong",
+    "The University of Hong Kong": "Hong Kong",
+    "University of Hong Kong": "Hong Kong",
+    "HKU": "Hong Kong",
+    "The Chinese University of Hong Kong": "Hong Kong",
+    "CUHK": "Hong Kong",
 
     # -------- India --------
     "Indian Institute of Science": "India",
@@ -437,6 +496,7 @@ KEYWORD_MAP_RAW = {
     # -------- Israel --------
     "Tel Aviv Univeristy": "Israel",
     "Tel Aviv University": "Israel",
+    "Tel-Aviv University": "Israel",
     "Technion": "Israel",
     "The Hebrew University of Jerusalem": "Israel",
     "University of Haifa": "Israel",
@@ -444,8 +504,7 @@ KEYWORD_MAP_RAW = {
     # -------- Italy --------
     'La Sapienza University of Rome': "Italy",
     'Sapienza University of Rome': "Italy",
-    'University of Rome "La Sapienza"': "Italy",
-    'University of Rome ""La Sapienza""': "Italy",
+    'University of Rome La Sapienza': "Italy",
     "Politecnico di Milano": "Italy",
     "University of Bologna": "Italy",
 
@@ -456,19 +515,8 @@ KEYWORD_MAP_RAW = {
     "The University of Tokyo": "Japan",
 
     # -------- Malaysia --------
-    "Multimedia University": "Malaysia",
-    "MMU": "Malaysia",
-    "Universiti Kebangsaan Malaysia": "Malaysia",
-    "UKM": "Malaysia",
-    "Universiti Malaya": "Malaysia",
-    "University of Malaya": "Malaysia",
-    "UM": "Malaysia",
-    "Universiti Putra Malaysia": "Malaysia",
-    "UPM": "Malaysia",
-    "Universiti Sains Malaysia": "Malaysia",
-    "USM": "Malaysia",
+    "Monash University Malaysia": "Malaysia",
     "Universiti Teknologi Malaysia": "Malaysia",
-    "UTM": "Malaysia",
 
     # -------- Mexico --------
     "National Autonomous University of Mexico": "Mexico",
@@ -562,6 +610,7 @@ KEYWORD_MAP_RAW = {
     "Seoul": "South Korea",
     "UNIST": "South Korea",
     "Ulsan Nat'l Inst. of Science and Technology (UNIST)": "South Korea",
+    "Sejong University": "South Korea",
 
     # -------- Spain --------
     "Barcelona Supercomputing Center": "Spain",
@@ -603,9 +652,9 @@ KEYWORD_MAP_RAW = {
     # -------- Turkey --------
     "Boğaziçi University": "Turkey",
     "Istanbul Technical University": "Turkey",
-    "ITU": "Turkey",
     "Middle East Technical University": "Turkey",
-    "METU": "Turkey",
+    "Sabanci University": "Turkey",
+    "Bilkent University": "Turkey",
 
     # -------- United Arab Emirates --------
     "American University of Sharjah": "United Arab Emirates",
@@ -618,6 +667,7 @@ KEYWORD_MAP_RAW = {
     "Cambridge": "United Kingdom",
     "Lancaster University": "United Kingdom",
     "London": "United Kingdom",
+    "City University": "United Kingdom",
     "Middlesex University": "United Kingdom",
     "Oxford": "United Kingdom",
     "Swansea University": "United Kingdom",
@@ -628,6 +678,8 @@ KEYWORD_MAP_RAW = {
 
     # -------- United States (labs/companies) --------
     "Air Force Research Laboratory": "United States",
+    "AT and T Laboratories": "United States",
+    "AT and T Bell Laboratories, Inc.": "United States",
     "Allen Institute for Cell Science": "United States",
     "American Museum of Natural History": "United States",
     "Adobe": "United States",
@@ -644,6 +696,7 @@ KEYWORD_MAP_RAW = {
     "Caltech": "United States",
     "Carnegie Mellon": "United States",
     "Center for Applied Scientific Computing, Lawrence Livermore National Laboratory": "United States",
+    "Lawrence Livemore National Laboratory": "United States",
     "Cahners MicroDesign Resources": "United States",
     "Columbia University": "United States",
     "Computer Science Corporation": "United States",
@@ -666,20 +719,37 @@ KEYWORD_MAP_RAW = {
     "Google": "United States",
     "Grand Valley State University": "United States",
     "Harvard": "United States",
+    "Harvard University": "United States",
+    "Harvard University.": "United States",
+    "Harvard Medical School": "United States",
+    "Rutgers University": "United States",
     "H2O.ai, UIC": "United States",
+    "Ask.com": "United States",
     "IBM": "United States",
+    "IBM J. Watson Research Center": "United States",
+    "IBM T.J. Watson Research Center": "United States",
+    "Visual Communication Laboratory at IBM": "United States",
     "IDEA": "United States",
     "IDEA.org": "United States",
     "IEEE Spectrum": "United States",
     "Independent": "United States",
+     "University of Delaware": "United States",
     "Indiana University": "United States",
     "Intel": "United States",
     "Intelligent Light": "United States",
+    "Infovisible LLC": "United States",
+    "Iowa State University": "United States",
+    "Statistics at Iowa State University": "United States",
     "Johns Hopkins University": "United States",
     "Kitware, Inc.": "United States",
+    "Kent State University": "United States",
     "Kohn Pedersen Fox Associates PC": "United States",
     "Lawrence Livermore National Laboratory": "United States",
     "Lawrence Berkeley National Laboratory (LBNL)": "United States",
+    "Berkeley National Laboratory": "United States",
+    "University of California Berkeley": "United States",
+    "Univ. of California": "United States",
+    "UC Santa Barbara": "United States",
     "LBNL": "United States",
     "LLNL": "United States",
     "Looking Glass HF, Inc.": "United States",
@@ -689,10 +759,13 @@ KEYWORD_MAP_RAW = {
     "Massachusetts Institute of Technology": "United States",
     "MERL": "United States",
     "Microsoft Corporation": "United States",
+    "Microsoft Corp": "United States",
+    "Honeycomb.io": "United States",
     "Microsoft Research": "United States",
     "Minneapolis College of Art and Design": "United States",
     "Mississippi State University": "United States",
     "MIT": "United States",
+    "Massachusetts Institute of Technology (MIT)": "United States",
     "Mitsubishi Electric Research Laboratories": "United States",
     "NASA Ames Research Center": "United States",
     "NASA Goddard Space Flight Center": "United States",
@@ -700,19 +773,25 @@ KEYWORD_MAP_RAW = {
     "New Jersey Institute of Technology": "United States",
     "New York University": "United States",
     "NC State University": "United States",
+    "The New York Times": "United States",
     "NVIDIA": "United States",
     "Northeastern University": "United States",
     "Northwestern University": "United States",
     "NYU": "United States",
+    "NYU Polytechnic School of Engineering": "United States",
     "Office of Research and Development, U.S. Environmental Protection Agency": "United States",
+    "Office of Research and Development": "United States",
     "Ohio Supercomputer Center": "United States",
     "Oculus Info": "United States",
     "Oculus Info, Inc.": "United States",
     "Oregon State University": "United States",
+    "Oak Ridge National Laboratory": "United States",
     "Pacific Data Images (PDI)": "United States",
     "Pacific Northwest National Lab": "United States",
     "Pacific Northwest National Laboratory": "United States",
     "Palo Alto Research Center (PARC)": "United States",
+    "Xerox Palo Alto Research Center": "United States",
+    "AT&T Research": "United States",
     "Princeton": "United States",
     "Purdue U.": "United States",
     "Purdue University": "United States",
@@ -723,10 +802,13 @@ KEYWORD_MAP_RAW = {
     "SRI International": "United States",
     "SSS Research, Inc.": "United States",
     "Stanford": "United States",
+    "University of Stanford":  "United States",
+    "Stanford University": "United States",
     "Stony Brook University": "United States",
     "State University of New York at Stony Brook": "United States",
     "SPADAC, Inc.": "United States",
     "Tableau Research": "United States",
+    "Tableau Software, Inc.": "United States",
     "Technology Applications, Inc.": "United States",
     "The Discovery Analytics Center": "United States",
     "The Ohio State University": "United States",
@@ -736,6 +818,9 @@ KEYWORD_MAP_RAW = {
     "The University of New Hampshire": "United States",
     "The University of North Carolina,": "United States",
     "North Carolina State University": "United States",
+    "University of North Carolina at Asheville": "United States",
+    "University of North Carolina at Chapel Hill": "United States",
+    "University of North Carolina at Charlotte": "United States",
     "The University of Oklahoma": "United States",
     "Tufts U": "United States",
     "Tufts University": "United States",
@@ -747,6 +832,7 @@ KEYWORD_MAP_RAW = {
     'UNC Charlotte': "United States",
     "UC Davis": "United States",
     "UCLA School of Medicine": "United States",
+
     "Uber": "United States",
     "UMass Dartmouth": "United States",
     "University of Alabama Huntsville": "United States",
@@ -775,6 +861,7 @@ KEYWORD_MAP_RAW = {
     "University of South Florida": "United States",
     "University of Southern California": "United States",
     "University of Texas": "United States",
+    "Texas A&M University": "United States",
     "University of Utah": "United States",
     "University of Virginia": "United States",
     "University of Washington": "United States",
@@ -792,6 +879,8 @@ KEYWORD_MAP_RAW = {
     "Wayne State University": "United States",
     "Worcester Polytechnic Institute": "United States",
     "Yale": "United States",
+    "IBM Scientific Center": "United States",
+    "IBM T.J": "United States",
 
     # -------- Vietnam --------
     "Da Nang": "Vietnam",
@@ -817,77 +906,137 @@ KEYWORD_MAP_RAW = {
 
 # Alphabetical insertion order by key (case-insensitive)
 KEYWORD_MAP = dict(sorted(KEYWORD_MAP_RAW.items(), key=lambda kv: kv[0].casefold()))
+def _normalize_affiliation_text(s: str) -> str:
+    if s is None:
+        return ""
+    s = str(s).strip()
+    if len(s) >= 2 and ((s[0] == s[-1] == '"') or (s[0] == s[-1] == "'")):
+        s = s[1:-1].strip()
+    s = s.replace('""', '')
+    s = s.replace('"', '')
+    return s.strip()
 
 
 def _contains_token(text: str, token: str) -> bool:
-    """
-    Token match with boundaries.
-    - If token is short (<=3) and all-caps (e.g. US, UK, IN), match case-sensitively to avoid false positives.
-    - Otherwise match case-insensitively.
-    """
     if not token:
         return False
-
-    # Normalize text a bit to reduce punctuation edge cases
     t = text
-
-    # For short all-caps tokens (codes), be case-sensitive
+    # short all-caps token: case sensitive (US, UK, IN, etc.)
     if len(token) <= 3 and token.isupper():
         pattern = r"(?<!\w)" + re.escape(token) + r"(?!\w)"
         return re.search(pattern, t) is not None
-
-    # For other tokens, be case-insensitive and boundary-aware
     pattern = r"(?<!\w)" + re.escape(token) + r"(?!\w)"
     return re.search(pattern, t, flags=re.IGNORECASE) is not None
 
 
-def get_country_improved(affiliation_string):
+def _is_us_context(text: str) -> bool:
+    """Detect if affiliation chunk looks US-based."""
+    return (
+        US_MARKER_RE.search(text) is not None
+        or US_STATE_ZIP_RE.search(text) is not None
+        or US_STATE_CONTEXT_RE.search(text) is not None
+    )
+
+
+def _extract_countries_from_chunk(chunk: str):
+    """
+    Extract countries from ONE author chunk (one segment between ';').
+    Returns list of countries in insertion order (no duplicates).
+    """
+    if not isinstance(chunk, str) or not chunk.strip():
+        return []
+
+    text_for_match = _normalize_affiliation_text(chunk)
+    found = []
+
+    has_us = _is_us_context(text_for_match)
+    has_att = ATT_RE.search(text_for_match) is not None
+
+    # 1) standard map scan
+    for key, val in COUNTRY_MAP.items():
+
+        # If US context: skip state codes (DE, IL, AR, ID, etc.)
+        if has_us and key in US_STATE_CODES:
+            continue
+
+        # AT inside AT&T should not count as Austria
+        if key == "AT" and has_att:
+            continue
+
+        if _contains_token(text_for_match, key):
+            if val not in found:
+                found.append(val)
+
+    # 2) keyword scan only if nothing found
+    if not found:
+        lowered = text_for_match.lower()
+        for k, v in KEYWORD_MAP.items():
+            if k.lower() in lowered and v not in found:
+                found.append(v)
+
+    # OPTIONAL: Prefer Hong Kong over China for patterns "... Hong Kong ..., China"
+    if "Hong Kong" in found and "China" in found:
+        if re.search(r"Hong\s*Kong.*\bChina\b", text_for_match, flags=re.IGNORECASE):
+            found = [c for c in found if c != "China"]
+
+    return found
+
+
+def get_country_per_author(affiliation_string: str):
+    """
+    Keep author separation by ';'
+    Output example: "Australia, France ; France ; Canada"
+    Preserves chunk positions (writes 'None' if chunk unresolved).
+    """
     if not isinstance(affiliation_string, str) or not affiliation_string.strip():
         return None
 
-    text = affiliation_string.replace(";", ",")
-    found_countries = set()
+    text = _normalize_affiliation_text(affiliation_string)
 
-    # 1) Standard map scan
-    for key, val in COUNTRY_MAP.items():
-        if _contains_token(text, key):
-            found_countries.add(val)
+    # keep empty slots (important for alignment)
+    raw_chunks = text.split(";")
 
-    # 2) Keyword/inference scan (only if nothing found yet)
-    if not found_countries:
-        lowered = text.lower()
-        for key, val in KEYWORD_MAP.items():
-            if key.lower() in lowered:
-                found_countries.add(val)
+    parts = []
+    for ch in raw_chunks:
+        ch = ch.strip()
+        if not ch:
+            parts.append("None")
+            continue
 
-    if found_countries:
-        return ", ".join(sorted(found_countries))
-    return None
+        countries = _extract_countries_from_chunk(ch)
+        parts.append(", ".join(countries) if countries else "None")
+
+    if all(p == "None" for p in parts):
+        return None
+
+    return " ; ".join(parts)
 
 
 if __name__ == "__main__":
     file_path = "../dataset_original/dataset.csv"
-    try:
-        print(f"Loading {file_path}...")
-        df = pd.read_csv(file_path)
+    out_file = "../outputs/country_outputs/dataset_with_countries.csv"
+    missing_file = "../outputs/country_outputs/missing_affiliations.csv"
 
-        # Apply extraction
-        df["Country_Extracted"] = df["AuthorAffiliation"].apply(get_country_improved)
+    df = pd.read_csv(file_path)
 
-        # 1) Save the main dataset with results
-        df.to_csv("../outputs/country_outputs/dataset_with_countries.csv", index=False)
-        print("Success! Full dataset saved to 'dataset_with_countries.csv'")
+    # Drop junk affiliations
+    JUNK_AFFILIATIONS = {";", ";;;;", ";;;;;", ";;;;;;;", ";;;;;;;;;;;"}
+    affil_raw = df["AuthorAffiliation"].fillna("").astype(str)
+    affil_clean = affil_raw.map(_normalize_affiliation_text)
+    junk_mask = affil_clean.isin(JUNK_AFFILIATIONS) | (affil_clean.str.strip() == "")
+    df = df.loc[~junk_mask].copy()
 
-        # 2) Filter and save missing affiliations
-        missing_df = df[df["Country_Extracted"].isna()]
-        unique_missing = missing_df["AuthorAffiliation"].dropna().unique()
+    # Apply extraction (per author)
+    df["Country_Extracted"] = df["AuthorAffiliation"].map(get_country_per_author)
 
-        missing_output = pd.DataFrame(unique_missing, columns=["Missing_Affiliation_String"])
-        missing_file = "../outputs/country_outputs/missing_affiliations.csv"
-        missing_output.to_csv(missing_file, index=False)
+    # Save full dataset
+    df.to_csv(out_file, index=False)
+    print(f"Saved: {out_file}")
 
-        print(f"Report: {len(missing_df)} rows failed country extraction.")
-        print(f"Unique missing affiliation strings saved to '{missing_file}' for review.")
+    # Save missing affiliations report
+    missing_df = df[df["Country_Extracted"].isna()]
+    unique_missing = missing_df["AuthorAffiliation"].dropna().unique()
+    pd.DataFrame(unique_missing, columns=["Missing_Affiliation_String"]).to_csv(missing_file, index=False)
 
-    except FileNotFoundError:
-        print("Error: dataset.csv not found.")
+    print(f"Missing rows: {len(missing_df)}")
+    print(f"Unique missing affiliations saved: {missing_file}")
