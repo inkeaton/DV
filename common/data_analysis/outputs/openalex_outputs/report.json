@@ -1,0 +1,16 @@
+{
+  "n_input_works": 3877,
+  "n_output_works": 3877,
+  "n_authors": 7873,
+  "n_authorships": 15476,
+  "n_edges": 25780,
+  "matched_by_counts": {
+    "doi": 3815,
+    "title_year": 61,
+    "none": 1
+  },
+  "share_matched_openalex": 0.9997420686097498,
+  "unresolved_works_rows": 1,
+  "ambiguous_matches_rows": 0,
+  "openalex_cache_dir": "../outputs/openalex_outputs/cache_openalex_works"
+}

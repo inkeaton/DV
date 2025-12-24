@@ -1,0 +1,1236 @@
+institution_id,display_name,ror,country_code,city,region,latitude,longitude
+I100005738,Brigham Young University,https://ror.org/047rhhm47,US,Provo,,40.23384094238281,-111.65853118896484
+I100066346,University of Stuttgart,https://ror.org/04vnq7t77,DE,Stuttgart,,48.782318115234375,9.177020072937012
+I100296615,École Nationale de l’Aviation Civile,https://ror.org/022zdgq74,FR,Toulouse,,43.6042594909668,1.4436700344085693
+I100532134,Université Claude Bernard Lyon 1,https://ror.org/029brtt94,FR,Villeurbanne,,45.76601028442383,4.879499912261963
+I100621029,Bank of America,https://ror.org/006tvg625,US,Charlotte,North Carolina,35.22685241699219,-80.84210968017578
+I100633361,University of Massachusetts Dartmouth,https://ror.org/00fzmm222,US,New Bedford,,41.63526153564453,-70.92700958251953
+I100930933,University College Dublin,https://ror.org/05m7pjf47,IE,Dublin,,53.33306121826172,-6.248889923095703
+I102134673,Linköping University,https://ror.org/05ynxx418,SE,Linköping,,58.410858154296875,15.621569633483887
+I102149020,University of North Carolina at Charlotte,https://ror.org/04dawnj30,US,Charlotte,,35.227088928222656,-80.84313201904297
+I102197404,Université Paris-Sud,https://ror.org/028rypz17,FR,Orsay,,48.69572067260742,2.187269926071167
+I102322142,"Rutgers, The State University of New Jersey",https://ror.org/05vt9qd57,US,New Brunswick,,40.48622131347656,-74.45182037353516
+I102335020,Karlsruhe Institute of Technology,https://ror.org/04t3en479,DE,Karlsruhe,,49.009368896484375,8.404439926147461
+I102502594,Northern Illinois University,https://ror.org/012wxa772,US,DeKalb,,41.92947006225586,-88.75035858154297
+I102520234,TH Köln - University of Applied Sciences,https://ror.org/014nnvj65,DE,Cologne,,50.93470001220703,6.9877800941467285
+I103163165,Florida State University,https://ror.org/05g3dte14,US,Tallahassee,,30.43825912475586,-84.28073120117188
+I103406327,Western Carolina University,https://ror.org/010h78f45,US,Cullowhee,,35.3137092590332,-83.17652893066406
+I103531236,Boston College,https://ror.org/02n2fzt79,US,Boston,,42.358428955078125,-71.05976867675781
+I103635307,"University of California, Riverside",https://ror.org/03nawhv43,US,Riverside,,33.95335006713867,-117.39615631103516
+I104914703,Université du Québec à Chicoutimi,https://ror.org/00y3hzd62,CA,Saguenay,,48.416751861572266,-71.06572723388672
+I106118109,Eötvös Loránd University,https://ror.org/01jsq2704,HU,Budapest,,47.498348236083984,19.040449142456055
+I106165777,University of Central Florida,https://ror.org/036nfer12,US,Orlando,,28.538339614868164,-81.37924194335938
+I107077323,Worcester Polytechnic Institute,https://ror.org/05ejpqr48,US,Worcester,,42.26258850097656,-71.80229187011719
+I107257983,Darmstadt University of Applied Sciences,https://ror.org/047wbd030,DE,Darmstadt,,49.87166976928711,8.650270462036133
+I107371206,Federal Institute of São Paulo,https://ror.org/005pn5z34,BR,São Paulo,,-23.52257537841797,-46.623046875
+I107606265,Broad Institute,https://ror.org/05a0ya142,US,Cambridge,,42.375099182128906,-71.1056137084961
+I107639228,University of Notre Dame,https://ror.org/00mkhxb43,US,Notre Dame,,41.700191497802734,-86.23793029785156
+I107720978,Ain Shams University,https://ror.org/00cb9w016,EG,Cairo,,30.07691192626953,31.290681838989258
+I107766831,NSF National Center for Atmospheric Research,https://ror.org/05cvfcr44,US,Boulder,,40.014991760253906,-105.27055358886719
+I10824318,Universidade Federal de Ouro Preto,https://ror.org/056s65p46,BR,Ouro Preto,,-20.394840240478516,-43.50516891479492
+I108290504,University of Pisa,https://ror.org/03ad39j10,IT,Pisa,,43.70853042602539,10.403599739074707
+I108464949,Center for Applied Special Technology,https://ror.org/05ggkk749,US,Wakefield,Massachusetts,42.50066375732422,-71.0749282836914
+I109935558,Ningbo University,https://ror.org/03et85d35,CN,Ningbo,,29.878189086914062,121.54945373535156
+I110152177,University of Akron,https://ror.org/02kyckx55,US,Akron,Ohio,41.07643127441406,-81.50836181640625
+I110378019,Southern Illinois University Carbondale,https://ror.org/049kefs16,US,Carbondale,,37.72726821899414,-89.21675109863281
+I111088046,Boston University,https://ror.org/05qwgg493,US,Boston,,42.358428955078125,-71.05976867675781
+I111277659,Chonnam National University,https://ror.org/05kzjxq56,KR,Gwangju,,35.176387786865234,126.9080581665039
+I111455621,"Queens College, CUNY",https://ror.org/03v8adn41,US,New York,,40.714271545410156,-74.00596618652344
+I111483173,King University,https://ror.org/01evb6z23,US,Bristol,Tennessee,36.58729553222656,-82.15910339355469
+I1118541,University of East Anglia,https://ror.org/026k5mg93,GB,Norwich,,52.627830505371094,1.2983399629592896
+I111979921,Northwestern University,https://ror.org/000e0be47,US,Evanston,,42.041141510009766,-87.6900634765625
+I112260969,Ontario Institute for Cancer Research,https://ror.org/043q8yx54,CA,Toronto,,43.70642852783203,-79.39864349365234
+I112756935,Mannheim University of Applied Sciences,https://ror.org/04p61dj41,DE,Mannheim,,49.48910140991211,8.466939926147461
+I113508548,Albany State University,https://ror.org/01vme4277,US,Albany,,31.578510284423828,-84.1557388305664
+I113979032,Twitter (United States),https://ror.org/04wt43v05,US,San Francisco,,37.77492904663086,-122.41941833496094
+I114017466,University of Technology Sydney,https://ror.org/03f0f6041,AU,Sydney,,-33.86785125732422,151.2073211669922
+I114027177,University of North Carolina at Chapel Hill,https://ror.org/0130frc33,US,Chapel Hill,,35.91320037841797,-79.05583953857422
+I114073160,Sutter Health,https://ror.org/0060avh92,US,Sacramento,,38.58156967163086,-121.49440002441406
+I114395901,University of Nebraska–Lincoln,https://ror.org/043mer456,US,Lincoln,,40.79999923706055,-96.66696166992188
+I114457229,University of Geneva,https://ror.org/01swzsf04,CH,Geneva,,46.20222091674805,6.145689964294434
+I114832834,Tulane University,https://ror.org/04vmvtb21,US,New Orleans,,29.95465087890625,-90.0750732421875
+I115752224,University of Insubria,https://ror.org/00s409261,IT,Varese,,45.820579528808594,8.82511043548584
+I11662577,Monash University Malaysia,https://ror.org/00yncr324,MY,Subang Jaya,,3.043839931488037,101.58061981201172
+I116953780,Tongji University,https://ror.org/03rc6as71,CN,Shanghai,,31.222219467163086,121.45806121826172
+I1174212,University of Southern California,https://ror.org/03taz7m60,US,Los Angeles,,34.05223083496094,-118.24368286132812
+I117965899,University of Hawaiʻi at Mānoa,https://ror.org/01wspgy28,US,Honolulu,,21.30694007873535,-157.85833740234375
+I118019719,Roche (Switzerland),https://ror.org/00by1q217,CH,Basel,,47.55839157104492,7.573269844055176
+I118118575,New Jersey Institute of Technology,https://ror.org/05e74xb87,US,Newark,,40.735660552978516,-74.17237091064453
+I118347636,Australian National University,https://ror.org/019wvm592,AU,Canberra,,-35.2834587097168,149.12806701660156
+I118353179,DePaul University,https://ror.org/04xtx5t16,US,Chicago,,41.85002899169922,-87.6500473022461
+I118501908,National Research University Higher School of Economics,https://ror.org/055f7t516,RU,Moscow,,55.761287689208984,37.63307189941406
+I118564535,University of Bern,https://ror.org/02k7v4d05,CH,Bern,,46.948089599609375,7.447440147399902
+I118692353,University of Science and Technology,https://ror.org/05bj7sh33,YE,Aden,,12.779439926147461,45.03667068481445
+I119003972,Roma Tre University,https://ror.org/05vf0dg29,IT,Rome,,41.891929626464844,12.511329650878906
+I11957088,Michigan Technological University,https://ror.org/0036rpn28,US,Houghton,,47.12186813354492,-88.56900787353516
+I119888943,Gonzaga University,https://ror.org/03ze70h02,US,Spokane,,47.65966033935547,-117.4290771484375
+I120250893,New York University Abu Dhabi,https://ror.org/00e5k0821,AE,Abu Dhabi,,24.45117950439453,54.3969612121582
+I12097938,West Virginia University,https://ror.org/011vxgd24,US,Morgantown,,39.62953186035156,-79.95590209960938
+I121748325,Universidad Complutense de Madrid,https://ror.org/02p0gd045,ES,Madrid,,40.416500091552734,-3.7025599479675293
+I121797337,Leiden University,https://ror.org/027bh9e22,NL,Leiden,,52.158329010009766,4.493060111999512
+I121820613,Louisiana State University,https://ror.org/05ect4e57,US,Baton Rouge,,30.44331932067871,-91.18746948242188
+I121847817,"The Graduate Center, CUNY",https://ror.org/00awd9g61,US,New York,New York,40.74873352050781,-73.98395538330078
+I121883995,Johannes Kepler University of Linz,https://ror.org/052r2xn60,AT,Linz,,48.30638885498047,14.286109924316406
+I121934306,Tufts University,https://ror.org/05wvpxv85,US,Medford,,42.41843032836914,-71.10616302490234
+I121980950,Utah State University,https://ror.org/00h6set76,US,Logan,,41.73548889160156,-111.83438873291016
+I122140584,Universidade Federal do Rio de Janeiro,https://ror.org/03490as77,BR,Rio de Janeiro,,-22.90641975402832,-43.18223190307617
+I122411786,California Institute of Technology,https://ror.org/05dxps055,US,Pasadena,,34.14778137207031,-118.14452362060547
+I122754148,SAS Institute (United States),https://ror.org/01093z329,US,Cary,North Carolina,35.82869338989258,-78.76713562011719
+I122991210,"Istituto di Scienza e Tecnologie dell'Informazione ""Alessandro Faedo""",https://ror.org/05kacka20,IT,Pisa,,43.70853042602539,10.403599739074707
+I12315562,Texas Tech University,https://ror.org/0405mnx93,US,Lubbock,,33.57786178588867,-101.85517120361328
+I123387679,Uppsala University,https://ror.org/048a87296,SE,Uppsala,,59.858821868896484,17.63888931274414
+I123431417,Scripps Research Institute,https://ror.org/02dxx6824,US,San Diego,,32.7157096862793,-117.16471862792969
+I12356871,Télécom Paris,https://ror.org/01naq7912,FR,Paris,,48.85340881347656,2.34879994392395
+I123900574,Pohang University of Science and Technology,https://ror.org/04xysgw12,KR,Pohang,,36.029170989990234,129.36480712890625
+I124055696,University of Copenhagen,https://ror.org/035b05819,DK,Copenhagen,,55.675941467285156,12.565529823303223
+I124227911,Ben-Gurion University of the Negev,https://ror.org/05tkyf982,IL,Beersheba,,31.262191772460938,34.801509857177734
+I124261462,Oxford Brookes University,https://ror.org/04v2twj65,GB,Oxford,,51.752220153808594,-1.2559599876403809
+I124357947,University of London,https://ror.org/04cw6st05,GB,London,,51.50852966308594,-0.12574000656604767
+I125749732,Western University,https://ror.org/02grkyz14,CA,London,,42.98339080810547,-81.23303985595703
+I125839683,Beijing Institute of Technology,https://ror.org/01skt4w74,CN,Beijing,,39.907501220703125,116.39723205566406
+I126307644,University of Iowa,https://ror.org/036jqmy94,US,Iowa City,,41.661128997802734,-91.53016662597656
+I126533617,Alliant International University,https://ror.org/04k8zab17,US,San Diego,California,32.896522521972656,-117.0944595336914
+I126633494,University of Basrah,https://ror.org/00840ea57,IQ,Basra,,30.508520126342773,47.780399322509766
+I126744593,"University of Maryland, Baltimore",https://ror.org/04rq5mt64,US,Baltimore,,39.29037857055664,-76.61219024658203
+I126820664,Vassar College,https://ror.org/022x6qg61,US,Town of Poughkeepsie,,41.6698112487793,-73.90702819824219
+I126863827,Pace University,https://ror.org/047p7y759,US,New York,,40.714271545410156,-74.00596618652344
+I127317711,Tokyo University of Agriculture,https://ror.org/05crbcr45,JP,Tokyo,Tôkyô,35.64089584350586,139.63201904296875
+I127558574,DSM (Netherlands),https://ror.org/00k01kt20,NL,Heerlen,,50.88365173339844,5.981540203094482
+I1280414376,United States Air Force Research Laboratory,https://ror.org/02e2egq70,US,Wright-Patterson AFB,,39.81113052368164,-84.05731201171875
+I1280536761,Ames Research Center,https://ror.org/02acart68,US,Mountain View,,37.386051177978516,-122.08384704589844
+I1282105669,Argonne National Laboratory,https://ror.org/05gvnxz63,US,Lemont,,41.673641204833984,-88.0017318725586
+I1282113950,United States Department of Homeland Security,https://ror.org/00jyr0d86,US,Washington,,38.895111083984375,-77.03636932373047
+I1282311441,Lawrence Livermore National Laboratory,https://ror.org/041nk4h53,US,Livermore,,37.68186950683594,-121.76801300048828
+I1282770075,Tektronix (United States),https://ror.org/04kw5s604,US,Beaverton,Oregon,45.4994010925293,-122.82344055175781
+I1282927834,Cedars-Sinai Medical Center,https://ror.org/02pammg90,US,Los Angeles,,34.05223083496094,-118.24368286132812
+I1283103587,AT&T (United States),https://ror.org/02bbd5539,US,Bedminster,New Jersey,40.669578552246094,-74.63646697998047
+I1283220839,Stuttgart Media University,https://ror.org/022r03w28,DE,Stuttgart,,48.74150085449219,9.101400375366211
+I1283280774,Brigham and Women's Hospital,https://ror.org/04b6nzv94,US,Boston,,42.358428955078125,-71.05976867675781
+I1283382300,BMW (Germany),https://ror.org/05vs9tj88,DE,Munich,,48.137428283691406,11.57548999786377
+I1283582996,Novartis (Switzerland),https://ror.org/02f9zrr09,CH,Basel,,47.55839157104492,7.573269844055176
+I1283595831,Synlab Czech (Czechia),https://ror.org/01hqrb170,CZ,Prague,,50.09352111816406,14.452431678771973
+I1286329397,United States Geological Survey,https://ror.org/035a68863,US,Reston,,38.968719482421875,-77.34110260009766
+I1286353243,Autodesk (United States),https://ror.org/00pkt4594,US,San Rafael,California,38.005523681640625,-122.53079223632812
+I1286704778,Rutherford Appleton Laboratory,https://ror.org/03gq8fr08,GB,Didcot,,51.60927963256836,-1.2421400547027588
+I1286959531,United Nations,https://ror.org/006kxhp52,US,New York,,40.714271545410156,-74.00596618652344
+I1287378978,University of British Columbia Hospital,https://ror.org/00frst980,CA,Vancouver,British Columbia,49.26411819458008,-123.24612426757812
+I1287521167,Lockheed Martin (United States),https://ror.org/026er9r08,US,Bethesda,,38.98067092895508,-77.10025787353516
+I1288214837,United States Naval Research Laboratory,https://ror.org/04d23a975,US,Washington,,38.895111083984375,-77.03636932373047
+I1288783943,Bureau of Economic Analysis,https://ror.org/03b17a012,US,Washington D.C.,District of Columbia,38.903995513916016,-77.03369140625
+I1288882113,Boston Children's Hospital,https://ror.org/00dvg7y05,US,Boston,,42.358428955078125,-71.05976867675781
+I1289243028,Oak Ridge National Laboratory,https://ror.org/01qz5mb56,US,Oak Ridge,,36.01036071777344,-84.26963806152344
+I1289490764,Centers for Disease Control and Prevention,https://ror.org/042twtr12,US,Atlanta,,33.749000549316406,-84.38797760009766
+I1289530486,BC Cancer Agency,https://ror.org/03sfybe47,CA,Vancouver,British Columbia,49.27635192871094,-123.16281127929688
+I1290206253,Microsoft (United States),https://ror.org/00d0nc645,US,Redmond,,47.673988342285156,-122.12151336669922
+I12912129,Northeastern University,https://ror.org/04t5xt781,US,Boston,,42.358428955078125,-71.05976867675781
+I1291425158,Google (United States),https://ror.org/00njsd438,US,Mountain View,California,37.42295455932617,-122.08406066894531
+I1292669757,Toshiba (Japan),https://ror.org/0326v3z14,JP,Tokyo,,35.68949890136719,139.69171142578125
+I1292875679,Commonwealth Scientific and Industrial Research Organisation,https://ror.org/03qn8fb07,AU,Canberra,,-35.2834587097168,149.12806701660156
+I1292974536,Ford Motor Company (United States),https://ror.org/00g2tkw06,US,Dearborn,Michigan,42.292301177978516,-83.23442077636719
+I1294297726,Exploratorium,https://ror.org/0037yf233,US,San Francisco,California,37.80143356323242,-122.3975601196289
+I1294504835,Marshall Space Flight Center,https://ror.org/02epydz83,US,Redstone Arsenal,,34.683868408203125,-86.64763641357422
+I1294671590,Centre National de la Recherche Scientifique,https://ror.org/02feahw73,FR,Paris,,48.85340881347656,2.34879994392395
+I1295339012,Boeing (United States),https://ror.org/04sm5zn07,US,Chicago,,41.85002899169922,-87.6500473022461
+I1295801184,Netherlands Institute for Neuroscience,https://ror.org/05csn2x06,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I129604602,University of Sydney,https://ror.org/0384j8v12,AU,Sydney,,-33.86785125732422,151.2073211669922
+I1297288678,National Renewable Energy Laboratory,https://ror.org/036266993,US,Golden,,39.75553894042969,-105.22109985351562
+I1297460800,Defence Research and Development Canada,https://ror.org/00hgy8d33,CA,Ottawa,,45.411170959472656,-75.6981201171875
+I129774422,University of Vienna,https://ror.org/03prydq77,AT,Vienna,,48.20848846435547,16.372079849243164
+I1297991670,Southwest University of Science and Technology,https://ror.org/04d996474,CN,Mianyang,,31.46784019470215,104.68167877197266
+I1298353152,SRI International,https://ror.org/05s570m15,US,Menlo Park,,37.45383071899414,-122.18218994140625
+I1299022934,United States Department of Health and Human Services,https://ror.org/033jnv181,US,Washington,,38.895111083984375,-77.03636932373047
+I129902397,Dalhousie University,https://ror.org/01e6qks80,CA,Halifax,,44.6426887512207,-63.576881408691406
+I1299303238,National Institutes of Health,https://ror.org/01cwqze88,US,Bethesda,,38.98067092895508,-77.10025787353516
+I1299907687,Bloomberg (United States),https://ror.org/02rdpzb15,US,New York,New York,40.76164627075195,-73.96806335449219
+I1301041018,Rakuten (Japan),https://ror.org/0098kke80,JP,Tokyo,Tôkyô,35.60923385620117,139.7301788330078
+I1302368450,Environmental Protection Agency,https://ror.org/03tns0030,US,Washington D.C.,District of Columbia,38.893741607666016,-77.03043365478516
+I130238516,University of Minnesota,https://ror.org/017zqws13,US,Minneapolis,,44.9799690246582,-93.26383972167969
+I1303153112,European Bioinformatics Institute,https://ror.org/02catss52,GB,Cambridge,,52.20000076293945,0.11666999757289886
+I1304085615,Nvidia (United Kingdom),https://ror.org/02kr42612,GB,Reading,,51.426475524902344,-0.987680971622467
+I130416959,Central Research Institute of Electric Power Industry,https://ror.org/041jswc25,JP,Tokyo,,35.68639373779297,139.74725341796875
+I1304256225,University of Wisconsin System,https://ror.org/03ydkyb10,US,Madison,Wisconsin,43.075679779052734,-89.40589904785156
+I130438778,Memorial University of Newfoundland,https://ror.org/04haebc03,CA,St. John's,,47.56494140625,-52.70930862426758
+I130440993,National Security Agency,https://ror.org/0047bvr32,US,Fort George Meade,,39.108150482177734,-76.74323272705078
+I130442723,Universidade Federal do Rio Grande do Sul,https://ror.org/041yk2d64,BR,Porto Alegre,,-30.03282928466797,-51.23019027709961
+I1305429384,JPMorgan Chase & Co (United States),https://ror.org/01x3kkr08,US,New York,New York,40.71157455444336,-74.01075744628906
+I1305444813,Capital One (United States),https://ror.org/00svp7168,US,Tysons Corner,Virginia,38.92418670654297,-77.21318054199219
+I1306266525,Goddard Space Flight Center,https://ror.org/0171mag52,US,Greenbelt,,39.00455093383789,-76.87552642822266
+I1306409833,Adobe Systems (United States),https://ror.org/059tvcg64,US,San Jose,California,37.330989837646484,-121.89387512207031
+I1306430637,St. Vincent's Birmingham,https://ror.org/000crk757,US,Birmingham,Alabama,33.507293701171875,-86.78898620605469
+I1306490931,United States Army Corps of Engineers,https://ror.org/05w4e8v21,US,Washington,,38.895111083984375,-77.03636932373047
+I130701444,Georgia Institute of Technology,https://ror.org/01zkghx44,US,Atlanta,,33.749000549316406,-84.38797760009766
+I1307098950,Salk Institute for Biological Studies,https://ror.org/03xez1567,US,La Jolla,,32.84727096557617,-117.27420043945312
+I130769515,Pennsylvania State University,https://ror.org/04p491231,US,State College,,40.79338836669922,-77.86000061035156
+I130828816,University of Leeds,https://ror.org/024mrxd33,GB,Leeds,,53.796478271484375,-1.5478500127792358
+I1308906816,NortonLifeLock (United States),https://ror.org/0449t3a80,US,Mountain View,California,37.397056579589844,-122.05390930175781
+I1310439424,Accenture (Switzerland),https://ror.org/041r3e346,CH,Zurich,,47.36879348754883,8.541092872619629
+I1311060795,U.S. National Science Foundation,https://ror.org/021nxhr62,US,Alexandria,,38.804840087890625,-77.04692077636719
+I1311688040,Amazon (United States),https://ror.org/04mv4n011,US,Seattle,,47.60620880126953,-122.33206939697266
+I131221577,Bucknell University,https://ror.org/00fc1qt65,US,Lewisburg,,40.96453094482422,-76.88440704345703
+I131249849,Oregon State University,https://ror.org/00ysfqy60,US,Corvallis,,44.564571380615234,-123.26203918457031
+I131328143,Union Bank of Switzerland,https://ror.org/01ekk8h85,CH,Zurich,,47.366668701171875,8.550000190734863
+I1313416372,US Forest Service,https://ror.org/03zmjc935,US,Washington,,38.895111083984375,-77.03636932373047
+I1314135232,Nationwide Children's Hospital,https://ror.org/003rfsp33,US,Columbus,,39.961181640625,-82.99878692626953
+I1316535847,Beth Israel Deaconess Medical Center,https://ror.org/04drvxt59,US,Boston,Massachusetts,42.339786529541016,-71.10518646240234
+I1316902750,Cleveland Clinic,https://ror.org/03xjacd83,US,Cleveland,Ohio,41.3841438293457,-81.7184066772461
+I1316958739,California Air Resources Board,https://ror.org/021h56y19,US,Sacramento,,38.58156967163086,-121.49440002441406
+I1319063186,Langley Research Center,https://ror.org/0399mhs52,US,Hampton,,37.029869079589844,-76.34522247314453
+I1320752870,Congressional Budget Office,https://ror.org/03trkbn45,US,Washington D.C.,District of Columbia,38.88506317138672,-77.01366424560547
+I132118926,Austrian Institute of Technology,https://ror.org/04knbh022,AT,Vienna,,48.20848846435547,16.372079849243164
+I1321296531,National Institute of Standards and Technology,https://ror.org/05xpvk416,US,Gaithersburg,,39.14344024658203,-77.20137023925781
+I1321826891,eBay (Ireland),https://ror.org/02b00s810,IE,Dublin,,53.39196014404297,-6.383561134338379
+I1322731696,Centraal Bureau voor de Statistiek,https://ror.org/0408v4c28,NL,The Hague,,52.0766716003418,4.298610210418701
+I1323252656,Information Technology University,https://ror.org/00ngv8j44,PK,Lahore,,31.558000564575195,74.3507080078125
+I1324840837,Hewlett-Packard (United States),https://ror.org/059rn9488,US,Palo Alto,California,37.41238021850586,-122.14872741699219
+I1325736334,Battelle,https://ror.org/01h5tnr73,US,Columbus,,39.961181640625,-82.99878692626953
+I1325784139,Yahoo (United Kingdom),https://ror.org/038p3gq39,GB,London,,51.514007568359375,-0.12849900126457214
+I1325886976,Siemens (Germany),https://ror.org/059mq0909,DE,Munich,,48.137428283691406,11.57548999786377
+I1326498283,Institut national de recherche en informatique et en automatique,https://ror.org/02kvxyf05,FR,Le Chesnay-Rocquencourt,,48.820499420166016,2.1310999393463135
+I1327163397,State University of New York,https://ror.org/01q1z8k08,US,Albany,,42.65258026123047,-73.75623321533203
+I1327237609,Ministry of Education of the People's Republic of China,https://ror.org/01mv9t934,CN,Beijing,,39.907501220703125,116.39723205566406
+I1328775524,Zhejiang Sci-Tech University,https://ror.org/03893we55,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I1328914791,Center for Inquiry,https://ror.org/054m6hn21,US,Buffalo,New York,42.99797821044922,-78.800537109375
+I1329219376,National Federation of the Blind,https://ror.org/059zg8r51,US,Baltimore,Maryland,39.268985748291016,-76.61009979248047
+I1329325741,Philips (Finland),https://ror.org/01g4jev56,FI,Vantaa,,60.29280471801758,24.972267150878906
+I132976966,Universität für Weiterbildung Krems,https://ror.org/03ef4a036,AT,Krems,,48.409210205078125,15.614150047302246
+I1330347796,United States Department of Defense,https://ror.org/0447fe631,US,Washington,,38.895111083984375,-77.03636932373047
+I1332737386,General Electric (United States),https://ror.org/013msgt25,US,Boston,,42.358428955078125,-71.05976867675781
+I1333198813,Bundeskriminalamt,https://ror.org/037bsar61,DE,Wiesbaden,,50.09705352783203,8.243828773498535
+I1333535994,University of North Carolina Health Care,https://ror.org/00qz24g20,US,Chapel Hill,North Carolina,35.90378189086914,-79.04779815673828
+I1334627681,Jet Propulsion Laboratory,https://ror.org/027k65916,US,La Cañada Flintridge,,34.19916915893555,-118.18785095214844
+I133543626,Harvey Mudd College,https://ror.org/025ecfn45,US,Claremont,,34.0966796875,-117.71977996826172
+I133731052,University of Helsinki,https://ror.org/040af2s02,FI,Helsinki,,60.16952133178711,24.935449600219727
+I133738476,University of Massachusetts Lowell,https://ror.org/03hamhx47,US,Lowell,Massachusetts,42.64271545410156,-71.33453369140625
+I1338124936,American Museum of Natural History,https://ror.org/03thb3e06,US,New York,,40.714271545410156,-74.00596618652344
+I1338135719,Centre for Addiction and Mental Health,https://ror.org/03e71c577,CA,Toronto,,43.70642852783203,-79.39864349365234
+I133836048,Royal Veterinary College,https://ror.org/01wka8n18,GB,London,,51.50852966308594,-0.12574000656604767
+I13402291,Joanneum Research,https://ror.org/049bdss47,AT,Graz,,47.07402038574219,15.4548978805542
+I134113660,"University of Nevada, Reno",https://ror.org/01keh0577,US,Reno,,39.52962875366211,-119.81379699707031
+I1341412227,IBM (United States),https://ror.org/05hh8d621,US,Armonk,New York,41.10853958129883,-73.72046661376953
+I134161618,National Taiwan Normal University,https://ror.org/059dkdx38,TW,Taipei,,25.026159286499023,121.52802276611328
+I1341640284,Centrum Wiskunde & Informatica,https://ror.org/00x7ekv49,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I134235054,Sabancı Üniversitesi,https://ror.org/049asqa32,TR,Istanbul,,41.01383972167969,28.94965934753418
+I1342911587,Oracle (United States),https://ror.org/006c77m33,US,Austin,Texas,30.243349075317383,-97.72187805175781
+I1343180700,Intel (United States),https://ror.org/01ek73717,US,Santa Clara,,37.35411071777344,-121.95523834228516
+I1343190059,VRVis GmbH (Austria),https://ror.org/02xyxvc90,AT,Vienna,,48.20848846435547,16.372079849243164
+I1343551460,The University of Texas MD Anderson Cancer Center,https://ror.org/04twxam07,US,Houston,,29.763280868530273,-95.36327362060547
+I1343871089,Los Alamos National Laboratory,https://ror.org/01e41cf67,US,Los Alamos,,35.88808059692383,-106.30696868896484
+I1344073410,Howard Hughes Medical Institute,https://ror.org/006w34k90,US,Chevy Chase,Maryland,39.02183532714844,-77.15630340576172
+I134446601,Berkeley College,https://ror.org/02xewxa75,US,New York,New York,40.754119873046875,-73.97945404052734
+I134560555,Université Toulouse III - Paul Sabatier,https://ror.org/02v6kpv12,FR,Toulouse,,43.6042594909668,1.4436700344085693
+I135140700,University of Bonn,https://ror.org/041nas322,DE,Bonn,,50.734378814697266,7.095489978790283
+I135191193,University of Indianapolis,https://ror.org/052133d12,US,Indianapolis,,39.76837921142578,-86.15804290771484
+I135310074,University of Wisconsin–Madison,https://ror.org/01y2jtd41,US,Madison,,43.07305145263672,-89.40122985839844
+I135598925,Kyushu University,https://ror.org/00p4k0j84,JP,Fukuoka,,33.599998474121094,130.4166717529297
+I136199984,Harvard University,https://ror.org/03vek6s52,US,Cambridge,,42.375099182128906,-71.1056137084961
+I137230718,Ingenieurgesellschaft Auto und Verkehr (Germany),https://ror.org/00j4h9q86,DE,Berlin,,52.52279281616211,13.320978164672852
+I137265193,University of Chester,https://ror.org/01drpwb22,GB,Chester,,53.19049835205078,-2.891890048980713
+I137479271,Helmholtz Centre for Environmental Research,https://ror.org/000h6jb29,DE,Leipzig,,51.33961868286133,12.37129020690918
+I137902535,North Carolina State University,https://ror.org/04tj63d06,US,Raleigh,,35.772098541259766,-78.63861083984375
+I137975476,Shinshu University,https://ror.org/0244rem06,JP,Matsumoto,,36.23332977294922,137.9666748046875
+I138006243,University of Arizona,https://ror.org/03m2x1q45,US,Tucson,,32.22174072265625,-110.92648315429688
+I13805885,Vaughn College of Aeronautics and Technology,https://ror.org/056e22e24,US,New York,New York,40.769039154052734,-73.88204956054688
+I138211613,Austrian Academy of Sciences,https://ror.org/03anc3s24,AT,Vienna,,48.20848846435547,16.372079849243164
+I138285227,Agilent Technologies (United States),https://ror.org/02tryst02,US,Santa Clara,California,37.328182220458984,-121.99708557128906
+I138689650,University of Padua,https://ror.org/00240q980,IT,Padua,,45.4079704284668,11.885860443115234
+I138801177,University of Ulster,https://ror.org/01yp9g959,GB,Coleraine,,55.133331298828125,-6.666669845581055
+I138898306,Reichman University,https://ror.org/01px5cv07,IL,Herzliya,,32.1662712097168,34.82535934448242
+I139084617,Hiroshima Institute of Technology,https://ror.org/02bwkwm60,JP,Hiroshima,,34.400001525878906,132.4499969482422
+I139264467,Seoul National University,https://ror.org/04h9pn542,KR,Seoul,,37.566001892089844,126.97840118408203
+I139506611,Sciences Po Bordeaux,https://ror.org/01b5nw197,FR,Bordeaux,,44.84043884277344,-0.5805000066757202
+I13955877,Bar-Ilan University,https://ror.org/03kgsv495,IL,Ramat Gan,,32.067779541015625,34.842498779296875
+I139660479,Central South University,https://ror.org/00f1zfq44,CN,Changsha,,28.198740005493164,112.97087097167969
+I139759216,Beijing University of Posts and Telecommunications,https://ror.org/04w9fbh59,CN,Beijing,,39.907501220703125,116.39723205566406
+I139894009,University of Bradford,https://ror.org/00vs8d940,GB,Bradford,,53.79391098022461,-1.752060055732727
+I141371507,Soongsil University,https://ror.org/017xnm587,KR,Seoul,,37.49638748168945,126.9574966430664
+I141472210,University of Alaska Fairbanks,https://ror.org/01j7nq853,US,Fairbanks,,64.83778381347656,-147.7163848876953
+I141591182,University of Aizu,https://ror.org/02pg0e883,JP,Fukushima,,37.52367401123047,139.93807983398438
+I141720752,Davidson College,https://ror.org/02f7k4z58,US,Davidson,,35.5023307800293,-80.83911895751953
+I141945490,University of British Columbia,https://ror.org/03rmrcq20,CA,Vancouver,,49.24966049194336,-123.11933898925781
+I142108993,Southwest University,https://ror.org/01kj4z117,CN,Chongqing,,29.560260772705078,106.55770874023438
+I142263535,University of Nottingham,https://ror.org/01ee9ar58,GB,Nottingham,Nottingham,52.93806838989258,-1.1967029571533203
+I14243506,Hong Kong Polytechnic University,https://ror.org/0030zas98,HK,Hong Kong,,22.2783203125,114.17469024658203
+I142476485,École Polytechnique,https://ror.org/05hy3tk52,FR,Palaiseau,,48.71828079223633,2.249799966812134
+I142606810,Pacific Northwest National Laboratory,https://ror.org/05h992307,US,Richland,,46.28569030761719,-119.28446197509766
+I143104139,Hobart and William Smith Colleges,https://ror.org/004majf41,US,Geneva,,42.868961334228516,-76.97773742675781
+I143288331,Hasso Plattner Institute,https://ror.org/058rn5r42,DE,Potsdam,,52.398860931396484,13.06566047668457
+I143302722,University of Kentucky,https://ror.org/02k3smh20,US,Lexington,,37.98868942260742,-84.47772216796875
+I143379178,FZI Research Center for Information Technology,https://ror.org/04kdh6x72,DE,Karlsruhe,,49.009368896484375,8.404439926147461
+I143663144,Research Institute for Advanced Computer Science,https://ror.org/022qmyy53,US,Mountain View,,37.386051177978516,-122.08384704589844
+I143804889,Loughborough University,https://ror.org/04vg4w365,GB,Loughborough,,52.76667022705078,-1.2000000476837158
+I143910747,TH Bingen University of Applied Sciences,https://ror.org/01pxkj057,DE,Bingen am Rhein,,49.96675109863281,7.899199962615967
+I144889574,Université de Pau et des Pays de l'Adour,https://ror.org/01frn9647,FR,Pau,,43.3111686706543,-0.35583001375198364
+I145311948,Johns Hopkins University,https://ror.org/00za53h95,US,Baltimore,,39.29037857055664,-76.61219024658203
+I145581781,Chongqing Technology and Business University,https://ror.org/05hqf1284,CN,Chongqing,,29.560260772705078,106.55770874023438
+I145847075,TU Wien,https://ror.org/04d836q62,AT,Vienna,,48.20848846435547,16.372079849243164
+I145872427,Radboud University Nijmegen,https://ror.org/016xsfp80,NL,Nijmegen,,51.842498779296875,5.852779865264893
+I145894827,Indian Institute of Technology Kharagpur,https://ror.org/03w5sq511,IN,Kharagpur,,22.339710235595703,87.32501220703125
+I146399215,University of Tsukuba,https://ror.org/02956yf07,JP,Tsukuba,,36.20000076293945,140.10000610351562
+I146416000,University of Kansas,https://ror.org/001tmjg57,US,Lawrence,,38.9716682434082,-95.2352523803711
+I147554453,University of Bedfordshire,https://ror.org/0400avk24,GB,Luton,,51.879669189453125,-0.4174799919128418
+I148283060,Lawrence Berkeley National Laboratory,https://ror.org/02jbv0t02,US,Berkeley,,37.87158966064453,-122.27275085449219
+I148366613,National Yang Ming Chiao Tung University,https://ror.org/00se2k293,TW,Hsinchu,,24.80360984802246,120.96861267089844
+I148751991,Sogang University,https://ror.org/056tn4839,KR,Seoul,,37.566001892089844,126.97840118408203
+I149768937,University of Namur,https://ror.org/03d1maw17,BE,Namur,,50.46689987182617,4.867459774017334
+I149899117,Max Planck Society,https://ror.org/01hhn8329,DE,Munich,,48.137428283691406,11.57548999786377
+I149910238,Kent State University,https://ror.org/049pfb863,US,Kent,Ohio,41.14641189575195,-81.34174346923828
+I150209017,Scripps Institution of Oceanography,https://ror.org/04v7hvq31,US,La Jolla,,32.84727096557617,-117.27420043945312
+I150229711,University of Electronic Science and Technology of China,https://ror.org/04qr3zq92,CN,Chengdu,,30.666669845581055,104.0666732788086
+I150468666,Emory University,https://ror.org/03czfpz43,US,Atlanta,,33.749000549316406,-84.38797760009766
+I150545927,MODUL University Vienna,https://ror.org/04v2brz27,AT,Vienna,,48.274723052978516,16.335750579833984
+I150569930,Bayer (United States),https://ror.org/034ffbg36,US,Whippany,,40.82453918457031,-74.41709899902344
+I15057530,Université de Bordeaux,https://ror.org/057qpr032,FR,Bordeaux,,44.84043884277344,-0.5805000066757202
+I150653062,Magna International (Germany),https://ror.org/01gk2j051,DE,Grevenbroich,,51.13418197631836,6.626771926879883
+I151201029,Consejo Nacional de Investigaciones Científicas y Técnicas,https://ror.org/03cqe8w59,AR,Buenos Aires,,-34.61315155029297,-58.37723159790039
+I151727225,Harbin Engineering University,https://ror.org/03x80pn82,CN,Harbin,,45.75,126.6500015258789
+I151746483,University of Waterloo,https://ror.org/01aff2v68,CA,Waterloo,,43.466800689697266,-80.51638793945312
+I15196421,University of Applied Sciences and Arts of Southern Switzerland,https://ror.org/05ep8g269,CH,Bioggio,,46.01356887817383,8.911029815673828
+I153267046,University of Kaiserslautern,https://ror.org/04zrf7b53,DE,Kaiserslautern,,49.44300079345703,7.771609783172607
+I153327471,Bunkyo University,https://ror.org/053h75930,JP,Tokyo,,35.904930114746094,139.77389526367188
+I153512688,National Taiwan Ocean University,https://ror.org/03bvvnt49,TW,Keelung,,25.15010643005371,121.77770233154297
+I153648349,University of Leicester,https://ror.org/04h699437,GB,Leicester,,52.63859939575195,-1.1316900253295898
+I153908563,Nortel (Canada),https://ror.org/03rz4pm90,CA,Mississauga,,43.57889938354492,-79.6583023071289
+I154099455,Shandong University,https://ror.org/0207yh398,CN,Jinan,,36.668331146240234,116.99722290039062
+I154130895,University of Auckland,https://ror.org/03b94tp07,NZ,Auckland,,-36.84852981567383,174.76348876953125
+I154338468,University of Fribourg,https://ror.org/022fs9h90,CH,Fribourg,,46.8023681640625,7.151279926300049
+I154425047,University of Alberta,https://ror.org/0160cpw27,CA,Edmonton,,53.550140380859375,-113.46871185302734
+I154570441,"University of California, Santa Barbara",https://ror.org/02t274463,US,Santa Barbara,,34.42082977294922,-119.69818878173828
+I154986956,European Centre for Medium-Range Weather Forecasts,https://ror.org/014w0fd65,GB,Reading,,51.45624923706055,-0.9711300134658813
+I155093810,University of Idaho,https://ror.org/03hbp5t65,US,Moscow,,46.732391357421875,-117.00016784667969
+I155173764,Rochester Institute of Technology,https://ror.org/00v4yb702,US,Rochester,,43.154781341552734,-77.61556243896484
+I155781252,University of South Carolina,https://ror.org/02b6qw903,US,Columbia,,34.000709533691406,-81.0348129272461
+I156087764,"University of California, Merced",https://ror.org/00d9ah105,US,Merced,,37.30215835571289,-120.48297119140625
+I157087037,Mercyhurst University,https://ror.org/054kd6r74,US,Erie,,42.12921905517578,-80.0850601196289
+I157485424,Korea Advanced Institute of Science and Technology,https://ror.org/05apxxy63,KR,Daejeon,,36.34912872314453,127.38493347167969
+I157556583,Institute of Science and Technology Austria,https://ror.org/03gnh5541,AT,Klosterneuburg,,48.30521011352539,16.325220108032227
+I15766117,University of Graz,https://ror.org/01faaaf77,AT,Graz,,47.06666946411133,15.449999809265137
+I157725225,University of Illinois Urbana-Champaign,https://ror.org/047426m28,US,Urbana,,40.110591888427734,-88.20726776123047
+I157773358,Sun Yat-sen University,https://ror.org/0064kty71,CN,Guangzhou,,23.116670608520508,113.25
+I158842170,Chongqing University,https://ror.org/023rhb549,CN,Chongqing,,29.560260772705078,106.55770874023438
+I159176309,Universität Hamburg,https://ror.org/00g30e956,DE,Hamburg,,53.55073165893555,9.993020057678223
+I16038530,Aberystwyth University,https://ror.org/015m2p889,GB,Aberystwyth,,52.41548156738281,-4.082920074462891
+I161046081,University of Freiburg,https://ror.org/0245cg223,DE,Freiburg im Breisgau,,47.99589920043945,7.852220058441162
+I161057412,University of New Hampshire,https://ror.org/01rmh9n78,US,Durham,,43.133968353271484,-70.92645263671875
+I161127581,Universidade Federal Fluminense,https://ror.org/02rjhbb08,BR,Niterói,,-22.883329391479492,-43.10361099243164
+I161171246,West Chester University,https://ror.org/0053n5071,US,West Chester,,39.96097183227539,-75.60803985595703
+I161296585,Tokyo University of Science,https://ror.org/05sj3n476,JP,Tokyo,,35.69966125488281,139.74298095703125
+I161318765,"University of California, Los Angeles",https://ror.org/046rm7j60,US,Los Angeles,,34.05223083496094,-118.24368286132812
+I161548249,Bangor University,https://ror.org/006jb1a24,GB,Bangor,,53.22751998901367,-4.129360198974609
+I162577319,The University of Texas at Dallas,https://ror.org/049emcs32,US,Richardson,,32.94818115234375,-96.72972106933594
+I162646704,Dowling College,https://ror.org/011ezgm44,US,Oakdale,New York,40.74209213256836,-73.1478271484375
+I162714631,George Mason University,https://ror.org/02jqj7156,US,Fairfax,,38.84621810913086,-77.3063735961914
+I16285277,William & Mary,https://ror.org/03hsf0573,US,Williamsburg,,37.27069854736328,-76.70745849609375
+I162868743,Tianjin University,https://ror.org/012tb2g32,CN,Tianjin,,39.14221954345703,117.17666625976562
+I16391192,Tel Aviv University,https://ror.org/04mhzgx49,IL,Tel Aviv,,32.11338806152344,34.802154541015625
+I164389053,Fordham University,https://ror.org/03qnxaf80,US,New York,,40.714271545410156,-74.00596618652344
+I164956901,Visa (United Kingdom),https://ror.org/05syhdw25,GB,London,,51.51909255981445,-0.18078500032424927
+I165102784,Duquesne University,https://ror.org/02336z538,US,Pittsburgh,,40.44062042236328,-79.99588775634766
+I165143802,University of Queensland,https://ror.org/00rqy9422,AU,Brisbane,,-27.467939376831055,153.02809143066406
+I165368041,University of Iceland,https://ror.org/01db6h964,IS,Reykjavik,,64.13548278808594,-21.895410537719727
+I165390105,University of South Africa,https://ror.org/048cwvf49,ZA,Pretoria,,-25.768573760986328,28.201242446899414
+I165525304,Edge Hill University,https://ror.org/028ndzd53,GB,Ormskirk,,53.56684875488281,-2.881779909133911
+I165690674,Oregon Health & Science University,https://ror.org/009avj582,US,Portland,,45.5234489440918,-122.67620849609375
+I165733156,University of Georgia,https://ror.org/00te3t702,US,Athens,,33.9609489440918,-83.37793731689453
+I165779595,University of Melbourne,https://ror.org/01ej9dk98,AU,Melbourne,,-37.81399917602539,144.96331787109375
+I165799507,Rensselaer Polytechnic Institute,https://ror.org/01rtyzb94,US,Troy,,42.72840881347656,-73.69178771972656
+I165932596,National University of Singapore,https://ror.org/01tgyzw49,SG,Singapore,,1.2896699905395508,103.85006713867188
+I166416128,DEVCOM Army Research Laboratory,https://ror.org/011hc8f90,US,Adelphi,,39.003170013427734,-76.97191619873047
+I166825849,Tampere University,https://ror.org/033003e23,FI,Tampere,,61.49911117553711,23.787120819091797
+I16733864,National Taiwan University,https://ror.org/05bqach95,TW,Taipei,Taipei,25.016000747680664,121.53600311279297
+I167576493,Colorado School of Mines,https://ror.org/04raf6v53,US,Golden,,39.75553894042969,-105.22109985351562
+I16835326,University of St Andrews,https://ror.org/02wn5qz54,GB,St Andrews,,56.33871078491211,-2.7990200519561768
+I168635309,University of Calgary,https://ror.org/03yjb2x39,CA,Calgary,,51.05010986328125,-114.08528900146484
+I168719708,City University of Hong Kong,https://ror.org/03q8dnn23,HK,Hong Kong,,22.2783203125,114.17469024658203
+I168864056,Bilkent University,https://ror.org/02vh8a032,TR,Ankara,,39.91986846923828,32.854270935058594
+I169086405,Winthrop University,https://ror.org/04mpzkf73,US,Rock Hill,South Carolina,34.93888854980469,-81.03055572509766
+I169173203,Délégation Paris 7,https://ror.org/00bw5n526,FR,Bagnolet,,48.866668701171875,2.416670083999634
+I169381384,University of Groningen,https://ror.org/012p63287,NL,Groningen,Groningen,53.219444274902344,6.5629658699035645
+I169521973,University of New Mexico,https://ror.org/05fs6jp91,US,Albuquerque,,35.08449172973633,-106.65113830566406
+I170201317,University of Pittsburgh,https://ror.org/01an3r305,US,Pittsburgh,,40.44062042236328,-79.99588775634766
+I170215575,National University of Defense Technology,https://ror.org/05d2yfz11,CN,Changsha,,28.198740005493164,112.97087097167969
+I170239107,University of South Australia,https://ror.org/01p93h210,AU,Adelaide,,-34.92866134643555,138.5986328125
+I170486558,Pompeu Fabra University,https://ror.org/04n0g0b29,ES,Barcelona,,41.388790130615234,2.158989906311035
+I170658231,Osnabrück University,https://ror.org/04qmmjx98,DE,Osnabrück,,52.272640228271484,8.049799919128418
+I170897317,Duke University,https://ror.org/00py81415,US,Durham,,35.9940299987793,-78.89862060546875
+I17145004,Northwestern Polytechnical University,https://ror.org/01y0j0j86,CN,Xi'an,,34.258331298828125,108.9286117553711
+I172675005,Nanyang Technological University,https://ror.org/02e7b5302,SG,Singapore,,1.2896699905395508,103.85006713867188
+I172901346,St Petersburg University,https://ror.org/023znxa73,RU,Saint Petersburg,,59.94200134277344,30.298999786376953
+I17301866,University of Alabama,https://ror.org/03xrrjk67,US,Tuscaloosa,,33.2098388671875,-87.56916809082031
+I173498003,Palo Alto Research Center,https://ror.org/0529fxt39,US,Palo Alto,California,37.40271759033203,-122.14799499511719
+I173759888,Hunan Normal University,https://ror.org/053w1zy07,CN,Changsha,,28.198740005493164,112.97087097167969
+I173888879,SINTEF,https://ror.org/01f677e56,NO,Trondheim,,63.43048858642578,10.395059585571289
+I173911158,Iowa State University,https://ror.org/04rswrd78,US,Ames,,42.03470993041992,-93.61994171142578
+I174183983,Maria Curie-Skłodowska University,https://ror.org/015h0qg34,PL,Lublin,,51.25,22.566669464111328
+I174216632,City University of New York,https://ror.org/00453a208,US,New York,,40.714271545410156,-74.00596618652344
+I174306211,Technion – Israel Institute of Technology,https://ror.org/03qryx823,IL,Haifa,,32.81840896606445,34.98849868774414
+I174612323,University of the District of Columbia,https://ror.org/037wegn60,US,Washington D.C.,District of Columbia,38.94367980957031,-77.06352996826172
+I175594653,John Brown University,https://ror.org/02ct41q97,US,Siloam Springs,Arkansas,36.189998626708984,-94.55860900878906
+I176453806,University of Potsdam,https://ror.org/03bnmw459,DE,Potsdam,,52.398860931396484,13.06566047668457
+I17653759,Fund for Scientific Research,https://ror.org/03q83t159,BE,Brussels,,50.83694076538086,4.370707988739014
+I177328695,Union College,https://ror.org/058w5nk68,US,Schenectady,,42.814239501953125,-73.93956756591797
+I17747738,Beijing University of Chinese Medicine,https://ror.org/05damtm70,CN,Beijing,,39.907501220703125,116.39723205566406
+I177483745,Université Joseph Fourier,https://ror.org/02aj0kh94,FR,Grenoble,,45.17869186401367,5.714789867401123
+I177605424,Amherst College,https://ror.org/028vqfs63,US,Amherst Center,,42.375370025634766,-72.51924896240234
+I177725633,Chinese University of Hong Kong,https://ror.org/00t33hh48,CN,Hong Kong,,22.419721603393555,114.20679473876953
+I177802217,University of Mannheim,https://ror.org/031bsb921,DE,Mannheim,,49.483924865722656,8.462201118469238
+I177909021,Universidade Federal de São Carlos,https://ror.org/00qdc6m37,BR,São Carlos,,-22.017499923706055,-47.890830993652344
+I177969490,University of Southern Denmark,https://ror.org/03yrrjy16,DK,Odense,,55.395938873291016,10.388310432434082
+I179026463,Beijing Technology and Business University,https://ror.org/013e0zm98,CN,Beijing,,39.720340728759766,116.16999816894531
+I179093154,University of New Hampshire at Manchester,https://ror.org/04pvpk743,US,Manchester,New Hampshire,42.98719024658203,-71.4687728881836
+I179225836,University of Augsburg,https://ror.org/03p14d497,DE,Augsburg,Bayern,48.33388900756836,10.898332595825195
+I17937529,German Cancer Research Center,https://ror.org/04cdgtt98,DE,Heidelberg,,49.40768051147461,8.690790176391602
+I17974374,Universidade de São Paulo,https://ror.org/036rp1748,BR,São Paulo,,-23.547500610351562,-46.6361083984375
+I179863766,Western Norway University of Applied Sciences,https://ror.org/05phns765,NO,Bergen,,60.39299011230469,5.324150085449219
+I18014758,Simon Fraser University,https://ror.org/0213rcc28,CA,Burnaby,,49.266361236572266,-122.95262908935547
+I180437899,University of Bremen,https://ror.org/04ers2y35,DE,Bremen,,53.07582092285156,8.807169914245605
+I180670191,"University of California, San Francisco",https://ror.org/043mz5j54,US,San Francisco,,37.77492904663086,-122.41941833496094
+I180726961,Shenzhen University,https://ror.org/01vy4gh70,CN,Shenzhen,,22.54553985595703,114.06829833984375
+I180825142,"City, University of London",https://ror.org/04489at23,GB,London,,51.50852966308594,-0.12574000656604767
+I180923762,University of Cologne,https://ror.org/00rcxh774,DE,Cologne,,50.93333053588867,6.949999809265137
+I180949307,Illinois Institute of Technology,https://ror.org/037t3ry66,US,Chicago,,41.85002899169922,-87.6500473022461
+I180980256,Waters (United States),https://ror.org/01h8xv021,US,Milford,Massachusetts,42.13688659667969,-71.4811019897461
+I181233156,University of Oregon,https://ror.org/0293rh119,US,Eugene,,44.05207061767578,-123.08674621582031
+I181343428,University of Zagreb,https://ror.org/00mv6sv71,HR,Zagreb,,45.8144416809082,15.97797966003418
+I181369854,Friedrich-Alexander-Universität Erlangen-Nürnberg,https://ror.org/00f7hpc57,DE,Erlangen,,49.59098815917969,11.007829666137695
+I181391015,Universidade Estadual de Campinas (UNICAMP),https://ror.org/04wffgt70,BR,Campinas,,-22.905559539794922,-47.060829162597656
+I181653535,San Diego Supercomputer Center,https://ror.org/04mg3nk07,US,San Diego,,32.7157096862793,-117.16471862792969
+I182083151,Universidad Rey Juan Carlos,https://ror.org/01v5cv687,ES,Madrid,,40.416500091552734,-3.7025599479675293
+I182712176,Montanuniversität Leoben,https://ror.org/02fhfw393,AT,Leoben,,47.37649917602539,15.091440200805664
+I18283598,Wheeling Jesuit University,https://ror.org/02z310y44,US,Wheeling,West Virginia,40.06953048706055,-80.69181823730469
+I183067930,Shanghai Jiao Tong University,https://ror.org/0220qvk04,CN,Shanghai,,31.222219467163086,121.45806121826172
+I183874917,Urbana University,https://ror.org/04kp3hw27,US,Urbana,Ohio,40.09878921508789,-83.76094818115234
+I183935753,King's College London,https://ror.org/0220mzb33,GB,London,,51.50852966308594,-0.12574000656604767
+I184565670,Georgetown University,https://ror.org/05vzafd60,US,Washington,,38.895111083984375,-77.03636932373047
+I184597095,National Institute of Informatics,https://ror.org/04ksd4g47,JP,Tokyo,,35.68949890136719,139.69171142578125
+I184842277,Maharishi International University,https://ror.org/00qv5rb32,US,Fairfield,,41.008628845214844,-91.9626693725586
+I184999862,Universidad de Salamanca,https://ror.org/02f40zc51,ES,Salamanca,,40.96881866455078,-5.663879871368408
+I1850255,University of Basel,https://ror.org/02s6k3f65,CH,Basel,,47.55839157104492,7.573269844055176
+I185103710,"University of California, Santa Cruz",https://ror.org/03s65by71,US,Santa Cruz,,36.97412109375,-122.03079986572266
+I185261750,University of Toronto,https://ror.org/03dbr7087,CA,Toronto,,43.70642852783203,-79.39864349365234
+I185443292,Wayne State University,https://ror.org/01070mq45,US,Detroit,,42.33142852783203,-83.0457534790039
+I185658715,Universities UK,https://ror.org/00mmfs450,GB,London,,51.6337890625,-0.1070690006017685
+I188538660,University of Colorado Boulder,https://ror.org/02ttsq026,US,Boulder,,40.014991760253906,-105.27055358886719
+I188760350,Ollscoil na Gaillimhe – University of Galway,https://ror.org/03bea9k73,IE,Galway,,53.2724494934082,-9.050950050354004
+I189158971,United States Naval Academy,https://ror.org/00znex860,US,Annapolis,,38.97858810424805,-76.49183654785156
+I189196454,The University of Texas at Arlington,https://ror.org/019kgqr73,US,Arlington,Texas,32.73099899291992,-97.11499786376953
+I189712700,University of Konstanz,https://ror.org/0546hnb39,DE,Konstanz,,47.66033172607422,9.175820350646973
+I190082696,Durham University,https://ror.org/01v29qb04,GB,Durham,,54.76517868041992,-1.5782239437103271
+I190249584,Universität Innsbruck,https://ror.org/054pv6659,AT,Innsbruck,,47.26266098022461,11.394539833068848
+I1902872,EURECOM,https://ror.org/00sse7z02,FR,Valbonne,,43.63291931152344,6.999110221862793
+I190397597,University of Urbino,https://ror.org/04q4kt073,IT,Urbino,,43.72621154785156,12.636329650878906
+I191208505,Xiamen University,https://ror.org/00mcjh785,CN,Xiamen,,24.47978973388672,118.08187103271484
+I191240316,University of Hull,https://ror.org/04nkhwh30,GB,Hull,,53.744598388671875,-0.33524999022483826
+I192396691,University of New Orleans,https://ror.org/034mtvk83,US,New Orleans,,29.95465087890625,-90.0750732421875
+I192454743,Sandia National Laboratories California,https://ror.org/058m7ey48,US,Livermore,,37.68186950683594,-121.76801300048828
+I192455969,York University,https://ror.org/05fq50484,CA,Toronto,,43.70642852783203,-79.39864349365234
+I193531525,George Washington University,https://ror.org/00y4zzh67,US,Washington,,38.895111083984375,-77.03636932373047
+I193619901,Constructor University,https://ror.org/02yrs2n53,DE,Bremen,,53.07582092285156,8.807169914245605
+I193662353,Utrecht University,https://ror.org/04pp8hn57,NL,Utrecht,,52.0908317565918,5.122220039367676
+I19370010,Orange (France),https://ror.org/035j0tq82,FR,Paris,,48.83502197265625,2.2924718856811523
+I193775966,Yonsei University,https://ror.org/01wjejq96,KR,Seoul,,37.566001892089844,126.97840118408203
+I194028371,University of Regina,https://ror.org/03dzc0485,CA,Regina,,50.45008087158203,-104.6177978515625
+I195525897,Research Institute of Molecular Pathology,https://ror.org/02c5jsm26,AT,Vienna,,48.1887321472168,16.401273727416992
+I195575238,Middlebury College,https://ror.org/0217hb928,US,Middlebury (village),Vermont,44.00835037231445,-73.17737579345703
+I195893171,Zuse Institute Berlin,https://ror.org/02eva5865,DE,Berlin,,52.52436828613281,13.410530090332031
+I196349391,Universität Ulm,https://ror.org/032000t02,DE,Ulm,,48.39841079711914,9.99155044555664
+I19648265,Wright State University,https://ror.org/04qk6pt94,US,Dayton,,39.758949279785156,-84.19161224365234
+I19700959,Florida International University,https://ror.org/02gz6gg07,US,Miami,,25.774269104003906,-80.19365692138672
+I197251160,Hebrew University of Jerusalem,https://ror.org/03qxff017,IL,Jerusalem,,31.769039154052734,35.216331481933594
+I197323543,Johannes Gutenberg University Mainz,https://ror.org/023b0x485,DE,Mainz,,49.98419189453125,8.27910041809082
+I197347611,Korea University,https://ror.org/047dqcg40,KR,Seoul,,37.566001892089844,126.97840118408203
+I19772626,Yeshiva University,https://ror.org/045x93337,US,New York,,40.714271545410156,-74.00596618652344
+I19820366,Chinese Academy of Sciences,https://ror.org/034t30j35,CN,Beijing,,39.907501220703125,116.39723205566406
+I198415970,Université d'Avignon et des Pays de Vaucluse,https://ror.org/00mfpxb84,FR,Avignon,,43.948341369628906,4.808919906616211
+I19894307,Université de Montpellier,https://ror.org/051escj72,FR,Montpellier,,43.610931396484375,3.876349925994873
+I199028557,Kyushu Sangyo University,https://ror.org/01wqrpc44,JP,Fukuoka,,33.66985321044922,130.44482421875
+I199693650,Umm al-Qura University,https://ror.org/01xjqrm90,SA,Makkah al Mukarramah,,21.320375442504883,39.96794891357422
+I200166805,Guy's and St Thomas' NHS Foundation Trust,https://ror.org/00j161312,GB,London,,51.5048828125,-0.08893900364637375
+I200332995,TU Dortmund University,https://ror.org/01k97gp34,DE,Dortmund,,51.51493835449219,7.466000080108643
+I200576644,HRL Laboratories (United States),https://ror.org/05p7te762,US,Malibu,,34.0257682800293,-118.78040313720703
+I200719446,Vanderbilt University,https://ror.org/02vm5rt34,US,Nashville,Tennessee,36.144935607910156,-86.80268859863281
+I200763008,University of Giessen,https://ror.org/033eqas34,DE,Giessen,Hessen,50.580509185791016,8.677087783813477
+I200769079,Hong Kong University of Science and Technology,https://ror.org/00q4vv597,HK,Hong Kong,,22.2783203125,114.17469024658203
+I200870766,Brookhaven National Laboratory,https://ror.org/02ex6cf31,US,Upton,,40.86954116821289,-72.88677215576172
+I20089843,Princeton University,https://ror.org/00hx57361,US,Princeton,,40.34872055053711,-74.65904998779297
+I20121455,Bielefeld University,https://ror.org/02hpadn98,DE,Bielefeld,,52.033329010009766,8.533329963684082
+I201448701,University of Washington,https://ror.org/00cvxb145,US,Seattle,,47.60620880126953,-122.33206939697266
+I201537933,Tohoku University,https://ror.org/01dq60k83,JP,Sendai,,38.26667022705078,140.86666870117188
+I201726411,United Arab Emirates University,https://ror.org/01km6p862,AE,Al Ain,,24.191669464111328,55.76055908203125
+I202262619,United Nations Environment Programme,https://ror.org/015z29x25,KE,Nairobi,,-1.283329963684082,36.81666946411133
+I202276237,Medical University of Graz,https://ror.org/02n0bts35,AT,Graz,,47.06666946411133,15.449999809265137
+I20231570,Peking University,https://ror.org/02v51f717,CN,Beijing,,39.907501220703125,116.39723205566406
+I202524275,Smith College,https://ror.org/0497crr92,US,Northampton,,42.32508850097656,-72.64119720458984
+I202697423,University of Zurich,https://ror.org/02crff812,CH,Zurich,,47.366668701171875,8.550000190734863
+I202963720,University of St. Gallen,https://ror.org/0561a3s31,CH,Saint Gallen,,47.42390823364258,9.374770164489746
+I203172682,Northern Arizona University,https://ror.org/0272j5188,US,Flagstaff,,35.19807052612305,-111.6512680053711
+I203951103,Keio University,https://ror.org/02kn6nx58,JP,Tokyo,,35.68949890136719,139.69171142578125
+I204250578,"University of California, Irvine",https://ror.org/04gyf1771,US,Irvine,,33.66946029663086,-117.82311248779297
+I204337017,Aarhus University,https://ror.org/01aj84f44,DK,Aarhus,,56.15673828125,10.210760116577148
+I204465549,Washington University in St. Louis,https://ror.org/01yc7t268,US,St Louis,,38.62726974487305,-90.19789123535156
+I204512498,University of Macau,https://ror.org/01r4q9n85,MO,Macao,,22.200559616088867,113.54611206054688
+I204553293,"China University of Petroleum, Beijing",https://ror.org/041qf4r12,CN,Beijing,,39.907501220703125,116.39723205566406
+I204722609,Queen's University,https://ror.org/02y72wh86,CA,Kingston,,44.229759216308594,-76.4809799194336
+I204730241,Université Paris Cité,https://ror.org/05f82e368,FR,Paris,,48.85340881347656,2.34879994392395
+I204778367,Norwegian University of Science and Technology,https://ror.org/05xg72x27,NO,Trondheim,,63.43048858642578,10.395059585571289
+I204824540,University of Wollongong,https://ror.org/00jtmb277,AU,Wollongong,,-34.42399978637695,150.89344787597656
+I204983213,Harbin Institute of Technology,https://ror.org/01yqg2h08,CN,Harbin,,45.75,126.6500015258789
+I205237279,Nankai University,https://ror.org/01y1kjr75,CN,Tianjin,,39.14221954345703,117.17666625976562
+I205640436,Curtin University,https://ror.org/02n415q13,AU,Perth,,-31.952239990234375,115.86139678955078
+I205703379,Institut Mines-Télécom,https://ror.org/025vp2923,FR,Paris,,48.85340881347656,2.34879994392395
+I205783295,Cornell University,https://ror.org/05bnh6r87,US,Ithaca,,42.44063186645508,-76.49661254882812
+I206895457,University of Siegen,https://ror.org/02azyry73,DE,Siegen,,50.87480926513672,8.024310111999512
+I206945453,Paderborn University,https://ror.org/058kzsd48,DE,Paderborn,,51.719051361083984,8.754389762878418
+I207624831,Slovak Academy of Sciences,https://ror.org/03h7qq074,SK,Bratislava,,48.14815902709961,17.106740951538086
+I212119943,University of Victoria,https://ror.org/04s5mat29,CA,Victoria,,48.4359016418457,-123.35154724121094
+I21449261,Masaryk University,https://ror.org/02j46qs45,CZ,Brno,,49.195220947265625,16.607959747314453
+I216852786,École Centrale Paris,https://ror.org/00v0y5771,FR,Châtenay-Malabry,,48.765071868896484,2.266550064086914
+I219193219,Purdue University West Lafayette,https://ror.org/02dqehb95,US,West Lafayette,,40.42586898803711,-86.90807342529297
+I21978226,University of Lynchburg,https://ror.org/03grk0f38,US,Lynchburg,,37.41374969482422,-79.14225006103516
+I22248866,AgroParisTech,https://ror.org/02kbmgc12,FR,Palaiseau,,48.71828079223633,2.249799966812134
+I22299242,Kyoto University,https://ror.org/02kpeqv85,JP,Kyoto,,35.02106857299805,135.75384521484375
+I223464139,Linnaeus University,https://ror.org/00j9qag85,SE,Vaxjo,,56.87767028808594,14.809060096740723
+I223532165,University of Utah,https://ror.org/03r0ha626,US,Salt Lake City,,40.760780334472656,-111.89105224609375
+I223822909,Heidelberg University,https://ror.org/038t36y30,DE,Heidelberg,,49.40768051147461,8.690790176391602
+I22465464,University of Münster,https://ror.org/00pd74e08,DE,Münster,,51.96236038208008,7.6257100105285645
+I2250650973,Samsung (South Korea),https://ror.org/04w3jy968,KR,Seoul,,37.566001892089844,126.97840118408203
+I2250653659,Tencent (China),https://ror.org/00hhjss72,CN,Shenzhen,,22.54553985595703,114.06829833984375
+I2250955327,Huawei Technologies (China),https://ror.org/00cmhce21,CN,Shenzhen,,22.54553985595703,114.06829833984375
+I2252078561,Meta (Israel),https://ror.org/02388em19,IL,Tel Aviv,,32.08087921142578,34.78057098388672
+I231293419,China Academy of Art,https://ror.org/01r61sr78,CN,Hangzhou,,30.24333381652832,120.15888977050781
+I23732399,Montana State University,https://ror.org/02w0trx84,US,Bozeman,,45.679649353027344,-111.03855895996094
+I241749,University of Cambridge,https://ror.org/013meh722,GB,Cambridge,,52.20000076293945,0.11666999757289886
+I24185976,Sichuan University,https://ror.org/011ashp19,CN,Chengdu,,30.666669845581055,104.0666732788086
+I24354313,University of Buenos Aires,https://ror.org/0081fs513,AR,Buenos Aires,,-34.61315155029297,-58.37723159790039
+I243754102,Universidade Federal do Ceará,https://ror.org/03srtnf24,BR,Fortaleza,,-3.7172200679779053,-38.543060302734375
+I24603500,University of Massachusetts Amherst,https://ror.org/0072zz521,US,Amherst Center,,42.375370025634766,-72.51924896240234
+I24943067,Fudan University,https://ror.org/013q1eq08,CN,Shanghai,,31.222219467163086,121.45806121826172
+I25112270,Universidade Federal de Pernambuco,https://ror.org/047908t24,BR,Recife,,-8.053890228271484,-34.88111114501953
+I251424209,University of Girona,https://ror.org/01xdxns91,ES,Girona,,41.98310852050781,2.82492995262146
+I251738,Edinburgh Napier University,https://ror.org/03zjvnn91,GB,Edinburgh,,55.95206069946289,-3.1964800357818604
+I2540865,Institut Français,https://ror.org/047hdnt12,FR,Paris,,48.85340881347656,2.34879994392395
+I25485817,St. Pölten University of Applied Sciences,https://ror.org/039a2re55,AT,St. Pölten,,48.20000076293945,15.633330345153809
+I258800397,New York University Shanghai,https://ror.org/02vpsdb40,CN,Shanghai,,31.222219467163086,121.45806121826172
+I25974101,University of Würzburg,https://ror.org/00fbnyb24,DE,Würzburg,,49.79391098022461,9.951210021972656
+I26120043,Ochanomizu University,https://ror.org/03599d813,JP,Tokyo,,35.68949890136719,139.69171142578125
+I2613432,University of South Florida,https://ror.org/032db5x82,US,Tampa,,27.947519302368164,-82.45842742919922
+I2614128279,Dalle Molle Institute for Artificial Intelligence Research,https://ror.org/013355g38,CH,Lugano,,46.01007843017578,8.960040092468262
+I26274970,FX Palo Alto Laboratory,https://ror.org/05ef4zt88,US,Palo Alto,California,37.44429016113281,-122.16161346435547
+I265217849,IFP Énergies nouvelles,https://ror.org/03gcbhc33,FR,Rueil-Malmaison,,48.87649917602539,2.1896700859069824
+I26538001,San Diego State University,https://ror.org/0264fdx42,US,San Diego,,32.7157096862793,-117.16471862792969
+I2699952,Pontifical Catholic University of Rio de Janeiro,https://ror.org/01dg47b60,BR,Rio de Janeiro,,-22.90641975402832,-43.18223190307617
+I2738703131,Commissariat à l'Énergie Atomique et aux Énergies Alternatives,https://ror.org/00jjx8s55,FR,Paris,,48.85340881347656,2.34879994392395
+I277688954,Université Paris-Saclay,https://ror.org/03xjwb503,FR,Gif-sur-Yvette,,48.68333053588867,2.1333301067352295
+I27804330,Brown University,https://ror.org/05gq02987,US,Providence,,41.82398986816406,-71.41282653808594
+I27837315,University of Michigan–Ann Arbor,https://ror.org/00jmfr291,US,Ann Arbor,,42.27756118774414,-83.74088287353516
+I2799272722,Oulu University Hospital,https://ror.org/045ney286,FI,Oulu,,65.01235961914062,25.46816062927246
+I2799323385,Board of the Swiss Federal Institutes of Technology,https://ror.org/01rvn4p91,CH,Zurich,,47.366668701171875,8.550000190734863
+I2799337515,Toronto Western Hospital,https://ror.org/03qv8yq19,CA,Toronto,,43.700111389160156,-79.41629791259766
+I2799356940,University Corporation for Atmospheric Research,https://ror.org/04zhhyn23,US,Boulder,,40.014991760253906,-105.27055358886719
+I2799390153,Leeds Teaching Hospitals NHS Trust,https://ror.org/00v4dac24,GB,Leeds,,53.80502700805664,-1.521880030632019
+I2799411422,Center for Discrete Mathematics and Theoretical Computer Science,https://ror.org/00k551w06,US,Piscataway,,40.499271392822266,-74.39904022216797
+I2799475292,Vancouver Hospital and Health Sciences Centre,https://ror.org/05p83my93,CA,Vancouver,British Columbia,49.266456604003906,-123.12460327148438
+I2799504096,New York Times,https://ror.org/011w6k548,US,Manhattan,New York,40.75619125366211,-73.99042510986328
+I2799567181,Princeton Plasma Physics Laboratory,https://ror.org/03vn1ts68,US,Princeton,,40.34872055053711,-74.65904998779297
+I2799798094,UCLA Health,https://ror.org/01d88se56,US,Los Angeles,,34.05223083496094,-118.24368286132812
+I2799802224,Fife Council,https://ror.org/0261s3g35,GB,Glenrothes,,56.184444427490234,-3.2187960147857666
+I2799803557,Barcelona Supercomputing Center,https://ror.org/05sd8tv96,ES,Barcelona,,41.388790130615234,2.158989906311035
+I2799853436,Johns Hopkins Medicine,https://ror.org/037zgn354,US,Baltimore,,39.29037857055664,-76.61219024658203
+I2799859273,Ostfalia University of Applied Sciences,https://ror.org/01bk10867,DE,Wolfenbüttel,,52.16442108154297,10.540949821472168
+I2799890334,Transport for London,https://ror.org/03vnshb93,GB,London,,51.50029373168945,-0.13489699363708496
+I2799891827,Korea Post,https://ror.org/00p45d091,KR,Seoul,,37.566001892089844,126.97840118408203
+I2799909505,Savannah River National Laboratory,https://ror.org/05vc7qy59,US,Aiken,,33.560420989990234,-81.71955108642578
+I2799980853,Korea University Medical Center,https://ror.org/02cs2sd33,KR,Seoul,,37.566001892089844,126.97840118408203
+I2800006345,Leiden University Medical Center,https://ror.org/05xvt9f17,NL,Leiden,,52.158329010009766,4.493060111999512
+I2800093571,TD Bank,https://ror.org/01pf6nd13,US,Cherry Hill,New Jersey,39.92755126953125,-75.02849578857422
+I2800129641,Great Ormond Street Hospital,https://ror.org/00zn2c847,GB,London,,51.50852966308594,-0.12574000656604767
+I2800235667,Kurchatov Institute,https://ror.org/00n1nz186,RU,Moscow,,55.752220153808594,37.61555862426758
+I2800287464,State Administration of Cultural Heritage,https://ror.org/04d0vc473,CN,Beijing,,39.907501220703125,116.39723205566406
+I2800289517,German Climate Computing Centre,https://ror.org/03ztgj037,DE,Hamburg,,53.55073165893555,9.993020057678223
+I2800297018,Chr. Michelsen Institute,https://ror.org/02w7rbf39,NO,Bergen,,60.39299011230469,5.324150085449219
+I2800363604,Walter Reed National Military Medical Center,https://ror.org/025cem651,US,Bethesda,,38.98067092895508,-77.10025787353516
+I2800403580,University of Minnesota System,https://ror.org/03grvy078,US,Minneapolis,,44.9799690246582,-93.26383972167969
+I2800444561,Atlanta Technical College,https://ror.org/01s3vfp47,US,Atlanta,Georgia,33.711822509765625,-84.40792083740234
+I2800451603,Center of Advanced European Studies and Research,https://ror.org/05350h943,DE,Bonn,,50.734378814697266,7.095489978790283
+I2800497579,CRC for Spatial information,https://ror.org/022482e21,AU,Carlton,Victoria,-37.80221939086914,144.96697998046875
+I2800548410,United States National Library of Medicine,https://ror.org/0060t0j89,US,Bethesda,Maryland,39.15106201171875,-77.26525115966797
+I2800607224,Swedish National Board of Forensic Medicine,https://ror.org/02dxpep57,SE,Stockholm,,59.32938003540039,18.068710327148438
+I2800628709,Lenox Hill Hospital,https://ror.org/0231d2y50,US,New York,New York,40.77360916137695,-73.96111297607422
+I2800638129,Pacific Tower,https://ror.org/038hwjs80,US,Seattle,Washington,47.592933654785156,-122.31448364257812
+I2800638415,University of Applied Sciences Potsdam,https://ror.org/012m9bp23,DE,Potsdam,,52.398860931396484,13.06566047668457
+I2800740805,Haukeland University Hospital,https://ror.org/03np4e098,NO,Bergen,,60.39299011230469,5.324150085449219
+I2800759272,Center for Advanced Studies Research and Development in Sardinia,https://ror.org/03jdxdk20,IT,Pula,,39.00727081298828,9.002229690551758
+I2800780207,Swedish Institute,https://ror.org/022w3f533,SE,Stockholm,,59.32938003540039,18.068710327148438
+I2800935791,UC San Diego Health System,https://ror.org/01kbfgm16,US,San Diego,,32.7157096862793,-117.16471862792969
+I2801120862,General Motors (India),https://ror.org/05g5nrw43,IN,Godhra,,22.544647216796875,73.44032287597656
+I2801238018,Catharina Ziekenhuis,https://ror.org/01qavk531,NL,Eindhoven,,51.44083023071289,5.477779865264893
+I2801239119,Australian Regenerative Medicine Institute,https://ror.org/02qa5kg76,AU,Clayton,Victoria,-37.91049575805664,145.12930297851562
+I2801240577,Building and Construction Authority,https://ror.org/036ve4657,SG,Singapore,,1.2787729501724243,103.8459701538086
+I2801313472,North Central State College,https://ror.org/04b6b6f76,US,Mansfield,Ohio,40.797027587890625,-82.58155059814453
+I2801317318,Hospital for Sick Children,https://ror.org/057q4rt57,CA,Toronto,Ontario,43.65773010253906,-79.3869857788086
+I2801333002,Purdue University System,https://ror.org/05p8z3f47,US,West Lafayette,,40.42586898803711,-86.90807342529297
+I2801410363,Stony Brook University Hospital,https://ror.org/05wyq9e07,US,Stony Brook,New York,40.909690856933594,-73.11578369140625
+I2801436432,Folger Shakespeare Library,https://ror.org/0242qw425,US,Washington D.C.,District of Columbia,38.88936233520508,-77.003173828125
+I2801607516,Associated Press,https://ror.org/0231jxj79,US,New York,New York,40.75307083129883,-73.99945068359375
+I2801613365,Mitchell Institute,https://ror.org/03ds72003,US,Portland,Maine,43.66535186767578,-70.25150299072266
+I2801798921,Helmholtz-Zentrum Dresden-Rossendorf,https://ror.org/01zy2cs03,DE,Dresden,,51.0508918762207,13.738320350646973
+I2801851002,Harvard University Press,https://ror.org/006v7bf86,US,Cambridge,Massachusetts,42.38301467895508,-71.12705993652344
+I2801857525,Kellogg's (Canada),https://ror.org/02y751y19,CA,Mississauga,Ontario,43.65407180786133,-79.63037109375
+I2801862477,Canada Research Chairs,https://ror.org/0517h6h17,CA,Ottawa,,45.411170959472656,-75.6981201171875
+I2801919071,University of Illinois System,https://ror.org/05e94g991,US,Urbana,,40.110591888427734,-88.20726776123047
+I2801935854,SLAC National Accelerator Laboratory,https://ror.org/05gzmn429,US,Menlo Park,,37.45383071899414,-122.18218994140625
+I2801987317,VA Office of Research and Development,https://ror.org/011qyt180,US,Washington D.C.,District of Columbia,38.90089797973633,-77.03517150878906
+I2802076133,University of Koblenz and Landau,https://ror.org/01j9f6752,DE,Mainz,,49.98419189453125,8.27910041809082
+I2802162544,Northern Gulf Institute,https://ror.org/018qsef31,US,Starkville,Mississippi,33.47026824951172,-88.83394622802734
+I2802164966,University Hospital Heidelberg,https://ror.org/013czdx64,DE,Heidelberg,,49.40768051147461,8.690790176391602
+I2802194831,Samsung Medical Center,https://ror.org/05a15z872,KR,Seoul,,37.48821258544922,127.08558654785156
+I2802236040,University of Colorado System,https://ror.org/00jc20583,US,Boulder,,40.014991760253906,-105.27055358886719
+I2802259095,Energy Research Centre of the Netherlands,https://ror.org/04xa4c474,NL,Petten,,52.76667022705078,4.661109924316406
+I2802348851,Vision Australia,https://ror.org/05vje5x10,AU,Melbourne,Victoria,-37.838680267333984,145.03285217285156
+I2802384920,Stennis Space Center,https://ror.org/03j9e2j92,US,Bay Saint Louis,,30.308809280395508,-89.33004760742188
+I2802423016,WinnMed,https://ror.org/02s47w807,US,Decorah,,43.30331039428711,-91.78571319580078
+I2802487185,Université du littoral côte d'opale,https://ror.org/02gdcg342,FR,Dunkirk,,51.034400939941406,2.376810073852539
+I2802519937,Institut de Recherche en Informatique et Systèmes Aléatoires,https://ror.org/00myn0z94,FR,Rennes,,48.11198043823242,-1.6742899417877197
+I2802536742,Florida Aquarium,https://ror.org/0328gjw85,US,Tampa,Florida,27.945253372192383,-82.44526672363281
+I2802612298,The Wallace H. Coulter Department of Biomedical Engineering,https://ror.org/02j15s898,US,Atlanta,,33.749000549316406,-84.38797760009766
+I2802619606,Klinikum rechts der Isar,https://ror.org/04jc43x05,DE,Munich,,48.137428283691406,11.57548999786377
+I2802660506,United States Coast Guard,https://ror.org/00zyc7969,US,Washington D.C.,District of Columbia,38.85282516479492,-77.00131225585938
+I2802849423,University Medical Center,https://ror.org/036pt7h44,US,Lubbock,Texas,33.58849334716797,-101.8920669555664
+I2802928900,Academic Medical Center,https://ror.org/03t4gr691,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I2802946424,Johns Hopkins University Applied Physics Laboratory,https://ror.org/029pp9z10,US,North Laurel,,39.138999938964844,-76.87052917480469
+I2802964274,Interface (United States),https://ror.org/04nvtmr42,US,La Grange,Georgia,33.0030403137207,-85.0560073852539
+I2802966293,Urban College of Boston,https://ror.org/02yec8h85,US,Boston,Massachusetts,42.3529167175293,-71.06414794921875
+I2802999273,Wisconsin Institutes for Discovery,https://ror.org/05gbven85,US,Madison,Wisconsin,43.07303237915039,-89.40760803222656
+I2803058125,Seoul National University Bundang Hospital,https://ror.org/00cb3km46,KR,Seongnam-si,,37.4386100769043,127.13777923583984
+I2803209242,University of California System,https://ror.org/00pjdza24,US,Oakland,,37.80437088012695,-122.27079772949219
+I28777354,Sejong University,https://ror.org/00aft1q37,KR,Seoul,,37.55083465576172,127.07389068603516
+I2898391981,Deutsches Zentrum für Luft- und Raumfahrt e. V. (DLR),https://ror.org/04bwf3e34,DE,Cologne,,50.93333053588867,6.949999809265137
+I2946016260,Uber AI (United States),https://ror.org/05vm0ed18,US,San Francisco,California,37.78998565673828,-122.40206146240234
+I2948394018,Northrop Grumman (United States),https://ror.org/05kewds18,US,Falls Church,,38.88233184814453,-77.17108917236328
+I2948663404,Boston Scientific (United States),https://ror.org/0385es521,US,Marlborough,Massachusetts,42.36115264892578,-71.56156158447266
+I29606459,University of Mississippi Medical Center,https://ror.org/044pcn091,US,Jackson,Mississippi,32.32963180541992,-90.19607543945312
+I29607241,École Normale Supérieure - PSL,https://ror.org/05a0dhs15,FR,Paris,,48.85340881347656,2.34879994392395
+I2972652528,FHNW University of Applied Sciences and Arts,https://ror.org/04mq2g308,CH,Windisch,,47.47898864746094,8.218420028686523
+I29955533,Center for Information Technology,https://ror.org/03jh5a977,US,Bethesda,Maryland,39.001319885253906,-77.10456848144531
+I3005327000,Institute for Infocomm Research,https://ror.org/053rfa017,SG,Singapore,,1.3038229942321777,103.78490447998047
+I3017942884,Institut de Mathématiques de Jussieu-Paris Rive Gauche,https://ror.org/03fk87k11,FR,Paris,,48.85340881347656,2.34879994392395
+I3018083178,Institut de Recherche Technologique SystemX,https://ror.org/03crmsn52,FR,Palaiseau,,48.71828079223633,2.249799966812134
+I3018483916,University Medical Center Utrecht,https://ror.org/0575yy874,NL,Utrecht,,52.0908317565918,5.122220039367676
+I3019415892,Fraunhofer Institute for Industrial Mathematics,https://ror.org/019hjw009,DE,Kaiserslautern,,49.43104934692383,7.752603054046631
+I3019423309,Fraunhofer Institute for Computer Graphics Research,https://ror.org/04gmsar03,DE,Darmstadt,,49.87434768676758,8.65952205657959
+I3019586173,National Jewish Health,https://ror.org/016z2bp30,US,Denver,,39.73915100097656,-104.98470306396484
+I3045169105,Southern University of Science and Technology,https://ror.org/049tv2d57,CN,Shenzhen,,22.54553985595703,114.06829833984375
+I30809798,ShanghaiTech University,https://ror.org/030bhh786,CN,Shanghai,,31.222219467163086,121.45806121826172
+I308837,Suzhou University of Science and Technology,https://ror.org/04en8wb91,CN,Suzhou,,31.304079055786133,120.59538269042969
+I3129407955,Institute for High Energy Physics,https://ror.org/03kn4xv14,RU,Protvino,,54.866004943847656,37.20991134643555
+I3129593085,Chengdu Sport University,https://ror.org/05580ht21,CN,Chengdu,,30.671127319335938,104.03947448730469
+I3130638677,Edinburgh College,https://ror.org/04vpa6h32,GB,Edinburgh,,55.95206069946289,-3.1964800357818604
+I3131446353,Andrássy University Budapest,https://ror.org/05xezqk59,HU,Budapest,,47.492984771728516,19.063854217529297
+I3131550300,Université Toulouse-I-Capitole,https://ror.org/0443n9e75,FR,Toulouse,,43.6042594909668,1.4436700344085693
+I3131873961,Hadassah Academic College,https://ror.org/03bdv1r55,IL,Jerusalem,,31.784032821655273,35.221031188964844
+I3132238960,Institute of Electrical and Electronics Engineers,https://ror.org/01n002310,US,Piscataway,,40.499271392822266,-74.39904022216797
+I3143791293,Institute for Christian Studies,https://ror.org/054dn2d35,CA,Toronto,Ontario,43.65837478637695,-79.39750671386719
+I31512782,Technical University of Darmstadt,https://ror.org/05n911h24,DE,Darmstadt,,49.87166976928711,8.650270462036133
+I31683504,Beijing Forestry University,https://ror.org/04xv2pc41,CN,Beijing,,39.907501220703125,116.39723205566406
+I31746571,UNSW Sydney,https://ror.org/03r8z3t63,AU,Sydney,,-33.86785125732422,151.2073211669922
+I32389192,University of Alabama at Birmingham,https://ror.org/008s83205,US,Birmingham,,33.520660400390625,-86.802490234375
+I32394136,Northumbria University,https://ror.org/049e6bc10,GB,Newcastle upon Tyne,,54.97328186035156,-1.6139600276947021
+I324100,Bowie State University,https://ror.org/0567w8j84,US,Bowie,Maryland,39.01948165893555,-76.75826263427734
+I32597200,Ghent University,https://ror.org/00cv9y106,BE,Ghent,,51.04999923706055,3.716670036315918
+I32625721,University of Saskatchewan,https://ror.org/010x8gc63,CA,Saskatoon,,52.132381439208984,-106.6689224243164
+I32943570,Helsinki Institute for Information Technology,https://ror.org/05kph4940,FI,Espoo,,60.18549728393555,24.812246322631836
+I32971472,Yale University,https://ror.org/03v76x132,US,New Haven,,41.30815124511719,-72.92816162109375
+I33213144,University of Florida,https://ror.org/02y3ad647,US,Gainesville,,29.651630401611328,-82.3248291015625
+I33256026,German Research Centre for Artificial Intelligence,https://ror.org/01ayc5b57,DE,Kaiserslautern,,49.44300079345703,7.771609783172607
+I33434090,University of Massachusetts Boston,https://ror.org/04ydmy275,US,Boston,,42.358428955078125,-71.05976867675781
+I33976269,Xerox (France),https://ror.org/033q0mv79,FR,Saint-Denis,,48.91973114013672,2.3508129119873047
+I34077533,Ohio Supercomputer Center,https://ror.org/01apna436,US,Columbus,,39.961181640625,-82.99878692626953
+I34809795,Medizinische Hochschule Hannover,https://ror.org/00f2yqf98,DE,Hanover,,52.370521545410156,9.733220100402832
+I35364215,Naval Postgraduate School,https://ror.org/033yfkj90,US,Monterey,,36.60023880004883,-121.8946762084961
+I35440088,ETH Zurich,https://ror.org/05a28rw58,CH,Zurich,,47.366668701171875,8.550000190734863
+I36234482,University of Bristol,https://ror.org/0524sp257,GB,Bristol,,51.455230712890625,-2.5966498851776123
+I36253440,IEEE Computer Society,https://ror.org/05nxk6n24,US,Washington,,38.895111083984375,-77.03636932373047
+I36258959,"University of California, San Diego",https://ror.org/0168r3w48,US,San Diego,,32.7157096862793,-117.16471862792969
+I36522303,Universität Greifswald,https://ror.org/00r1edq15,DE,Greifswald,,54.093109130859375,13.387860298156738
+I36672615,Courant Institute of Mathematical Sciences,https://ror.org/037tm7f56,US,New York,New York,40.728702545166016,-73.9957275390625
+I36788626,California University of Pennsylvania,https://ror.org/01spssf70,US,California,,40.06563186645508,-79.89170837402344
+I36819085,Northwest University,https://ror.org/00y7snj24,US,Kirkland,Washington,47.65839767456055,-122.1961669921875
+I368840534,University of Mississippi,https://ror.org/02teq1165,US,Oxford,,34.36650085449219,-89.51924896240234
+I38877650,Zhengzhou University,https://ror.org/04ypx8c21,CN,Zhengzhou,,34.75777816772461,113.64861297607422
+I392282,"University at Albany, State University of New York",https://ror.org/012zs8222,US,Albany,,42.65258026123047,-73.75623321533203
+I39343248,Humboldt-Universität zu Berlin,https://ror.org/01hcx6992,DE,Berlin,,52.52436828613281,13.410530090332031
+I39422238,University of Illinois Chicago,https://ror.org/02mpq6x41,US,Chicago,,41.85002899169922,-87.6500473022461
+I39470171,University of Ontario Institute of Technology,https://ror.org/016zre027,CA,Oshawa,Ontario,43.944847106933594,-78.8917007446289
+I39555362,University of Warwick,https://ror.org/01a77tt86,GB,Coventry,Warwickshire,52.37943649291992,-1.5615019798278809
+I39586589,Swansea University,https://ror.org/053fq8t95,GB,Swansea,,51.62078857421875,-3.943229913711548
+I39705031,Catholic University of Daegu,https://ror.org/04fxknd68,KR,Gyeongsan-si,,35.91218948364258,128.80775451660156
+I39804081,Sorbonne Université,https://ror.org/02en5vm52,FR,Paris,,48.85340881347656,2.34879994392395
+I39854758,Auckland University of Technology,https://ror.org/01zvqw119,NZ,Auckland,,-36.853233337402344,174.76649475097656
+I40120149,University of Oxford,https://ror.org/052gg0110,GB,Oxford,,51.752220153808594,-1.2559599876403809
+I40347166,University of Chicago,https://ror.org/024mw5h28,US,Chicago,,41.85002899169922,-87.6500473022461
+I4092182,Graz University of Technology,https://ror.org/00d7xrm67,AT,Graz,,47.06666946411133,15.449999809265137
+I4179309,Park University,https://ror.org/04ngpga37,US,Parkville,Missouri,39.18932342529297,-94.68012237548828
+I41833579,Roanoke College,https://ror.org/00jtk7j90,US,Salem,,37.2934684753418,-80.05476379394531
+I4210085935,IBM Research - Almaden,https://ror.org/005w8dd04,US,San Jose,California,37.21099853515625,-121.80500030517578
+I4210086933,NYU Langone Health,https://ror.org/005dvqh91,US,New York,,40.714271545410156,-74.00596618652344
+I4210087032,Cambridge Scientific (United States),https://ror.org/001s4dh65,US,Watertown,Massachusetts,42.364723205566406,-71.1657943725586
+I4210087145,Ansys (Germany),https://ror.org/0007cgk43,DE,Otterfing,,47.9159049987793,11.682665824890137
+I4210087747,Creative Technologies (United States),https://ror.org/001qkb777,US,Los Angeles,California,34.094764709472656,-118.28069305419922
+I4210087915,Massachusetts General Hospital,https://ror.org/002pd6e78,US,Boston,,42.358428955078125,-71.05976867675781
+I4210088322,Centre de Gestion Scientifique,https://ror.org/003y0kg83,FR,Paris,,48.85340881347656,2.34879994392395
+I4210088341,University of Finance and Economics,https://ror.org/005d8s603,MN,Ulaanbaatar,,47.91965103149414,106.93045043945312
+I4210088595,Technology Applications (United States),https://ror.org/009r6as98,US,Boulder,Colorado,40.07073211669922,-105.2030258178711
+I4210088621,Know Center Research GmbH (Austria),https://ror.org/004zhad81,AT,Graz,,47.06666946411133,15.449999809265137
+I4210088715,FH Campus Wien,https://ror.org/003f4pg83,AT,Vienna,,48.20848846435547,16.372079849243164
+I4210088792,United States Army,https://ror.org/00afsp483,US,Arlington,,38.88100814819336,-77.10427856445312
+I4210089608,Natural History Museum of Bern,https://ror.org/0066mva78,CH,Bern,,46.94272232055664,7.448847770690918
+I4210089612,United States Air Force,https://ror.org/006gmme17,US,Arlington,,38.88100814819336,-77.10427856445312
+I4210089980,Research Organization for Information Science and Technology,https://ror.org/00az65y50,JP,Tōkai-mura,,36.46595764160156,140.58619689941406
+I4210090485,Crystal Research (United States),https://ror.org/0001tya14,US,Olympia,Washington,46.95513916015625,-122.73736572265625
+I4210090737,Advanced Mechanical Technology (United States),https://ror.org/00hh31m68,US,Watertown,Massachusetts,42.368919372558594,-71.20713806152344
+I4210090857,Schlumberger (United States),https://ror.org/009m79n22,US,Houston,Texas,29.697586059570312,-95.38435363769531
+I4210091137,NetEase (China),https://ror.org/00fp6fj05,CN,Beijing,,39.90593719482422,116.31217956542969
+I4210091159,Indiana State Department of Health,https://ror.org/00hdf4w21,US,Indianapolis,,39.76837921142578,-86.15804290771484
+I4210091327,Max Planck Institute for Mathematics in the Sciences,https://ror.org/00ez2he07,DE,Leipzig,,51.33961868286133,12.37129020690918
+I4210091341,Novartis (China),https://ror.org/00fxgea47,CN,Beijing,,40.207298278808594,116.23381805419922
+I4210091437,Sorbonne Paris Cité,https://ror.org/001z21q04,FR,Paris,,48.85340881347656,2.34879994392395
+I4210091615,Saint Vincent's Catholic Medical Center,https://ror.org/00cwrhn79,US,New York,New York,40.73641586303711,-73.99958801269531
+I4210091772,Max Planck Institute for Extraterrestrial Physics,https://ror.org/00e4bwe12,DE,Garching bei München,,48.26166534423828,11.671667098999023
+I4210091929,Konkuk University Medical Center,https://ror.org/00jcx1769,KR,Seoul,,37.566001892089844,126.97840118408203
+I4210092299,Qihoo 360 (China),https://ror.org/00p4rkj69,CN,Beijing,,39.98307418823242,116.48973846435547
+I4210092357,Institute of Mathematics and Computer Science,https://ror.org/00fy4at53,MD,Chisinau,,47.0134391784668,28.84819984436035
+I4210092639,Boeing (Spain),https://ror.org/00fxnmt68,ES,Madrid,,40.416500091552734,-3.7025599479675293
+I4210092658,Harvard–MIT Division of Health Sciences and Technology,https://ror.org/00jjeh629,US,Cambridge,Massachusetts,42.361778259277344,-71.0869140625
+I4210093282,Institut de Robòtica i Informàtica Industrial,https://ror.org/00mcdyn90,ES,Barcelona,,41.388790130615234,2.158989906311035
+I4210093996,Dolby (United States),https://ror.org/01eyenr26,US,San Francisco,California,37.79256057739258,-122.39727783203125
+I4210094059,Kavli Institute for Particle Astrophysics and Cosmology,https://ror.org/00pwqz914,US,Menlo Park,California,37.42818069458008,-122.17259979248047
+I4210094759,Fujitsu (United States),https://ror.org/0073whr05,US,Sunnyvale,California,37.37980270385742,-121.99176788330078
+I4210094970,Energy Research Institute,https://ror.org/00ndnb620,CN,Jinan,,36.669246673583984,117.07591247558594
+I4210095128,Center for Massive Data Algorithmics,https://ror.org/00qbzpp62,DK,Aarhus,,56.168174743652344,10.202775955200195
+I4210095624,Alibaba Group (United States),https://ror.org/00rn0m335,US,San Mateo,California,37.55870819091797,-122.3250732421875
+I4210095732,Visteon (United States),https://ror.org/00qabvy28,US,Belleville,Michigan,42.24220657348633,-83.43316650390625
+I4210096112,Rutgers Sexual and Reproductive Health and Rights,https://ror.org/00rcvgx40,NL,Utrecht,,52.08233642578125,5.117863178253174
+I4210096500,Institute of Atmospheric Sciences and Climate,https://ror.org/00n8ttd98,IT,Bologna,,44.522239685058594,11.338353157043457
+I4210097138,CEA Paris-Saclay - Etablissement de Fontenay-aux-roses,https://ror.org/010j2gw05,FR,Fontenay-aux-Roses,,48.793251037597656,2.2927498817443848
+I4210097295,Vital Research,https://ror.org/00svqj211,US,Los Angeles,California,34.06371307373047,-118.36811065673828
+I4210098034,Key Laboratory of Guangdong Province,https://ror.org/00swtqp09,CN,Guangzhou,,23.132566452026367,113.25971984863281
+I4210098141,Nokia (United Kingdom),https://ror.org/00zpf0626,GB,London,,51.490272521972656,0.006775999907404184
+I4210098606,Austrian Foundry Research Institute,https://ror.org/00vg4nv59,AT,Leoben,,47.38553237915039,15.094300270080566
+I4210098902,Laboratoire de Chimie Théorique,https://ror.org/00tmb7y09,FR,Paris,,48.85340881347656,2.34879994392395
+I4210098931,Quantitative BioSciences,https://ror.org/010brsj79,US,Solana Beach,California,32.9898681640625,-117.25956726074219
+I4210099236,Kootenay Association for Science & Technology,https://ror.org/011pv9p44,CA,Rossland,British Columbia,49.07619094848633,-117.7970962524414
+I4210099593,Computer Algorithms for Medicine,https://ror.org/00zky6d38,AT,Graz,,47.04371643066406,15.439555168151855
+I4210099974,Intelligent Light (United States),https://ror.org/00wqezk94,US,Rutherford,New Jersey,40.81841278076172,-74.10112762451172
+I4210099988,Telefonica (Germany),https://ror.org/00xfdbb04,DE,Munich,,48.175716400146484,11.533604621887207
+I4210100283,"Laboratoire des Sciences de l'Ingénieur, de l'Informatique et de l'Imagerie",https://ror.org/00k4e5n71,FR,Illkirch-Graffenstaden,,48.52893829345703,7.7152299880981445
+I4210100400,Northwestern University,https://ror.org/00m6w7z96,PH,Laoag,,18.186038970947266,120.56705474853516
+I4210100430,Google (Switzerland),https://ror.org/014f9c269,CH,Zurich,,47.36558151245117,8.52480411529541
+I4210100869,Universitätsklinikum Tulln,https://ror.org/012j4s611,AT,Tulln,,48.321937561035156,16.064905166625977
+I4210101327,Twin Cities Orthopedics,https://ror.org/01en4s460,US,Edina,Minnesota,44.886329650878906,-93.33179473876953
+I4210101455,CEA DAM Île-de-France,https://ror.org/00kn4eb29,FR,Bruyères-le-Châtel,,48.588680267333984,2.1899099349975586
+I4210101598,Slovak Hydrometeorological Institute,https://ror.org/00xsnzk20,SK,Bratislava,,48.16779327392578,17.107494354248047
+I4210101743,"Laboratoire d'Informatique, de Robotique et de Microélectronique de Montpellier",https://ror.org/013yean28,FR,Montpellier,,43.610931396484375,3.876349925994873
+I4210101778,Samsung (United States),https://ror.org/01bfbvm65,US,Ridgefield Park,,40.85704040527344,-74.02153015136719
+I4210102302,University Hospital Brno,https://ror.org/00qq1fp34,CZ,Brno,,49.195220947265625,16.607959747314453
+I4210102542,Heliotrope Technologies (United States),https://ror.org/00sfcfc45,US,Berkeley,California,37.85135269165039,-122.25271606445312
+I4210102902,Sheffield Teaching Hospitals NHS Foundation Trust,https://ror.org/018hjpz25,GB,Sheffield,,53.38296890258789,-1.46589994430542
+I4210102939,IAP Research (United States),https://ror.org/018k5nw16,US,Dayton,Ohio,39.706443786621094,-84.13404083251953
+I4210102957,Département Mathématiques et Informatique Appliquées,https://ror.org/011emb038,FR,Paris,,48.85340881347656,2.34879994392395
+I4210103820,Autodesk (Canada),https://ror.org/01b3dk794,CA,Montreal,Quebec,45.495296478271484,-73.55319213867188
+I4210103986,Jingdong (China),https://ror.org/01dkjkq64,CN,Beijing,,39.78896713256836,116.5632095336914
+I4210104311,Institute of Scientific and Technical Information of China,https://ror.org/01b2av652,CN,Beijing,,39.90837478637695,116.31510925292969
+I4210104475,Momentive (Japan),https://ror.org/01eaqxy97,JP,Ōta,,36.2718620300293,139.34133911132812
+I4210104563,Amtec (United States),https://ror.org/015d68237,US,Huntsville,Alabama,34.727149963378906,-86.65445709228516
+I4210104684,VetAgro Sup,https://ror.org/01c7wz417,FR,Lyon,,45.74845886230469,4.846710205078125
+I4210104735,Sandia National Laboratories,https://ror.org/01apwpt12,US,Albuquerque,,35.08449172973633,-106.65113830566406
+I4210104972,Norrköping Visualisering (Sweden),https://ror.org/01krfhk43,SE,Norrköping,,58.58924102783203,16.177249908447266
+I4210105622,Through the Looking Glass,https://ror.org/01jbd8x32,US,Berkeley,California,37.85245132446289,-122.26930236816406
+I4210105651,Laboratoire Traitement du Signal et de l'Image,https://ror.org/01f1amm71,FR,Rennes,,48.11198043823242,-1.6742899417877197
+I4210105663,Deutsches Herzzentrum der Charité,https://ror.org/01mmady97,DE,Berlin,,52.52436828613281,13.410530090332031
+I4210105990,Institute of Geodesy and Geophysics,https://ror.org/01gkn6j11,CN,Wuhan,,30.583330154418945,114.26667022705078
+I4210106122,Southern Marine Science and Engineering Guangdong Laboratory (Guangzhou),https://ror.org/00y7mag53,CN,Guangzhou,,23.116670608520508,113.25
+I4210106297,MacroGenics (United States),https://ror.org/01hcd4187,US,Rockville,,39.08399963378906,-77.15276336669922
+I4210106470,Investor (Sweden),https://ror.org/011h26k47,SE,Stockholm,,59.33110809326172,18.074451446533203
+I4210106889,Science Communication Institute,https://ror.org/01m52ey02,US,Seattle,Washington,47.72909927368164,-122.3305435180664
+I4210107053,Core Competence,https://ror.org/012cc0c94,US,Santa Fe,New Mexico,35.6909294128418,-106.0212173461914
+I4210107558,Consorzio Pisa Ricerche,https://ror.org/01t0n3b84,IT,Pisa,,43.712467193603516,10.399650573730469
+I4210108629,Computer Network Information Center,https://ror.org/01s0wyf50,CN,Beijing,,39.97991943359375,116.33592224121094
+I4210108711,University Medical Center Hamburg-Eppendorf,https://ror.org/01zgy1s35,DE,Hamburg,,53.55073165893555,9.993020057678223
+I4210108985,Bellevue Hospital Center,https://ror.org/01ky34z31,US,New York,,40.714271545410156,-74.00596618652344
+I4210109156,Max Planck Institute for Astronomy,https://ror.org/01vhnrs90,DE,Heidelberg,,49.39638900756836,8.723610877990723
+I4210109586,Moscow Institute of Thermal Technology,https://ror.org/021es5e59,RU,Moscow,,55.75874710083008,37.61050033569336
+I4210109712,Max Planck Institute for Informatics,https://ror.org/01w19ak89,DE,Saarbrücken,,49.25777816772461,7.04555606842041
+I4210110792,Centre de Recherche en Automatique de Nancy,https://ror.org/022r5hc56,FR,Nancy,,48.684391021728516,6.184959888458252
+I4210110975,"Reference Center for Research, Development and Innovation in ATM",https://ror.org/01vhjs264,ES,Madrid,,40.416500091552734,-3.7025599479675293
+I4210110987,IIT@MIT,https://ror.org/01wp8zh54,US,Cambridge,Massachusetts,42.362300872802734,-71.09395599365234
+I4210111179,Michigan United,https://ror.org/0291ys696,US,Kalamazoo,Michigan,42.280242919921875,-85.56851959228516
+I4210111403,Eunice Kennedy Shriver Center,https://ror.org/01v2b1j25,US,Worcester,,42.26258850097656,-71.80229187011719
+I4210111842,Computer Research Institute of Montréal,https://ror.org/0279d5115,CA,Montreal,,45.50883865356445,-73.58780670166016
+I4210112067,IBM (France),https://ror.org/02wnbr922,FR,Paris,,48.84397506713867,2.39628005027771
+I4210112527,Luxembourg Institute of Science and Technology,https://ror.org/01t178j62,LU,Belvaux,,49.51013946533203,5.924139976501465
+I4210112925,Max Planck Institute for Biological Cybernetics,https://ror.org/026nmvv73,DE,Tübingen,,48.53666687011719,9.058889389038086
+I4210112998,Vetenskap I Skolan,https://ror.org/021e6jr16,SE,Malmo,,55.59575271606445,12.971288681030273
+I4210113003,Physical Sciences (United States),https://ror.org/021qvjc46,US,Andover,Massachusetts,42.69598388671875,-71.20570373535156
+I4210113369,Microsoft Research Asia (China),https://ror.org/0300m5276,CN,Beijing,,39.907501220703125,116.39723205566406
+I4210113495,Children's Hospital of Zhejiang University,https://ror.org/025fyfd20,CN,Hangzhou,,30.26316261291504,120.16571044921875
+I4210113652,Sectra (Sweden),https://ror.org/025nk1308,SE,Linköping,,58.714420318603516,15.2056303024292
+I4210113654,IBM (Canada),https://ror.org/025sxka56,CA,Markham,,43.8668212890625,-79.26629638671875
+I4210114058,Max Planck Institute of Animal Behavior,https://ror.org/026stee22,DE,Radolfzell,,47.768104553222656,8.996386528015137
+I4210114081,Korea Kacoh (South Korea),https://ror.org/02930yz47,KR,Seoul,,37.48896026611328,126.89799499511719
+I4210114115,IBM Research - Thomas J. Watson Research Center,https://ror.org/0265w5591,US,Yorktown Heights,,41.270931243896484,-73.77763366699219
+I4210114521,Fluent (United States),https://ror.org/01qdnge68,US,New York,New York,40.70362854003906,-74.01290130615234
+I4210115111,University of Arts and Industrial Design Linz,https://ror.org/02as55378,AT,Linz,,48.30638885498047,14.286109924316406
+I4210115485,Laboratoire d'Informatique pour la Mécanique et les Sciences de l'Ingénieur,https://ror.org/01raq4x89,FR,Orsay,,48.69572067260742,2.187269926071167
+I4210115791,Center for Visual Communication (United States),https://ror.org/02dhkpg18,US,Philadelphia,Pennsylvania,39.85801315307617,-75.41020202636719
+I4210115859,"Behavioral Tech Research, Inc.",https://ror.org/02843s885,US,Seattle,Washington,47.664405822753906,-122.31673431396484
+I4210116233,Kapsch (Czechia),https://ror.org/02rffwf78,CZ,Prague,,50.09311294555664,14.437984466552734
+I4210116267,American School of Doha,https://ror.org/02ard0m30,QA,Doha,,25.263887405395508,51.481117248535156
+I4210116319,Maxon Motor (Switzerland),https://ror.org/02dr5rf50,CH,Sachseln,,46.86091995239258,8.221232414245605
+I4210116376,SUNY Korea,https://ror.org/02d07gm56,KR,Seoul,,37.377017974853516,126.6667709350586
+I4210116730,Universitätsmedizin Göttingen,https://ror.org/021ft0n22,DE,Göttingen,,51.53443145751953,9.932279586791992
+I4210117238,National Influenza Center,https://ror.org/02r14vp15,MN,Ulaanbaatar,,47.91360855102539,106.94364929199219
+I4210117453,Dana-Farber Cancer Institute,https://ror.org/02jzgtq86,US,Boston,,42.358428955078125,-71.05976867675781
+I4210117871,"Systems, Applications & Products in Data Processing (Canada)",https://ror.org/025jhd967,CA,Toronto,Ontario,43.747005462646484,-79.40875244140625
+I4210118379,Aptima (United States),https://ror.org/02js2n445,US,Woburn,Massachusetts,42.50838851928711,-71.15047454833984
+I4210118524,Université Bourgogne Franche-Comté,https://ror.org/02dn7x778,FR,Besançon,,47.248779296875,6.0181498527526855
+I4210118689,Joint Research Centre,https://ror.org/02qezmz13,IT,Ispra,,45.81480026245117,8.612939834594727
+I4210119061,Institut de Recherche en Informatique de Toulouse,https://ror.org/01rx4qw44,FR,Toulouse,,43.6042594909668,1.4436700344085693
+I4210119109,Indiana University Bloomington,https://ror.org/02k40bc56,US,Bloomington,,39.16532897949219,-86.5263900756836
+I4210119257,University of Information Technology and Communications,https://ror.org/028h0pd91,IQ,Baghdad,,33.340579986572266,44.40087890625
+I4210119362,Hahn-Schickard-Gesellschaft für angewandte Forschung,https://ror.org/02reezy47,DE,Villingen-Schwenningen,,48.06486892700195,8.4904146194458
+I4210119669,Boehringer Ingelheim (Austria),https://ror.org/026vtvm28,AT,Vienna,,48.20848846435547,16.372079849243164
+I4210119712,Max Planck Institute for Mathematics,https://ror.org/02dh8ja68,DE,Bonn,,50.734378814697266,7.095489978790283
+I4210120115,Robert Bosch (United States),https://ror.org/02venad53,US,Farmington Hills,,42.48530960083008,-83.37715911865234
+I4210120727,Ecole Nationale du Génie de l'Eau et de l'Environnement de Strasbourg (ENGEES),https://ror.org/02jhjzd11,FR,Strasbourg,,48.583919525146484,7.745530128479004
+I4210120900,Stanford Synchrotron Radiation Lightsource,https://ror.org/02vzbm991,US,Menlo Park,,37.45383071899414,-122.18218994140625
+I4210121405,Centre for Artificial Intelligence and Robotics,https://ror.org/01xnbq218,IN,Bengaluru,,12.986627578735352,77.66790008544922
+I4210121445,Institute for Development and Economic Analysis,https://ror.org/02h0a0v43,ID,Yogyakarta,,-7.762575149536133,110.37908172607422
+I4210121626,Signal Processing (United States),https://ror.org/021gzyw51,US,Rockville,Maryland,39.080509185791016,-77.23397827148438
+I4210121838,Laboratoire Lorrain de Recherche en Informatique et ses Applications,https://ror.org/02vnf0c38,FR,Nancy,,48.684391021728516,6.184959888458252
+I4210121844,IBM (United Kingdom),https://ror.org/02wat9f69,GB,Winchester,,51.065128326416016,-1.3186999559402466
+I4210121988,Film Independent,https://ror.org/036cy3843,US,Los Angeles,California,34.052024841308594,-118.25933074951172
+I4210122684,Sony Computer Science Laboratories,https://ror.org/02nc46417,JP,Tokyo,,35.6259651184082,139.73052978515625
+I4210122731,Digital Wave (United States),https://ror.org/02t3fqk56,US,Centennial,Colorado,39.59778594970703,-104.83718872070312
+I4210122765,Kaiser-Franz-Josef-Spital,https://ror.org/02p47pe37,AT,Vienna,,48.1742057800293,16.350738525390625
+I4210122849,Philips (Netherlands),https://ror.org/02p2bgp27,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I4210122954,MIT Lincoln Laboratory,https://ror.org/022z6jk58,US,Lexington,Massachusetts,42.458980560302734,-71.26749420166016
+I4210123171,Museum of Decorative Arts in Prague,https://ror.org/02y7mzf89,CZ,Prague,,50.08992004394531,14.416396141052246
+I4210123185,Zhejiang Lab,https://ror.org/02m2h7991,CN,Hangzhou,,30.271240234375,119.96514892578125
+I4210124175,Center for Astrophysics Harvard & Smithsonian,https://ror.org/03c3r2d17,US,Cambridge,,42.375099182128906,-71.1056137084961
+I4210124474,Swanson Center,https://ror.org/0362zrb32,US,Leawood,Kansas,38.92085266113281,-94.64747619628906
+I4210124503,Fraunhofer Institute for Machine Tools and Forming Technology,https://ror.org/026taa863,DE,Chemnitz,,50.81425094604492,12.926292419433594
+I4210124755,National Institute of Standards,https://ror.org/02zftm050,EG,Giza,,29.99106216430664,31.165950775146484
+I4210124949,Microsoft Research (India),https://ror.org/02w7f3w92,IN,Bengaluru,,12.96633243560791,77.59627532958984
+I4210125099,Mayo Clinic in Arizona,https://ror.org/03jp40720,US,Scottsdale,,33.50920867919922,-111.89903259277344
+I4210125647,"Istituto Nazionale di Fisica Nucleare, Sezione di Genova",https://ror.org/02v89pq06,IT,Genoa,,44.404781341552734,8.944390296936035
+I4210125796,University Children's Hospital Tübingen,https://ror.org/03esvmb28,DE,Tübingen,,48.52960968017578,9.038100242614746
+I4210125843,University Hospital Leipzig,https://ror.org/028hv5492,DE,Leipzig,,51.33082962036133,12.385819435119629
+I4210126298,Duke Medical Center,https://ror.org/03njmea73,US,Durham,,35.9940299987793,-78.89862060546875
+I4210126360,Inria Saclay - Île de France,https://ror.org/0315e5x55,FR,Palaiseau,,48.71828079223633,2.249799966812134
+I4210126794,IBM Research (China),https://ror.org/02yg1pf55,CN,Beijing,,39.907501220703125,116.39723205566406
+I4210126846,Information Technology Laboratory,https://ror.org/0440c3437,US,Gaithersburg,Maryland,39.14091873168945,-77.21875762939453
+I4210126948,Memorial,https://ror.org/03b2q2q16,RU,Moscow,,55.77228546142578,37.60936737060547
+I4210127074,Zhongshan Hospital,https://ror.org/032x22645,CN,Shanghai,,31.20899200439453,121.42257690429688
+I4210127166,Centre Inria de l'Université de Lorraine,https://ror.org/03fcjvn64,FR,Villers-lès-Nancy,,48.6733283996582,6.152830123901367
+I4210127226,Robert Bosch (Slovenia),https://ror.org/03248dr08,SI,Krško,,46.08210754394531,14.480009078979492
+I4210127322,Procomcure Biotech (Austria),https://ror.org/035g5pd63,AT,Anif,,47.732364654541016,13.074089050292969
+I4210127401,Tisch Hospital,https://ror.org/02gkddr41,US,New York,,40.714271545410156,-74.00596618652344
+I4210127646,Max Planck Institute for Gravitational Physics,https://ror.org/03sry2h30,DE,Potsdam,,52.41638946533203,12.96916675567627
+I4210127843,First Automotive Works (China),https://ror.org/0353t4m91,CN,Changchun,,43.91273880004883,125.3150863647461
+I4210127875,Nvidia (United States),https://ror.org/03jdj4y14,US,Santa Clara,,37.35411071777344,-121.95523834228516
+I4210127902,Leibniz Institute of Plant Genetics and Crop Plant Research,https://ror.org/02skbsp27,DE,Gatersleben,,51.82215118408203,11.286609649658203
+I4210128666,Institut Claudius Regaud,https://ror.org/03pa87f90,FR,Toulouse,,43.59964370727539,1.4321420192718506
+I4210128818,Institute of Software,https://ror.org/033dfsn42,CN,Beijing,,39.907501220703125,116.39723205566406
+I4210129173,Defense Systems (United States),https://ror.org/03dafc138,US,Vienna,Virginia,38.928558349609375,-77.24669647216797
+I4210129730,RIKEN Center for Computational Science,https://ror.org/03r519674,JP,Kobe,,34.69129943847656,135.18299865722656
+I4210130048,Royal Victoria Hospital,https://ror.org/03rq50d77,GB,Belfast,,54.59400177001953,-5.953000068664551
+I4210130112,China Academy of Information and Communications Technology,https://ror.org/038dte259,CN,Beijing,,39.97563934326172,116.3373031616211
+I4210131230,Philips (United States),https://ror.org/03kw6wr76,US,Andover,,42.65842819213867,-71.13700103759766
+I4210131308,I.R.C.C.S. Oasi Maria SS,https://ror.org/03cvbjc43,IT,Troina,,37.78373718261719,14.59777545928955
+I4210131445,Scientific Imaging and Visualization (United States),https://ror.org/02wj4f624,US,Atlanta,Georgia,33.95930480957031,-84.30353546142578
+I4210131712,Oklahoma State University Oklahoma City,https://ror.org/03y1zyv86,US,Oklahoma City,Oklahoma,35.47516632080078,-97.58203887939453
+I4210131883,Brazilian Society of Computational and Applied Mathematics,https://ror.org/03kcw4w74,BR,São Carlos,,-22.014020919799805,-47.8764762878418
+I4210131986,Centro Universitario de Tecnología y Arte Digital,https://ror.org/03pzf1r57,ES,Las Rozas de Madrid,,40.492919921875,-3.8737099170684814
+I4210132870,Xerox (United States),https://ror.org/03jwzwq24,US,Norwalk,California,41.14459991455078,-73.43010711669922
+I4210133125,Mitsubishi Electric (Japan),https://ror.org/033y26782,JP,Tokyo,,35.678367614746094,139.76487731933594
+I4210133173,Research!America (United States),https://ror.org/044pgyv50,US,Alexandria,Virginia,38.858402252197266,-77.05022430419922
+I4210133271,Imagination Technologies (United Kingdom),https://ror.org/03rf62a76,GB,Kings Langley,,51.707584381103516,-0.44034498929977417
+I4210133347,Leibniz-Institut für Verbundwerkstoffe GmbH,https://ror.org/03ep3q589,DE,Kaiserslautern,,49.44300079345703,7.771609783172607
+I4210133362,Institut National de Physique Nucléaire et de Physique des Particules,https://ror.org/03fd77x13,FR,Paris,,48.85340881347656,2.34879994392395
+I4210133369,Decision Sciences (United States),https://ror.org/03gcvf773,US,Fort Walton Beach,Florida,30.448593139648438,-86.61835479736328
+I4210133934,Bernstein Center for Computational Neuroscience Tübingen,https://ror.org/03kfnwp54,DE,Tübingen,,48.53169631958008,9.041913032531738
+I4210134051,ITS (United Kingdom),https://ror.org/033sdmz09,GB,London,,51.51266098022461,-0.13052800297737122
+I4210134504,Universidad Católica San Pablo,https://ror.org/03db1hz44,PE,Arequipa,,-16.390050888061523,-71.53572082519531
+I4210134512,GE Global Research (United States),https://ror.org/03e06qt98,US,Niskayuna,,42.77980041503906,-73.8456802368164
+I4210135180,Filmuniversität Babelsberg KONRAD WOLF,https://ror.org/04qbqv677,DE,Potsdam,,52.398860931396484,13.06566047668457
+I4210135252,University of Minnesota Medical Center,https://ror.org/03e1ayz78,US,Minneapolis,Minnesota,44.97148513793945,-93.2320556640625
+I4210135298,Jensen Hughes (United States),https://ror.org/033wnbm63,US,Baltimore,Maryland,39.253482818603516,-76.67543029785156
+I4210135397,Zentrum für Foren in der Grafischen Datenverarbeitung,https://ror.org/030chcw72,DE,Darmstadt,,49.87246322631836,8.6506929397583
+I4210135439,RMIT Europe,https://ror.org/03m3ca021,ES,Barcelona,,41.4025764465332,2.194333076477051
+I4210135583,Digital Insight (Norway),https://ror.org/03qf55f50,NO,Oslo,,59.913848876953125,10.734676361083984
+I4210135640,Laboratoire de Biométrie et Biologie Evolutive,https://ror.org/03skt0t88,FR,Villeurbanne,,45.76601028442383,4.879499912261963
+I4210135670,Amsterdam University of the Arts,https://ror.org/04dde1554,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I4210135837,National Center for Supercomputing Applications,https://ror.org/03r10zj06,US,Urbana,,40.110591888427734,-88.20726776123047
+I4210136249,University of Applied Sciences Upper Austria,https://ror.org/03jqp6d56,AT,Wels,,48.161468505859375,14.027623176574707
+I4210136471,FC Barcelona,https://ror.org/04bpz1v84,ES,Barcelona,,41.384429931640625,2.1683249473571777
+I4210136697,Sint Maartenskliniek,https://ror.org/042yqf226,NL,Woerden,,52.08154296875,4.892043590545654
+I4210136987,St. Anne's University Hospital Brno,https://ror.org/049bjee35,CZ,Brno,,49.195220947265625,16.607959747314453
+I4210137033,Istituto di Matematica Applicata e Tecnologie Informatiche,https://ror.org/03m0n3c07,IT,Pavia,,45.20236587524414,9.13697338104248
+I4210137046,Inte:Ligand (Austria),https://ror.org/03k462x97,AT,Maria Enzersdorf,,48.09946823120117,16.259044647216797
+I4210137298,Avaya (United States),https://ror.org/041vyyf82,US,Santa Clara,California,37.398136138916016,-121.97740936279297
+I4210137306,Stanford Medicine,https://ror.org/03mtd9a03,US,Stanford,,37.424110412597656,-122.16607666015625
+I4210137693,Siemens (United States),https://ror.org/04axb7e79,US,Princeton,New Jersey,40.344093322753906,-74.59236145019531
+I4210137873,Fraunhofer Institute for Digital Medicine,https://ror.org/04farme71,DE,Bremen,,53.101097106933594,8.858412742614746
+I4210138167,PowerWorld (United States),https://ror.org/03qz4w368,US,Champaign,Illinois,40.09025192260742,-88.23926544189453
+I4210138199,University of Washington Applied Physics Laboratory,https://ror.org/03d17d270,US,Seattle,Washington,47.655311584472656,-122.31663513183594
+I4210138311,Lawrence Livermore National Security,https://ror.org/03z21mf61,US,Livermore,,37.68186950683594,-121.76801300048828
+I4210138378,Dominion (United States),https://ror.org/038q98v71,US,Cleveland,,41.4995002746582,-81.6954116821289
+I4210138427,Computational Physics (United States),https://ror.org/03grsxg62,US,Springfield,Virginia,38.8100471496582,-77.22124481201172
+I4210138551,University Hospital Magdeburg,https://ror.org/03m04df46,DE,Magdeburg,,52.10097122192383,11.617555618286133
+I4210139350,Fraunhofer Institute for Factory Operation and Automation,https://ror.org/04qfaak15,DE,Magdeburg,,52.13926315307617,11.651930809020996
+I4210139483,GREYC,https://ror.org/043749971,FR,Caen,,49.185848236083984,-0.3591200113296509
+I4210140408,Minneapolis VA Medical Center,https://ror.org/032b8d361,US,Minneapolis,Minnesota,44.98233413696289,-93.26937866210938
+I4210140884,National Cancer Institute,https://ror.org/040gcmg81,US,Bethesda,,38.98067092895508,-77.10025787353516
+I4210141030,SickKids Foundation,https://ror.org/04374qe70,CA,Toronto,,43.70642852783203,-79.39864349365234
+I4210141176,Communication University of Zhejiang,https://ror.org/04t7gxr16,CN,Hangzhou,,30.319913864135742,120.34066009521484
+I4210141255,Care Resource,https://ror.org/03jhg3q89,US,Miami,Florida,25.809839248657227,-80.19044494628906
+I4210141311,Staats- und Universitätsbibliothek Bremen,https://ror.org/04cwb1p56,DE,Bremen,,53.108924865722656,8.853711128234863
+I4210141421,Ministère de l'Économie et des Finances,https://ror.org/04nx63b17,FR,Paris,,48.840999603271484,2.3779149055480957
+I4210141702,University of Gävle,https://ror.org/043fje207,SE,Gävle,,60.67451858520508,17.141740798950195
+I4210142140,Walt Disney (United States),https://ror.org/04eg47h42,US,Burbank,California,34.18129348754883,-118.30976104736328
+I4210142254,Laboratoire Bordelais de Recherche en Informatique,https://ror.org/03adqg323,FR,Talence,,44.80849075317383,-0.5891500115394592
+I4210142372,Human Media,https://ror.org/04072nk43,US,Belmont,Massachusetts,42.39787292480469,-71.17529296875
+I4210142429,Women's Health Research Institute,https://ror.org/0455vfz21,CA,Vancouver,British Columbia,49.2615966796875,-123.24626922607422
+I4210142721,Hospital Universitário da Universidade de São Paulo,https://ror.org/0406jsq08,BR,São Paulo,,-23.547500610351562,-46.6361083984375
+I4210143137,University of Louisville Hospital,https://ror.org/04sq8k219,US,Louisville,Kentucky,38.248104095458984,-85.74579620361328
+I4210143161,IDEX Corporation (United States),https://ror.org/03jqyh750,US,Lake Forest,Illinois,42.244388580322266,-87.8932876586914
+I4210143480,EPIR Technologies (United States),https://ror.org/054srn740,US,Bolingbrook,Illinois,41.683753967285156,-88.10026550292969
+I4210143490,Computing Center,https://ror.org/0557kgc34,RU,Khabarovsk,,48.471954345703125,135.0609130859375
+I4210143601,Decision Systems (United States),https://ror.org/0434dpa13,US,Northbrook,Illinois,42.151893615722656,-87.80496215820312
+I4210143841,Saudi Aramco (Saudi Arabia),https://ror.org/03ypap427,SA,Dhahran,,26.34372901916504,50.12286376953125
+I4210144062,Consorzio Roma Ricerche,https://ror.org/03jvpn714,IT,Rome,,41.93692398071289,12.63296890258789
+I4210144576,Fraunhofer Institute for Intelligent Analysis and Information Systems,https://ror.org/04nc32781,DE,Sankt Augustin,,50.7753791809082,7.197000026702881
+I4210144804,Laboratoire de Recherche en Informatique,https://ror.org/04e3ktk27,FR,Gif-sur-Yvette,,48.68333053588867,2.1333301067352295
+I4210144839,Hamad bin Khalifa University,https://ror.org/03eyq4y97,QA,Doha,,25.285449981689453,51.53096008300781
+I4210145387,Al Sulaiteen Agricultural & Industrial Complex (Qatar),https://ror.org/049ve2f77,QA,Doha,,25.46765899658203,51.37588882446289
+I4210145671,Advanced Imaging Research (United States),https://ror.org/047c3xe48,US,Cleveland,Ohio,41.520713806152344,-81.6612777709961
+I4210145761,Shenzhen Institutes of Advanced Technology,https://ror.org/04gh4er46,CN,Shenzhen,,22.54553985595703,114.06829833984375
+I4210145865,IBM Research - Tokyo,https://ror.org/04915qk43,JP,Tokyo,,35.68949890136719,139.69171142578125
+I4210146710,Mayo Clinic in Florida,https://ror.org/03zzw1w08,US,Jacksonville,,30.33218002319336,-81.65564727783203
+I4210146756,Brandenburg University of Applied Sciences,https://ror.org/04qj3gf68,DE,Brandenburg,,52.41667175292969,12.550000190734863
+I4210147025,Barcelona Media,https://ror.org/047yj9455,ES,Barcelona,,41.388790130615234,2.158989906311035
+I4210147894,Institut de Recherche et d’Innovation,https://ror.org/04nqadf13,FR,Paris,,48.85340881347656,2.34879994392395
+I4210149760,Charles River Analytics (United States),https://ror.org/03z47zw42,US,Cambridge,Massachusetts,42.37621307373047,-71.14681243896484
+I4210150049,CEA LETI,https://ror.org/04mf0wv34,FR,Grenoble,,45.19596481323242,5.704452037811279
+I4210150103,Geophysical Laboratory,https://ror.org/05qyye271,US,Washington,,38.895111083984375,-77.03636932373047
+I4210150121,Univé (Netherlands),https://ror.org/04yv75396,NL,Assen,,52.99251937866211,6.560964107513428
+I4210150252,Park-Klinik Birkenwerder,https://ror.org/05dyfnr03,DE,Birkenwerder,,52.69112014770508,13.298377990722656
+I4210150358,Institut Systèmes Intelligents et de Robotique,https://ror.org/05neq8668,FR,Paris,,48.85340881347656,2.34879994392395
+I4210150884,Fondation Sophia Antipolis,https://ror.org/05nkcfv27,FR,Valbonne,,43.61494445800781,7.054452896118164
+I4210151080,Hochschule Magdeburg-Stendal,https://ror.org/04vjfp916,DE,Magdeburg,,52.142269134521484,11.67448902130127
+I4210151352,Biocom,https://ror.org/03ymdxs56,US,San Diego,California,32.87836837768555,-117.20684051513672
+I4210151375,Applied Visions (United States),https://ror.org/04ntqmb28,US,Northport,New York,40.901336669921875,-73.35150909423828
+I4210151476,Advanced Science Research Center,https://ror.org/05xrbcc66,JP,Naka,,36.461727142333984,140.5994110107422
+I4210151791,Genomics (United Kingdom),https://ror.org/053a6xa29,GB,Oxford,,51.75258255004883,-1.2669517993927002
+I4210151938,Eye Institute of Utah,https://ror.org/04kcn9y49,US,Salt Lake City,Utah,40.68719482421875,-111.8696517944336
+I4210151956,Robert Bosch (India),https://ror.org/04my8ty22,IN,Bengaluru,,12.946561813354492,77.60552978515625
+I4210152224,Heinz Nixdorf Stiftung,https://ror.org/04j2tkk21,DE,Essen,,51.45656967163086,7.012279987335205
+I4210152422,Université Toulouse - Jean Jaurès,https://ror.org/04ezk3x31,FR,Toulouse,,43.6042594909668,1.4436700344085693
+I4210152878,Helmholtz Centre Potsdam - GFZ German Research Centre for Geosciences,https://ror.org/04z8jg394,DE,Potsdam,,52.398860931396484,13.06566047668457
+I4210153043,Duke University Hospital,https://ror.org/04bct7p84,US,Durham,,35.9940299987793,-78.89862060546875
+I4210153148,CFD Research Corporation (United States),https://ror.org/04wd31514,US,Huntsville,Alabama,34.72690963745117,-86.69081115722656
+I4210153212,Noah's Path,https://ror.org/05wv5ps25,ES,Alicante,,38.26576614379883,-0.672111988067627
+I4210153395,Agfa-Gevaert (Canada),https://ror.org/044ddr125,CA,Mississauga,Ontario,43.7031135559082,-79.57009887695312
+I4210153694,Rho (United States),https://ror.org/049ba1e57,US,Chapel Hill,,35.91320037841797,-79.05583953857422
+I4210153776,Apple (United States),https://ror.org/059hsda18,US,Cupertino,California,37.58634567260742,-122.02854919433594
+I4210153902,Siemens Healthcare (Germany),https://ror.org/0449c4c15,DE,Eschborn,,50.143280029296875,8.571109771728516
+I4210154378,Informa (United Kingdom),https://ror.org/053mfvp43,GB,London,,51.50852966308594,-0.12574000656604767
+I4210155092,"Czech Academy of Sciences, Institute of Computer Science",https://ror.org/0496n6574,CZ,Prague,,50.08803939819336,14.420760154724121
+I4210155236,National Research Council,https://ror.org/04zaypm56,IT,Rome,,41.891929626464844,12.511329650878906
+I4210155419,Center for Systems Biology,https://ror.org/05r3dyn47,US,Boston,Massachusetts,42.3631591796875,-71.06873321533203
+I4210156081,Tech-X Corporation (United States),https://ror.org/04n0rvp85,US,Boulder,Colorado,40.01726531982422,-105.22264862060547
+I4210156221,Allen Institute for Artificial Intelligence,https://ror.org/05w520734,US,Seattle,,47.60620880126953,-122.33206939697266
+I4210156517,Sandia Research (United States),https://ror.org/04kw81y04,US,Mesa,Arizona,33.4907341003418,-111.66944885253906
+I4210156583,Laboratoire d'Informatique de Paris-Nord,https://ror.org/05g1zjw44,FR,Villetaneuse,,48.95832824707031,2.341670036315918
+I4210156768,BMW Group (Germany),https://ror.org/044kkbh92,DE,Munich,,48.19819259643555,11.601917266845703
+I4210156936,IBM Research - Austin,https://ror.org/05gjbbg60,US,Austin,Texas,30.402559280395508,-97.71546936035156
+I4210158283,Institute of Geography of the Slovak Academy of Sciences,https://ror.org/04wzc7f86,SK,Bratislava,,48.14815902709961,17.106740951538086
+I4210158342,Intel (United Kingdom),https://ror.org/058cxws58,GB,Swindon,,51.543094635009766,-1.77155601978302
+I4210158876,Marinus Pharmaceuticals (United States),https://ror.org/058sw7g55,US,Radnor,,40.04621887207031,-75.35990905761719
+I4210158984,National Supercomputing Center in Wuxi,https://ror.org/04ypjrs34,CN,Wuxi,,31.54596710205078,120.25511932373047
+I4210159102,Huawei Technologies (Sweden),https://ror.org/0500fyd17,SE,Stockholm,,59.40597152709961,17.9461612701416
+I4210159266,Mitsubishi Electric (United States),https://ror.org/053jnhe44,US,Cypress,California,33.817291259765625,-118.03824615478516
+I4210159476,Science and Technology Corporation (United States),https://ror.org/05pw5zy84,US,Hampton,Virginia,37.01726150512695,-76.32218933105469
+I4210159731,Laboratoire de Recherche en Informatique de Paris 6,https://ror.org/05krcen59,FR,Paris,,48.85340881347656,2.34879994392395
+I4210159854,Max Planck Institute of Molecular Cell Biology and Genetics,https://ror.org/05b8d3w18,DE,Dresden,,51.05861282348633,13.784722328186035
+I4210159895,Imagination Computer Services (Austria),https://ror.org/05hkpph68,AT,Vienna,,48.232601165771484,16.38511085510254
+I4210160189,Institut Polytechnique de Bordeaux,https://ror.org/054qv7y42,FR,Bordeaux,,44.84043884277344,-0.5805000066757202
+I4210160384,Institute of Biomedical Science,https://ror.org/05t77d857,GB,London,,51.523826599121094,-0.1103150025010109
+I4210160447,Universidad de Londres,https://ror.org/054v4yq51,MX,Mexico City,,19.41733741760254,-99.15972137451172
+I4210160527,University of California Davis Medical Center,https://ror.org/05t6gpm70,US,Sacramento,California,38.5550537109375,-121.45623016357422
+I4210160608,Asklepios,https://ror.org/055tk9p53,DE,Hamburg,,53.558502197265625,10.01869010925293
+I4210160618,Huawei Technologies (United Kingdom),https://ror.org/056gzgs71,GB,Basingstoke,,51.24959182739258,-1.0910240411758423
+I4210160939,Oculus Innovative Sciences (United States),https://ror.org/04r8f0505,US,Petaluma,California,38.2678337097168,-122.65870666503906
+I4210161630,Wavefront Research (United States),https://ror.org/05ax5pz51,US,Bethlehem,Pennsylvania,40.62281036376953,-75.39122772216797
+I4210161634,Microsoft (France),https://ror.org/0521n7n83,FR,Issy-les-Moulineaux,,48.83394241333008,2.2656428813934326
+I4210161785,First Technical University,https://ror.org/05tb13r23,NG,Ibadan,,7.377560138702393,3.905910015106201
+I4210161853,Budapest Institute,https://ror.org/050hvq478,HU,Budapest,,47.50014114379883,19.07272720336914
+I4210162195,Rhythm (United states),https://ror.org/05gh45115,US,Boston,Massachusetts,42.34876251220703,-71.0831069946289
+I4210162323,TKL Research,https://ror.org/059gb3r46,US,Rochelle Park,New Jersey,40.91762924194336,-74.08580780029297
+I4210162505,Philips (Germany),https://ror.org/05san5604,DE,Hamburg,,53.55253219604492,9.968988418579102
+I4210163178,Alfred Health,https://ror.org/04scfb908,AU,Melbourne,Victoria,-37.845542907714844,144.98162841796875
+I4210163460,Midwest Orthopaedic Research Foundation,https://ror.org/05fep6742,US,Minneapolis,Minnesota,44.97100830078125,-93.25911712646484
+I4210163500,Center for Research Libraries,https://ror.org/05dky1a08,US,Chicago,Illinois,41.78544235229492,-87.59387969970703
+I4210163586,Musée de l'Homme,https://ror.org/05jbyqz27,FR,Paris,,48.86140441894531,2.288114070892334
+I4210163771,Tableau Software (United States),https://ror.org/053v5e348,US,Seattle,Washington,47.64975357055664,-122.34842681884766
+I4210163870,United States Army Research Office,https://ror.org/05epdh915,US,Durham,,35.9940299987793,-78.89862060546875
+I4210164234,Microcom (United States),https://ror.org/05npcf755,US,Lewis Center,Ohio,40.167293548583984,-83.01123809814453
+I4210164339,Oldham Council,https://ror.org/05cxzzq07,GB,Oldham,,53.54231643676758,-2.117724895477295
+I4210164736,Cajal Neuroscience (United States),https://ror.org/05pdc0q70,US,Seattle,Washington,47.634361267089844,-122.3267593383789
+I4210164937,Microsoft Research (United Kingdom),https://ror.org/05k87vq12,GB,Cambridge,,52.19491958618164,0.13490499556064606
+I4210164942,Allen Institute for Cell Science,https://ror.org/05kg6bp11,US,Seattle,Washington,47.62515640258789,-122.33956146240234
+I4210165024,Institute of Infection and Immunity,https://ror.org/05wdecy17,CA,Québec,Quebec,46.769474029541016,-71.28279876708984
+I4210165038,University of Chinese Academy of Sciences,https://ror.org/05qbk4x57,CN,Beijing,,39.907501220703125,116.39723205566406
+I4210165734,National Supercomputing Center of Tianjin,https://ror.org/05tngxm14,CN,Tianjin,,39.14221954345703,117.17666625976562
+I4210165912,Laboratoire Traitement et Communication de l’Information,https://ror.org/057er4c39,FR,Paris,,48.85340881347656,2.34879994392395
+I4210166048,Gesellschaft Fur Mathematik Und Datenverarbeitung,https://ror.org/02g6d4t03,DE,Sankt Augustin,,50.787567138671875,7.180500030517578
+I4210166784,École Nationale Supérieure des Arts Décoratifs,https://ror.org/05xsxn838,FR,Paris,,48.85340881347656,2.34879994392395
+I4210167018,Interaction Design (United Kingdom),https://ror.org/03qfyes53,GB,London,,51.527366638183594,-0.10426700115203857
+I4210167249,Network Technologies (United States),https://ror.org/05xnsth60,US,Aurora,Ohio,41.28133010864258,-81.32920837402344
+I4210167297,IBM Research - Haifa,https://ror.org/05rw9t746,IL,Haifa,,32.10221481323242,34.85060501098633
+I4210167330,Biographics (United States),https://ror.org/01jtkws96,US,Winston-Salem,North Carolina,36.10005187988281,-80.25582885742188
+I42894916,Data61,https://ror.org/03q397159,AU,Sydney,,-33.86785125732422,151.2073211669922
+I43406934,Université Laval,https://ror.org/04sjchr03,CA,Québec,,46.812278747558594,-71.21453857421875
+I43439940,University of Southampton,https://ror.org/01ryk1543,GB,Southampton,,50.90394973754883,-1.4042799472808838
+I43522216,"California State University, Sacramento",https://ror.org/03e26wv14,US,Sacramento,,38.58156967163086,-121.49440002441406
+I43579087,University of Wisconsin–Milwaukee,https://ror.org/031q21x57,US,Milwaukee,,43.03889846801758,-87.9064712524414
+I4387152369,"Laboratoire en Innovation, Technologies, Economie et Management",https://ror.org/04d5x5x34,,Évry-Courcouronnes,,48.633888244628906,2.4441699981689453
+I4387152675,Rheinland-Pfälzische Technische Universität Kaiserslautern-Landau,https://ror.org/01qrts582,,Landau,,49.19844055175781,8.116920471191406
+I4387153087,Mathématiques et Informatique Appliquées,https://ror.org/00780az30,,Palaiseau,,48.71828079223633,2.249799966812134
+I4387153702,Interdisciplinarité dans les Etudes Anglophones,https://ror.org/052k52s41,,Nancy,,48.684391021728516,6.184959888458252
+I4387153937,Universität Koblenz,https://ror.org/0433e6t24,,Koblenz,,50.35356903076172,7.578829765319824
+I4387154582,Centre Émile Durkheim,https://ror.org/01k7w0p97,,Pessac,,44.80564880371094,-0.6323999762535095
+I4388446366,Indiana University Indianapolis,https://ror.org/03eftgw80,,Indianapolis,,39.76837921142578,-86.15804290771484
+I4388482740,Georgia Tech Research Institute,https://ror.org/04qfrh333,,Atlanta,,33.749000549316406,-84.38797760009766
+I4388482754,Naval Research Laboratory Laboratories for Computational Physics & Fluid Dynamics,https://ror.org/02t78x693,,Washington,,38.895111083984375,-77.03636932373047
+I4388891828,Texas Advanced Computing Center,https://ror.org/00xg4bh43,,Austin,,30.26715087890625,-97.74305725097656
+I4389425429,U.S. Army Corp of Engineers Waterways Experiment Station,https://ror.org/00wsjvg44,,Vicksburg,,32.3526496887207,-90.87787628173828
+I4389425457,Institut des Sciences du Calcul et des Données,https://ror.org/00y16rm59,,Paris,,48.85340881347656,2.34879994392395
+I4390039265,PRG S&Tech (South Korea),https://ror.org/02sr2ee22,,Busan,,35.101680755615234,129.03004455566406
+I4390039371,Solutions Inc. (Japan),https://ror.org/018nc6029,,Tokyo,,35.68949890136719,139.69171142578125
+I4391767840,Texas A&M Engineering Experiment Station,https://ror.org/03p8qrw52,,Bryan,,30.674360275268555,-96.36995697021484
+I4391767926,CSCS - Swiss National Supercomputing Centre,https://ror.org/04rzmms09,,Lugano,,46.01007843017578,8.960040092468262
+I4394709130,Indiana University School of Medicine,https://ror.org/02ets8c94,,Indianapolis,,39.76837921142578,-86.15804290771484
+I4399598377,Institute of Science and Technology,https://ror.org/02wxm3f24,,Kathmandu,,27.701690673828125,85.32060241699219
+I4399598381,Samsung Advanced Institute of Technology (South Korea),https://ror.org/04axnyp10,,Suwon-si,,37.285858154296875,127.00993347167969
+I4400600974,Novartis Institutes for BioMedical Research,https://ror.org/053gv2m95,,Basel,,47.55773162841797,7.593609809875488
+I4401726748,V.F. Corporation (United States),https://ror.org/02zvqmp51,,Denver,,39.73915100097656,-104.98470306396484
+I4401726780,Martin Marietta Materials (United States),https://ror.org/00n16p182,,Raleigh,,35.772098541259766,-78.63861083984375
+I4401726859,Kuaishou (China),https://ror.org/0258as409,,Beijing,,39.907501220703125,116.39723205566406
+I44202434,Fundação Getulio Vargas,https://ror.org/01evzkn27,BR,Rio de Janeiro,,-22.90641975402832,-43.18223190307617
+I4432739,University of Bergen,https://ror.org/03zga2b32,NO,Bergen,,60.39299011230469,5.324150085449219
+I44461941,University of Houston,https://ror.org/048sx0r50,US,Houston,,29.763280868530273,-95.36327362060547
+I44504214,Czech Technical University in Prague,https://ror.org/03kqpb082,CZ,Prague,,50.08803939819336,14.420760154724121
+I44854399,University of Southern Mississippi,https://ror.org/0270vfa57,US,Hattiesburg,,31.327119827270508,-89.29033660888672
+I44896327,Mitre (United States),https://ror.org/03ks2a131,US,Bedford,Massachusetts,42.50493621826172,-71.23655700683594
+I45129253,University College London,https://ror.org/02jx3x895,GB,London,,51.50852966308594,-0.12574000656604767
+I45438204,The University of Texas at San Antonio,https://ror.org/01kd65564,US,San Antonio,,29.42411994934082,-98.4936294555664
+I4576418,University of Technology Malaysia,https://ror.org/026w31v75,MY,Johor Bahru,,1.465499997138977,103.75779724121094
+I4577782,Technische Universität Berlin,https://ror.org/03v4gjf40,DE,Berlin,,52.52436828613281,13.410530090332031
+I45928872,Alibaba Group (China),https://ror.org/00k642b80,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I46020346,American Institute of Aeronautics and Astronautics,https://ror.org/00a1rzv11,US,Reston,Virginia,38.9440803527832,-77.32130432128906
+I46247651,University of Manitoba,https://ror.org/02gfys938,CA,Winnipeg,,49.8843994140625,-97.14704132080078
+I4665924,University of Rostock,https://ror.org/03zdwsf69,DE,Rostock,,54.08869934082031,12.14048957824707
+I47301684,Illinois State University,https://ror.org/050kcr883,US,Normal,,40.514198303222656,-88.99063110351562
+I47431100,Dassault Systèmes (France),https://ror.org/038sc5x72,FR,Vélizy-Villacoublay,,48.781978607177734,2.1939499378204346
+I47508984,Imperial College London,https://ror.org/041kmwe10,GB,London,,51.50852966308594,-0.12574000656604767
+I47720641,Huazhong University of Science and Technology,https://ror.org/00p991c53,CN,Wuhan,,30.583330154418945,114.26667022705078
+I48071105,Anstalt für Verbrennungskraftmaschinen List,https://ror.org/01bydex26,AT,Graz,,47.06666946411133,15.449999809265137
+I48566637,Ulsan National Institute of Science and Technology,https://ror.org/017cjz748,KR,Ulsan,,35.5372200012207,129.31666564941406
+I4923324,Fraunhofer Society,https://ror.org/05hkkdn48,DE,Munich,,48.137428283691406,11.57548999786377
+I49324905,Equinor (Norway),https://ror.org/017mte255,NO,Stavanger,,58.97005081176758,5.733320236206055
+I5023651,McGill University,https://ror.org/01pxwe438,CA,Montreal,,45.50883865356445,-73.58780670166016
+I50760025,Hangzhou Dianzi University,https://ror.org/0576gt767,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I5124864,École Polytechnique Fédérale de Lausanne,https://ror.org/02s376052,CH,Lausanne,,46.51599884033203,6.632820129394531
+I51342185,Minneapolis College of Art and Design,https://ror.org/05mra7z37,US,Minneapolis,,44.9799690246582,-93.26383972167969
+I51441396,Bauhaus-Universität Weimar,https://ror.org/033bb5z47,DE,Weimar,,50.98030090332031,11.32903003692627
+I51532219,University of Lincoln,https://ror.org/03yeq9x20,GB,Lincoln,,53.226829528808594,-0.5379199981689453
+I51556381,University of Virginia,https://ror.org/0153tk833,US,Charlottesville,,38.0293083190918,-78.47667694091797
+I51783024,Brandenburg University of Technology Cottbus-Senftenberg,https://ror.org/02wxx3e24,DE,Senftenberg,,51.525169372558594,14.001640319824219
+I52099693,University of York,https://ror.org/04m01e293,GB,York,,53.9576301574707,-1.0827100276947021
+I52357470,The Ohio State University,https://ror.org/00rs6vg23,US,Columbus,,39.961181640625,-82.99878692626953
+I52669646,Western Washington University,https://ror.org/05wn7r715,US,Bellingham,,48.75954818725586,-122.48822021484375
+I5343935,Guilin University of Electronic Technology,https://ror.org/05arjae42,CN,Guilin,,25.281644821166992,110.3372802734375
+I53964585,Weizmann Institute of Science,https://ror.org/0316ej306,IL,Rehovot,,31.894210815429688,34.811988830566406
+I55538621,China Jiliang University,https://ror.org/05v1y0t93,CN,Hangzhou,,30.319089889526367,120.36405181884766
+I5561750,University of Bari Aldo Moro,https://ror.org/027ynra39,IT,Bari,,41.12065887451172,16.86981964111328
+I55712492,Zhejiang University of Technology,https://ror.org/02djqfd08,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I55732556,Arizona State University,https://ror.org/03efmqc40,US,Tempe,,33.41476821899414,-111.90930938720703
+I55769427,Indiana University – Purdue University Indianapolis,https://ror.org/05gxnyn08,US,Indianapolis,,39.76837921142578,-86.15804290771484
+I5593406,Universitat Ramon Llull,https://ror.org/04p9k2z50,ES,Barcelona,,41.388790130615234,2.158989906311035
+I56067802,Université de Rennes,https://ror.org/015m7wh34,FR,Rennes,,48.11198043823242,-1.6742899417877197
+I56590836,Monash University,https://ror.org/02bfwt286,AU,Melbourne,,-37.81399917602539,144.96331787109375
+I56858762,Universidad Nacional del Sur,https://ror.org/028crwz56,AR,Bahía Blanca,,-38.71760177612305,-62.26544952392578
+I57201433,Università della Svizzera italiana,https://ror.org/03c4atk17,CH,Lugano,,46.01007843017578,8.960040092468262
+I57206974,New York University,https://ror.org/0190ak572,US,New York,,40.714271545410156,-74.00596618652344
+I57664883,Ajou University,https://ror.org/03tzb2h73,KR,Suwon,,37.29111099243164,127.0088882446289
+I58610484,Seattle University,https://ror.org/02jqc0m91,US,Seattle,,47.60620880126953,-122.33206939697266
+I58995867,Civil Aviation Flight University of China,https://ror.org/01xyb1v19,CN,Luocheng,,30.976194381713867,104.28239440917969
+I59105498,Swisscom (Switzerland),https://ror.org/04t1f4f50,CH,Bern,,46.977535247802734,7.465098857879639
+I592451,Indiana University,https://ror.org/01kg8sb98,US,Bloomington,,39.16532897949219,-86.5263900756836
+I59270414,Indian Institute of Science Bangalore,https://ror.org/04dese585,IN,Bengaluru,,13.02127456665039,77.56576538085938
+I59433898,Brunel University of London,https://ror.org/00dn4t376,GB,London,,51.50852966308594,-0.12574000656604767
+I59553526,Stony Brook University,https://ror.org/05qghxh33,US,Stony Brook,,40.92565155029297,-73.14093780517578
+I59857034,John Cabot University,https://ror.org/01fjdq469,IT,Rome,,41.89382553100586,12.467310905456543
+I60200437,Potsdam Institute for Climate Impact Research,https://ror.org/03e8s1d88,DE,Potsdam,,52.381282806396484,13.064151763916016
+I60488453,Middlesex University,https://ror.org/01rv4p989,GB,London,,51.50852966308594,-0.12574000656604767
+I6059380,University of Baltimore,https://ror.org/024gw2733,US,Baltimore,,39.29037857055664,-76.61219024658203
+I60922564,Naver (South Korea),https://ror.org/04nzrnx83,KR,Seongnam-si,,37.36019515991211,127.10731506347656
+I61057504,Fujian Agriculture and Forestry University,https://ror.org/04kx2sy84,CN,Fuzhou,,26.061389923095703,119.30610656738281
+I61937129,Jackson State University,https://ror.org/01ecnnp60,US,Jackson,Mississippi,32.295982360839844,-90.20465850830078
+I62318514,University of Duisburg-Essen,https://ror.org/04mz5ra38,DE,Essen,,51.45656967163086,7.012279987335205
+I62916508,Technical University of Munich,https://ror.org/02kkvpp62,DE,Munich,,48.137428283691406,11.57548999786377
+I63533367,General Atomics (United States),https://ror.org/03ngjpk76,US,San Diego,,32.7157096862793,-117.16471862792969
+I63966007,Massachusetts Institute of Technology,https://ror.org/042nb2s44,US,Cambridge,,42.375099182128906,-71.1056137084961
+I64189192,"International Institute of Information Technology, Hyderabad",https://ror.org/05f11g639,IN,Hyderabad,,17.384050369262695,78.45635986328125
+I65837984,Kobe University,https://ror.org/03tgsfw79,JP,Kobe,,34.69129943847656,135.18299865722656
+I66862912,Chalmers University of Technology,https://ror.org/040wg7k59,SE,Gothenburg,,57.70716094970703,11.966790199279785
+I66867065,East China Normal University,https://ror.org/02n96ep67,CN,Shanghai,,31.222219467163086,121.45806121826172
+I66906201,University of Yamanashi,https://ror.org/059x21724,JP,Kofu,,35.6783332824707,138.57305908203125
+I66943878,De Montfort University,https://ror.org/0312pnr83,GB,Leicester,,52.63859939575195,-1.1316900253295898
+I66946132,"University of Maryland, College Park",https://ror.org/047s2c258,US,College Park,,38.98067092895508,-76.93692016601562
+I67031392,Carleton University,https://ror.org/02qtvee93,CA,Ottawa,,45.411170959472656,-75.6981201171875
+I67311998,European Organization for Nuclear Research,https://ror.org/01ggx4157,CH,Geneva,,46.20222091674805,6.145689964294434
+I67415387,Lancaster University,https://ror.org/04f2nsd36,GB,Lancaster,,54.04648971557617,-2.799880027770996
+I67900169,Chung-Ang University,https://ror.org/01r024a98,KR,Seoul,,37.504150390625,126.95693969726562
+I68891433,Indian Institute of Technology Delhi,https://ror.org/049tgcd06,IN,New Delhi,,28.621370315551758,77.21479797363281
+I68947357,Université de Strasbourg,https://ror.org/00pg6eq24,FR,Strasbourg,,48.583919525146484,7.745530128479004
+I68956291,Martin Luther University Halle-Wittenberg,https://ror.org/05gqaka33,DE,Halle,,51.4815788269043,11.979470252990723
+I69048370,Renaissance Computing Institute,https://ror.org/01s91ey96,US,Chapel Hill,,35.91320037841797,-79.05583953857422
+I69356397,Xi’an Jiaotong-Liverpool University,https://ror.org/03zmrmn05,CN,Suzhou,,31.304079055786133,120.59538269042969
+I69722833,MAYA Design (United States),https://ror.org/0546qf840,US,Pittsburgh,Pennsylvania,40.44082260131836,-80.00463104248047
+I69737025,University of Chile,https://ror.org/047gc3g35,CL,Santiago,,-33.443321228027344,-70.65058135986328
+I70768539,École Nationale Supérieure des Mines de Paris,https://ror.org/04y8cs423,FR,Paris,,48.85340881347656,2.34879994392395
+I70983195,Syracuse University,https://ror.org/025r5qe02,US,Syracuse,,43.048118591308594,-76.14742279052734
+I71270174,Victoria University,https://ror.org/04j757h98,AU,Melbourne,,-37.81399917602539,144.96331787109375
+I71824836,Swiss Federal Laboratories for Materials Science and Technology,https://ror.org/02x681a42,CH,Dübendorf,,47.397239685058594,8.618720054626465
+I71838634,San Francisco State University,https://ror.org/05ykr0121,US,San Francisco,,37.77492904663086,-122.41941833496094
+I71920554,King Abdullah University of Science and Technology,https://ror.org/01q3tbs38,SA,Jeddah,,21.49011993408203,39.186241149902344
+I71966907,University of Northern Colorado,https://ror.org/016bysn57,US,Greeley,,40.423309326171875,-104.7091293334961
+I72090969,Nokia (United States),https://ror.org/038km2573,US,Coppell,Texas,32.894039154052734,-96.96580505371094
+I72816309,Drexel University,https://ror.org/04bdffz58,US,Philadelphia,,39.9523811340332,-75.16361999511719
+I72951846,Washington State University,https://ror.org/05dk0ce17,US,Pullman,,46.73126983642578,-117.17961883544922
+I74640424,Advanced Institute of Industrial Technology,https://ror.org/04f9apy08,JP,Tokyo,,35.60700225830078,139.74911499023438
+I74656192,University of Göttingen,https://ror.org/01y9bpm73,DE,Göttingen,,51.53443145751953,9.932279586791992
+I74753095,Ontario College of Art and Design,https://ror.org/059ncap70,CA,Toronto,,43.70642852783203,-79.39864349365234
+I74760111,Texas Instruments (United States),https://ror.org/03vsmv677,US,Dallas,Texas,32.90925598144531,-96.75105285644531
+I74775410,Rice University,https://ror.org/008zs3103,US,Houston,,29.763280868530273,-95.36327362060547
+I74786994,Kitware (United States),https://ror.org/02s2acn37,US,New York,,40.714271545410156,-74.00596618652344
+I74788687,Comenius University Bratislava,https://ror.org/0587ef340,SK,Bratislava,,48.14815902709961,17.106740951538086
+I74801974,The University of Tokyo,https://ror.org/057zh3y96,JP,Tokyo,,35.68949890136719,139.69171142578125
+I74973139,Carnegie Mellon University,https://ror.org/05x2bcf33,US,Pittsburgh,,40.44062042236328,-79.99588775634766
+I75027704,University of Tennessee at Knoxville,https://ror.org/020f3ap87,US,Knoxville,,35.96063995361328,-83.92073822021484
+I75059550,Zhejiang Gongshang University,https://ror.org/0569mkk41,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I7597260,Hungarian Academy of Sciences,https://ror.org/02ks8qq67,HU,Budapest,,47.498348236083984,19.040449142456055
+I76130692,Zhejiang University,https://ror.org/00a2xv884,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I76134821,Medical University of Vienna,https://ror.org/05n3x4p02,AT,Vienna,,48.20848846435547,16.372079849243164
+I76198965,Friedrich Schiller University Jena,https://ror.org/05qpz1x62,DE,Jena,,50.92877960205078,11.589900016784668
+I76569877,Southeast University,https://ror.org/04ct4d772,CN,Nanjing,,32.061668395996094,118.77777862548828
+I76571253,Imam Abdulrahman Bin Faisal University,https://ror.org/038cy8j79,SA,Dammam,,26.434419631958008,50.1032600402832
+I76835614,University of Missouri,https://ror.org/02ymw8z06,US,Columbia,,38.95170974731445,-92.33406829833984
+I78577930,Columbia University,https://ror.org/00hj8s172,US,New York,,40.714271545410156,-74.00596618652344
+I78650965,TU Dresden,https://ror.org/042aqky30,DE,Dresden,,51.0508918762207,13.738320350646973
+I7882870,University of Glasgow,https://ror.org/00vtgdb53,GB,Glasgow,,55.865150451660156,-4.257629871368408
+I79272384,"University of Maryland, Baltimore County",https://ror.org/02qskvh78,US,Baltimore,,39.29037857055664,-76.61219024658203
+I79510175,Cardiff University,https://ror.org/03kk7td41,GB,Cardiff,,51.47999954223633,-3.180000066757202
+I79576946,University of Pennsylvania,https://ror.org/00b30xv10,US,Philadelphia,,39.9523811340332,-75.16361999511719
+I79891267,Singapore Management University,https://ror.org/050qmg959,SG,Singapore,,1.2896699905395508,103.85006713867188
+I80143920,Shandong University of Science and Technology,https://ror.org/04gtjhw98,CN,Qingdao,,36.06488037109375,120.38041687011719
+I80605987,NOAA Earth System Research Laboratory,https://ror.org/033tt8e33,US,Boulder,,40.014991760253906,-105.27055358886719
+I8078737,Clemson University,https://ror.org/037s24f05,US,Clemson,,34.683441162109375,-82.83737182617188
+I8087733,University of Tübingen,https://ror.org/03a1kwz48,DE,Tübingen,,48.52265930175781,9.052220344543457
+I81020160,Louisiana State University Health Sciences Center Shreveport,https://ror.org/03151rh82,US,Shreveport,,32.525150299072266,-93.75018310546875
+I81365321,Old Dominion University,https://ror.org/04zjtrb98,US,Norfolk,,36.84680938720703,-76.28521728515625
+I8204097,Ludwig-Maximilians-Universität München,https://ror.org/05591te55,DE,Munich,,48.137428283691406,11.57548999786377
+I82495205,University of Alabama in Huntsville,https://ror.org/02zsxwr40,US,Huntsville,,34.73040008544922,-86.5859375
+I82514191,Honeywell (United States),https://ror.org/02t71h845,US,Charlotte,,35.227088928222656,-80.84313201904297
+I82880672,Beihang University,https://ror.org/00wk2mp56,CN,Beijing,,39.907501220703125,116.39723205566406
+I83019370,Eindhoven University of Technology,https://ror.org/02c2kyt77,NL,Eindhoven,,51.44083023071289,5.477779865264893
+I83436808,Hankuk University of Foreign Studies,https://ror.org/051q2m369,KR,Seoul,,37.566001892089844,126.97840118408203
+I83740829,School of Visual Arts,https://ror.org/0437v2m88,US,New York,New York,40.738834381103516,-73.98226928710938
+I83816512,University of Genoa,https://ror.org/0107c5v14,IT,Genoa,,44.404781341552734,8.944390296936035
+I84218800,"University of California, Davis",https://ror.org/05rrcem69,US,Davis,,38.5449104309082,-121.74051666259766
+I84392919,Temple University,https://ror.org/00kx1jb78,US,Philadelphia,,39.9523811340332,-75.16361999511719
+I84524832,Alexandria University,https://ror.org/00mzz1w90,EG,Alexandria,,31.201759338378906,29.91581916809082
+I84653119,Academia Sinica,https://ror.org/05bxb3784,TW,Taipei,,25.042062759399414,121.61674499511719
+I848706,Sungkyunkwan University,https://ror.org/04q78tk20,KR,Seoul,,37.566001892089844,126.97840118408203
+I84884186,Newcastle University,https://ror.org/01kj2bm70,GB,Newcastle upon Tyne,,54.97328186035156,-1.6139600276947021
+I85384741,Heidelberg University,https://ror.org/04rcqnp59,US,Tiffin,Ohio,41.116668701171875,-83.16666412353516
+I859038795,Virginia Tech,https://ror.org/02smfhw86,US,Blacksburg,,37.22956848144531,-80.4139404296875
+I8606887,Grand Valley State University,https://ror.org/001m1hv61,US,Allendale,,42.972251892089844,-85.95365142822266
+I86122600,Numerical Algorithms Group (United Kingdom),https://ror.org/04pcnys31,GB,Oxford,,51.79310607910156,-1.2743500471115112
+I861853513,Sapienza University of Rome,https://ror.org/02be6w209,IT,Rome,,41.891929626464844,12.511329650878906
+I86501945,University of Delaware,https://ror.org/01sbq1a82,US,Newark,,39.683719635009766,-75.7496566772461
+I86519309,The University of Texas at Austin,https://ror.org/00hj54h04,US,Austin,,30.26715087890625,-97.74305725097656
+I865915315,Vrije Universiteit Amsterdam,https://ror.org/008xxew50,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I86755215,MedStar Health,https://ror.org/05atemp08,US,Columbia,Maryland,39.218441009521484,-76.85684967041016
+I8692664,University of Oklahoma,https://ror.org/02aqsxs83,US,Norman,,35.22256851196289,-97.43948364257812
+I86987016,KTH Royal Institute of Technology,https://ror.org/026vcq606,SE,Stockholm,,59.32938003540039,18.068710327148438
+I87097829,University of North Carolina at Asheville,https://ror.org/017c6at71,US,Asheville,North Carolina,35.61619186401367,-82.5661392211914
+I87182695,Universidad del Noreste,https://ror.org/02ahky613,MX,Tampico,,22.28339958190918,-97.87220001220703
+I87216513,Michigan State University,https://ror.org/05hs6h993,US,East Lansing,,42.73698043823242,-84.48387145996094
+I87303767,U.S. Army Engineer Research and Development Center,https://ror.org/027mhn368,US,Vicksburg,,32.3526496887207,-90.87787628173828
+I87354575,National Chengchi University,https://ror.org/03rqk8h36,TW,Taipei,,25.047760009765625,121.53185272216797
+I87445476,Xi'an Jiaotong University,https://ror.org/017zhmm22,CN,Xi'an,,34.258331298828125,108.9286117553711
+I87547150,Southern Illinois University Edwardsville,https://ror.org/04cqs5j56,US,Edwardsville,Illinois,38.79339599609375,-89.99776458740234
+I880747138,Science Applications International Corporation (United States),https://ror.org/00zv91802,US,McLean,Virginia,38.921875,-77.2330322265625
+I88101031,Immersion (United States),https://ror.org/02qgx4h83,US,San Jose,California,37.40412521362305,-121.9443588256836
+I887064364,University of Amsterdam,https://ror.org/04dkp9463,NL,Amsterdam,,52.37403106689453,4.889689922332764
+I88773910,Intuit (United States),https://ror.org/049mrbr98,US,Mountain View,California,37.43062973022461,-122.0960922241211
+I887968799,RWTH Aachen University,https://ror.org/04xfq0f34,DE,Aachen,,50.776641845703125,6.0834197998046875
+I888729015,University of Colorado Colorado Springs,https://ror.org/054spjc55,US,Colorado Springs,,38.83388137817383,-104.82135772705078
+I889458895,University of Hong Kong,https://ror.org/02zhqgq86,HK,Hong Kong,,22.2783203125,114.17469024658203
+I889804353,Robert Bosch (Germany),https://ror.org/01fe0jt45,DE,Stuttgart,,48.782318115234375,9.177020072937012
+I897549280,Hologic (Germany),https://ror.org/007zn4n28,DE,Wiesbaden,,50.0576286315918,8.334871292114258
+I89864525,Universität Trier,https://ror.org/02778hg05,DE,Trier,,49.75564956665039,6.639349937438965
+I899635006,Université Grenoble Alpes,https://ror.org/02rx3b187,FR,Saint-Martin-d'Hères,,45.1786994934082,5.762810230255127
+I90023481,National Institute of Information and Communications Technology,https://ror.org/016bgq349,JP,Tokyo,,35.68949890136719,139.69171142578125
+I901242617,Zimmer Biomet (Switzerland),https://ror.org/050g10a24,CH,Winterthur,,47.50027847290039,8.75398063659668
+I901403493,NuVasive (United States),https://ror.org/036dqy506,US,San Diego,California,32.71453857421875,-117.15837860107422
+I90183372,Université de Lorraine,https://ror.org/04vfs2w97,FR,Nancy,,48.684391021728516,6.184959888458252
+I90727586,Zhejiang University of Finance and Economics,https://ror.org/055vj5234,CN,Hangzhou,,30.293649673461914,120.16142272949219
+I90965887,SUNY Polytechnic Institute,https://ror.org/000fxgx19,US,Utica,,43.10089874267578,-75.23265838623047
+I91045830,Texas A&M University,https://ror.org/01f5ytq51,US,College Station,,30.627979278564453,-96.33441162109375
+I91136226,University of Sheffield,https://ror.org/05krs5044,GB,Sheffield,,53.38296890258789,-1.46589994430542
+I91203450,University of Haifa,https://ror.org/02f009v59,IL,Haifa,,32.81840896606445,34.98849868774414
+I9146737,University of South Carolina Lancaster,https://ror.org/0289me815,US,Lancaster,South Carolina,34.737159729003906,-80.78860473632812
+I91712215,Saarland University,https://ror.org/01jdpyv68,DE,Saarbrücken,,49.23262023925781,7.009819984436035
+I91807558,National Cheng Kung University,https://ror.org/01b8kcc49,TW,Tainan City,,23.0,120.21666717529297
+I921990950,University of Colorado Denver,https://ror.org/02hh7en24,US,Denver,,39.73915100097656,-104.98470306396484
+I92446798,Colorado State University,https://ror.org/03k1gpj17,US,Fort Collins,,40.58525848388672,-105.08441925048828
+I92528248,Qatar Foundation,https://ror.org/01cawbq05,QA,Doha,,25.285449981689453,51.53096008300781
+I926574661,Leipzig University,https://ror.org/03s7gtk40,DE,Leipzig,,51.33961868286133,12.37129020690918
+I93085520,Silicon Labs (United States),https://ror.org/02dyqfb80,US,Austin,Texas,30.26485252380371,-97.74868774414062
+I93860229,Politecnico di Milano,https://ror.org/01nffqt88,IT,Milan,,45.464271545410156,9.189510345458984
+I94234084,Indian Institute of Technology Kanpur,https://ror.org/05pjsgx75,IN,Kanpur,Uttar Pradesh,26.51264762878418,80.23287963867188
+I94328231,University of Rio Grande and Rio Grande Community College,https://ror.org/02sghbs34,US,Rio Grande,Ohio,38.880279541015625,-82.37666320800781
+I94509681,Technische Universität Braunschweig,https://ror.org/010nsgg66,DE,Braunschweig,,52.26594161987305,10.526729583740234
+I94624287,University of Twente,https://ror.org/006hf6230,NL,Enschede,,52.21833038330078,6.895830154418945
+I94626330,University of Bamberg,https://ror.org/01c1w6d29,DE,Bamberg,,49.89873123168945,10.900670051574707
+I94658018,University of Memphis,https://ror.org/01cq23130,US,Memphis,,35.14952850341797,-90.04898071289062
+I94722563,University of Jyväskylä,https://ror.org/05n3dz165,FI,Jyväskylä,,62.24147033691406,25.72088050842285
+I95457486,"University of California, Berkeley",https://ror.org/01an7q238,US,Berkeley,,37.87158966064453,-122.27275085449219
+I95674353,UCLouvain,https://ror.org/02495e989,BE,Louvain-la-Neuve,,50.66828918457031,4.614429950714111
+I95793202,Otto-von-Guericke University Magdeburg,https://ror.org/00ggpsq73,DE,Magdeburg,,52.12773132324219,11.629159927368164
+I9617848,Universitat Politècnica de Catalunya,https://ror.org/03mb6wj31,ES,Barcelona,,41.388790130615234,2.158989906311035
+I97018004,Stanford University,https://ror.org/00f54p054,US,Stanford,,37.424110412597656,-122.16607666015625
+I9736820,École de Technologie Supérieure,https://ror.org/0020snb74,CA,Montreal,,45.50883865356445,-73.58780670166016
+I97429440,University of Wales,https://ror.org/01se4f844,GB,Cardiff,,51.47999954223633,-3.180000066757202
+I97750245,Software (Spain),https://ror.org/02ethns06,ES,Tres Cantos,,40.60102462768555,-3.7155539989471436
+I98251732,McMaster University,https://ror.org/02fa3aq29,CA,Hamilton,,43.2501106262207,-79.8496322631836
+I98358874,Delft University of Technology,https://ror.org/02e2c7k09,NL,Delft,,52.00667190551758,4.355559825897217
+I98381234,University of Oulu,https://ror.org/03yj89h83,FI,Oulu,,65.01235961914062,25.46816062927246
+I98677209,University of Edinburgh,https://ror.org/01nrxwf90,GB,Edinburgh,,55.95206069946289,-3.1964800357818604
+I99041443,Mississippi State University,https://ror.org/0432jq872,US,Starkville,,33.45048904418945,-88.81961059570312
+I99043593,Macquarie University,https://ror.org/01sf06y89,AU,Sydney,,-33.86785125732422,151.2073211669922
+I99065089,Tsinghua University,https://ror.org/03cve4549,CN,Beijing,,39.907501220703125,116.39723205566406
+I99464096,KU Leuven,https://ror.org/05f950310,BE,Leuven,,50.87958908081055,4.700930118560791

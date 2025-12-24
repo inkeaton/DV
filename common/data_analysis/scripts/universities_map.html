@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Università & Scienziati (D3 Mercator)</title>
+  <style>
+    html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .wrap { height: 100%; display: flex; flex-direction: column; }
+    header { padding: 10px 14px; border-bottom: 1px solid #e6e6e6; display: flex; gap: 12px; align-items: baseline; }
+    header h1 { font-size: 16px; margin: 0; }
+    header .meta { font-size: 12px; color: #666; }
+    #chart { flex: 1; position: relative; }
+    svg { width: 100%; height: 100%; display: block; }
+    .country { fill: #f4f4f4; stroke: #cfcfcf; stroke-width: 0.6; }
+    .bubble { stroke: #111; stroke-opacity: 0.25; }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(15,15,15,0.92);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.2;
+      opacity: 0;
+      transform: translate(-50%, -110%);
+      white-space: nowrap;
+    }
+    .legend {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+    .legend .row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    .legend .dots { display: flex; align-items: center; gap: 10px; }
+    .legend .dot { border: 1px solid rgba(0,0,0,0.25); border-radius: 50%; background: rgba(0,0,0,0.08); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Università & scienziati (bubble map)</h1>
+    <div class="meta" id="meta"></div>
+  </header>
+  <div id="chart">
+    <div class="tooltip" id="tooltip"></div>
+    <div class="legend" id="legend" style="display:none"></div>
+  </div>
+</div>
+
+<!-- D3 + TopoJSON -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<script>
+(async function () {
+  // === Config ===
+  const WORLD_TOPOJSON_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+  // Metti i CSV nella stessa cartella dell’HTML (o cambia i path qui)
+  const INSTITUTIONS_CSV = "../outputs/openalex_outputs/institutions_geo.csv";
+  const AUTHOR_PRIMARY_CSV = "../outputs/openalex_outputs/author_primary_geo.csv";
+
+
+  // Bubble sizing
+  const R_MIN = 2.5;
+  const R_MAX = 22;
+
+  // === Helpers ===
+  function hashToHue(str) {
+    // hash semplice -> hue 0..359 (deterministico)
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return Math.abs(h) % 360;
+  }
+
+  function uniColor(institutionId) {
+    const hue = hashToHue(institutionId || "");
+    // “univoco” (deterministico) per università
+    return `hsl(${hue} 70% 55%)`;
+  }
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  // === Load data ===
+  const [worldTopo, institutionsRaw, authorPrimaryRaw] = await Promise.all([
+    d3.json(WORLD_TOPOJSON_URL),
+    d3.csv(INSTITUTIONS_CSV, d3.autoType),
+    d3.csv(AUTHOR_PRIMARY_CSV, d3.autoType),
+  ]);
+
+  // 1) Conteggio scienziati per università (primary affiliation)
+  // author_primary_geo.csv dovrebbe avere: author_id, institution_id
+  const countByInst = d3.rollup(
+    authorPrimaryRaw.filter(d => d.institution_id && d.author_id),
+    v => new Set(v.map(d => d.author_id)).size,
+    d => d.institution_id
+  );
+
+  // 2) Join con institutions_geo.csv per lat/lon + display_name
+  const institutions = institutionsRaw
+    .filter(d => d.institution_id && d.latitude != null && d.longitude != null)
+    .map(d => ({
+      institution_id: d.institution_id,
+      display_name: d.display_name || d.institution_id,
+      latitude: +d.latitude,
+      longitude: +d.longitude,
+      n_scientists: countByInst.get(d.institution_id) || 0
+    }))
+    .filter(d => d.n_scientists > 0); // mostra solo università con >=1 autore
+
+  const nInst = institutions.length;
+  const nAuthors = d3.sum(institutions, d => d.n_scientists);
+
+  d3.select("#meta").text(`${nInst.toLocaleString("it-IT")} università · ${nAuthors.toLocaleString("it-IT")} autori (primary)`);
+
+  // === Build map ===
+  const chart = document.getElementById("chart");
+  const tooltip = d3.select("#tooltip");
+  const svg = d3.select(chart).append("svg");
+
+  function render() {
+    const { width, height } = chart.getBoundingClientRect();
+    svg.attr("viewBox", [0, 0, width, height]);
+
+    svg.selectAll("*").remove();
+
+    const projection = d3.geoMercator()
+      .fitExtent([[10, 10], [width - 10, height - 10]], { type: "Sphere" });
+
+    const path = d3.geoPath(projection);
+
+    // World countries
+    const countries = topojson.feature(worldTopo, worldTopo.objects.countries);
+
+    const g = svg.append("g");
+
+    g.append("path")
+      .datum({ type: "Sphere" })
+      .attr("d", path)
+      .attr("fill", "#ffffff");
+
+    g.selectAll("path.country")
+      .data(countries.features)
+      .join("path")
+      .attr("class", "country")
+      .attr("d", path);
+
+    // Bubble scale
+    const maxN = d3.max(institutions, d => d.n_scientists) || 1;
+    const r = d3.scaleSqrt()
+      .domain([1, maxN])
+      .range([R_MIN, R_MAX]);
+
+    // Draw bubbles
+    const bubbles = g.append("g")
+      .attr("class", "bubbles")
+      .selectAll("circle")
+      .data(institutions, d => d.institution_id)
+      .join("circle")
+      .attr("class", "bubble")
+      .attr("cx", d => projection([d.longitude, d.latitude])[0])
+      .attr("cy", d => projection([d.longitude, d.latitude])[1])
+      .attr("r", d => r(d.n_scientists))
+      .attr("fill", d => uniColor(d.institution_id))
+      .attr("fill-opacity", 0.75);
+
+    // Hover interactions
+    bubbles
+      .on("mouseenter", function (event, d) {
+        d3.select(this).attr("stroke-opacity", 0.9).attr("stroke-width", 1.2);
+        tooltip
+          .style("opacity", 1)
+          .html(`<div style="font-weight:600">${d.display_name}</div><div>${d.n_scientists.toLocaleString("it-IT")} autori</div>`);
+      })
+      .on("mousemove", function (event) {
+        const rect = chart.getBoundingClientRect();
+        tooltip
+          .style("left", (event.clientX - rect.left) + "px")
+          .style("top", (event.clientY - rect.top) + "px");
+      })
+      .on("mouseleave", function () {
+        d3.select(this).attr("stroke-opacity", 0.25).attr("stroke-width", 1);
+        tooltip.style("opacity", 0);
+      });
+
+    // Zoom / pan
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on("zoom", (event) => g.attr("transform", event.transform));
+
+    svg.call(zoom);
+
+    // Legend (bubble sizes)
+    const legend = d3.select("#legend").style("display", "block");
+    const steps = [1, Math.ceil(maxN / 5), Math.ceil(maxN / 2), maxN].filter((v, i, a) => a.indexOf(v) === i).sort((a,b)=>a-b);
+
+    legend.html(`
+      <div style="font-weight:600; margin-bottom:6px">Legenda</div>
+      <div>Raggio ∝ # autori</div>
+      <div class="row">
+        <div class="dots">
+          ${steps.map(v => `<div class="dot" style="width:${2*r(v)}px;height:${2*r(v)}px"></div>`).join("")}
+        </div>
+      </div>
+      <div style="margin-top:6px; color:#666">
+        max: ${maxN.toLocaleString("it-IT")}
+      </div>
+    `);
+  }
+
+  render();
+  window.addEventListener("resize", render);
+})();
+</script>
+</body>
+</html>
