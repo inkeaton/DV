@@ -1009,7 +1009,7 @@ def get_country_per_author(affiliation_string: str):
     if all(p == "None" for p in parts):
         return None
 
-    return " ; ".join(parts)
+    return ";".join(parts)
 
 
 if __name__ == "__main__":
