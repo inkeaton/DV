@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VIS 35</title>
+  <link rel="icon" href="logo.png" />
+
+
+
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- Material Design 3 (Material Web Components) -->
+  <script type="module" src="https://unpkg.com/@material/web/all.js?module"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@400;500;600" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+      VIS 35 — TEMPLATE
+      - Scrollytelling (R2D3-ish)
+      - 2 modes: Student / Researcher
+      - 4 chapters, 14 charts total (12–15 target ✅)
+      - HTML + CSS + JS + D3 + Material Design 3 (Material Web)
+    ========================================================== */
+
+    /* ---------- MD3-ish theme tokens (simple) ---------- */
+    :root{
+      --md-sys-color-primary: #0B57D0;
+      --md-sys-color-secondary: #006A6A;
+      --md-sys-color-tertiary: #7B4BCE;
+
+      --md-sys-color-surface: #FFFBFF;
+      --md-sys-color-surface-container: #F3EDF7;
+      --md-sys-color-surface-container-high: #ECE6F0;
+      --md-sys-color-on-surface: #1C1B1F;
+      --md-sys-color-on-surface-variant: #49454F;
+
+      --md-sys-color-outline: #79747E;
+
+      --student: #0F9D58;
+      --researcher: #1A73E8;
+
+      --current-accent: var(--student);
+
+      --font-head: "Merriweather", serif;
+      --font-body: "Roboto", system-ui, -apple-system, Segoe UI, sans-serif;
+
+      --shadow-1: 0 1px 2px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.08);
+      --shadow-2: 0 4px 10px rgba(0,0,0,.12);
+
+      --maxw: 1320px;
+    }
+
+    body.mode-student { --current-accent: var(--student); }
+    body.mode-researcher { --current-accent: var(--researcher); }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: linear-gradient(180deg, #fff 0%, #fbf7ff 40%, #fff 100%);
+      color: var(--md-sys-color-on-surface);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    .sr-only { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+    /* ---------- Top app bar ---------- */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+    .brand {
+      display:flex; align-items:center; gap:12px;
+      min-width: 220px;
+    }
+    .brand .logo {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 30%, var(--current-accent), #ffffff 80%);
+      border: 1px solid rgba(0,0,0,.1);
+      box-shadow: var(--shadow-1);
+    }
+    .brand h1 {
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: 18px;
+      line-height: 1.1;
+    }
+    .brand .sub {
+      display:block;
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    .topbar-right {
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .mode-pills {
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+
+    /* Material buttons look good, but add subtle accent for active */
+    body.mode-student #btnStudent { outline: 2px solid rgba(15,157,88,.25); }
+    body.mode-researcher #btnResearcher { outline: 2px solid rgba(26,115,232,.25); }
+
+    .progress {
+      height: 3px;
+      width: 180px;
+      background: rgba(0,0,0,.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: var(--current-accent);
+      transition: width .15s linear;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      padding: 120px 16px 70px 16px;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 980px){
+      .hero { grid-template-columns: 1fr; padding-top: 105px; }
+    }
+    .hero h2 {
+      font-family: var(--font-head);
+      font-size: clamp(34px, 5vw, 52px);
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--md-sys-color-on-surface-variant);
+      max-width: 56ch;
+    }
+    .hero .cta {
+      margin-top: 16px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .hero-card {
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow-1);
+    }
+    .hero-card h3 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .hero-card ul { margin: 0; padding-left: 18px; color: var(--md-sys-color-on-surface); }
+    .hero-card li { margin: 6px 0; }
+
+    /* ---------- Chapter divider ---------- */
+    .divider {
+      border-top: 1px solid rgba(0,0,0,.08);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      background: linear-gradient(90deg,
+        rgba(15,157,88,.12),
+        rgba(26,115,232,.10),
+        rgba(123,75,206,.10)
+      );
+    }
+    .divider-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 42px 16px;
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .divider h2 {
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: 28px;
+    }
+    .divider p {
+      margin: 0;
+      max-width: 70ch;
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.5;
+    }
+    .chip-row {
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .tiny {
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* ---------- Scrolly layout ---------- */
+    .scrolly {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 16px 70px 16px;
+      display:flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .textcol {
+      width: 36%;
+      min-width: 320px;
+      position: relative;
+      z-index: 10;
+    }
+    .vizcol {
+      width: 64%;
+      min-height: 100vh;
+      position: sticky;
+      top: 58px; /* below topbar */
+      height: calc(100vh - 58px);
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+      justify-content: center;
+    }
+    @media (max-width: 980px){
+      .scrolly { flex-direction: column; }
+      .textcol, .vizcol { width: 100%; min-width: unset; }
+      .vizcol { position: relative; top: 0; height: auto; min-height: 420px; }
+    }
+
+    .step {
+      min-height: 85vh;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+      padding: 18px 0;
+    }
+
+    .card {
+      width: min(420px, 96%);
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow-1);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .step.is-active .card{
+      border-color: rgba(0,0,0,.14);
+      box-shadow: var(--shadow-2);
+      transform: translateY(-2px);
+      outline: 3px solid color-mix(in srgb, var(--current-accent) 22%, transparent);
+    }
+
+    .eyebrow {
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: 8px;
+    }
+    .eyebrow .dot {
+      width: 10px; height: 10px; border-radius: 99px;
+      background: var(--current-accent);
+    }
+    .card h3 { margin: 0 0 8px 0; font-family: var(--font-head); font-size: 20px; }
+    .card p { margin: 0; line-height: 1.55; color: var(--md-sys-color-on-surface-variant); }
+
+    .mode-msg {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(0,0,0,.15);
+      font-size: 14px;
+      line-height: 1.5;
+      color: color-mix(in srgb, var(--current-accent) 78%, #111);
+    }
+    /* show mode-specific copy */
+    .for-student, .for-researcher { display:none; }
+    body.mode-student .for-student { display:block; }
+    body.mode-researcher .for-researcher { display:block; }
+
+    /* ---------- Viz stack ---------- */
+    .viz-shell{
+      height: 100%;
+      border-radius: 22px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: var(--shadow-1);
+      overflow: hidden;
+      position: relative;
+    }
+    .viz-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.8);
+    }
+    .viz-title{
+      font-size: 13px;
+      color: var(--md-sys-color-on-surface-variant);
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .viz-title .badge{
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--current-accent) 16%, #fff);
+      border: 1px solid color-mix(in srgb, var(--current-accent) 18%, rgba(0,0,0,.08));
+      color: color-mix(in srgb, var(--current-accent) 80%, #111);
+    }
+
+    .viz-stack{
+      position: relative;
+      height: calc(100% - 52px);
+    }
+    .viz-panel{
+      position:absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+    .viz-panel.active{
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .viz-panel svg{ width: 100%; height: 100%; }
+
+    /* ---------- Footer ---------- */
+    footer{
+      background: #111318;
+      color: rgba(255,255,255,.88);
+      padding: 60px 16px;
+      border-top: 4px solid var(--current-accent);
+    }
+    .footer-inner{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+    }
+    @media (max-width: 980px){ .footer-inner{ grid-template-columns: 1fr; } }
+
+    footer h2{ margin:0 0 10px 0; font-family: var(--font-head); }
+    footer p{ margin: 0 0 10px 0; color: rgba(255,255,255,.72); line-height: 1.6; }
+    .meta{
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* ---------- Reduced motion ---------- */
+    body.reduce-motion *{
+      scroll-behavior: auto !important;
+      transition: none !important;
+      animation: none !important;
+    }
+  </style>
+</head>
+
+<body class="mode-student">
+  <a class="sr-only" href="#chapter-1">Skip to content</a>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand" role="banner" aria-label="VIS 35">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>VIS 35 <span class="sub">Ideas · People · Places · Proof</span></h1>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="mode-pills" aria-label="Mode switch">
+        <md-filled-tonal-button id="btnStudent">
+          <span class="material-symbols-rounded" slot="icon">school</span>
+          Student
+        </md-filled-tonal-button>
+
+        <md-filled-tonal-button id="btnResearcher">
+          <span class="material-symbols-rounded" slot="icon">biotech</span>
+          Researcher
+        </md-filled-tonal-button>
+      </div>
+
+      <div class="progress" aria-label="Scroll progress"><div id="progressBar"></div></div>
+
+      <md-icon-button id="btnShortlist" aria-label="Open shortlist">
+        <span class="material-symbols-rounded">bookmark</span>
+      </md-icon-button>
+
+      <md-icon-button id="btnAbout" aria-label="Open methodology">
+        <span class="material-symbols-rounded">info</span>
+      </md-icon-button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Intro">
+    <div>
+      <h2>The Invisible Shape of VIS</h2>
+      <p>
+        A long-read, scrollable data story about <strong>35 years of visualization research</strong>.
+        Switch between <strong>Student</strong> and <strong>Researcher</strong> mode — the same data, different goals.
+      </p>
+      <div class="cta">
+        <md-filled-button id="btnStart">
+          <span class="material-symbols-rounded" slot="icon">south</span>
+          Start scrolling
+        </md-filled-button>
+
+        <md-outlined-button id="btnReduceMotion">
+          <span class="material-symbols-rounded" slot="icon">motion_photos_off</span>
+          Reduced motion
+        </md-outlined-button>
+
+        <span class="tiny">Template uses fake data. Plug in VISpubdata later.</span>
+      </div>
+    </div>
+
+    <div class="hero-card" aria-label="What you get">
+      <h3>What you’ll get</h3>
+      <ul>
+        <li><strong>Student:</strong> pick a topic → find strong groups → build a PhD reading list.</li>
+        <li><strong>Researcher:</strong> spot growing areas → identify bridges → build a collab shortlist.</li>
+        <li>14 charts total (12–15 target), reused with mode-specific interpretation.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 1 ==========
+    Charts 1–4
+    1) Papers per year (line)
+    2) Topics over time (streamgraph)
+    3) Topic Growth vs Volume (quadrant scatter)
+    4) Topic lifecycles (small-multiple sparklines)
+  ================================== -->
+  <div class="divider" id="chapter-1">
+    <div class="divider-inner">
+      <div>
+        <h2>Chapter 1 — Ideas</h2>
+        <p>Where are the ideas going? From raw volume to emerging themes and their life cycles.</p>
+      </div>
+      <div class="chip-row">
+        <span class="tiny">Pick a topic (mock):</span>
+        <md-assist-chip label="Human-AI" data-topic="Human-AI"></md-assist-chip>
+        <md-assist-chip label="Evaluation" data-topic="Evaluation"></md-assist-chip>
+        <md-assist-chip label="Scientific Vis" data-topic="SciVis"></md-assist-chip>
+        <md-assist-chip label="Graphs" data-topic="Graphs"></md-assist-chip>
+      </div>
+    </div>
+  </div>
+
+  <section class="scrolly" data-chapter="1">
+    <div class="textcol">
+      <div class="step" data-chart="c1" data-title="Chart 1 — Papers per year">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Warm-up</div>
+          <h3>How fast did VIS grow?</h3>
+          <p>A 35-year timeline. We start with the simplest signal: volume.</p>
+          <div class="mode-msg for-student">Student lens: notice “recent acceleration” and what that implies for competition & specialization.</div>
+          <div class="mode-msg for-researcher">Researcher lens: look for phase changes (policy shifts, new tracks, field expansion).</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c2" data-title="Chart 2 — Topics over time">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Themes</div>
+          <h3>What are people talking about?</h3>
+          <p>Topics flowing through time. Emerging areas appear as thin bands that thicken.</p>
+          <div class="mode-msg for-student">Pick a topic you’d enjoy for 2–5 years. We’ll carry it through the whole story.</div>
+          <div class="mode-msg for-researcher">Use this as an “opportunity radar”: growth + cross-track spread often means new collaboration space.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c3" data-title="Chart 3 — Growth vs Volume">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Signal</div>
+          <h3>Emerging, mainstream, niche… or declining?</h3>
+          <p>Growth (recent years) vs total volume (all years): four quadrants, four strategies.</p>
+          <div class="mode-msg for-student">Student strategy: start in “Emerging” or “Niche + growing” for novelty and a clearer PhD pitch.</div>
+          <div class="mode-msg for-researcher">Researcher strategy: aim for “Emerging + cross-track” to find complementary collaborators.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c4" data-title="Chart 4 — Topic lifecycles">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Reality check</div>
+          <h3>Not everything grows forever</h3>
+          <p>Small multiples show peaks and half-lives: some topics surge, others persist quietly.</p>
+          <div class="mode-msg for-student">Choose a topic with a “long tail” if you want stability; choose a surge if you want novelty.</div>
+          <div class="mode-msg for-researcher">Watch for “second waves”: mature topics that re-ignite thanks to new methods (e.g., AI).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vizcol">
+      <div class="viz-shell">
+        <div class="viz-toolbar">
+          <div class="viz-title">
+            <span class="material-symbols-rounded" style="font-size:18px;">timeline</span>
+            <span id="vizTitle1">Chart</span>
+            <span class="badge" id="topicBadge">Topic: All</span>
+          </div>
+          <div class="tiny">Mode changes tooltip & ranking, not the data.</div>
+        </div>
+
+        <div class="viz-stack" id="vizStack1">
+          <div class="viz-panel" id="c1"></div>
+          <div class="viz-panel" id="c2"></div>
+          <div class="viz-panel" id="c3"></div>
+          <div class="viz-panel" id="c4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 2 ==========
+    Charts 5–7
+    5) Downloads vs Citations (scatter)
+    6) Citations by topic (boxplot)
+    7) Awards/Stamp rate by year (heatmap)
+  ================================== -->
+  <div class="divider" id="chapter-2">
+    <div class="divider-inner">
+      <div>
+        <h2>Chapter 2 — Impact</h2>
+        <p>Impact has many faces: academic attention, real adoption, and community recognition.</p>
+      </div>
+      <div class="chip-row">
+        <md-filter-chip id="toggleAwards" label="Highlight awards"></md-filter-chip>
+        <md-filter-chip id="toggleStamp" label="Highlight replicability"></md-filter-chip>
+      </div>
+    </div>
+  </div>
+
+  <section class="scrolly" data-chapter="2">
+    <div class="textcol">
+      <div class="step" data-chart="c5" data-title="Chart 5 — Downloads vs Citations">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Two axes</div>
+          <h3>Adoption vs academic impact</h3>
+          <p>Each dot is a paper. Some are heavily cited, some are heavily used — sometimes both.</p>
+          <div class="mode-msg for-student">Student tip: pick papers with both signals to build a strong foundation quickly.</div>
+          <div class="mode-msg for-researcher">Researcher tip: “high downloads, medium citations” can indicate under-explored practical value.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c6" data-title="Chart 6 — Citations distribution by topic">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Distribution</div>
+          <h3>Does a topic have broad impact… or a few outliers?</h3>
+          <p>Boxplots per topic show whether influence is distributed or concentrated.</p>
+          <div class="mode-msg for-student">Prefer “distributed impact” topics for a safer PhD runway; avoid “one-hit wonder” areas.</div>
+          <div class="mode-msg for-researcher">Outlier-heavy topics may hide big open problems — but they’re riskier.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c7" data-title="Chart 7 — Awards & stamp over time">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Recognition</div>
+          <h3>What does the community reward?</h3>
+          <p>A yearly heatmap: awards and replicability stamps as cultural signals.</p>
+          <div class="mode-msg for-student">Use this to understand “what gets valued” in the field you’re entering.</div>
+          <div class="mode-msg for-researcher">Look for shifts: new awards / stamps often reflect evolving norms and expectations.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vizcol">
+      <div class="viz-shell">
+        <div class="viz-toolbar">
+          <div class="viz-title">
+            <span class="material-symbols-rounded" style="font-size:18px;">insights</span>
+            <span id="vizTitle2">Chart</span>
+            <span class="badge" id="impactBadge">Lens: Balanced</span>
+          </div>
+          <div class="tiny">Toggles change emphasis.</div>
+        </div>
+
+        <div class="viz-stack" id="vizStack2">
+          <div class="viz-panel" id="c5"></div>
+          <div class="viz-panel" id="c6"></div>
+          <div class="viz-panel" id="c7"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 3 ==========
+    Charts 8–11
+    8) Coauthor network (force)
+    9) Bridge authors (ranked bars)
+    10) Team size over time (box-ish)
+    11) Cross-track mobility (mini-sankey)
+  ================================== -->
+  <div class="divider" id="chapter-3">
+    <div class="divider-inner">
+      <div>
+        <h2>Chapter 3 — People</h2>
+        <p>Science is a network. This chapter turns papers into collaborations, bridges, and teams.</p>
+      </div>
+      <div class="chip-row">
+        <span class="tiny">Filters (mock):</span>
+        <md-assist-chip label="Last 10 years"></md-assist-chip>
+        <md-assist-chip label="All tracks"></md-assist-chip>
+      </div>
+    </div>
+  </div>
+
+  <section class="scrolly" data-chapter="3">
+    <div class="textcol">
+      <div class="step" data-chart="c8" data-title="Chart 8 — Coauthor network">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Network</div>
+          <h3>Clusters and communities</h3>
+          <p>Nodes are authors, links are coauthorship. Clusters form “labs”, “schools”, and collaborations.</p>
+          <div class="mode-msg for-student">Student goal: find “entry points” — authors who frequently collaborate with newcomers.</div>
+          <div class="mode-msg for-researcher">Researcher goal: find adjacent clusters for complementary expertise.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c9" data-title="Chart 9 — Bridge authors">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Bridges</div>
+          <h3>Who connects worlds?</h3>
+          <p>Ranked “bridge score” (proxy for betweenness). Bridges are often great collaborators.</p>
+          <div class="mode-msg for-student">These are “advisor-like” candidates: they sit at crossroads of multiple communities.</div>
+          <div class="mode-msg for-researcher">Bridges amplify reach: they can connect your work to other subfields.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c10" data-title="Chart 10 — Team size over time">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Teams</div>
+          <h3>Are papers becoming more collaborative?</h3>
+          <p>Team sizes by year. Collaboration trends shape how you should plan projects.</p>
+          <div class="mode-msg for-student">Expect bigger teams in some areas; build your “collaboration literacy”.</div>
+          <div class="mode-msg for-researcher">Track differences in team size can hint at method complexity and resource needs.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c11" data-title="Chart 11 — Cross-track mobility">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Mobility</div>
+          <h3>Do people move between tracks?</h3>
+          <p>A simple flow view: which communities exchange authors most.</p>
+          <div class="mode-msg for-student">If your topic is cross-track, you can apply to a wider set of advisors and groups.</div>
+          <div class="mode-msg for-researcher">Cross-track authors often enable high-impact interdisciplinary work.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vizcol">
+      <div class="viz-shell">
+        <div class="viz-toolbar">
+          <div class="viz-title">
+            <span class="material-symbols-rounded" style="font-size:18px;">hub</span>
+            <span id="vizTitle3">Chart</span>
+            <span class="badge">People lens</span>
+          </div>
+          <div class="tiny">Mode changes recommendations.</div>
+        </div>
+
+        <div class="viz-stack" id="vizStack3">
+          <div class="viz-panel" id="c8"></div>
+          <div class="viz-panel" id="c9"></div>
+          <div class="viz-panel" id="c10"></div>
+          <div class="viz-panel" id="c11"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 4 ==========
+    Charts 12–14
+    12) University “bubble map” (abstract geo)
+    13) Country intensity (rect-choropleth)
+    14) Collaboration flows (arc diagram)
+  ================================== -->
+  <div class="divider" id="chapter-4">
+    <div class="divider-inner">
+      <div>
+        <h2>Chapter 4 — Places</h2>
+        <p>Ideas travel, but people live somewhere. Where is the talent concentrating — and where is it emerging?</p>
+      </div>
+      <div class="chip-row">
+        <md-assist-chip label="Show growth hot-spots"></md-assist-chip>
+        <md-assist-chip label="Show stable hubs"></md-assist-chip>
+      </div>
+    </div>
+  </div>
+
+  <section class="scrolly" data-chapter="4">
+    <div class="textcol">
+      <div class="step" data-chart="c12" data-title="Chart 12 — Universities map (abstract)">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Hubs</div>
+          <h3>Where are the strong groups?</h3>
+          <p>A “bubble map” of institutions. Size reflects activity; accent highlights recent growth.</p>
+          <div class="mode-msg for-student">Student output: a shortlist of 10 groups to explore for your topic.</div>
+          <div class="mode-msg for-researcher">Researcher output: identify strategic hubs to partner with (especially across regions).</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c13" data-title="Chart 13 — Countries over time (cartogram)">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Global</div>
+          <h3>How global is VIS now?</h3>
+          <p>Country activity. Use it to spot emerging regions and shifting centers of gravity.</p>
+          <div class="mode-msg for-student">Practical: consider programs in emerging hubs — they can be less crowded and very strong.</div>
+          <div class="mode-msg for-researcher">Practical: new regions can be great for growing networks and fresh datasets.</div>
+        </div>
+      </div>
+
+      <div class="step" data-chart="c14" data-title="Chart 14 — International collaboration flows">
+        <div class="card">
+          <div class="eyebrow"><span class="dot"></span> Flows</div>
+          <h3>Where do collaborations happen?</h3>
+          <p>Flows between regions. Strong arcs show frequent coauthorship across borders.</p>
+          <div class="mode-msg for-student">If you want a broad network, aim for regions with many outward connections.</div>
+          <div class="mode-msg for-researcher">Use this to target “bridge regions” that connect otherwise separate communities.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vizcol">
+      <div class="viz-shell">
+        <div class="viz-toolbar">
+          <div class="viz-title">
+            <span class="material-symbols-rounded" style="font-size:18px;">public</span>
+            <span id="vizTitle4">Chart</span>
+            <span class="badge">Places lens</span>
+          </div>
+          <div class="tiny">Replace mock geo later.</div>
+        </div>
+
+        <div class="viz-stack" id="vizStack4">
+          <div class="viz-panel" id="c12"></div>
+          <div class="viz-panel" id="c13"></div>
+          <div class="viz-panel" id="c14"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <h2>VIS 35 — Template</h2>
+        <p>
+          A scroll-driven storytelling shell inspired by R2D3 and long-read data stories.
+          Replace the mock generator with VISpubdata processing outputs (CSV/JSON).
+        </p>
+        <p class="tiny">Built with HTML/CSS/JS, D3 v7, and Material Design 3 components.</p>
+      </div>
+      <div class="meta">
+        <p><strong>Data plan (recommended):</strong></p>
+        <p class="tiny">
+          Precompute JSON files:
+          <br>• papers_by_year.json
+          <br>• topics_by_year.json
+          <br>• topic_metrics.json (growth/volume/citations/downloads)
+          <br>• author_network.json (nodes/links, bridge scores)
+          <br>• institutions.json (lat/lon or region bins)
+          <br>• country_counts_by_year.json
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MD3 Dialog: Shortlist -->
+  <md-dialog id="dlgShortlist">
+    <div slot="headline">My shortlist</div>
+    <div slot="content" id="shortlistContent">
+      <p style="margin-top:0;color:#444;">
+        Your picks will appear here (topic, authors, institutions, papers).
+        This template stores them in memory only.
+      </p>
+      <div id="shortlistList"></div>
+    </div>
+    <div slot="actions">
+      <md-text-button id="btnClearShortlist">Clear</md-text-button>
+      <md-filled-button id="btnCloseShortlist">Close</md-filled-button>
+    </div>
+  </md-dialog>
+
+  <!-- MD3 Dialog: About -->
+  <md-dialog id="dlgAbout">
+    <div slot="headline">Methodology (placeholder)</div>
+    <div slot="content">
+      <p style="margin-top:0;color:#444;line-height:1.5;">
+        Replace this text with your real pipeline:
+        cleaning rules, topic modeling approach (e.g. BERTopic), and limitations
+        (missing affiliations, citation source differences, etc.).
+      </p>
+      <ul style="color:#555;line-height:1.5;">
+        <li><strong>Dataset:</strong> VISpubdata (1990–2024)</li>
+        <li><strong>Types:</strong> use C + J for research; exclude M</li>
+        <li><strong>Impact:</strong> citations + downloads as complementary signals</li>
+        <li><strong>Networks:</strong> coauthorship + internal citations</li>
+      </ul>
+    </div>
+    <div slot="actions">
+      <md-filled-button id="btnCloseAbout">Close</md-filled-button>
+    </div>
+  </md-dialog>
+
+  <script>
+    /*************************************************************
+      TEMPLATE JS
+      - 2 modes (Student / Researcher)
+      - 14 charts, displayed via "viz panel" switching per step
+      - Mock data generator (swap with real VISpubdata later)
+    *************************************************************/
+
+    // ---------- Global state ----------
+    const state = {
+      mode: "student",
+      topic: "All",
+      highlightAwards: false,
+      highlightStamp: false,
+      reduceMotion: false,
+      shortlist: []
+    };
+
+    // ---------- Helpers ----------
+    const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+    const fmt = d3.format(",");
+
+    function setMode(mode){
+      state.mode = mode;
+      document.body.classList.toggle("mode-student", mode === "student");
+      document.body.classList.toggle("mode-researcher", mode === "researcher");
+      rerenderAll();
+    }
+
+    function setTopic(topic){
+      state.topic = topic;
+      document.getElementById("topicBadge").textContent = `Topic: ${topic}`;
+      rerenderAll();
+    }
+
+    function pushShortlist(item){
+      state.shortlist.push(item);
+      renderShortlist();
+    }
+
+    function clearShortlist(){
+      state.shortlist = [];
+      renderShortlist();
+    }
+
+    function renderShortlist(){
+      const box = document.getElementById("shortlistList");
+      box.innerHTML = "";
+      if(state.shortlist.length === 0){
+        box.innerHTML = `<p style="color:#666;margin:0;">No items yet.</p>`;
+        return;
+      }
+      const ul = document.createElement("ul");
+      ul.style.margin = "0";
+      ul.style.paddingLeft = "18px";
+      state.shortlist.slice(-12).reverse().forEach(x=>{
+        const li = document.createElement("li");
+        li.style.margin = "6px 0";
+        li.textContent = x;
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+    }
+
+    // ---------- Wiring UI ----------
+    const btnStudent = document.getElementById("btnStudent");
+    const btnResearcher = document.getElementById("btnResearcher");
+    btnStudent.addEventListener("click", () => setMode("student"));
+    btnResearcher.addEventListener("click", () => setMode("researcher"));
+
+    document.getElementById("btnStart").addEventListener("click", () => {
+      document.getElementById("chapter-1").scrollIntoView({behavior: state.reduceMotion ? "auto" : "smooth"});
+    });
+
+    document.getElementById("btnShortlist").addEventListener("click", () => {
+      document.getElementById("dlgShortlist").open = true;
+      renderShortlist();
+    });
+    document.getElementById("btnCloseShortlist").addEventListener("click", () => {
+      document.getElementById("dlgShortlist").open = false;
+    });
+    document.getElementById("btnClearShortlist").addEventListener("click", clearShortlist);
+
+    document.getElementById("btnAbout").addEventListener("click", () => {
+      document.getElementById("dlgAbout").open = true;
+    });
+    document.getElementById("btnCloseAbout").addEventListener("click", () => {
+      document.getElementById("dlgAbout").open = false;
+    });
+
+    document.getElementById("btnReduceMotion").addEventListener("click", () => {
+      state.reduceMotion = !state.reduceMotion;
+      document.body.classList.toggle("reduce-motion", state.reduceMotion);
+    });
+
+    // Topic chips
+    document.querySelectorAll("md-assist-chip[data-topic]").forEach(chip=>{
+      chip.addEventListener("click", () => setTopic(chip.getAttribute("data-topic")));
+    });
+
+    // Impact toggles
+    const tAwards = document.getElementById("toggleAwards");
+    const tStamp = document.getElementById("toggleStamp");
+    tAwards.addEventListener("click", () => { state.highlightAwards = !state.highlightAwards; rerenderAll(); });
+    tStamp.addEventListener("click", () => { state.highlightStamp = !state.highlightStamp; rerenderAll(); });
+
+    // ---------- Mock data ----------
+    const years = d3.range(1990, 2025);
+    const topics = ["Human-AI","Evaluation","SciVis","Graphs","Interaction","ML","Uncertainty","Storytelling"];
+    const tracks = ["SciVis","InfoVis","VAST","VIS"];
+
+    // Chart 1: papers per year
+    const papersByYear = years.map(y => ({
+      year: y,
+      papers: Math.round(30 + (y-1990)*2.2 + 20*Math.sin((y-1990)/4) + (y>2015 ? (y-2015)*3.5 : 0)),
+    }));
+
+    // Chart 2: topic flows
+    const topicByYear = years.map(y => {
+      const obj = { year: y };
+      topics.forEach((t, i) => {
+        // Make late growth for "Human-AI" to mimic trend
+        const base = 3 + 2*Math.sin((y-1990)/3 + i);
+        const surge = (t==="Human-AI" ? clamp((y-2016)*1.8, 0, 18) : 0);
+        obj[t] = Math.max(0, Math.round(base + 4 + surge + 2*Math.random()));
+      });
+      return obj;
+    });
+
+    // Topic metrics for chart 3/4
+    const topicMetrics = topics.map(t => {
+      const volume = d3.sum(topicByYear, d => d[t]);
+      const last = topicByYear.filter(d => d.year >= 2020);
+      const prev = topicByYear.filter(d => d.year >= 2015 && d.year < 2020);
+      const growth = (d3.mean(last, d => d[t]) - d3.mean(prev, d => d[t]));
+      return { topic: t, volume, growth };
+    });
+
+    // Papers for scatter (chart 5) etc.
+    const papers = d3.range(420).map(i => {
+      const year = 1990 + Math.floor(Math.random()*35);
+      const topic = topics[Math.floor(Math.random()*topics.length)];
+      const citations = Math.max(0, Math.round(d3.randomLogNormal(3.2, .7)()));
+      const downloads = Math.max(0, Math.round(d3.randomLogNormal(7.2, .6)()));
+      const award = Math.random() < 0.08;
+      const stamp = Math.random() < 0.10;
+      return { id:i, year, topic, citations, downloads, award, stamp };
+    });
+
+    // Authors network (chart 8/9)
+    const authorNodes = d3.range(80).map(i => ({
+      id: i,
+      name: `Author ${i+1}`,
+      // bridge score proxy
+      bridge: Math.random()*1.0,
+      cluster: Math.floor(Math.random()*6)
+    }));
+    const authorLinks = d3.range(120).map(_ => ({
+      source: Math.floor(Math.random()*authorNodes.length),
+      target: Math.floor(Math.random()*authorNodes.length),
+      w: 1 + Math.random()*2
+    }));
+
+    // Team size over time (chart 10)
+    const teamByYear = years.map(y => ({
+      year: y,
+      sizes: d3.range(50).map(() => Math.max(1, Math.round(d3.randomNormal(3 + (y-1990)/40, 1.2)())))
+    }));
+
+    // Cross-track flow (chart 11) - simplified
+    const flow = [
+      { from:"InfoVis", to:"VAST", v: 18 },
+      { from:"SciVis", to:"VIS", v: 10 },
+      { from:"VAST", to:"InfoVis", v: 14 },
+      { from:"InfoVis", to:"VIS", v: 22 },
+      { from:"SciVis", to:"InfoVis", v: 8 },
+      { from:"VAST", to:"VIS", v: 12 }
+    ];
+
+    // Place charts (12–14) - abstract
+    const institutions = d3.range(26).map(i => ({
+      name: `Uni ${String.fromCharCode(65+i)}`,
+      region: ["Americas","Europe","Asia","Oceania"][Math.floor(Math.random()*4)],
+      activity: 20 + Math.random()*160,
+      growth: Math.random()*1.0
+    }));
+
+    const countries = ["USA","DEU","FRA","GBR","CAN","CHN","SGP","JPN","KOR","AUS","ITA","ESP"];
+    const countryCounts = countries.map(c => ({
+      country: c,
+      count: 30 + Math.round(Math.random()*260),
+      growth: Math.random()*1.0
+    }));
+
+    const regionPairs = [
+      { a:"Americas", b:"Europe", v: 38 },
+      { a:"Americas", b:"Asia", v: 26 },
+      { a:"Europe", b:"Asia", v: 34 },
+      { a:"Oceania", b:"Asia", v: 12 },
+      { a:"Oceania", b:"Americas", v: 9 },
+    ];
+
+    // ---------- Chart rendering ----------
+    const charts = {};
+
+    function mountSvg(containerId){
+      const el = document.getElementById(containerId);
+      el.innerHTML = "";
+      const w = el.clientWidth || 800;
+      const h = el.clientHeight || 520;
+      const svg = d3.select(el).append("svg")
+        .attr("viewBox", `0 0 ${w} ${h}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+      return { svg, w, h };
+    }
+
+    function axisStyle(svg){
+      svg.selectAll(".axis path, .axis line").attr("stroke", "rgba(0,0,0,.25)");
+      svg.selectAll(".axis text").attr("fill", "rgba(0,0,0,.65)").attr("font-size", 11);
+    }
+
+    // Chart 1 — line
+    charts.c1 = function(){
+      const {svg,w,h} = mountSvg("c1");
+      const m = {t:28,r:24,b:40,l:50};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+
+      const x = d3.scaleLinear().domain(d3.extent(papersByYear, d=>d.year)).range([0,W]);
+      const y = d3.scaleLinear().domain([0, d3.max(papersByYear, d=>d.papers)*1.1]).nice().range([H,0]);
+
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      g.append("path")
+        .datum(papersByYear)
+        .attr("fill","none")
+        .attr("stroke", state.mode==="student" ? "rgba(15,157,88,.85)" : "rgba(26,115,232,.85)")
+        .attr("stroke-width", 2.5)
+        .attr("d", d3.line().x(d=>x(d.year)).y(d=>y(d.papers)).curve(d3.curveMonotoneX));
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("d")));
+      g.append("g").attr("class","axis")
+        .call(d3.axisLeft(y).ticks(6));
+      axisStyle(svg);
+
+      // quick annotation
+      const last = papersByYear[papersByYear.length-1];
+      g.append("text")
+        .attr("x", x(last.year)).attr("y", y(last.papers)-10)
+        .attr("text-anchor","end")
+        .attr("fill","rgba(0,0,0,.7)")
+        .attr("font-size", 12)
+        .text(`Latest: ${fmt(last.papers)} papers`);
+    };
+
+    // Chart 2 — streamgraph (simple stacked area)
+    charts.c2 = function(){
+      const {svg,w,h} = mountSvg("c2");
+      const m = {t:24,r:20,b:34,l:44};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+
+      const keys = topics;
+      const stack = d3.stack().keys(keys).offset(d3.stackOffsetWiggle);
+      const series = stack(topicByYear);
+
+      const x = d3.scaleLinear().domain(d3.extent(topicByYear, d=>d.year)).range([0,W]);
+      const y = d3.scaleLinear()
+        .domain([
+          d3.min(series, s => d3.min(s, d => d[0])),
+          d3.max(series, s => d3.max(s, d => d[1]))
+        ])
+        .range([H,0]);
+
+      const color = d3.scaleOrdinal().domain(keys)
+        .range(keys.map((_,i)=> d3.interpolateRainbow(i/(keys.length))));
+
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const area = d3.area()
+        .x((d,i)=> x(topicByYear[i].year))
+        .y0(d=> y(d[0]))
+        .y1(d=> y(d[1]))
+        .curve(d3.curveCatmullRom);
+
+      g.selectAll("path.layer")
+        .data(series)
+        .join("path")
+        .attr("class","layer")
+        .attr("d", area)
+        .attr("fill", s => {
+          const t = s.key;
+          const isPick = (state.topic !== "All" && t === state.topic);
+          const base = d3.color(color(t));
+          base.opacity = isPick ? 0.92 : 0.35;
+          return base.toString();
+        })
+        .attr("stroke","rgba(0,0,0,.08)")
+        .on("mouseenter", (e,s) => {
+          document.getElementById("topicBadge").textContent = `Topic: ${s.key}`;
+        })
+        .on("mouseleave", () => {
+          document.getElementById("topicBadge").textContent = `Topic: ${state.topic}`;
+        });
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).ticks(7).tickFormat(d3.format("d")));
+      axisStyle(svg);
+
+      // lightweight legend label
+      g.append("text")
+        .attr("x", 0).attr("y", -6)
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text("Hover bands · Click topic chips above to lock a topic");
+    };
+
+    // Chart 3 — growth vs volume quadrant
+    charts.c3 = function(){
+      const {svg,w,h} = mountSvg("c3");
+      const m = {t:28,r:22,b:40,l:56};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const x = d3.scaleLinear()
+        .domain([0, d3.max(topicMetrics, d=>d.volume)*1.05]).nice()
+        .range([0,W]);
+      const y = d3.scaleLinear()
+        .domain(d3.extent(topicMetrics, d=>d.growth)).nice()
+        .range([H,0]);
+
+      // quadrant lines at medians
+      const xMid = d3.median(topicMetrics, d=>d.volume);
+      const yMid = d3.median(topicMetrics, d=>d.growth);
+
+      g.append("line").attr("x1", x(xMid)).attr("x2", x(xMid)).attr("y1", 0).attr("y2", H)
+        .attr("stroke","rgba(0,0,0,.15)").attr("stroke-dasharray","4 4");
+      g.append("line").attr("x1", 0).attr("x2", W).attr("y1", y(yMid)).attr("y2", y(yMid))
+        .attr("stroke","rgba(0,0,0,.15)").attr("stroke-dasharray","4 4");
+
+      // points
+      g.selectAll("circle")
+        .data(topicMetrics)
+        .join("circle")
+        .attr("cx", d=>x(d.volume))
+        .attr("cy", d=>y(d.growth))
+        .attr("r", d => (state.mode==="student" ? 7 : 6) + clamp(Math.abs(d.growth),0,8))
+        .attr("fill", d => (state.topic!=="All" && d.topic===state.topic) ? "var(--current-accent)" : "rgba(0,0,0,.18)")
+        .attr("stroke", "rgba(0,0,0,.18)")
+        .style("cursor","pointer")
+        .on("click", (_,d)=> { setTopic(d.topic); pushShortlist(`Topic selected: ${d.topic}`); });
+
+      // labels
+      g.selectAll("text.pt")
+        .data(topicMetrics)
+        .join("text")
+        .attr("class","pt")
+        .attr("x", d=>x(d.volume)+10)
+        .attr("y", d=>y(d.growth)+4)
+        .attr("font-size", 12)
+        .attr("fill", "rgba(0,0,0,.7)")
+        .text(d => (state.topic==="All" || d.topic===state.topic) ? d.topic : "");
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format(".2s")));
+      g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(6));
+      axisStyle(svg);
+
+      g.append("text").attr("x", 0).attr("y", H+34)
+        .attr("fill","rgba(0,0,0,.65)").attr("font-size", 12)
+        .text("Volume (all years) →");
+      g.append("text").attr("x", -42).attr("y", 0)
+        .attr("fill","rgba(0,0,0,.65)").attr("font-size", 12)
+        .attr("transform","rotate(-90)")
+        .text("Growth (recent) →");
+    };
+
+    // Chart 4 — sparklines per topic
+    charts.c4 = function(){
+      const {svg,w,h} = mountSvg("c4");
+      const m = {t:24,r:16,b:16,l:16};
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+      const W = w - m.l - m.r;
+      const rowH = 52;
+
+      const data = topics.map(t => ({
+        topic: t,
+        series: topicByYear.map(d => ({year:d.year, v:d[t]}))
+      }));
+
+      const x = d3.scaleLinear().domain(d3.extent(years)).range([0, W-140]);
+
+      const rows = g.selectAll("g.row")
+        .data(data)
+        .join("g")
+        .attr("class","row")
+        .attr("transform", (_,i)=>`translate(0,${i*rowH})`);
+
+      rows.append("text")
+        .attr("x", 0).attr("y", 14)
+        .attr("font-size", 12)
+        .attr("fill", "rgba(0,0,0,.7)")
+        .text(d => d.topic);
+
+      rows.each(function(d){
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(d.series, s=>s.v)*1.05]).range([32, 2]);
+
+        d3.select(this).append("path")
+          .attr("d", d3.line().x(s=>x(s.year)+120).y(s=>y(s.v)).curve(d3.curveMonotoneX)(d.series))
+          .attr("fill","none")
+          .attr("stroke", (state.topic!=="All" && d.topic===state.topic) ? "var(--current-accent)" : "rgba(0,0,0,.25)")
+          .attr("stroke-width", (state.topic!=="All" && d.topic===state.topic) ? 2.5 : 1.8);
+
+        // peak dot
+        const peak = d.series.reduce((a,b)=> b.v>a.v ? b : a, d.series[0]);
+        d3.select(this).append("circle")
+          .attr("cx", x(peak.year)+120)
+          .attr("cy", y(peak.v))
+          .attr("r", 3.5)
+          .attr("fill", "rgba(0,0,0,.55)");
+      });
+
+      g.append("text")
+        .attr("x", 0).attr("y", data.length*rowH + 10)
+        .attr("font-size", 12)
+        .attr("fill", "rgba(0,0,0,.6)")
+        .text("Each line shows a topic’s “life cycle” (mock). Replace with real topic time series.");
+    };
+
+    // Chart 5 — downloads vs citations scatter
+    charts.c5 = function(){
+      const {svg,w,h} = mountSvg("c5");
+      const m = {t:28,r:22,b:40,l:56};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const x = d3.scaleLog().domain([50, d3.max(papers, d=>d.downloads)]).range([0,W]);
+      const y = d3.scaleLog().domain([1, d3.max(papers, d=>d.citations)]).range([H,0]);
+
+      const color = d3.scaleOrdinal().domain(topics).range(topics.map((_,i)=> d3.interpolateTurbo(i/(topics.length))));
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).ticks(6, "~s"));
+      g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(6, "~s"));
+      axisStyle(svg);
+
+      const filtered = (state.topic==="All") ? papers : papers.filter(p=>p.topic===state.topic);
+
+      g.selectAll("circle")
+        .data(filtered)
+        .join("circle")
+        .attr("cx", d=>x(d.downloads))
+        .attr("cy", d=>y(d.citations))
+        .attr("r", 4)
+        .attr("fill", d => {
+          const base = d3.color(color(d.topic));
+          base.opacity = 0.65;
+          // emphasize by toggles
+          if(state.highlightAwards && d.award) base.opacity = 0.95;
+          if(state.highlightStamp && d.stamp) base.opacity = 0.95;
+          return base.toString();
+        })
+        .attr("stroke", d => (state.highlightAwards && d.award) ? "rgba(0,0,0,.55)" : "rgba(0,0,0,.10)")
+        .attr("stroke-width", d => (state.highlightAwards && d.award) ? 1.2 : 0.6);
+
+      g.append("text").attr("x", 0).attr("y", H+34)
+        .attr("fill","rgba(0,0,0,.65)").attr("font-size", 12)
+        .text("Downloads (log) →");
+      g.append("text").attr("x", -42).attr("y", 0)
+        .attr("fill","rgba(0,0,0,.65)").attr("font-size", 12)
+        .attr("transform","rotate(-90)")
+        .text("Citations (log) →");
+
+      // Mode hint
+      g.append("text")
+        .attr("x", W).attr("y", -8)
+        .attr("text-anchor","end")
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text(state.mode==="student" ? "Student lens: build foundations" : "Researcher lens: spot under-explored value");
+    };
+
+    // Chart 6 — boxplot by topic (simple)
+    charts.c6 = function(){
+      const {svg,w,h} = mountSvg("c6");
+      const m = {t:22,r:16,b:54,l:50};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const group = d3.group(papers, d=>d.topic);
+      const stats = topics.map(t=>{
+        const arr = (group.get(t) || []).map(d=>d.citations).sort(d3.ascending);
+        const q1 = d3.quantile(arr, .25) || 0;
+        const q2 = d3.quantile(arr, .50) || 0;
+        const q3 = d3.quantile(arr, .75) || 0;
+        const iqr = q3-q1;
+        const lo = Math.max(0, q1-1.5*iqr);
+        const hi = q3+1.5*iqr;
+        return { topic:t, q1,q2,q3, lo, hi, n: arr.length };
+      });
+
+      const x = d3.scaleBand().domain(topics).range([0,W]).padding(0.25);
+      const y = d3.scaleLinear().domain([0, d3.max(stats, d=>d.hi)*1.05]).nice().range([H,0]);
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .selectAll("text")
+        .attr("transform","rotate(-28)")
+        .style("text-anchor","end");
+      g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(6));
+      axisStyle(svg);
+
+      const accent = getComputedStyle(document.body).getPropertyValue("--current-accent").trim() || "#1A73E8";
+
+      // whiskers
+      g.selectAll("line.whisk")
+        .data(stats)
+        .join("line")
+        .attr("class","whisk")
+        .attr("x1", d=>x(d.topic)+x.bandwidth()/2)
+        .attr("x2", d=>x(d.topic)+x.bandwidth()/2)
+        .attr("y1", d=>y(d.lo))
+        .attr("y2", d=>y(d.hi))
+        .attr("stroke", "rgba(0,0,0,.35)");
+
+      // box
+      g.selectAll("rect.box")
+        .data(stats)
+        .join("rect")
+        .attr("class","box")
+        .attr("x", d=>x(d.topic))
+        .attr("width", x.bandwidth())
+        .attr("y", d=>y(d.q3))
+        .attr("height", d=>Math.max(0, y(d.q1)-y(d.q3)))
+        .attr("fill", d => (state.topic!=="All" && d.topic===state.topic) ? accent : "rgba(0,0,0,.10)")
+        .attr("stroke", "rgba(0,0,0,.20)");
+
+      // median
+      g.selectAll("line.med")
+        .data(stats)
+        .join("line")
+        .attr("class","med")
+        .attr("x1", d=>x(d.topic))
+        .attr("x2", d=>x(d.topic)+x.bandwidth())
+        .attr("y1", d=>y(d.q2))
+        .attr("y2", d=>y(d.q2))
+        .attr("stroke", "rgba(0,0,0,.55)")
+        .attr("stroke-width", 2);
+
+      g.append("text")
+        .attr("x", 0).attr("y", -6)
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text("Citations distribution by topic (mock)");
+    };
+
+    // Chart 7 — heatmap by year (awards + stamp)
+    charts.c7 = function(){
+      const {svg,w,h} = mountSvg("c7");
+      const m = {t:22,r:16,b:36,l:50};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      // mock: for each year, award rate & stamp rate
+      const yearStats = years.map(y=>{
+        const sample = papers.filter(p=>p.year===y);
+        const awardRate = sample.length ? d3.mean(sample, p=>p.award?1:0) : 0;
+        const stampRate = sample.length ? d3.mean(sample, p=>p.stamp?1:0) : 0;
+        return { year:y, awardRate, stampRate };
+      });
+
+      const x = d3.scaleBand().domain(years).range([0,W]).padding(0.02);
+      const y = d3.scaleBand().domain(["Awards","Replicability"]).range([0,H]).padding(0.16);
+
+      const maxV = d3.max(yearStats, d=>Math.max(d.awardRate, d.stampRate)) || 0.2;
+      const c = d3.scaleSequential().domain([0, maxV]).interpolator(d3.interpolateBlues);
+
+      // rows
+      const rows = [
+        {key:"Awards", accessor:d=>d.awardRate},
+        {key:"Replicability", accessor:d=>d.stampRate}
+      ];
+
+      rows.forEach(r=>{
+        g.selectAll(`rect.hm-${r.key}`)
+          .data(yearStats)
+          .join("rect")
+          .attr("x", d=>x(d.year))
+          .attr("y", y(r.key))
+          .attr("width", x.bandwidth())
+          .attr("height", y.bandwidth())
+          .attr("fill", d => c(r.accessor(d)))
+          .attr("stroke", "rgba(0,0,0,.04)");
+      });
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).tickValues(years.filter(y=>y%5===0)).tickFormat(d3.format("d")))
+        .selectAll("text").attr("font-size", 10);
+
+      g.append("g").attr("class","axis")
+        .call(d3.axisLeft(y));
+      axisStyle(svg);
+
+      g.append("text")
+        .attr("x", 0).attr("y", -6)
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text("Rates per year (mock) — replace with real award/stamp counts");
+    };
+
+    // Chart 8 — coauthor network
+    charts.c8 = function(){
+      const {svg,w,h} = mountSvg("c8");
+      const g = svg.append("g");
+
+      const accent = getComputedStyle(document.body).getPropertyValue("--current-accent").trim() || "#1A73E8";
+
+      const sim = d3.forceSimulation(authorNodes.map(d=>({...d})))
+        .force("link", d3.forceLink(authorLinks).id(d=>d.id).distance(42).strength(.12))
+        .force("charge", d3.forceManyBody().strength(-65))
+        .force("center", d3.forceCenter(w/2, h/2));
+
+      const links = g.append("g").selectAll("line")
+        .data(authorLinks)
+        .join("line")
+        .attr("stroke","rgba(0,0,0,.10)")
+        .attr("stroke-width", d=>d.w);
+
+      const nodes = g.append("g").selectAll("circle")
+        .data(sim.nodes())
+        .join("circle")
+        .attr("r", d => 4 + d.bridge*5)
+        .attr("fill", d => d.cluster%2 ? "rgba(0,0,0,.22)" : "rgba(0,0,0,.14)")
+        .attr("stroke", d => (d.bridge>0.8 ? accent : "rgba(255,255,255,.8)"))
+        .attr("stroke-width", d => (d.bridge>0.8 ? 2.2 : 1.0))
+        .on("click", (_,d)=> pushShortlist(`${state.mode==="student" ? "Potential advisor" : "Potential collaborator"}: ${d.name}`));
+
+      sim.on("tick", ()=>{
+        links
+          .attr("x1", d=>d.source.x).attr("y1", d=>d.source.y)
+          .attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
+        nodes.attr("cx", d=>d.x).attr("cy", d=>d.y);
+      });
+
+      // gentle settle if reduced motion
+      if(state.reduceMotion) sim.stop();
+    };
+
+    // Chart 9 — bridge bars
+    charts.c9 = function(){
+      const {svg,w,h} = mountSvg("c9");
+      const m = {t:26,r:18,b:28,l:120};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const top = [...authorNodes].sort((a,b)=>d3.descending(a.bridge,b.bridge)).slice(0,12);
+
+      const x = d3.scaleLinear().domain([0, d3.max(top, d=>d.bridge)]).range([0,W]);
+      const y = d3.scaleBand().domain(top.map(d=>d.name)).range([0,H]).padding(0.22);
+
+      g.append("g").attr("class","axis").call(d3.axisLeft(y).tickSize(0));
+      axisStyle(svg);
+
+      const accent = getComputedStyle(document.body).getPropertyValue("--current-accent").trim() || "#1A73E8";
+
+      g.selectAll("rect")
+        .data(top)
+        .join("rect")
+        .attr("x", 0)
+        .attr("y", d=>y(d.name))
+        .attr("height", y.bandwidth())
+        .attr("width", d=>x(d.bridge))
+        .attr("fill", accent)
+        .attr("opacity", 0.75)
+        .style("cursor","pointer")
+        .on("click", (_,d)=> pushShortlist(`Bridge person: ${d.name}`));
+
+      g.selectAll("text.val")
+        .data(top)
+        .join("text")
+        .attr("class","val")
+        .attr("x", d=>x(d.bridge)+6)
+        .attr("y", d=>y(d.name)+y.bandwidth()/2+4)
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text(d=>d.bridge.toFixed(2));
+    };
+
+    // Chart 10 — team size (simple bands)
+    charts.c10 = function(){
+      const {svg,w,h} = mountSvg("c10");
+      const m = {t:22,r:16,b:36,l:50};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const sampleYears = years.filter(y => y%3===0);
+      const rows = sampleYears.map(y=>{
+        const arr = teamByYear.find(d=>d.year===y).sizes.sort(d3.ascending);
+        return {
+          year: y,
+          q1: d3.quantile(arr, .25),
+          q2: d3.quantile(arr, .50),
+          q3: d3.quantile(arr, .75),
+          min: d3.min(arr),
+          max: d3.max(arr)
+        };
+      });
+
+      const x = d3.scaleLinear().domain(d3.extent(sampleYears)).range([0,W]);
+      const y = d3.scaleLinear().domain([1, d3.max(rows, d=>d.max)]).nice().range([H,0]);
+
+      g.append("g").attr("class","axis")
+        .attr("transform", `translate(0,${H})`)
+        .call(d3.axisBottom(x).ticks(7).tickFormat(d3.format("d")));
+      g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(6));
+      axisStyle(svg);
+
+      // IQR band
+      g.selectAll("rect")
+        .data(rows)
+        .join("rect")
+        .attr("x", d=>x(d.year)-6)
+        .attr("width", 12)
+        .attr("y", d=>y(d.q3))
+        .attr("height", d=>Math.max(0, y(d.q1)-y(d.q3)))
+        .attr("fill","rgba(0,0,0,.14)");
+
+      // median line
+      g.selectAll("line.med")
+        .data(rows)
+        .join("line")
+        .attr("class","med")
+        .attr("x1", d=>x(d.year)-6).attr("x2", d=>x(d.year)+6)
+        .attr("y1", d=>y(d.q2)).attr("y2", d=>y(d.q2))
+        .attr("stroke","rgba(0,0,0,.55)")
+        .attr("stroke-width", 2);
+    };
+
+    // Chart 11 — cross-track mini flows (not full sankey, but “ribbons”)
+    charts.c11 = function(){
+      const {svg,w,h} = mountSvg("c11");
+      const m = {t:26,r:20,b:26,l:20};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const left = tracks.slice(0,2);
+      const right = tracks.slice(2);
+
+      const yL = d3.scalePoint().domain(left).range([40, H-40]);
+      const yR = d3.scalePoint().domain(right).range([40, H-40]);
+
+      g.selectAll("text.l").data(left).join("text")
+        .attr("class","l").attr("x", 10).attr("y", d=>yL(d))
+        .attr("fill","rgba(0,0,0,.7)").attr("font-size", 13).text(d=>d);
+
+      g.selectAll("text.r").data(right).join("text")
+        .attr("class","r").attr("x", W-10).attr("y", d=>yR(d))
+        .attr("text-anchor","end")
+        .attr("fill","rgba(0,0,0,.7)").attr("font-size", 13).text(d=>d);
+
+      const maxV = d3.max(flow, d=>d.v);
+      const sw = d3.scaleLinear().domain([0,maxV]).range([2,14]);
+
+      g.selectAll("path")
+        .data(flow)
+        .join("path")
+        .attr("d", d=>{
+          const x1=70, x2=W-70;
+          const y1 = left.includes(d.from) ? yL(d.from) : yL(left[0]);
+          const y2 = right.includes(d.to) ? yR(d.to) : yR(right[0]);
+          const p = d3.path();
+          p.moveTo(x1,y1);
+          p.bezierCurveTo(x1+140,y1, x2-140,y2, x2,y2);
+          return p.toString();
+        })
+        .attr("fill","none")
+        .attr("stroke","var(--current-accent)")
+        .attr("stroke-opacity", 0.35)
+        .attr("stroke-width", d=>sw(d.v));
+
+      g.append("text")
+        .attr("x", 10).attr("y", 16)
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text("Cross-track mobility (mock)");
+    };
+
+    // Chart 12 — institutions “bubble map” by region bins
+    charts.c12 = function(){
+      const {svg,w,h} = mountSvg("c12");
+      const m = {t:24,r:16,b:30,l:16};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const regions = ["Americas","Europe","Asia","Oceania"];
+      const x = d3.scalePoint().domain(regions).range([80, W-80]);
+      const r = d3.scaleSqrt().domain([0, d3.max(institutions, d=>d.activity)]).range([6, 28]);
+
+      // labels
+      g.selectAll("text.region").data(regions).join("text")
+        .attr("class","region")
+        .attr("x", d=>x(d)).attr("y", 18)
+        .attr("text-anchor","middle")
+        .attr("fill","rgba(0,0,0,.65)")
+        .attr("font-size", 12)
+        .text(d=>d);
+
+      // random y positions per region (template)
+      const items = institutions.map(d => ({
+        ...d,
+        cx: x(d.region) + (Math.random()*70 - 35),
+        cy: 70 + Math.random()*(H-90)
+      }));
+
+      g.selectAll("circle")
+        .data(items)
+        .join("circle")
+        .attr("cx", d=>d.cx)
+        .attr("cy", d=>d.cy)
+        .attr("r", d=>r(d.activity))
+        .attr("fill", d => {
+          const isHot = d.growth > 0.7;
+          if(state.mode==="student") return isHot ? "rgba(15,157,88,.65)" : "rgba(0,0,0,.14)";
+          return isHot ? "rgba(26,115,232,.65)" : "rgba(0,0,0,.14)";
+        })
+        .attr("stroke","rgba(0,0,0,.18)")
+        .style("cursor","pointer")
+        .on("click", (_,d)=> pushShortlist(`Institution: ${d.name} (${d.region})`));
+
+      g.append("text")
+        .attr("x", 0).attr("y", H+22)
+        .attr("fill","rgba(0,0,0,.6)")
+        .attr("font-size", 12)
+        .text("Abstract institution view (mock). Swap in real affiliations + geo later.");
+    };
+
+    // Chart 13 — country counts (rect cartogram)
+    charts.c13 = function(){
+      const {svg,w,h} = mountSvg("c13");
+      const m = {t:22,r:16,b:16,l:16};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const cols = 4, cellW = (W-30)/cols, cellH = 78;
+      const maxC = d3.max(countryCounts, d=>d.count);
+      const c = d3.scaleSequential().domain([0,maxC]).interpolator(d3.interpolatePurples);
+
+      const items = countryCounts.map((d,i)=>({
+        ...d,
+        x: (i%cols) * (cellW+10),
+        y: Math.floor(i/cols) * (cellH+10)
+      }));
+
+      const cell = g.selectAll("g.cell")
+        .data(items)
+        .join("g")
+        .attr("class","cell")
+        .attr("transform", d=>`translate(${d.x},${d.y})`)
+        .style("cursor","pointer")
+        .on("click", (_,d)=> pushShortlist(`Country: ${d.country} (count ${d.count})`));
+
+      cell.append("rect")
+        .attr("width", cellW)
+        .attr("height", cellH)
+        .attr("rx", 14)
+        .attr("fill", d=>c(d.count))
+        .attr("stroke","rgba(0,0,0,.12)");
+
+      cell.append("text")
+        .attr("x", 12).attr("y", 24)
+        .attr("fill","rgba(0,0,0,.75)")
+        .attr("font-size", 13)
+        .text(d=>d.country);
+
+      cell.append("text")
+        .attr("x", 12).attr("y", 48)
+        .attr("fill","rgba(0,0,0,.70)")
+        .attr("font-size", 12)
+        .text(d=>`Activity: ${fmt(d.count)}`);
+
+      cell.append("text")
+        .attr("x", 12).attr("y", 66)
+        .attr("fill","rgba(0,0,0,.60)")
+        .attr("font-size", 12)
+        .text(d=>`Growth: ${(d.growth*100).toFixed(0)}%`);
+    };
+
+    // Chart 14 — region collaboration arcs
+    charts.c14 = function(){
+      const {svg,w,h} = mountSvg("c14");
+      const m = {t:22,r:16,b:16,l:16};
+      const W = w - m.l - m.r, H = h - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const regions = ["Americas","Europe","Asia","Oceania"];
+      const x = d3.scalePoint().domain(regions).range([80, W-80]);
+
+      g.selectAll("circle.node")
+        .data(regions)
+        .join("circle")
+        .attr("class","node")
+        .attr("cx", d=>x(d))
+        .attr("cy", H*0.75)
+        .attr("r", 9)
+        .attr("fill","rgba(0,0,0,.20)");
+
+      g.selectAll("text.node")
+        .data(regions)
+        .join("text")
+        .attr("class","node")
+        .attr("x", d=>x(d))
+        .attr("y", H*0.75 + 26)
+        .attr("text-anchor","middle")
+        .attr("fill","rgba(0,0,0,.7)")
+        .attr("font-size", 12)
+        .text(d=>d);
+
+      const maxV = d3.max(regionPairs, d=>d.v);
+      const sw = d3.scaleLinear().domain([0,maxV]).range([2,14]);
+
+      g.selectAll("path.arc")
+        .data(regionPairs)
+        .join("path")
+        .attr("class","arc")
+        .attr("d", d=>{
+          const x1 = x(d.a), x2 = x(d.b);
+          const y0 = H*0.75;
+          const xm = (x1+x2)/2;
+          const ym = H*0.20; // arc height
+          const p = d3.path();
+          p.moveTo(x1,y0);
+          p.quadraticCurveTo(xm,ym, x2,y0);
+          return p.toString();
+        })
+        .attr("fill","none")
+        .attr("stroke","var(--current-accent)")
+        .attr("stroke-opacity", .35)
+        .attr("stroke-width", d=>sw(d.v));
+    };
+
+    // ---------- Rendering controller ----------
+    function showPanel(panelId, titleElId, title){
+      // deactivate all panels in the same stack
+      const panel = document.getElementById(panelId);
+      const stack = panel.parentElement;
+      stack.querySelectorAll(".viz-panel").forEach(p=>p.classList.remove("active"));
+      panel.classList.add("active");
+
+      // update title
+      document.getElementById(titleElId).textContent = title;
+    }
+
+    function rerender(panelId){
+      if(charts[panelId]) charts[panelId]();
+    }
+
+    function rerenderAll(){
+      // rerender active panels only (fast)
+      document.querySelectorAll(".viz-panel.active").forEach(p=>{
+        const id = p.id;
+        rerender(id);
+      });
+    }
+
+    // ---------- Scrolly observer ----------
+    const stepObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(ent=>{
+        if(!ent.isIntersecting) return;
+
+        // mark active
+        const step = ent.target;
+        const col = step.parentElement;
+        col.querySelectorAll(".step").forEach(s=>s.classList.remove("is-active"));
+        step.classList.add("is-active");
+
+        // switch panel
+        const panelId = step.getAttribute("data-chart");
+        const title = step.getAttribute("data-title") || "Chart";
+        const chapter = step.closest(".scrolly").getAttribute("data-chapter");
+
+        if(chapter === "1"){ showPanel(panelId, "vizTitle1", title); }
+        if(chapter === "2"){ showPanel(panelId, "vizTitle2", title); }
+        if(chapter === "3"){ showPanel(panelId, "vizTitle3", title); }
+        if(chapter === "4"){ showPanel(panelId, "vizTitle4", title); }
+
+        // render that chart
+        rerender(panelId);
+      });
+    }, { threshold: 0.62 });
+
+    document.querySelectorAll(".step").forEach(s=>stepObserver.observe(s));
+
+    // ---------- Scroll progress ----------
+    const progressBar = document.getElementById("progressBar");
+    window.addEventListener("scroll", ()=>{
+      const doc = document.documentElement;
+      const sc = doc.scrollTop;
+      const max = doc.scrollHeight - doc.clientHeight;
+      progressBar.style.width = `${(max ? (sc/max)*100 : 0).toFixed(1)}%`;
+    }, {passive:true});
+
+    // ---------- Init ----------
+    (function init(){
+      // default mode
+      setMode("student");
+      setTopic("All");
+
+      // activate first step per chapter
+      const firstSteps = [
+        document.querySelector('[data-chapter="1"] .step'),
+        document.querySelector('[data-chapter="2"] .step'),
+        document.querySelector('[data-chapter="3"] .step'),
+        document.querySelector('[data-chapter="4"] .step')
+      ].filter(Boolean);
+
+      // render only the first visible chapter’s first chart
+      // (others will render when scrolled into)
+      if(firstSteps[0]){
+        firstSteps[0].classList.add("is-active");
+        showPanel(firstSteps[0].getAttribute("data-chart"), "vizTitle1", firstSteps[0].getAttribute("data-title"));
+        rerender(firstSteps[0].getAttribute("data-chart"));
+      }
+
+      // ensure panels exist: render once at small sizes if needed
+      // optional: call rerenderAll() after a short delay
+      setTimeout(()=> rerenderAll(), 120);
+    })();
+
+    // ---------- Resize handling (simple) ----------
+    let resizeT = null;
+    window.addEventListener("resize", ()=>{
+      clearTimeout(resizeT);
+      resizeT = setTimeout(()=> rerenderAll(), 180);
+    });
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// components/shell.js
+// assets/js/shell.js
 // ============================================================================
 // REUSABLE WEB COMPONENTS FOR SITE SHELL
 // ============================================================================
@@ -22,9 +22,9 @@ class AppHeader extends HTMLElement {
                 <div class="app-bar-end">
                     <nav class="desktop-nav">
                         <md-text-button href="/">Home</md-text-button>
-                        <md-text-button href="/section1/section1.html">Section 1</md-text-button>
-                        <md-text-button href="/section2/section2.html">Section 2</md-text-button>
-                        <md-text-button href="/about.html">About</md-text-button>
+                        <md-text-button href="/pages/section1/section1.html">Section 1</md-text-button>
+                        <md-text-button href="/pages/section2/section2.html">Section 2</md-text-button>
+                        <md-text-button href="/pages/about.html">About</md-text-button>
                     </nav>
                     
                     <md-icon-button id="theme-toggle">
@@ -77,17 +77,17 @@ class AppDrawer extends HTMLElement {
                         <md-icon slot="start">home</md-icon>
                     </md-list-item>
                     
-                    <md-list-item type="link" href="/section1/section1.html">
+                    <md-list-item type="link" href="/pages/section1/section1.html">
                         <div slot="headline">Section 1</div>
                         <md-icon slot="start">bar_chart</md-icon>
                     </md-list-item>
                     
-                    <md-list-item type="link" href="/section2/section2.html">
+                    <md-list-item type="link" href="/pages/section2/section2.html">
                         <div slot="headline">Section 2</div>
                         <md-icon slot="start">auto_stories</md-icon>
                     </md-list-item>
                     
-                    <md-list-item type="link" href="/about.html">
+                    <md-list-item type="link" href="/pages/about.html">
                         <div slot="headline">About</div>
                         <md-icon slot="start">info</md-icon>
                     </md-list-item>
@@ -130,22 +130,94 @@ class AppDrawer extends HTMLElement {
 }
 customElements.define('app-drawer', AppDrawer);
 
-
 // ============================================================================
-// 3. APP FOOTER COMPONENT
+// 3. APP FOOTER COMPONENT (R2D3 FOOTER)
 // ============================================================================
 class AppFooter extends HTMLElement {
-    connectedCallback() {
-        const year = new Date().getFullYear();
-        this.innerHTML = `
-            <footer class="app-footer">
-                <span class="md-typescale-body-small">© ${year} DV2</span>
-                <div class="footer-links">
-                    <md-text-button href="#">Privacy</md-text-button>
-                    <md-text-button href="#">Terms</md-text-button>
-                </div>
-            </footer>
-        `;
-    }
+  connectedCallback() {
+    const year = new Date().getFullYear();
+
+    this.innerHTML = `
+      <footer class="footer-r2d3" role="contentinfo">
+        <div class="f-left">
+          <div class="f-brand-box">
+            <h2>VIS 35</h2>
+            <p class="f-year">© ${year} DV2</p>
+          </div>
+
+          <div class="f-desc">
+            <p>
+              VIS 35 è un esperimento di storytelling interattivo per esplorare 35 anni di ricerca nella
+              visualizzazione dati. Realizzato per il corso di Data Visualization 2024.
+            </p>
+            <p>Domande? <a href="#">Consulta la Documentazione</a>.</p>
+          </div>
+
+          <div class="f-methodology">
+            <h4>Data &amp; Methodology</h4>
+            <p>
+              Il progetto utilizza dati provenienti da <strong>VISpubdata</strong> (1990-2024) arricchiti tramite
+              <strong>OpenAlex API</strong>.
+            </p>
+            <ul>
+              <li><strong>Cleaning:</strong> Rimozione paper senza autori e normalizzazione track conferenze.</li>
+              <li><strong>Processing:</strong> Python scripts per estrazione keyword (BERTopic) e calcolo growth rate.</li>
+              <li><strong>Stack:</strong> D3.js v7, HTML5, CSS3 (No Frameworks).</li>
+            </ul>
+
+            <p class="f-cta">
+              <a href="#" class="f-cta-link">View GitHub Repository &rarr;</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="f-right">
+          <div class="team-row">
+            <img
+              src="/assets/img/edo.jpeg"
+              class="team-pic"
+              alt="Edoardo Vassallo"
+              loading="lazy"
+              decoding="async"
+            >
+            <div class="team-text">
+              <h3>Edoardo Vassallo</h3>
+              <span class="team-role">Data Engineering &amp; Analysis</span>
+              <p class="team-bio">
+                Master Student in Data Science. Attualmente lavora su modelli NLP per l'analisi
+                di abstract scientifici. Ha curato la pipeline Python e il cleaning.
+              </p>
+              <div class="team-links">
+                <a href="#" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/inkeaton" rel="noopener">GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="team-row">
+            <img
+              src="/assets/img/iri.jpg"
+              class="team-pic"
+              alt="Iryna Savchuk"
+              loading="lazy"
+              decoding="async"
+            >
+            <div class="team-text">
+              <h3>Iryna Savchuk</h3>
+              <span class="team-role">Visualization &amp; Frontend</span>
+              <p class="team-bio">
+                Master Student in Computer Science. Specializzata in Human-Computer Interaction.
+                Ha progettato l'interfaccia Scrollytelling e l'implementazione D3.js.
+              </p>
+              <div class="team-links">
+                <a href="#" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/IRYNASAVCHUK" rel="noopener">GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    `;
+  }
 }
-customElements.define('app-footer', AppFooter);
+customElements.define("app-footer", AppFooter);

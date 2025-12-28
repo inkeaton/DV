@@ -1,4 +1,4 @@
-/* style.css */
+/* /assets/css/style.css */
 /* ============================================================================
    MAIN STYLESHEET FOR DV2 DATA VISUALIZATION SITE
    
@@ -20,7 +20,9 @@
    layout. This makes them "invisible" to CSS layout, allowing their children
    to participate directly in parent layout contexts (flexbox, grid, etc.)
    ============================================================================ */
-app-header, app-drawer, app-footer {
+app-header,
+app-drawer,
+app-footer {
     display: contents;
 }
 
@@ -34,8 +36,10 @@ app-header, app-drawer, app-footer {
 
 :root {
     /* --- LAYOUT VARIABLES --- */
-    --app-bar-height: 64px;      /* Fixed height for top navigation */
-    --max-width: 1100px;          /* Maximum content width (centered) */
+    --app-bar-height: 64px;
+    /* Fixed height for top navigation */
+    --max-width: 1100px;
+    /* Maximum content width (centered) */
 
     /* --- STACKING ORDER (Z-INDEX) ---
        Keep these centralized so feature CSS (e.g. scrollytelling) doesn't
@@ -59,38 +63,70 @@ app-header, app-drawer, app-footer {
        ============================================================================ */
 
     /* PRIMARY COLOR TOKENS */
-    --md-sys-color-primary: #00687A;                    /* Main teal brand color */
-    --md-sys-color-on-primary: #FFFFFF;                 /* White text on primary */
-    --md-sys-color-primary-container: #ADECFF;          /* Light teal container */
-    --md-sys-color-on-primary-container: #001F26;       /* Dark text on light teal */
+    --md-sys-color-primary: #00687A;
+    /* Main teal brand color */
+    --md-sys-color-on-primary: #FFFFFF;
+    /* White text on primary */
+    --md-sys-color-primary-container: #ADECFF;
+    /* Light teal container */
+    --md-sys-color-on-primary-container: #001F26;
+    /* Dark text on light teal */
 
     /* SECONDARY COLOR TOKENS */
-    --md-sys-color-secondary: #4B6269;                  /* Muted blue-gray */
-    --md-sys-color-on-secondary: #FFFFFF;               /* White text on secondary */
-    --md-sys-color-secondary-container: #CEE7EF;        /* Light blue-gray container */
-    --md-sys-color-on-secondary-container: #061F25;     /* Dark text on light blue-gray */
+    --md-sys-color-secondary: #4B6269;
+    /* Muted blue-gray */
+    --md-sys-color-on-secondary: #FFFFFF;
+    /* White text on secondary */
+    --md-sys-color-secondary-container: #CEE7EF;
+    /* Light blue-gray container */
+    --md-sys-color-on-secondary-container: #061F25;
+    /* Dark text on light blue-gray */
 
     /* TERTIARY COLOR TOKENS */
-    --md-sys-color-tertiary: #575C7E;                   /* Purple-gray accent */
-    --md-sys-color-on-tertiary: #FFFFFF;                /* White text on tertiary */
-    --md-sys-color-tertiary-container: #DEE1FF;         /* Light purple container */
-    --md-sys-color-on-tertiary-container: #131937;      /* Dark text on light purple */
+    --md-sys-color-tertiary: #575C7E;
+    /* Purple-gray accent */
+    --md-sys-color-on-tertiary: #FFFFFF;
+    /* White text on tertiary */
+    --md-sys-color-tertiary-container: #DEE1FF;
+    /* Light purple container */
+    --md-sys-color-on-tertiary-container: #131937;
+    /* Dark text on light purple */
 
     /* SURFACE & BACKGROUND TOKENS */
-    --md-sys-color-surface: #F5FAFC;                    /* Main page background (very light blue) */
-    --md-sys-color-on-surface: #171C1E;                 /* Dark text on surface */
-    --md-sys-color-surface-variant: #DBE4E7;            /* Alternative surface color */
-    --md-sys-color-on-surface-variant: #3F484B;         /* Text on variant surface */
-    
+    --md-sys-color-surface: #F5FAFC;
+    /* Main page background (very light blue) */
+    --md-sys-color-on-surface: #171C1E;
+    /* Dark text on surface */
+    --md-sys-color-surface-variant: #DBE4E7;
+    /* Alternative surface color */
+    --md-sys-color-on-surface-variant: #3F484B;
+    /* Text on variant surface */
+
     /* SURFACE ELEVATION LEVELS */
     /* MD3 uses different surface tones to create visual hierarchy */
-    --md-sys-color-surface-container-low: #EFF4F7;      /* Lowest elevation (subtle) */
-    --md-sys-color-surface-container: #E9EFF1;          /* Standard elevation */
-    --md-sys-color-surface-container-high: #E4E9EB;     /* Higher elevation (more contrast) */
+    --md-sys-color-surface-container-low: #EFF4F7;
+    /* Lowest elevation (subtle) */
+    --md-sys-color-surface-container: #E9EFF1;
+    /* Standard elevation */
+    --md-sys-color-surface-container-high: #E4E9EB;
+    /* Higher elevation (more contrast) */
 
     /* OUTLINE TOKENS */
-    --md-sys-color-outline: #70797C;                    /* Strong borders/dividers */
-    --md-sys-color-outline-variant: #BFC8CB;            /* Subtle borders/dividers */
+    --md-sys-color-outline: #70797C;
+    /* Strong borders/dividers */
+    --md-sys-color-outline-variant: #BFC8CB;
+    /* Subtle borders/dividers */
+
+    /* FOOTER - LIGHT */
+    --footer-bg: var(--md-sys-color-surface-container);
+    --footer-text: var(--md-sys-color-on-surface);
+    --footer-muted: var(--md-sys-color-on-surface-variant);
+    --footer-strong: var(--md-sys-color-on-surface);
+    --footer-divider: var(--md-sys-color-outline-variant);
+    --footer-link: var(--md-sys-color-primary);
+    --footer-link-underline: var(--md-sys-color-outline);
+    --footer-border: var(--md-sys-color-primary);
+
 }
 
 /* ============================================================================
@@ -104,38 +140,69 @@ app-header, app-drawer, app-footer {
    ============================================================================ */
 body.dark-theme {
     /* PRIMARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-primary: #85D2E7;                    /* Lighter teal for visibility */
-    --md-sys-color-on-primary: #003640;                 /* Dark teal text */
-    --md-sys-color-primary-container: #004E5D;          /* Dark teal container */
-    --md-sys-color-on-primary-container: #ADECFF;       /* Light teal text */
+    --md-sys-color-primary: #85D2E7;
+    /* Lighter teal for visibility */
+    --md-sys-color-on-primary: #003640;
+    /* Dark teal text */
+    --md-sys-color-primary-container: #004E5D;
+    /* Dark teal container */
+    --md-sys-color-on-primary-container: #ADECFF;
+    /* Light teal text */
 
     /* SECONDARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-secondary: #B2CBD3;                  /* Light blue-gray */
-    --md-sys-color-on-secondary: #1D343A;               /* Dark blue-gray text */
-    --md-sys-color-secondary-container: #334A51;        /* Dark blue-gray container */
-    --md-sys-color-on-secondary-container: #CEE7EF;     /* Light blue-gray text */
+    --md-sys-color-secondary: #B2CBD3;
+    /* Light blue-gray */
+    --md-sys-color-on-secondary: #1D343A;
+    /* Dark blue-gray text */
+    --md-sys-color-secondary-container: #334A51;
+    /* Dark blue-gray container */
+    --md-sys-color-on-secondary-container: #CEE7EF;
+    /* Light blue-gray text */
 
     /* TERTIARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-tertiary: #BFC4EB;                   /* Light purple */
-    --md-sys-color-on-tertiary: #292E4D;                /* Dark purple text */
-    --md-sys-color-tertiary-container: #3F4565;         /* Dark purple container */
-    --md-sys-color-on-tertiary-container: #DEE1FF;      /* Light purple text */
+    --md-sys-color-tertiary: #BFC4EB;
+    /* Light purple */
+    --md-sys-color-on-tertiary: #292E4D;
+    /* Dark purple text */
+    --md-sys-color-tertiary-container: #3F4565;
+    /* Dark purple container */
+    --md-sys-color-on-tertiary-container: #DEE1FF;
+    /* Light purple text */
 
     /* SURFACE & BACKGROUND TOKENS (Dark Mode) */
-    --md-sys-color-surface: #0F1416;                    /* Very dark background */
-    --md-sys-color-on-surface: #DEE3E5;                 /* Light text on dark */
-    --md-sys-color-surface-variant: #3F484B;            /* Medium dark surface */
-    --md-sys-color-on-surface-variant: #BFC8CB;         /* Light text variant */
+    --md-sys-color-surface: #0F1416;
+    /* Very dark background */
+    --md-sys-color-on-surface: #DEE3E5;
+    /* Light text on dark */
+    --md-sys-color-surface-variant: #3F484B;
+    /* Medium dark surface */
+    --md-sys-color-on-surface-variant: #BFC8CB;
+    /* Light text variant */
 
     /* SURFACE ELEVATION LEVELS (Dark Mode) */
     /* In dark mode, higher elevation = lighter color (opposite of light mode) */
-    --md-sys-color-surface-container-low: #171C1E;      /* Slightly lighter than main surface */
-    --md-sys-color-surface-container: #1B2022;          /* Standard elevation */
-    --md-sys-color-surface-container-high: #252B2D;     /* Highest elevation (lightest) */
+    --md-sys-color-surface-container-low: #171C1E;
+    /* Slightly lighter than main surface */
+    --md-sys-color-surface-container: #1B2022;
+    /* Standard elevation */
+    --md-sys-color-surface-container-high: #252B2D;
+    /* Highest elevation (lightest) */
 
     /* OUTLINE TOKENS (Dark Mode) */
-    --md-sys-color-outline: #899295;                    /* Lighter borders for dark bg */
-    --md-sys-color-outline-variant: #3F484B;            /* Subtle borders */
+    --md-sys-color-outline: #899295;
+    /* Lighter borders for dark bg */
+    --md-sys-color-outline-variant: #3F484B;
+    /* Subtle borders */
+
+    /* FOOTER - DARK */
+    --footer-bg: var(--md-sys-color-surface-container-high);
+    --footer-text: var(--md-sys-color-on-surface);
+    --footer-muted: var(--md-sys-color-on-surface-variant);
+    --footer-strong: var(--md-sys-color-on-surface);
+    --footer-divider: var(--md-sys-color-outline-variant);
+    --footer-link: var(--md-sys-color-primary);
+    --footer-link-underline: var(--md-sys-color-outline);
+    --footer-border: var(--md-sys-color-primary);
 }
 
 /* ============================================================================
@@ -146,12 +213,12 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
-    
+
     /* Flexbox layout for sticky footer */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    
+
     /* Smooth transitions when switching themes */
     transition: background-color 0.3s, color 0.3s;
 }
@@ -165,32 +232,33 @@ body {
     align-items: center;
     padding: 0 16px;
     height: var(--app-bar-height);
-    
+
     /* Use same background as body for seamless look */
     background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
-    
+
     /* Sticky positioning keeps it at top when scrolling */
     position: sticky;
     top: 0;
     z-index: var(--z-app-bar);
-    
+
     /* Subtle bottom border for definition */
     border-bottom: 1px solid var(--md-sys-color-surface-container-high);
 }
 
 /* App bar left and right sections */
-.app-bar-start, .app-bar-end { 
-    display: flex; 
-    align-items: center; 
-    gap: 8px; 
+.app-bar-start,
+.app-bar-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Site logo/branding text */
-.brand-logo { 
-    font-weight: 700; 
-    font-size: 1.25rem; 
-    padding: 0 8px; 
+.brand-logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    padding: 0 8px;
 }
 
 /* ============================================================================
@@ -199,32 +267,32 @@ body {
 .drawer {
     /* Fixed positioning for overlay effect */
     position: fixed;
-    top: 0; 
-    left: 0; 
+    top: 0;
+    left: 0;
     bottom: 0;
     width: 300px;
-    
+
     /* Slightly different background than main surface for depth */
     background: var(--md-sys-color-surface-container-low);
     color: var(--md-sys-color-on-surface);
-    
+
     /* Initially hidden off-screen to the left */
     transform: translateX(-100%);
-    
+
     /* Smooth slide-in animation with Material Design easing */
     transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
-    
+
     /* Layer above scrim */
     z-index: var(--z-drawer);
     padding: 12px 0;
-    
+
     /* Right border for definition */
     border-right: 1px solid var(--md-sys-color-outline-variant);
 }
 
 /* Open state: slide into view */
-.drawer.open { 
-    transform: translateX(0); 
+.drawer.open {
+    transform: translateX(0);
 }
 
 /* ============================================================================
@@ -234,25 +302,27 @@ body {
    focusing attention on the drawer and providing a click target to close it.
    ============================================================================ */
 .scrim {
-    position: fixed; 
-    inset: 0;  /* Shorthand for top:0, right:0, bottom:0, left:0 */
-    background: rgba(0,0,0,0.32);  /* 32% opacity black */
-    
+    position: fixed;
+    inset: 0;
+    /* Shorthand for top:0, right:0, bottom:0, left:0 */
+    background: rgba(0, 0, 0, 0.32);
+    /* 32% opacity black */
+
     /* Initially invisible and non-interactive */
-    opacity: 0; 
+    opacity: 0;
     pointer-events: none;
-    
+
     /* Fade in/out animation */
     transition: opacity 0.3s;
-    
+
     /* Layer below drawer but above main content */
     z-index: var(--z-scrim);
 }
 
 /* Open state: fade in and enable clicking */
-.scrim.open { 
-    opacity: 1; 
-    pointer-events: auto; 
+.scrim.open {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* ============================================================================
@@ -261,9 +331,10 @@ body {
 .container {
     width: 100%;
     max-width: var(--max-width);
-    margin: 0 auto;  /* Center horizontally */
+    margin: 0 auto;
+    /* Center horizontally */
     padding: 24px 16px;
-    
+
     /* Flex: 1 makes it grow to fill available space (for sticky footer) */
     flex: 1;
     box-sizing: border-box;
@@ -277,7 +348,7 @@ body {
    ============================================================================ */
 .bento-grid {
     display: grid;
-    
+
     /* Auto-fill creates as many columns as fit, each at least 280px */
     /* This makes the layout responsive without media queries */
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -292,20 +363,24 @@ body {
    principles: surface elevation, rounded corners, hover effects, and ripples.
    ============================================================================ */
 .card {
-    position: relative;  /* For absolute positioning of ripple effect */
+    position: relative;
+    /* For absolute positioning of ripple effect */
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 24px;
-    border-radius: 16px;  /* Large radius for modern, soft appearance */
-    
+    border-radius: 16px;
+    /* Large radius for modern, soft appearance */
+
     /* Use secondary container colors for cards */
     background-color: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
-    
-    text-decoration: none;  /* Remove underline from link */
-    overflow: hidden;  /* Clip ripple effect to rounded corners */
-    
+
+    text-decoration: none;
+    /* Remove underline from link */
+    overflow: hidden;
+    /* Clip ripple effect to rounded corners */
+
     /* Smooth hover animations */
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid transparent;
@@ -314,12 +389,12 @@ body {
 /* Hover state: slight lift and shadow for depth */
 .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Card icon styling */
 .card-icon {
-    font-size: 40px; 
+    font-size: 40px;
     /* Inherit container's text color for consistency */
     color: var(--md-sys-color-on-secondary-container);
 }
@@ -327,17 +402,207 @@ body {
 /* ============================================================================
    FOOTER
    ============================================================================ */
-.app-footer {
-    padding: 24px 16px;
-    background-color: var(--md-sys-color-surface-container);
-    color: var(--md-sys-color-on-surface-variant);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    /* margin-top: auto pushes footer to bottom (with flex parent) */
+/* =========================================
+   FOOTER R2D3 (MOBILE FRIENDLY)
+   ========================================= */
+.footer-r2d3 {
+    background: var(--footer-bg, #2D3436);
+    /* fallback se la variabile manca */
+    color: var(--footer-text, #fff);
+
     margin-top: auto;
+    border-top: 6px solid var(--footer-border, #00687A);
+    padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
 }
+
+.f-left {
+    min-width: 0;
+    padding-right: clamp(0rem, 2vw, 2rem);
+    border-right: 1px solid var(--footer-divider);
+}
+
+.f-brand-box {
+    border: 2px solid var(--footer-text);
+    padding: 1.25rem 1.5rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.f-brand-box h2 {
+    margin: 0;
+    color: var(--footer-text);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.1;
+}
+
+.f-year {
+    margin: .5rem 0 0 0;
+    color: var(--footer-muted);
+    font-size: .9rem;
+}
+
+.f-desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    color: var(--footer-text);
+}
+
+.f-desc a {
+    color: var(--footer-link);
+    text-decoration: underline;
+    text-decoration-color: var(--footer-link-underline);
+    text-underline-offset: 3px;
+}
+
+.f-methodology h4 {
+    color: var(--footer-text);
+    border-bottom: 1px solid var(--footer-divider);
+    padding-bottom: .4rem;
+    margin: 0 0 .75rem;
+    font-size: 1.05rem;
+}
+
+.f-methodology p {
+    font-size: .95rem;
+    color: var(--footer-muted);
+    margin: 0 0 1rem;
+}
+
+.f-methodology ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: .95rem;
+    color: var(--footer-muted);
+}
+
+.f-methodology li {
+    margin-bottom: .4rem;
+}
+
+.f-methodology strong {
+    color: var(--footer-strong, var(--footer-text));
+}
+
+.f-cta {
+    margin-top: 1rem;
+}
+
+.f-cta-link {
+    color: var(--footer-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* DESTRA: Team */
+.f-right {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.team-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.team-pic {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 6px;
+    filter: grayscale(100%);
+    transition: filter .25s;
+    flex: 0 0 auto;
+}
+
+.team-row:hover .team-pic {
+    filter: grayscale(0%);
+}
+
+/* Touch devices: niente “hover only” */
+@media (hover: none) {
+    .team-pic {
+        filter: none;
+    }
+}
+
+.team-text h3 {
+    margin: 0 0 .35rem;
+    color: var(--footer-text);
+    font-size: 1.2rem;
+}
+
+.team-role {
+    text-transform: uppercase;
+    font-size: .78rem;
+    letter-spacing: .08em;
+    color: var(--footer-muted);
+    display: block;
+    margin-bottom: .6rem;
+}
+
+.team-bio {
+    font-size: .95rem;
+    line-height: 1.45;
+    color: var(--footer-muted);
+    margin: 0 0 .65rem;
+}
+
+.team-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.team-links a {
+    font-size: .9rem;
+    color: var(--footer-link);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--footer-link-underline);
+    padding-bottom: 2px;
+}
+
+.team-links a:focus-visible,
+.f-desc a:focus-visible,
+.f-cta-link:focus-visible {
+    outline: 2px solid var(--footer-border);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* Breakpoint: da 900px in giù diventa stacked */
+@media (max-width: 900px) {
+    .footer-r2d3 {
+        grid-template-columns: 1fr;
+    }
+
+    .f-left {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid var(--footer-divider);
+        padding-bottom: 1.75rem;
+    }
+}
+
+/* Extra-small: team row in colonna */
+@media (max-width: 520px) {
+    .team-row {
+        flex-direction: column;
+    }
+
+    .team-pic {
+        width: 110px;
+        height: 110px;
+    }
+}
+
 
 /* ============================================================================
    RESPONSIVE DESIGN
@@ -347,10 +612,14 @@ body {
 
 /* Mobile: Hide desktop navigation, show hamburger menu */
 @media (max-width: 600px) {
-    .desktop-nav { display: none; }
+    .desktop-nav {
+        display: none;
+    }
 }
 
 /* Desktop: Hide hamburger menu, show full navigation */
 @media (min-width: 601px) {
-    #menu-btn { display: none; }
+    #menu-btn {
+        display: none;
+    }
 }

@@ -1,0 +1,202 @@
+Storytelling per 35 anni di VIS: dove stanno andando idee, persone e opportunità:
+2 pagine tematiche in stile long-read. 
+Ogni pagina ha: 
+    - domanda concreta, cosa impari, grafici, momenti human-based (persone, gruppi, carriere), takeaway
+Formato: 
+    * Homepage (teaser + “scegli il percorso”)
+    * 2 pagine principali
+    * Ogni pagina = 8–12 “scroll steps” con 4–6 visual principali (alcune riusate con stato diverso)
+
+******************************      HOMEPAGE: “35 years of VIS”     ******************************    
+Obiettivo: creare una guida “data-driven” per:
+    - ricercatori (tendenze + network + quali temi maturano + dove si muove il mercato + con chi colaborare + quali temi investire)
+    - studenti (dove andare per PHD + cosa studiare + migliori universita per il topic + categorie con piu impatto)
+
+Interazioni: scegli persona:    *   “Sono uno studente”;    *    “Sono ricercatore”; 
+Il percorso scelto cambia i tooltip e i ranking laterali (stesso dataset, diversa narrazione).
+
+******************************      Pagina 1 — The Market Map     ******************************
+Percorso A — Studente (Master→PhD)
+Obiettivo del lettore
+Capire:
+quali topic hanno futuro
+quali università/gruppi sono forti nel topic scelto
+come entrare nella rete (coautori / advisor-like)
+Pagina 1 (Market Map) — “Cosa studiare adesso”
+Domanda: quali temi stanno crescendo davvero (non solo moda)?
+Grafici (Categorical + Temporal + Relational)
+Temporal #11: streamgraph topic (30) nel tempo → highlight “ultimi 5 anni”
+Categorical #2: box/violin citazioni per topic → “topic con impatto distribuito vs pochi outlier”
+Relational #7: scatter downloads vs citations (per paper) con colore topic → “adozione vs impatto”
+Step narrativi (student-oriented)
+“Se scegli un topic, guarda: crescita + impatto + adozione.”
+“Emerging vs Mature”: Temporal/Relational #4 (growth rate vs volume) → scegli 1–2 topic target.
+CTA: “Scegli il tuo topic → attiva la pagina 3 (dove andare).”
+Human-based
+3 mini-profili “trend-setters” (rising stars) per i topic in crescita:
+chi pubblica di più negli ultimi 5 anni + 2 paper fondamentali + 1 ponte di rete.
+
+
+
+Domanda:    Se inizi adesso, quali temi sono in salita vs in plateau?
+            Di cosa si parla davvero oggi e cosa sta crescendo?
+Sezioni (scroll steps): 
+1. Dove siamo oggi: ultimi 5 anni vs 35 anni
+Streamgraph topic nel tempo (BERTopic)
+Evidenzia “newcomers” (topic che passano da <1% a >X%)
+2. I cicli: non tutto cresce per sempre
+Small multiples line (top 12 topic) con “peak year” e “half-life” (quanto dura un trend)
+3. Maturità vs hype
+Scatter: “Growth rate” (ultimi 5 anni) vs “Total volume” (35 anni)
+Quadranti: Emerging / Mainstream / Niche / Declining
+4. Cosa paga (proxy)
+(non hai grant money diretto, quindi usa proxy solidi)
+Downloads vs Citations per topic
+overlay awards
+Messaggio: temi “utili e adottati” (downloads) vs “accademicamente centrali” (citazioni)
+5. La lettura ‘da scienziato’
+Top 10 paper recenti per topic: titolo + abstract snippet + autori
+CTA: “Seguire questo filone? ecco 3 gruppi/università forti”
+EXTRA: Human-based block: “Le facce dei trend”
+3 mini-profili (autori o gruppi) per 3 topic in crescita:
+“Chi sta pubblicando di più adesso”
+“Chi connette due community” (bridge author nel network)
+“Chi ha paper con più impatto recente”
+Output utile per lettore:
+“Se vuoi fare PhD su X: 10 università / 10 advisor-like authors (da coautorship network)”
+“Se sei industry: temi con download alto”
+
+
+
+
+Pagina 2 — People & Power: “La community è una rete (e tu puoi entrarci)”
+Domanda: Chi collabora con chi? Come nascono i gruppi forti?
+Sezioni
+1. La rete in una frase
+Co-author network (ridotto: top N autori, o per decade)
+Mostra comunità (community detection) e “ponti”
+2. La carriera tipica (data-driven, non retorica)
+Timeline di 3 profili reali (top author, award-heavy, bridge)
+“anno primo paper”, “anno picco”, “topic shift”
+3. I team contano
+Distribution: #autori per paper nel tempo (boxplot)
+Messaggio: la collaborazione aumenta? dove?
+4. Cross-conference mobility
+Sankey: autori → conferenze (quanti lavorano in più comunità)
+5. Le “costellazioni” attorno a un’idea
+Internal citation network: scegli un paper TT o BP → espandi “genealogia” di citazioni dentro VIS
+EXTRA: Human-based block: “Hall of Humans”
+Leaderboard non banale:
+più paper
+più premi
+“most connected” (betweenness)
+“most diverse topics”
+per ogni nome: 1 mini-card con
+mappa istituzioni
+coautori top
+topic signature
+Output utile:
+“Come trovare un advisor: scegli un topic → vedi 5 cluster → per cluster vedi top 5 autori + università”
+“Se vuoi entrare: chi collabora spesso con nuovi autori?” (misura: new collaborator rate)
+
+
+
+
+Pagina 3 — Where to go: “Università, geografia, e come cambia la mappa del talento”
+
+Pagina 3 (Where to go) — “Dove fare PhD (per topic)”
+Domanda: quali università sono davvero forti nel mio topic?
+Grafici (Spatial + Hierarchical + Categorical)
+Spatial #13: mappa Mercator con omini per università (size = #autori) + slider tempo
+Categorical #3: ranked dot plot: top università nel topic selezionato (strength = #autori unici o #paper)
+Hierarchical #4: treemap conference→topic oppure topic→università per “vista d’insieme”
+Step narrativi
+Scegli topic → mappa evidenzia università e cluster geografici.
+Tooltip: università, #autori, #paper, “anni attivi”, (opzionale mediana citazioni).
+“Shortlist”: genera lista 10 università + 10 autori “advisor-like” (top del cluster).
+Human-based
+“3 città, 3 storie”: 3 università in continenti diversi che crescono nello stesso topic.
+Uscita utile
+un widget “PhD shortlist” scaricabile: università + autori + paper da leggere.
+
+Domanda: Dove sono i posti migliori per il mio topic?
+Sezioni
+1. La mappa animata (decadi)
+La tua Mercator “omini” per università
+slider anno/decade
+2. Paesi che emergono
+Choropleth per #autori o #paper nel tempo
+Messaggio: globalizzazione e shift regionali
+3. Top universities by topic (non solo totale)
+Treemap o ranked dot plot: università top per ciascun topic
+“strength = #paper in topic + impatto mediano”
+4. Collaborazioni internazionali
+Flow map tra paesi (archi pesati)
+filtro: topic + decade
+5. La guida pratica (per studenti)
+Un “finder”:
+selezioni topic
+scegli continente / paese
+ottieni top università + autori principali + paper fondamentali
+EXTRA: Human-based block: “3 città, 3 storie”
+3 università in aree diverse che crescono in topic diversi
+micro-story con numeri: “da 2 paper nel 2005 a 18 nel 2024”
+Output utile:
+“Se vuoi fare PhD su topic T: top 10 università + profili autori + paper consigliati”
+“Se vuoi massimizzare collaboration: dove sono i network più connessi”
+
+
+
+EXTRA:  Pagina 4 — The Awards & the Truth: “Cosa viene premiato e cosa sopravvive”
+Domanda: Premi = qualità? quali idee diventano ‘test of time’?
+Sezioni
+Heatmap premi per anno
+Boxplot citazioni/download: award vs no-award
+TT spotlight: 5 paper + genealogia citazioni
+Replicability stamp nel tempo (policy/cultura)
+
+
+
+Come rendere la storia “divertente” senza perdere serietà
+Meccaniche narrative (con dati)
+“Choose your character”: student / researcher / industry → cambia ranking e callout
+Easter eggs: “il paper più scaricato”, “il titolo più lungo”, “l’anno con più coautori”
+Mini-quiz: “Secondo te quale conferenza cresce di più dopo il 2010?” → scroll → reveal con grafico
+Human-based, ma rigoroso
+12 profili totali max (troppi annoiano)
+ognuno scelto con criteri misurabili:
+prolifico
+award-heavy
+bridge
+trend-setter (topic emergente)
+
+TIPI DI PLOT: 
+
+Pagina 1: Market Map (Problem → Evidence → Insight → Takeaway)
+Categorical
+1) Stacked bar: PaperType (C/J/M) nel tempo per conference
+2) Box/violin: citazioni per topic (BERTopic)
+3) Ranked dot: top topic negli ultimi 5 anni (volume o growth)
+Temporal
+4) Multi-line: #paper per anno per conference
+5) Streamgraph: topic nel tempo
+6) Heatmap annuale: %stamp o #award per anno
+Relational
+7) Scatter: Downloads vs Citations (color: topic; shape: award/stamp)
+👉 Takeaway: “3 temi emergenti + 3 maturi + 3 applicabili”.
+
+Pagina 2: People & Power (human-based, senza fuffa)
+Relational
+8) Coauthor network (filtri per decade/topic)
+9) Internal citation directed network (VIS-only)
+Hierarchical
+10) Treemap: conference → topic (composizione)
+11) Sunburst: topic → award/stamp (chi viene premiato)
+12) Icicle: topic per decade (shift strutturale)
+👉 Human blocks (12 profili): prolifico, rising, award magnet, bridge, ecc.
+
+Pagina 3: Where to go (scelte pratiche)
+Spatial
+13) Mercator map: università con omini (size=#autori)
+14) Choropleth: #autori/#paper per paese nel tempo
+15) Flow map: collaborazioni country→country (per decade/topic)

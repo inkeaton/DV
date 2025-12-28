@@ -1,5 +1,5 @@
 /*
-  _common/style/colors.css
+  _assets/css/colors.css
   - Canonical color tokens for the site. Keep colors here so the rest of
     the styles can map MD3 tokens to these variables (see `style.css`).
   - This file exposes utility classes (`body.dark-theme`, `body.light-theme`)
