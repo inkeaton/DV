@@ -141,8 +141,8 @@ class AppFooter extends HTMLElement {
       <footer class="footer-r2d3" role="contentinfo">
         <div class="f-left">
           <div class="f-brand-box">
-            <h2>VIS 35</h2>
-            <p class="f-year">© ${year} DV2</p>
+            <h2>DV2</h2>
+            <p class="f-year">© ${year}</p>
           </div>
 
           <div class="f-desc">
