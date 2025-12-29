@@ -1,625 +1,688 @@
 /* /assets/css/style.css */
 /* ============================================================================
-   MAIN STYLESHEET FOR DV2 DATA VISUALIZATION SITE
-   
-   This file contains:
-   1. Material Design 3 color tokens (light & dark themes)
-   2. Layout variables and base styles
-   3. Component styles (app bar, drawer, cards, footer)
-   4. Responsive design breakpoints
-   
-   The design system uses CSS custom properties (variables) for theming,
-   allowing seamless light/dark mode switching.
+   DV2 — Main Stylesheet (Material Design 3 tokens + layout + components)
+
+   Contents
+   0) Web Components layout fix
+   1) Design tokens + layout variables (Light)
+   2) Design tokens overrides (Dark)
+   3) Base styles + typography
+   4) Layout utilities
+   5) App Bar (top navigation)
+   6) Drawer + Scrim (mobile navigation)
+   7) Bento grid + Cards
+   8) Footer (R2D3-style)
+   9) Home Hero (index)
+  10) Responsive rules
+
+   Notes
+   - Theming is driven by CSS custom properties (variables).
+   - body.dark-theme overrides tokens for dark mode.
    ============================================================================ */
 
+
 /* ============================================================================
-   CUSTOM ELEMENT DISPLAY FIX
-   ============================================================================
-   Custom web components (app-header, app-drawer, app-footer) are set to
-   'display: contents' so they don't create extra wrapper elements in the
-   layout. This makes them "invisible" to CSS layout, allowing their children
-   to participate directly in parent layout contexts (flexbox, grid, etc.)
+   0) WEB COMPONENTS: "display: contents" to avoid extra layout wrappers
    ============================================================================ */
 app-header,
 app-drawer,
 app-footer {
-    display: contents;
+  display: contents;
 }
 
+
 /* ============================================================================
-   CSS CUSTOM PROPERTIES (VARIABLES)
-   ============================================================================
-   Material Design 3 uses a token-based design system with semantic color names
-   that adapt to light/dark themes. The :root selector defines light theme
-   (default), and body.dark-theme overrides these for dark mode.
+   1) TOKENS + LAYOUT VARIABLES — Light theme (default)
    ============================================================================ */
-
 :root {
-    /* --- LAYOUT VARIABLES --- */
-    --app-bar-height: 64px;
-    /* Fixed height for top navigation */
-    --max-width: 1100px;
-    /* Maximum content width (centered) */
+  /* --- Typography --- */
+  --font-head: "Merriweather", serif;
 
-    /* --- STACKING ORDER (Z-INDEX) ---
-       Keep these centralized so feature CSS (e.g. scrollytelling) doesn't
-       accidentally create layers above the navbar.
-    */
-    --z-app-bar: 1000;
-    --z-scrim: 1050;
-    --z-drawer: 1100;
+  /* --- Layout --- */
+  --app-bar-height: 64px;
+  --max-width: 1100px;
 
-    /* ============================================================================
-       MATERIAL DESIGN 3 - LIGHT THEME COLORS
-       ============================================================================
-       These tokens follow MD3 naming conventions:
-       - Primary: Main brand color, used for prominent actions
-       - Secondary: Supporting color for less prominent elements
-       - Tertiary: Accent color for highlights and special elements
-       - Surface: Background colors for cards, sheets, etc.
-       - On-[color]: Text/icon colors that appear on that surface
-       - Container: Filled backgrounds (like button backgrounds)
-       - Outline: Border and divider colors
-       ============================================================================ */
+  /* --- Stacking order (z-index) --- */
+  --z-app-bar: 1000;
+  --z-scrim: 1050;
+  --z-drawer: 1100;
 
-    /* PRIMARY COLOR TOKENS */
-    --md-sys-color-primary: #00687A;
-    /* Main teal brand color */
-    --md-sys-color-on-primary: #FFFFFF;
-    /* White text on primary */
-    --md-sys-color-primary-container: #ADECFF;
-    /* Light teal container */
-    --md-sys-color-on-primary-container: #001F26;
-    /* Dark text on light teal */
+  /* --- MD3 Color Tokens (Light) --- */
+  --md-sys-color-primary: #00687A;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #ADECFF;
+  --md-sys-color-on-primary-container: #001F26;
 
-    /* SECONDARY COLOR TOKENS */
-    --md-sys-color-secondary: #4B6269;
-    /* Muted blue-gray */
-    --md-sys-color-on-secondary: #FFFFFF;
-    /* White text on secondary */
-    --md-sys-color-secondary-container: #CEE7EF;
-    /* Light blue-gray container */
-    --md-sys-color-on-secondary-container: #061F25;
-    /* Dark text on light blue-gray */
+  --md-sys-color-secondary: #4B6269;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #CEE7EF;
+  --md-sys-color-on-secondary-container: #061F25;
 
-    /* TERTIARY COLOR TOKENS */
-    --md-sys-color-tertiary: #575C7E;
-    /* Purple-gray accent */
-    --md-sys-color-on-tertiary: #FFFFFF;
-    /* White text on tertiary */
-    --md-sys-color-tertiary-container: #DEE1FF;
-    /* Light purple container */
-    --md-sys-color-on-tertiary-container: #131937;
-    /* Dark text on light purple */
+  --md-sys-color-tertiary: #575C7E;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #DEE1FF;
+  --md-sys-color-on-tertiary-container: #131937;
 
-    /* SURFACE & BACKGROUND TOKENS */
-    --md-sys-color-surface: #F5FAFC;
-    /* Main page background (very light blue) */
-    --md-sys-color-on-surface: #171C1E;
-    /* Dark text on surface */
-    --md-sys-color-surface-variant: #DBE4E7;
-    /* Alternative surface color */
-    --md-sys-color-on-surface-variant: #3F484B;
-    /* Text on variant surface */
+  --md-sys-color-surface: #F5FAFC;
+  --md-sys-color-on-surface: #171C1E;
+  --md-sys-color-surface-variant: #DBE4E7;
+  --md-sys-color-on-surface-variant: #3F484B;
 
-    /* SURFACE ELEVATION LEVELS */
-    /* MD3 uses different surface tones to create visual hierarchy */
-    --md-sys-color-surface-container-low: #EFF4F7;
-    /* Lowest elevation (subtle) */
-    --md-sys-color-surface-container: #E9EFF1;
-    /* Standard elevation */
-    --md-sys-color-surface-container-high: #E4E9EB;
-    /* Higher elevation (more contrast) */
+  --md-sys-color-surface-container-low: #EFF4F7;
+  --md-sys-color-surface-container: #E9EFF1;
+  --md-sys-color-surface-container-high: #E4E9EB;
 
-    /* OUTLINE TOKENS */
-    --md-sys-color-outline: #70797C;
-    /* Strong borders/dividers */
-    --md-sys-color-outline-variant: #BFC8CB;
-    /* Subtle borders/dividers */
+  --md-sys-color-outline: #70797C;
+  --md-sys-color-outline-variant: #BFC8CB;
 
-    /* FOOTER - LIGHT */
-    --footer-bg: var(--md-sys-color-surface-container);
-    --footer-text: var(--md-sys-color-on-surface);
-    --footer-muted: var(--md-sys-color-on-surface-variant);
-    --footer-strong: var(--md-sys-color-on-surface);
-    --footer-divider: var(--md-sys-color-outline-variant);
-    --footer-link: var(--md-sys-color-primary);
-    --footer-link-underline: var(--md-sys-color-outline);
-    --footer-border: var(--md-sys-color-primary);
-
+  /* --- Footer tokens (derived from MD3 tokens) --- */
+  --footer-bg: var(--md-sys-color-surface-container);
+  --footer-text: var(--md-sys-color-on-surface);
+  --footer-muted: var(--md-sys-color-on-surface-variant);
+  --footer-strong: var(--md-sys-color-on-surface);
+  --footer-divider: var(--md-sys-color-outline-variant);
+  --footer-link: var(--md-sys-color-primary);
+  --footer-link-underline: var(--md-sys-color-outline);
+  --footer-border: var(--md-sys-color-primary);
 }
 
+
 /* ============================================================================
-   DARK THEME OVERRIDES
-   ============================================================================
-   When body.dark-theme class is applied, these variables override the light
-   theme values. Dark themes typically use:
-   - Darker backgrounds with lighter text
-   - Reduced color saturation
-   - Higher contrast between surface levels
+   2) TOKENS OVERRIDES — Dark theme
    ============================================================================ */
 body.dark-theme {
-    /* PRIMARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-primary: #85D2E7;
-    /* Lighter teal for visibility */
-    --md-sys-color-on-primary: #003640;
-    /* Dark teal text */
-    --md-sys-color-primary-container: #004E5D;
-    /* Dark teal container */
-    --md-sys-color-on-primary-container: #ADECFF;
-    /* Light teal text */
+  --md-sys-color-primary: #85D2E7;
+  --md-sys-color-on-primary: #003640;
+  --md-sys-color-primary-container: #004E5D;
+  --md-sys-color-on-primary-container: #ADECFF;
 
-    /* SECONDARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-secondary: #B2CBD3;
-    /* Light blue-gray */
-    --md-sys-color-on-secondary: #1D343A;
-    /* Dark blue-gray text */
-    --md-sys-color-secondary-container: #334A51;
-    /* Dark blue-gray container */
-    --md-sys-color-on-secondary-container: #CEE7EF;
-    /* Light blue-gray text */
+  --md-sys-color-secondary: #B2CBD3;
+  --md-sys-color-on-secondary: #1D343A;
+  --md-sys-color-secondary-container: #334A51;
+  --md-sys-color-on-secondary-container: #CEE7EF;
 
-    /* TERTIARY COLOR TOKENS (Dark Mode) */
-    --md-sys-color-tertiary: #BFC4EB;
-    /* Light purple */
-    --md-sys-color-on-tertiary: #292E4D;
-    /* Dark purple text */
-    --md-sys-color-tertiary-container: #3F4565;
-    /* Dark purple container */
-    --md-sys-color-on-tertiary-container: #DEE1FF;
-    /* Light purple text */
+  --md-sys-color-tertiary: #BFC4EB;
+  --md-sys-color-on-tertiary: #292E4D;
+  --md-sys-color-tertiary-container: #3F4565;
+  --md-sys-color-on-tertiary-container: #DEE1FF;
 
-    /* SURFACE & BACKGROUND TOKENS (Dark Mode) */
-    --md-sys-color-surface: #0F1416;
-    /* Very dark background */
-    --md-sys-color-on-surface: #DEE3E5;
-    /* Light text on dark */
-    --md-sys-color-surface-variant: #3F484B;
-    /* Medium dark surface */
-    --md-sys-color-on-surface-variant: #BFC8CB;
-    /* Light text variant */
+  --md-sys-color-surface: #0F1416;
+  --md-sys-color-on-surface: #DEE3E5;
+  --md-sys-color-surface-variant: #3F484B;
+  --md-sys-color-on-surface-variant: #BFC8CB;
 
-    /* SURFACE ELEVATION LEVELS (Dark Mode) */
-    /* In dark mode, higher elevation = lighter color (opposite of light mode) */
-    --md-sys-color-surface-container-low: #171C1E;
-    /* Slightly lighter than main surface */
-    --md-sys-color-surface-container: #1B2022;
-    /* Standard elevation */
-    --md-sys-color-surface-container-high: #252B2D;
-    /* Highest elevation (lightest) */
+  --md-sys-color-surface-container-low: #171C1E;
+  --md-sys-color-surface-container: #1B2022;
+  --md-sys-color-surface-container-high: #252B2D;
 
-    /* OUTLINE TOKENS (Dark Mode) */
-    --md-sys-color-outline: #899295;
-    /* Lighter borders for dark bg */
-    --md-sys-color-outline-variant: #3F484B;
-    /* Subtle borders */
+  --md-sys-color-outline: #899295;
+  --md-sys-color-outline-variant: #3F484B;
 
-    /* FOOTER - DARK */
-    --footer-bg: var(--md-sys-color-surface-container-high);
-    --footer-text: var(--md-sys-color-on-surface);
-    --footer-muted: var(--md-sys-color-on-surface-variant);
-    --footer-strong: var(--md-sys-color-on-surface);
-    --footer-divider: var(--md-sys-color-outline-variant);
-    --footer-link: var(--md-sys-color-primary);
-    --footer-link-underline: var(--md-sys-color-outline);
-    --footer-border: var(--md-sys-color-primary);
+  /* Footer in dark mode */
+  --footer-bg: var(--md-sys-color-surface-container-high);
+  --footer-text: var(--md-sys-color-on-surface);
+  --footer-muted: var(--md-sys-color-on-surface-variant);
+  --footer-strong: var(--md-sys-color-on-surface);
+  --footer-divider: var(--md-sys-color-outline-variant);
+  --footer-link: var(--md-sys-color-primary);
+  --footer-link-underline: var(--md-sys-color-outline);
+  --footer-border: var(--md-sys-color-primary);
 }
 
+
 /* ============================================================================
-   BASE STYLES
+   3) BASE STYLES + TYPOGRAPHY
    ============================================================================ */
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
 
-    /* Flexbox layout for sticky footer */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  /* Sticky footer layout */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-    /* Smooth transitions when switching themes */
-    transition: background-color 0.3s, color 0.3s;
+  /* Smooth theme transitions */
+  transition: background-color 0.3s, color 0.3s;
 }
+
 
 /* ============================================================================
-   APP BAR (Top Navigation)
-   ============================================================================ */
-.app-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 16px;
-    height: var(--app-bar-height);
-
-    /* Use same background as body for seamless look */
-    background: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-
-    /* Sticky positioning keeps it at top when scrolling */
-    position: sticky;
-    top: 0;
-    z-index: var(--z-app-bar);
-
-    /* Subtle bottom border for definition */
-    border-bottom: 1px solid var(--md-sys-color-surface-container-high);
-}
-
-/* App bar left and right sections */
-.app-bar-start,
-.app-bar-end {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Site logo/branding text */
-.brand-logo {
-    font-weight: 700;
-    font-size: 1.25rem;
-    padding: 0 8px;
-}
-
-/* ============================================================================
-   DRAWER (Mobile Navigation)
-   ============================================================================ */
-.drawer {
-    /* Fixed positioning for overlay effect */
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 300px;
-
-    /* Slightly different background than main surface for depth */
-    background: var(--md-sys-color-surface-container-low);
-    color: var(--md-sys-color-on-surface);
-
-    /* Initially hidden off-screen to the left */
-    transform: translateX(-100%);
-
-    /* Smooth slide-in animation with Material Design easing */
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
-
-    /* Layer above scrim */
-    z-index: var(--z-drawer);
-    padding: 12px 0;
-
-    /* Right border for definition */
-    border-right: 1px solid var(--md-sys-color-outline-variant);
-}
-
-/* Open state: slide into view */
-.drawer.open {
-    transform: translateX(0);
-}
-
-/* ============================================================================
-   SCRIM (Dark Overlay)
-   ============================================================================
-   The scrim is a semi-transparent overlay that appears behind the drawer,
-   focusing attention on the drawer and providing a click target to close it.
-   ============================================================================ */
-.scrim {
-    position: fixed;
-    inset: 0;
-    /* Shorthand for top:0, right:0, bottom:0, left:0 */
-    background: rgba(0, 0, 0, 0.32);
-    /* 32% opacity black */
-
-    /* Initially invisible and non-interactive */
-    opacity: 0;
-    pointer-events: none;
-
-    /* Fade in/out animation */
-    transition: opacity 0.3s;
-
-    /* Layer below drawer but above main content */
-    z-index: var(--z-scrim);
-}
-
-/* Open state: fade in and enable clicking */
-.scrim.open {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* ============================================================================
-   MAIN LAYOUT CONTAINER
+   4) LAYOUT UTILITIES
    ============================================================================ */
 .container {
-    width: 100%;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    /* Center horizontally */
-    padding: 24px 16px;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 24px 16px;
+  box-sizing: border-box;
 
-    /* Flex: 1 makes it grow to fill available space (for sticky footer) */
-    flex: 1;
-    box-sizing: border-box;
+  /* Grow to push footer to bottom */
+  flex: 1;
 }
 
+
 /* ============================================================================
-   BENTO GRID (Card Layout)
-   ============================================================================
-   "Bento grid" is a design pattern of card-based layouts, named after
-   Japanese bento boxes with their compartmentalized sections.
+   5) APP BAR (Top Navigation)
+   ============================================================================ */
+.app-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: var(--app-bar-height);
+
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+
+  position: sticky;
+  top: 0;
+  z-index: var(--z-app-bar);
+
+  border-bottom: 1px solid var(--md-sys-color-surface-container-high);
+}
+
+.app-bar-start,
+.app-bar-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 0 8px;
+}
+
+
+/* ============================================================================
+   6) DRAWER + SCRIM (Mobile Navigation)
+   ============================================================================ */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+
+  z-index: var(--z-drawer);
+  padding: 12px 0;
+
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  z-index: var(--z-scrim);
+}
+
+.scrim.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* ============================================================================
+   7) BENTO GRID + CARDS
    ============================================================================ */
 .bento-grid {
-    display: grid;
-
-    /* Auto-fill creates as many columns as fit, each at least 280px */
-    /* This makes the layout responsive without media queries */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
 }
 
-/* ============================================================================
-   CARD COMPONENT
-   ============================================================================
-   Interactive cards that serve as navigation elements. Uses Material Design
-   principles: surface elevation, rounded corners, hover effects, and ripples.
-   ============================================================================ */
 .card {
-    position: relative;
-    /* For absolute positioning of ripple effect */
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 24px;
-    border-radius: 16px;
-    /* Large radius for modern, soft appearance */
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-    /* Use secondary container colors for cards */
-    background-color: var(--md-sys-color-secondary-container);
-    color: var(--md-sys-color-on-secondary-container);
+  padding: 24px;
+  border-radius: 16px;
 
-    text-decoration: none;
-    /* Remove underline from link */
-    overflow: hidden;
-    /* Clip ripple effect to rounded corners */
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
 
-    /* Smooth hover animations */
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid transparent;
+  text-decoration: none;
+  overflow: hidden;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid transparent;
 }
 
-/* Hover state: slight lift and shadow for depth */
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Card icon styling */
 .card-icon {
-    font-size: 40px;
-    /* Inherit container's text color for consistency */
-    color: var(--md-sys-color-on-secondary-container);
+  font-size: 40px;
+  color: var(--md-sys-color-on-secondary-container);
 }
+
 
 /* ============================================================================
-   FOOTER
+   8) FOOTER (R2D3-style, mobile friendly)
    ============================================================================ */
-/* =========================================
-   FOOTER R2D3 (MOBILE FRIENDLY)
-   ========================================= */
 .footer-r2d3 {
-    background: var(--footer-bg, #2D3436);
-    /* fallback se la variabile manca */
-    color: var(--footer-text, #fff);
+  background: var(--footer-bg, #2D3436);
+  color: var(--footer-text, #fff);
 
-    margin-top: auto;
-    border-top: 6px solid var(--footer-border, #00687A);
-    padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
+  margin-top: auto;
+  border-top: 6px solid var(--footer-border, #00687A);
+
+  padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
 }
 
 .f-left {
-    min-width: 0;
-    padding-right: clamp(0rem, 2vw, 2rem);
-    border-right: 1px solid var(--footer-divider);
+  min-width: 0;
+  padding-right: clamp(0rem, 2vw, 2rem);
+  border-right: 1px solid var(--footer-divider);
 }
 
 .f-brand-box {
-    border: 2px solid var(--footer-text);
-    padding: 1.25rem 1.5rem;
-    display: inline-block;
-    margin-bottom: 1.5rem;
+  border: 2px solid var(--footer-text);
+  padding: 1.25rem 1.5rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
 }
 
 .f-brand-box h2 {
-    margin: 0;
-    color: var(--footer-text);
-    font-size: clamp(1.5rem, 2.2vw, 2rem);
-    line-height: 1.1;
+  margin: 0;
+  color: var(--footer-text);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.1;
 }
 
 .f-year {
-    margin: .5rem 0 0 0;
-    color: var(--footer-muted);
-    font-size: .9rem;
+  margin: 0.5rem 0 0 0;
+  color: var(--footer-muted);
+  font-size: 0.9rem;
 }
 
 .f-desc {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    margin-bottom: 1.75rem;
-    color: var(--footer-text);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+  color: var(--footer-text);
 }
 
 .f-desc a {
-    color: var(--footer-link);
-    text-decoration: underline;
-    text-decoration-color: var(--footer-link-underline);
-    text-underline-offset: 3px;
+  color: var(--footer-link);
+  text-decoration: underline;
+  text-decoration-color: var(--footer-link-underline);
+  text-underline-offset: 3px;
 }
 
 .f-methodology h4 {
-    color: var(--footer-text);
-    border-bottom: 1px solid var(--footer-divider);
-    padding-bottom: .4rem;
-    margin: 0 0 .75rem;
-    font-size: 1.05rem;
+  color: var(--footer-text);
+  border-bottom: 1px solid var(--footer-divider);
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+.f-methodology p,
+.f-methodology ul {
+  font-size: 0.95rem;
+  color: var(--footer-muted);
 }
 
 .f-methodology p {
-    font-size: .95rem;
-    color: var(--footer-muted);
-    margin: 0 0 1rem;
+  margin: 0 0 1rem;
 }
 
 .f-methodology ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: .95rem;
-    color: var(--footer-muted);
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .f-methodology li {
-    margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
 }
 
 .f-methodology strong {
-    color: var(--footer-strong, var(--footer-text));
+  color: var(--footer-strong, var(--footer-text));
 }
 
 .f-cta {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .f-cta-link {
-    color: var(--footer-link);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  color: var(--footer-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* DESTRA: Team */
+/* Right column: team blocks */
 .f-right {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.5rem, 4vw, 3rem);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
 }
 
 .team-row {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
 }
 
 .team-pic {
-    width: 96px;
-    height: 96px;
-    object-fit: cover;
-    border-radius: 6px;
-    filter: grayscale(100%);
-    transition: filter .25s;
-    flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 6px;
+
+  filter: grayscale(100%);
+  transition: filter 0.25s;
+
+  flex: 0 0 auto;
 }
 
 .team-row:hover .team-pic {
-    filter: grayscale(0%);
+  filter: grayscale(0%);
 }
 
-/* Touch devices: niente “hover only” */
+/* On touch devices, avoid hover-only UX */
 @media (hover: none) {
-    .team-pic {
-        filter: none;
-    }
+  .team-pic {
+    filter: none;
+  }
 }
 
 .team-text h3 {
-    margin: 0 0 .35rem;
-    color: var(--footer-text);
-    font-size: 1.2rem;
+  margin: 0 0 0.35rem;
+  color: var(--footer-text);
+  font-size: 1.2rem;
 }
 
 .team-role {
-    text-transform: uppercase;
-    font-size: .78rem;
-    letter-spacing: .08em;
-    color: var(--footer-muted);
-    display: block;
-    margin-bottom: .6rem;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--footer-muted);
+  display: block;
+  margin-bottom: 0.6rem;
 }
 
 .team-bio {
-    font-size: .95rem;
-    line-height: 1.45;
-    color: var(--footer-muted);
-    margin: 0 0 .65rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--footer-muted);
+  margin: 0 0 0.65rem;
 }
 
 .team-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .team-links a {
-    font-size: .9rem;
-    color: var(--footer-link);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--footer-link-underline);
-    padding-bottom: 2px;
+  font-size: 0.9rem;
+  color: var(--footer-link);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--footer-link-underline);
+  padding-bottom: 2px;
 }
 
+/* Focus styles (keyboard accessibility) */
 .team-links a:focus-visible,
 .f-desc a:focus-visible,
 .f-cta-link:focus-visible {
-    outline: 2px solid var(--footer-border);
-    outline-offset: 3px;
-    border-radius: 6px;
-}
-
-/* Breakpoint: da 900px in giù diventa stacked */
-@media (max-width: 900px) {
-    .footer-r2d3 {
-        grid-template-columns: 1fr;
-    }
-
-    .f-left {
-        border-right: none;
-        padding-right: 0;
-        border-bottom: 1px solid var(--footer-divider);
-        padding-bottom: 1.75rem;
-    }
-}
-
-/* Extra-small: team row in colonna */
-@media (max-width: 520px) {
-    .team-row {
-        flex-direction: column;
-    }
-
-    .team-pic {
-        width: 110px;
-        height: 110px;
-    }
+  outline: 2px solid var(--footer-border);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 
 /* ============================================================================
-   RESPONSIVE DESIGN
-   ============================================================================
-   Mobile-first approach with breakpoints for desktop features
+   9) HOME HERO (Index) — full viewport + gradients (mobile friendly)
    ============================================================================ */
 
-/* Mobile: Hide desktop navigation, show hamburger menu */
-@media (max-width: 600px) {
-    .desktop-nav {
-        display: none;
-    }
+/* Main wrapper for home page (use: <main class="home">) */
+main.home {
+  width: 100%;
+  flex: 1;
 }
 
-/* Desktop: Hide hamburger menu, show full navigation */
-@media (min-width: 601px) {
-    #menu-btn {
-        display: none;
-    }
+/* Hero section fills viewport below the sticky app bar */
+.home-hero {
+  min-height: calc(100vh - var(--app-bar-height));
+  display: flex;
+  align-items: center;
+  padding: clamp(2.2rem, 6vw, 4.2rem) 16px;
+
+  /* Token-based gradients work in both light/dark themes */
+  background:
+    radial-gradient(900px 520px at 22% 25%,
+      color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
+      transparent 60%),
+    radial-gradient(700px 460px at 72% 30%,
+      color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent),
+      transparent 62%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent) 0%,
+      color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent) 55%,
+      color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent) 100%);
 }
+
+.hero-inner {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* Small label above the title */
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--md-sys-color-on-surface-variant);
+
+  margin-bottom: 10px;
+}
+
+.k-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+
+  background: color-mix(in srgb, var(--md-sys-color-primary) 80%, #2ecc71);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+}
+
+/* Title style (matches the screenshot vibe) */
+.hero-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: clamp(44px, 6vw, 76px);
+  line-height: 1.02;
+}
+
+.hero-subtitle {
+  margin: 12px 0 0 0;
+  max-width: 78ch;
+  line-height: 1.65;
+
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 16px;
+}
+
+/* Fact cards */
+.hero-facts {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.fact {
+  border-radius: 16px;
+  padding: 14px;
+
+  background: color-mix(in srgb, var(--md-sys-color-surface-container) 82%, transparent);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.fact-num {
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--md-sys-color-on-surface);
+}
+
+.fact-lab {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* CTA row (buttons) */
+.hero-cta {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Utility: center the CTA row */
+.hero-cta-center {
+  justify-content: center;
+}
+
+/* Scroll hint (centered + subtle + animated) */
+.scroll-hint {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.35;
+}
+
+.scroll-hint .material-symbols-rounded {
+  font-size: 28px;
+  color: var(--md-sys-color-on-surface-variant);
+  animation: heroFloat 1.4s ease-in-out infinite;
+}
+
+/* Single source of truth for the bounce animation */
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(7px); }
+}
+
+
+/* ============================================================================
+  10) RESPONSIVE RULES
+   ============================================================================ */
+
+/* Footer: stack columns on smaller screens */
+@media (max-width: 900px) {
+  .footer-r2d3 {
+    grid-template-columns: 1fr;
+  }
+
+  .f-left {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid var(--footer-divider);
+    padding-bottom: 1.75rem;
+  }
+}
+
+/* Footer: team rows become vertical on very small screens */
+@media (max-width: 520px) {
+  .team-row {
+    flex-direction: column;
+  }
+
+  .team-pic {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* Navigation: hide desktop nav on small screens */
+@media (max-width: 600px) {
+  .desktop-nav {
+    display: none;
+  }
+}
+
+/* Navigation: hide hamburger menu on larger screens */
+@media (min-width: 601px) {
+  #menu-btn {
+    display: none;
+  }
+}
+/* Home hero (<= 1000px): typography + facts row (horizontal scroll) */
+@media (max-width: 1000px) {
+  /* Slightly smaller subtitle on small screens */
+  .hero-subtitle {
+    font-size: 15px;
+  }
+
+  /* Facts: single horizontal row (scrollable) */
+  .hero-facts {
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;        /* force one row */
+    overflow-x: auto;         /* horizontal scroll when needed */
+    padding-bottom: 6px;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;    /* Firefox: hide scrollbar */
+  }
+
+  .hero-facts::-webkit-scrollbar {
+    display: none;            /* Safari/Chrome: hide scrollbar */
+  }
+
+  /* Each capsule: fixed-ish width so they don't wrap */
+  .fact {
+    flex: 0 0 auto;
+    min-width: 130px;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .fact-num { font-size: 18px; }
+  .fact-lab { font-size: 12px; }
+}
+

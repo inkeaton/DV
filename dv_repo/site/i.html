@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VIS 35 — Home Preview</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;500;600" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@400;500;600" rel="stylesheet" />
+
+  <!-- Material Web (MD3 components) -->
+  <script type="importmap">
+    { "imports": { "@material/web/": "https://esm.run/@material/web/" } }
+  </script>
+  <script type="module">
+    import "@material/web/all.js";
+  </script>
+
+  <style>
+    /* =========================================================
+      VIS 35 — INDEX PREVIEW
+      - Hero full screen + dataset facts
+      - Mode switch Student/Researcher (accent + sfumature)
+      - Scroll progress
+      - 2 sezioni (auto-mode on scroll)
+      - Footer grosso “R2D3-ish”
+    ========================================================== */
+
+    :root{
+      --font-head: "Merriweather", serif;
+      --font-body: "Roboto", system-ui, -apple-system, Segoe UI, sans-serif;
+
+      /* light theme */
+      --md-sys-color-primary: #00687A;
+      --md-sys-color-surface: #F5FAFC;
+      --md-sys-color-on-surface: #171C1E;
+      --md-sys-color-on-surface-variant: #3F484B;
+
+      --md-sys-color-surface-container: #E9EFF1;
+      --md-sys-color-surface-container-high: #E4E9EB;
+
+      --md-sys-color-outline-variant: #BFC8CB;
+
+      --shadow-1: 0 1px 2px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.08);
+      --shadow-2: 0 10px 22px rgba(0,0,0,.10);
+
+      /* mode accents */
+      --student: #0F9D58;
+      --researcher: #1A73E8;
+      --current-accent: var(--student);
+
+      --app-bar-height: 64px;
+      --maxw: 1100px;
+
+      /* footer variables (light) */
+      --footer-bg: var(--md-sys-color-surface-container);
+      --footer-text: var(--md-sys-color-on-surface);
+      --footer-muted: var(--md-sys-color-on-surface-variant);
+      --footer-strong: var(--md-sys-color-on-surface);
+      --footer-divider: var(--md-sys-color-outline-variant);
+      --footer-link: var(--md-sys-color-primary);
+      --footer-link-underline: rgba(0,0,0,.35);
+      --footer-border: var(--current-accent);
+
+      /* layers */
+      --z-app-bar: 1000;
+      --z-scrim: 1050;
+      --z-drawer: 1100;
+    }
+
+    body.mode-student { --current-accent: var(--student); }
+    body.mode-researcher { --current-accent: var(--researcher); }
+
+    body.dark-theme{
+      --md-sys-color-surface: #0F1416;
+      --md-sys-color-on-surface: #DEE3E5;
+      --md-sys-color-on-surface-variant: #BFC8CB;
+
+      --md-sys-color-surface-container: #1B2022;
+      --md-sys-color-surface-container-high: #252B2D;
+
+      --md-sys-color-outline-variant: #3F484B;
+
+      --footer-bg: var(--md-sys-color-surface-container-high);
+      --footer-text: var(--md-sys-color-on-surface);
+      --footer-muted: var(--md-sys-color-on-surface-variant);
+      --footer-strong: var(--md-sys-color-on-surface);
+      --footer-divider: var(--md-sys-color-outline-variant);
+      --footer-link: color-mix(in srgb, var(--current-accent) 80%, #fff);
+      --footer-link-underline: rgba(255,255,255,.35);
+      --footer-border: var(--current-accent);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      transition: background-color .25s, color .25s;
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+
+    /* =========================
+       APP BAR (top)
+    ========================= */
+    .app-bar{
+      position: sticky;
+      top: 0;
+      z-index: var(--z-app-bar);
+      height: var(--app-bar-height);
+      padding: 0 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+
+      background: color-mix(in srgb, var(--md-sys-color-surface) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
+    }
+
+    .app-bar-start, .app-bar-mid, .app-bar-end{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      min-width: 170px;
+    }
+    .brand-logo{
+      width: 36px; height: 36px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 30%, var(--current-accent), transparent 68%),
+        color-mix(in srgb, var(--md-sys-color-surface-container) 70%, transparent);
+      border: 1px solid color-mix(in srgb, var(--current-accent) 18%, var(--md-sys-color-outline-variant));
+      box-shadow: var(--shadow-1);
+    }
+    .brand-text{ display:flex; flex-direction: column; line-height: 1.05; }
+    .brand-text strong{
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+    .brand-text span{
+      font-size: 12px;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .app-bar-mid{
+      gap: 14px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .mode-switch{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .mode-switch md-filled-tonal-button[data-active]{
+      outline: 2px solid color-mix(in srgb, var(--current-accent) 30%, transparent);
+      outline-offset: 2px;
+    }
+
+    .scroll-progress{
+      width: 170px;
+      height: 3px;
+      border-radius: 999px;
+      overflow:hidden;
+      background: color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
+    }
+    .scroll-progress-bar{
+      height: 100%;
+      width: 0%;
+      background: var(--current-accent);
+      transition: width .12s linear;
+    }
+
+    .desktop-nav{
+      display:flex;
+      gap: 4px;
+      align-items:center;
+    }
+
+    /* mobile */
+    @media (max-width: 900px){
+      .app-bar-mid{ display:none; }
+      .desktop-nav{ display:none; }
+    }
+
+    /* =========================
+       DRAWER (mobile)
+    ========================= */
+    .drawer{
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 300px;
+      transform: translateX(-100%);
+      transition: transform .25s cubic-bezier(.2,0,0,1);
+      z-index: var(--z-drawer);
+
+      background: var(--md-sys-color-surface-container);
+      border-right: 1px solid var(--md-sys-color-outline-variant);
+      padding: 12px 0;
+    }
+    .drawer.open{ transform: translateX(0); }
+
+    .scrim{
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-scrim);
+      background: rgba(0,0,0,.32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .scrim.open{
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* =========================
+       HERO full screen + sfumature
+    ========================= */
+    main.home{ flex: 1; }
+
+    .hero-full{
+      min-height: calc(100vh - var(--app-bar-height));
+      display:flex;
+      align-items:center;
+      padding: clamp(2rem, 5vw, 4rem) 16px;
+      background:
+        radial-gradient(900px 520px at 22% 25%, color-mix(in srgb, var(--current-accent) 22%, transparent), transparent 60%),
+        radial-gradient(700px 460px at 70% 32%, rgba(123,75,206,.10), transparent 60%),
+        linear-gradient(180deg,
+          color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent) 0%,
+          color-mix(in srgb, var(--current-accent) 7%, transparent) 55%,
+          color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent) 100%);
+    }
+
+    .hero-inner{
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+    }
+
+    .hero-kicker{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      color: var(--md-sys-color-on-surface-variant);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .hero-kicker .dot{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: var(--current-accent);
+    }
+
+    .hero-title{
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: clamp(44px, 6vw, 76px);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle{
+      margin: 12px 0 0 0;
+      max-width: 72ch;
+      line-height: 1.6;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 16px;
+    }
+
+    .hero-facts{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    .fact{
+      border-radius: 18px;
+      padding: 14px;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container) 78%, transparent);
+      border: 1px solid color-mix(in srgb, var(--current-accent) 14%, var(--md-sys-color-outline-variant));
+      box-shadow: var(--shadow-1);
+    }
+    .fact-num{
+      font-weight: 800;
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+    .fact-lab{
+      margin-top: 5px;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 13px;
+    }
+
+    .hero-cta{
+      margin-top: 18px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .scroll-indicator{
+      margin-top: 16px;
+      opacity: .75;
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
+    .scroll-indicator .material-symbols-rounded{
+      font-size: 34px;
+      color: var(--current-accent);
+      animation: floaty 1.4s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* =========================
+       MODE SECTIONS
+    ========================= */
+    .mode-section{
+      padding: clamp(2.5rem, 6vw, 4.5rem) 16px;
+      border-top: 1px solid var(--md-sys-color-outline-variant);
+      background:
+        radial-gradient(900px 360px at 20% 10%, color-mix(in srgb, var(--current-accent) 9%, transparent), transparent 60%),
+        linear-gradient(180deg, transparent, color-mix(in srgb, var(--md-sys-color-surface-container) 55%, transparent));
+    }
+
+    .mode-inner{
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+    }
+
+    .mode-head{
+      display:flex;
+      align-items:flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .mode-icon{
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display:grid;
+      place-items:center;
+      background: color-mix(in srgb, var(--current-accent) 18%, transparent);
+      border: 1px solid color-mix(in srgb, var(--current-accent) 20%, var(--md-sys-color-outline-variant));
+      box-shadow: var(--shadow-1);
+    }
+    .mode-icon .material-symbols-rounded{
+      color: color-mix(in srgb, var(--current-accent) 85%, #111);
+      font-size: 24px;
+    }
+
+    .mode-head h2{
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: 28px;
+      letter-spacing: -0.01em;
+    }
+    .mode-head p{
+      margin: 6px 0 0 0;
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    .mode-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mode-card{
+      position: relative;
+      display:block;
+      padding: 18px;
+      border-radius: 18px;
+      text-decoration:none;
+      color: inherit;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container) 86%, transparent);
+      border: 1px solid color-mix(in srgb, var(--current-accent) 14%, var(--md-sys-color-outline-variant));
+      overflow:hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      box-shadow: var(--shadow-1);
+    }
+    .mode-card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-2);
+      border-color: color-mix(in srgb, var(--current-accent) 22%, var(--md-sys-color-outline-variant));
+    }
+
+    .mode-card-title{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 700;
+    }
+    .mode-card-title .material-symbols-rounded{
+      color: var(--current-accent);
+      font-size: 22px;
+    }
+
+    .mode-card-body{
+      margin-top: 8px;
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FOOTER (grosso)
+    ========================= */
+    footer.footer-r2d3{
+      background: var(--footer-bg, #2D3436);
+      color: var(--footer-text, #fff);
+
+      margin-top: auto;
+      border-top: 6px solid var(--footer-border, var(--current-accent));
+      padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+    }
+
+    .f-left{
+      min-width: 0;
+      padding-right: clamp(0rem, 2vw, 2rem);
+      border-right: 1px solid var(--footer-divider);
+    }
+
+    .f-brand-box{
+      border: 2px solid var(--footer-text);
+      padding: 1.25rem 1.5rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .f-brand-box h2{
+      margin: 0;
+      color: var(--footer-text);
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      line-height: 1.1;
+      font-family: var(--font-head);
+    }
+
+    .f-year{
+      margin: .5rem 0 0 0;
+      color: var(--footer-muted);
+      font-size: .9rem;
+    }
+
+    .f-desc{
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+      color: var(--footer-text);
+    }
+
+    .f-desc a{
+      color: var(--footer-link);
+      text-decoration: underline;
+      text-decoration-color: var(--footer-link-underline);
+      text-underline-offset: 3px;
+    }
+
+    .f-methodology h4{
+      color: var(--footer-text);
+      border-bottom: 1px solid var(--footer-divider);
+      padding-bottom: .4rem;
+      margin: 0 0 .75rem;
+      font-size: 1.05rem;
+    }
+
+    .f-methodology p{
+      font-size: .95rem;
+      color: var(--footer-muted);
+      margin: 0 0 1rem;
+    }
+
+    .f-methodology ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: .95rem;
+      color: var(--footer-muted);
+    }
+
+    .f-methodology li{ margin-bottom: .4rem; }
+    .f-methodology strong{ color: var(--footer-strong, var(--footer-text)); }
+
+    .f-cta{ margin-top: 1rem; }
+    .f-cta-link{
+      color: var(--footer-link);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .f-right{
+      min-width: 0;
+      display:flex;
+      flex-direction: column;
+      gap: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .team-row{
+      display:flex;
+      gap: 16px;
+      align-items:flex-start;
+    }
+
+    .team-pic{
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 10px;
+      filter: grayscale(100%);
+      transition: filter .25s;
+      flex: 0 0 auto;
+      border: 1px solid color-mix(in srgb, var(--footer-text) 12%, transparent);
+    }
+
+    .team-row:hover .team-pic{ filter: grayscale(0%); }
+    @media (hover: none){ .team-pic{ filter: none; } }
+
+    .team-text h3{
+      margin: 0 0 .35rem;
+      color: var(--footer-text);
+      font-size: 1.2rem;
+    }
+
+    .team-role{
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      color: var(--footer-muted);
+      display:block;
+      margin-bottom: .6rem;
+    }
+
+    .team-bio{
+      font-size: .95rem;
+      line-height: 1.45;
+      color: var(--footer-muted);
+      margin: 0 0 .65rem;
+    }
+
+    .team-links{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .team-links a{
+      font-size: .9rem;
+      color: var(--footer-link);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--footer-link-underline);
+      padding-bottom: 2px;
+    }
+
+    .team-links a:focus-visible,
+    .f-desc a:focus-visible,
+    .f-cta-link:focus-visible{
+      outline: 2px solid var(--footer-border);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 900px){
+      footer.footer-r2d3{ grid-template-columns: 1fr; padding-left: 6%; padding-right: 6%; }
+      .f-left{
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid var(--footer-divider);
+        padding-bottom: 1.75rem;
+      }
+    }
+    @media (max-width: 520px){
+      .team-row{ flex-direction: column; }
+      .team-pic{ width: 110px; height: 110px; }
+    }
+  </style>
+</head>
+
+<body class="mode-student">
+  <!-- APP BAR -->
+  <header class="app-bar" role="banner">
+    <div class="app-bar-start">
+      <md-icon-button id="menuBtn" aria-label="Menu">
+        <md-icon>menu</md-icon>
+      </md-icon-button>
+
+      <a class="brand" href="/" aria-label="Home">
+        <div class="brand-logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <strong>VIS 35</strong>
+          <span>Ideas · People · Places · Proof</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="app-bar-mid">
+      <div class="mode-switch" aria-label="Mode switch">
+        <md-filled-tonal-button id="btnStudent">
+          <span class="material-symbols-rounded" slot="icon">school</span>
+          Student
+        </md-filled-tonal-button>
+
+        <md-filled-tonal-button id="btnResearcher">
+          <span class="material-symbols-rounded" slot="icon">biotech</span>
+          Researcher
+        </md-filled-tonal-button>
+      </div>
+
+      <div class="scroll-progress" aria-label="Scroll progress">
+        <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="app-bar-end">
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <md-text-button href="#">Home</md-text-button>
+        <md-text-button href="#">Section 1</md-text-button>
+        <md-text-button href="#">Section 2</md-text-button>
+        <md-text-button href="#">About</md-text-button>
+      </nav>
+
+      <md-icon-button id="themeToggle" aria-label="Toggle theme">
+        <md-icon id="themeIcon">light_mode</md-icon>
+      </md-icon-button>
+    </div>
+  </header>
+
+  <!-- DRAWER (mobile) -->
+  <aside class="drawer" id="drawer" aria-label="Mobile navigation">
+    <md-list>
+      <md-list-item type="link" href="#"><div slot="headline">Home</div><md-icon slot="start">home</md-icon></md-list-item>
+      <md-list-item type="link" href="#"><div slot="headline">Section 1</div><md-icon slot="start">bar_chart</md-icon></md-list-item>
+      <md-list-item type="link" href="#"><div slot="headline">Section 2</div><md-icon slot="start">auto_stories</md-icon></md-list-item>
+      <md-list-item type="link" href="#"><div slot="headline">About</div><md-icon slot="start">info</md-icon></md-list-item>
+    </md-list>
+  </aside>
+  <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+  <main class="home">
+    <!-- HERO FULL SCREEN -->
+    <section class="hero-full" aria-label="Intro">
+      <div class="hero-inner">
+        <div class="hero-kicker">
+          <span class="dot"></span>
+          <span>VISpubdata • 1990–2024</span>
+        </div>
+
+        <h1 class="hero-title">The Invisible Shape of VIS</h1>
+
+        <p class="hero-subtitle">
+          Una index page “generale” per un dataset di nicchia: <strong>35 anni</strong> di ricerca VIS.
+          Scegli una lente: <strong>Student</strong> per esplorare e costruire una reading list,
+          <strong>Researcher</strong> per trovare trend e ponti tra comunità.
+        </p>
+
+        <!-- DATASET FACTS (placeholder: cambia quando vuoi) -->
+        <div class="hero-facts" role="list" aria-label="Dataset facts">
+          <div class="fact" role="listitem"><div class="fact-num">~4,000</div><div class="fact-lab">papers</div></div>
+          <div class="fact" role="listitem"><div class="fact-num">~5,000</div><div class="fact-lab">authors</div></div>
+          <div class="fact" role="listitem"><div class="fact-num">~800</div><div class="fact-lab">universities</div></div>
+          <div class="fact" role="listitem"><div class="fact-num">35</div><div class="fact-lab">years</div></div>
+          <div class="fact" role="listitem"><div class="fact-num">4</div><div class="fact-lab">tracks / conferences</div></div>
+        </div>
+
+        <div class="hero-cta">
+          <md-filled-button id="btnStartHome">
+            <span class="material-symbols-rounded" slot="icon">south</span>
+            Start scrolling
+          </md-filled-button>
+
+          <md-outlined-button href="#">
+            <span class="material-symbols-rounded" slot="icon">info</span>
+            Methodology
+          </md-outlined-button>
+        </div>
+
+        <div class="scroll-indicator" aria-hidden="true">
+          <span class="material-symbols-rounded">keyboard_arrow_down</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDENT SECTION -->
+    <section id="studentSection" class="mode-section" data-mode="student" aria-label="Student mode">
+      <div class="mode-inner">
+        <div class="mode-head">
+          <div class="mode-icon"><span class="material-symbols-rounded">school</span></div>
+          <div>
+            <h2>Student lens</h2>
+            <p>Trova topic solidi, gruppi forti, e costruisci una reading list “da PhD”.</p>
+          </div>
+        </div>
+
+        <div class="mode-grid">
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">auto_stories</span>
+              Scrollytelling
+            </div>
+            <div class="mode-card-body">Entra nella storia e filtra per topic / anni.</div>
+          </a>
+
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">bar_chart</span>
+              Charts playground
+            </div>
+            <div class="mode-card-body">Grafici base: trend, distribuzioni, growth vs volume.</div>
+          </a>
+
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">menu_book</span>
+              Reading list builder
+            </div>
+            <div class="mode-card-body">Dai trend ai paper fondamentali → percorso di lettura.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCHER SECTION -->
+    <section id="researcherSection" class="mode-section" data-mode="researcher" aria-label="Researcher mode">
+      <div class="mode-inner">
+        <div class="mode-head">
+          <div class="mode-icon"><span class="material-symbols-rounded">biotech</span></div>
+          <div>
+            <h2>Researcher lens</h2>
+            <p>Individua aree in crescita, “bridge” tra comunità, e opportunità di collaborazione.</p>
+          </div>
+        </div>
+
+        <div class="mode-grid">
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">hub</span>
+              People & bridges
+            </div>
+            <div class="mode-card-body">Network: chi connette comunità e perché (betweenness proxy).</div>
+          </a>
+
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">insights</span>
+              Impact signals
+            </div>
+            <div class="mode-card-body">Citations vs downloads: usato vs citato, outlier e distribuzioni.</div>
+          </a>
+
+          <a class="mode-card" href="#">
+            <md-ripple></md-ripple>
+            <div class="mode-card-title">
+              <span class="material-symbols-rounded">dataset</span>
+              Dataset & pipeline
+            </div>
+            <div class="mode-card-body">Cleaning, OpenAlex enrichment, topic modeling (BERTopic), limiti.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER GROSSO -->
+  <footer class="footer-r2d3" role="contentinfo">
+    <div class="f-left">
+      <div class="f-brand-box">
+        <h2>VIS 35</h2>
+        <p class="f-year">© <span id="year"></span></p>
+      </div>
+
+      <div class="f-desc">
+        <p>
+          VIS 35 è un esperimento di storytelling interattivo per esplorare 35 anni di ricerca nella
+          visualizzazione dati, basato su <strong>VISpubdata</strong>.
+        </p>
+        <p>Domande? <a href="#">Consulta la Documentazione</a>.</p>
+      </div>
+
+      <div class="f-methodology">
+        <h4>Data &amp; Methodology</h4>
+        <p>
+          Dataset: <strong>VISpubdata</strong> (1990–2024) arricchito via <strong>OpenAlex</strong>.
+        </p>
+        <ul>
+          <li><strong>Cleaning:</strong> normalizzazione track + rimozione record incompleti.</li>
+          <li><strong>Processing:</strong> keyword/topic modeling + metriche di growth/impact.</li>
+          <li><strong>Stack:</strong> D3.js (nelle sezioni), HTML/CSS/JS + Material Web.</li>
+        </ul>
+
+        <p class="f-cta">
+          <a href="#" class="f-cta-link">View GitHub Repository →</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="f-right">
+      <div class="team-row">
+        <img src="https://picsum.photos/200?1" class="team-pic" alt="Team member" loading="lazy" decoding="async">
+        <div class="team-text">
+          <h3>Team Member 1</h3>
+          <span class="team-role">Data Engineering &amp; Analysis</span>
+          <p class="team-bio">Pipeline, cleaning, enrichment e metriche sul dataset.</p>
+          <div class="team-links">
+            <a href="#" rel="noopener">LinkedIn</a>
+            <a href="#" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-row">
+        <img src="https://picsum.photos/200?2" class="team-pic" alt="Team member" loading="lazy" decoding="async">
+        <div class="team-text">
+          <h3>Team Member 2</h3>
+          <span class="team-role">Visualization &amp; Frontend</span>
+          <p class="team-bio">UI, scrollytelling, componenti e interazioni.</p>
+          <div class="team-links">
+            <a href="#" rel="noopener">LinkedIn</a>
+            <a href="#" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // ===== basic state =====
+    const state = {
+      mode: localStorage.getItem("dv2-mode") || "student",
+      theme: localStorage.getItem("dv2-theme") || "light",
+    };
+
+    const btnStudent = document.getElementById("btnStudent");
+    const btnResearcher = document.getElementById("btnResearcher");
+    const progressBar = document.getElementById("scrollProgressBar");
+    const yearEl = document.getElementById("year");
+
+    // ===== year =====
+    yearEl.textContent = new Date().getFullYear();
+
+    // ===== mode =====
+    function applyMode(mode){
+      state.mode = mode;
+      document.body.classList.toggle("mode-student", mode === "student");
+      document.body.classList.toggle("mode-researcher", mode === "researcher");
+      btnStudent?.toggleAttribute("data-active", mode === "student");
+      btnResearcher?.toggleAttribute("data-active", mode === "researcher");
+      localStorage.setItem("dv2-mode", mode);
+    }
+    btnStudent?.addEventListener("click", () => applyMode("student"));
+    btnResearcher?.addEventListener("click", () => applyMode("researcher"));
+    applyMode(state.mode);
+
+    // ===== theme =====
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+
+    function applyTheme(theme){
+      state.theme = theme;
+      const isDark = theme === "dark";
+      document.body.classList.toggle("dark-theme", isDark);
+      themeIcon.textContent = isDark ? "dark_mode" : "light_mode";
+      localStorage.setItem("dv2-theme", theme);
+    }
+    applyTheme(state.theme);
+
+    themeToggle?.addEventListener("click", () => {
+      const nowDark = !document.body.classList.contains("dark-theme");
+      applyTheme(nowDark ? "dark" : "light");
+    });
+
+    // ===== start scrolling =====
+    document.getElementById("btnStartHome")?.addEventListener("click", () => {
+      document.getElementById("studentSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // ===== scroll progress =====
+    function updateProgress(){
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const p = max > 0 ? doc.scrollTop / max : 0;
+      progressBar.style.width = `${(p*100).toFixed(1)}%`;
+    }
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+
+    // ===== auto mode by scroll section (student / researcher) =====
+    const sections = document.querySelectorAll(".mode-section[data-mode]");
+    if(sections.length){
+      const io = new IntersectionObserver((entries) => {
+        const best = entries
+          .filter(e => e.isIntersecting)
+          .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if(best){
+          const mode = best.target.getAttribute("data-mode");
+          if(mode === "student" || mode === "researcher") applyMode(mode);
+        }
+      }, { threshold: [0.35, 0.6, 0.8] });
+
+      sections.forEach(s => io.observe(s));
+    }
+
+    // ===== drawer (mobile) =====
+    const drawer = document.getElementById("drawer");
+    const scrim = document.getElementById("scrim");
+    const menuBtn = document.getElementById("menuBtn");
+
+    function openDrawer(){
+      drawer.classList.add("open");
+      scrim.classList.add("open");
+    }
+    function closeDrawer(){
+      drawer.classList.remove("open");
+      scrim.classList.remove("open");
+    }
+
+    menuBtn?.addEventListener("click", openDrawer);
+    scrim?.addEventListener("click", closeDrawer);
+  </script>
+</body>
+</html>
