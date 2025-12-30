@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+Makine öğrenmesine görsel başlangıç
+</title>
+
+    <link rel="shortcut icon" href="../static/app/global/favicon.ico">
+    <link rel="apple-touch-icon" href="../static/app/global/r2d3-logo.png">
+    <!-- Bootstrap -->
+    <link href="../static/app/_bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/app/global/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+
+<!-- Social media  -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@r2d3us" />
+<meta name="twitter:title" content="Makine öğrenmesine görsel başlangıç" />
+<meta name="twitter:description" content= "Makine öğrenmesine görsel başlangıç" />
+<meta name="twitter:image" content="http://www.r2d3.us/static/pages/decision-trees-part-1/preview-tr.png" />
+
+<meta property="og:url" content="http://www.r2d3.us/makine-ogrenmesine-gorsel-baslangic-1/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Makine öğrenmesine görsel başlangıç" />
+<meta property="og:description" content="Makine öğrenmesine görsel başlangıç" />
+<meta property="og:image" content="http://www.r2d3.us/static/pages/decision-trees-part-1/preview-tr.png" />
+<!-- ...................   -->
+
+<link href="../static/pages/decision-trees-part-1/styles.css" rel="stylesheet">
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    var dismissText = document.getElementById("dismiss-disclaimer")
+    var removeDisclaimer
+  
+    removeDisclaimer = function() {
+      var disclaimer = document.getElementById('resolution-disclaimer')
+      disclaimer.remove()
+  
+      dismissText.removeEventListener("click", removeDisclaimer, false)
+    }
+  
+    dismissText.addEventListener("click", removeDisclaimer, false)
+  });  
+</script>
+<style>
+  #resolution-disclaimer {
+    display: none;
+  }
+  
+  @media (max-width: 1023px) and (max-height: 767px) {
+    #resolution-disclaimer {
+      z-index: 10000;
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      background: rgba(0,0,0,0.85);
+    }
+  
+    #disclaimer-wrapper {
+      width: 95vw;
+      margin: 20px auto;
+      color: #fff;
+    }
+  
+    #dismiss-disclaimer {
+      text-decoration: underline;
+      cursor: pointer;
+      color: #777;
+    }
+  }
+</style>  
+
+<!-- Language Annotations  -->
+
+<link rel="alternate" hreflang="pt" href="../uma-introducao-visual-ao-aprendizado-de-maquina-1/index.html"/> 
+<link rel="alternate" hreflang="fr" href="../lapprentissage-automatique-en-images-chapitre-1/index.html"/> 
+<link rel="alternate" hreflang="en" href="../visual-intro-to-machine-learning-part-1/index.html"/> 
+<link rel="alternate" hreflang="zh-Hant" href="http://www.r2d3.us/圖解機器學習第一章/"/> 
+<link rel="alternate" hreflang="ru" href="http://www.r2d3.us/Наглядное-Введение-в-Теорию-Машинного-Обучения/"/> 
+<link rel="alternate" hreflang="es" href="../una-introduccion-visual-al-machine-learning-1/index.html"/> 
+<link rel="alternate" hreflang="it" href="../una-introduzione-visuale-al-machine-learning-1/index.html"/> 
+<link rel="alternate" hreflang="ar" href="../visual-intro-to-machine-learning-part-1-ar/index.html"/> 
+<link rel="alternate" hreflang="id" href="../pengantar-visual-pembelajaran-mesin-bag-1/index.html"/> 
+<link rel="alternate" hreflang="zh-Hans" href="../图解机器学习/index.html"/> 
+<link rel="alternate" hreflang="el" href="../οπτική-εισαγωγή-στη-μηχανική-μάθηση-μέρος-1/index.html"/> 
+<link rel="alternate" hreflang="de" href="../visuelle-einfuehrung-ins-maschinelle-lernen-teil-1/index.html"/> 
+<link rel="alternate" hreflang="x-default" href="../visual-intro-to-machine-learning-part-1/index.html"/>
+<link rel="alternate" hreflang="tr" href="index.html"/>
+<link rel="canonical" href="index.html"/>
+<!-- ...................   -->
+
+
+
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-11 col-sm-4">
+            <a id="logo" class="hide-text" href="../index.html">R2D3</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+<div class="container" id="main">
+	<div class="row" id="intro">
+		<div class="col-xs-5">
+			<div id="set-up" class="tracking-section">
+				<h1>Makine öğrenmesine görsel başlangıç</h1>
+				<p class="small"><img style="height:1.2em;filter:contrast(1%);" alt="language:" src="../static/app/global/world.png" />: <select id="translation-selector" onChange="window.document.location.href=this.options[this.selectedIndex].value;">
+					<option value="/makine-ogrenmesine-gorsel-baslangic-1">
+						Türk
+					</option>
+					
+					<option value="/uma-introducao-visual-ao-aprendizado-de-maquina-1">Português</a> 
+					
+					<option value="/lapprentissage-automatique-en-images-chapitre-1">Français</a> 
+					
+					<option value="/visual-intro-to-machine-learning-part-1">English</a> 
+					
+					<option value="/圖解機器學習第一章">中文</a> 
+					
+					<option value="/Наглядное-Введение-в-Теорию-Машинного-Обучения">русский</a> 
+					
+					<option value="/una-introduccion-visual-al-machine-learning-1">Español</a> 
+					
+					<option value="/una-introduzione-visuale-al-machine-learning-1">Italiano</a> 
+					
+					<option value="/visual-intro-to-machine-learning-part-1-ar">لعربية</a> 
+					
+					<option value="/pengantar-visual-pembelajaran-mesin-bag-1">Bahasa Indonesia</a> 
+					
+					<option value="/图解机器学习">简体</a> 
+					
+					<option value="/οπτική-εισαγωγή-στη-μηχανική-μάθηση-μέρος-1">ελληνικά</a> 
+					
+					<option value="/visuelle-einfuehrung-ins-maschinelle-lernen-teil-1">Deutsch</a> 
+					
+				</select></p>
+				<p>Makine öğrenmesiyle bilgisayarlar, verideki şablonları tanımlayabilmek için, <strong>istatiksel öğrenme</strong> teknikleri kullanırlar.Aşağıya doğru inmeye devam edin.</p>
+				<p>Evlerle ilgili bir veri kümesi kullanarak, New York ve San Francisco'daki evleri ayırt edebilmek için bir makine öğrenmesi modeli yaratacağız. </p>
+			</div>
+			<div id="keep-scrolling">
+				<div id="animated-arrow">
+					<p>Scroll</p>
+					<svg width="40" height="10">
+						<path d="M0,0L40,0L20,10Z" fill="#000" stroke="none" />
+					</svg>
+				</div>
+			</div>
+			<hr class="whitespace" style="height: 30vh;" />
+			<div id="first-two" class="tracking-section">
+				<h2> Önce biraz sezgi </h2>
+				<p> Diyelim ki, bir evin <strong style="color:rgb(65, 153, 43);"> San Francisco</strong>’da mı yoksa <strong style="color:rgb(16, 70, 131);">New York</strong>’ta mı oldugunu anlamak istiyorsunuz. Makine öğrenmesi terimiyle, veri noktalarını kategorize ederek, <strong>sınıflandırma</strong> yapmak istiyorsunuz. </p>
+				<p> San Francisco daha dağlık bir coğrafyaya sahip oldugundan, evlerin yüksekliği, bu iki şehri ayırt edebilmek için iyi bir referans noktası olabilir.  </p>
+				<p> Sağdaki ev-yükseklik verilerine göre, 240 ft üzeri yükseklikteki evlerin San Francisco'da olarak <strong>sınıflandırılması</strong> gerektiğini söyleyebilirsiniz. </p>
+			</div>
+			<hr class="whitespace" style="height: 40vh;" />
+			<div id="add-nuance">
+				<h2> Başka ayrıntılar eklemek </h2>
+				<p> Başka <strong>boyutlar</strong> eklemek daha fazla ayrıntıyı ortaya çıkarır. Örneğin, New York daireleri ft kare başına daha pahalı olabilir. </p>
+				<p> Böylelikle yükseklik-fiyat <strong>dağılım grafiği</strong>, daha alçak evleri ayırt etmemize yardımcı olur. </p>
+				<p> Bu veri, 73 m altındaki ve 19,116.7$'dan pahalı evlerin New York şehrinde olduğunu öne sürüyor. </p>
+				<p> Veri kümesindeki boyutlara <strong>özellikler</strong>, <strong>belirleyiciler</strong> ya da <strong>değişkenler</strong> denir. <span class="footnote-anchor"></span></p>
+			</div>
+			<hr class="whitespace" style="height: 30vh;" />
+			<div id="set-boundaries" class="tracking-section">
+				<h2> Sınırları belirlemek </h2>
+				<p> Edindiğiniz yükseklik (>73 m) ve fiyat (>19,116.7$) bulgularını dağılım grafiğindeki bölgelerin sınırları olarak çizebilirsiniz. Yeşil bölgede gösterilen evler San Francisco’da, mavi bölgedekiler ise New York’ta olur. </p>
+				<p> Datanın sınırlarını belirlemek, istatiksel öğrenmenin temelini oluşturur. </p>
+				<p> Tabii ki daha alçak evleri ve foot kare başına daha düşük fiyatlı evleri ayırt edebilmek için daha fazla bilgiye ihtiyaç duyacaksınız. </p>
+			</div>
+			<hr class="whitespace" style="height: 55vh;" />
+			<div id="more-variables">
+				<div id="getting-more-data" class="tracking-section">
+				</div>
+				<div id="listing-the-variables">
+					<!--<div id="data-table"></div>-->
+				<p> Modeli oluşturmak için kullandığımız veri kümesi 7 ayrı boyuta sahip. Model oluşturmak aynı zamanda modeli <strong>eğitmek</strong> olarak da bilinir. </p>
+				<p> Sağ taraftaki <strong>dağılım matrisi</strong>nde çizilen değişkenler, boyutlar arasındaki ilişkileri gösteriyor. </p>
+				<p> Veride net olarak görülebilen şablonlar var ancak onları belirleyebilmek için sınırlar yeterince net değil. </p>
+				</div>
+				<div id="from-boundaries-to-pattern" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+
+				<h2> Ve Şimdi Makine Öğrenmesi </h2>
+				<p> Verideki şablonları bulma kısmında, makine öğrenmesi devreye girer. Makine öğrenmesi teknikleri, sınırları belirlemek için istatiksel öğrenmeden faydalanır. </p>
+				<p> Makine öğrenmesi tekniklerinden biri de <strong>karar ağaçları</strong>dır. Karar ağaçları, değlşkenleri birer birer değerlendirir ve karar ağaçları, kabul edilebilir derecede erişilebilir bir makine öğrenmesi tekniğidir. </p>
+				</div>
+
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+		</div>
+	</div>
+	<div class="row" id="split">
+		<div class="col-xs-4 col-xs-push-8">
+			<div id="elevation-to-histogram" class="tracking-section">
+				<hr class="whitespace" style="height: 20vh;" />
+				<h2> Daha iyi sınırlar bulmak  </h2>
+				<p> Sezgilerimizi biraz daha geliştirmek için, daha önce söylediğimiz 73-m yükseklik sınırımıza geri dönelim. </p>
+				<p> Doğal olarak bunun için farklı bir bakış açısı gerek. </p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p> Görselimizi <strong>histograma</strong> çevirerek, evlerin hangi yükseklikte hangi sıklıkla bulunduğunu daha iyi görebiliriz. </p>
+				<p> New York’un en yüksek evi 73m iken, büyük çoğunluğun çok daha alçakta olduğu görülüyor. </p>
+
+			</div>
+			<div id="introduce-split" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>İlk dallanma noktası</h2>
+				<p> Karar agaçları, verideki şablonları koşul-sonuç ifadeleriyle belirler. </p>
+				<p> Örneğin, <strong>eğer</strong> bir evin yüksekliği bir sayıdan büyükse, <strong>sonuç</strong> olarak o ev büyük ihtimalle San Francisco’dadır. </p>
+
+			</div>
+			<div id="explain-gini" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<p> Makine öğrenmesinde, bu ifadeler <strong>dallanma</strong> olarak adlandırılır ve veriyi bir değere göre iki <strong>dal</strong>a böler. </p>
+				<p> Dallar arasındaki bu değere <strong>ayrım noktası</strong> denir. Bu noktanın solunda kalan evler bir şekilde kategorize edilirken sağında kalan evler başka bir şekilde kategorize edilirler. Ayrım noktaları karar ağaçlarının sınırlarını ifade eder. </p>
+
+				<hr class="whitespace" style="height: 50vh;" />
+				<h2>Sınırlarda orta yolu bulma</h2>
+				<p> Ayrım noktalarını bulmak için dengenin iyi kurulması gerek. İlk ayrım noktamız (73 m) San Francisco’daki bazı evleri New York’taymış gibi göstererek yanlış sınıflandırıyor.  </p>
+				<p> Soldaki pasta grafiğindeki büyük yeşil dilime bakacak olursanız, San Francisco’daki yanlış sınıflandırılmış evleri görebilirsiniz. Bunlar <strong>yanlış red hatası</strong> olarak adlandırılır. </p>
+
+				<hr class="whitespace" style="height: 50vh;" />
+				<p> Bunun yanısıra, San Fransico’daki evleri bulması gereken ayrım noktaları, New York’ta olan bir çok evi de kapsayabilir. Bunlarsa <strong>yanlış kabul</strong> olarak adlandırılır. </p>
+				<hr class="whitespace" style="height: 50vh;" />
+
+				<h2>En iyi ayrım noktası</h2>
+				<p> <strong>En iyi ayrım</strong> için, her dalın sonucu mümkün olduğunca homojen (saf) olmalı. En iyi ayrım noktasını hesaplamak için seçebileceğiniz bir çok matematiksel teknik mevcut.<span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 20vh;" />
+				<p>Burada da gördüğümüz gibi, tek bir özellik için bile en iyi ayrım noktası, San Francisco ve New York’taki evleri tam olarak ayıramamaktadır.</p>
+				<hr class="whitespace" style="height: 10vh;" />
+			</div>
+			<div id="further-split" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>Özyineleme</h2>
+				<p>Başka ayrım noktaları eklemek için, algoritma aynı işlemleri verinin altkümelerinde yineler. Bu yinelemeye <strong>özyineleme</strong> denir ve model eğitmede sıkça kullanılan bir konsepttir.<span class="footnote-anchor"></span></p>
+
+				<p class="small">Soldaki histogramlar, her degişken için yinelenen, tüm altkümelerin dağılımını göstermektedir.</p>
+				<hr class="whitespace" style="height: 30vh;" />
+				<p>En iyi ayrım noktası ağacın hangi dalına baktığınıza göre değişir.<span class="footnote-anchor"></span></p> 
+				<p>Daha alçak evlerde bir sonraki koşul-sonuç ifadesi için en iyi değişken, feet kare fiyatı 1061$ iken daha yüksek evlerde ise bu değer 514500$'dır.</p>.
+
+				<hr class="whitespace" style="height: 40vh;" />
+			</div>
+
+		</div>
+	</div>
+	<div class="row" id="tree">
+		<div class="col-xs-4">
+			<div class="growing-the-tree" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>Ağacı oluşturma</h2>
+				<p>Dallandırmaları arttırmak ağacın <strong>tahmin doğruluğunu</strong> arttıran yeni bilgiler ekleyecektir.</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Ağacı bir kat daha derine dallandırmak, ağacın doğruluğunu <strong>%84</strong> arttırıyor.</p>
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>Başka dallanmalar ekleyerek, <strong>%96'</strong>ya ulaşıyoruz.</p>
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>Aslında ağacı dallandırmaya <strong>%100 kesinliğe</strong> ulaşıncaya kadar, yani her dallanmanın sonucu sadece San Francisco’daki evler ve sadece New York'taki evler şeklinde oluncaya kadar devam edebilirsiniz. </p>
+
+			</div>
+			<div class="leaf-nodes" class="tracking-section">
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>Bu dallanmaların sonuç kısmına <strong>yaprak düğümleri</strong> denir. Karar ağacı modelimiz, her yaprakta, evlerin çoğunlukla hangi sınıfa dahil olduğuna bakarak sınıflandırma yapar.</p>
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+
+		</div>
+	</div>
+	<div class="row" id="test">
+		<div class="col-xs-4">
+			<div id="classify-training-data" class="tracking-section">
+				<hr class="whitespace" style="height: 35vh;" />
+				<h2>Tahminlerde bulunma</h2>
+				<p>Bu yeni eğitilmiş karar ağacı modelimiz, tüm veri noktalarını her dalda değerlendirerek, bir evin San Francisco’da mı yoksa New York’ta mı olduğuna karar veriyor. </p>
+				<hr class="whitespace" style="height: 35vh;"/>
+				<p>Burada, ağacı eğitmek için kullanılan verinin ağaçtan akışını görebilirsiniz.</p>
+
+				<p>Bu veriye <strong>eğitim verisi</strong> dememizin sebebi bu datanın modeli eğitmek için kullanılmış olmasıdır.</p>
+
+				<hr class="whitespace" style="height: 35vh;" />
+				<p>Ağacı, doğruluğu %100 oluncaya kadar büyüttüğümüz için, bu ağaç her bir eğitim verisinin hangi şehirden olduğunu kusursuz şekilde gösterir. </p>
+
+			</div>
+			<div id="classify-test-data" class="tracking-section">
+				<hr class="whitespace" style="height: 40vh;" />
+				<h2>Gerçeklik testi </h2>
+				<p>Tabii ki, asıl önemli olan ağacın daha önce görülmemiş veride nasıl performans gösterdiğidir.</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Ağacın yeni verideki performansını <strong>test</strong> edebilmek için, ağacı, daha önce görülmemiş veri noktalarına uygulamalıyız. Bu daha önce kullanılmamış veriye <strong>test verisi</strong> denir.</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Ideal olarak, ağaç bilinen ya da bilinmeyen veride tam olarak aynı performansı gösterebilmelidir.</p>
+				<hr class="whitespace" style="height: 25vh;" />
+				<p>Buradaki sonuç idealden biraz az.<span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 25vh;" />
+
+			</div>
+			<div id="misclassification" class="tracking-section">
+
+				<p>Bu hatalara <strong>aşırı uyum</strong> denir. Modelimiz eğitim verisini, önemsiz olanlar dahil, her ince ayrıntıya kadar nasıl ayıracağını öğrendi.</p>
+
+				<p>Aşırı uyum, daha sonraki çalışmamızda da açıklayacağımız, makine öğrenmesinin temel konseptlerinden biridir. <span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+		</div>
+	</div>
+	<div id="conclusion" class="tracking-section">
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<hr class="whitespace" style="height: 10vh;" />
+				<h2>Tekrar hatırlayacak olursak</h2>
+				<ol>
+					<li>Makine öğrenmesi <strong>istatiksel öğrenmeyi</strong> ve bilgisayarları kullanarak sınırları ortaya çıkarıp, şablonları belirler.</li>					
+					<li>Karar ağaçları tahminlerde bulunmak için verideki şablonları çıkaran ve sınırları belirleyerek koşul sonuç ilişkisi serileri yaratan bir tekniktir.</li>
+					<li>Sınırlar büyük fark yaratmayan ayrımlara göre oluşturulmuşsa, <strong>aşırı uyum</strong> meydana gelir. Bir modelde aşırı uyum olup olmadığını test verisinin modeldeki akışından anlayabilirsiniz.</li>
+				</ol>
+				<hr class="whitespace" style="height: 25vh;" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<h2> Bir sonraki sefere </h2>
+				<p>Bir sonraki sefere, aşırı uyumu ve onun makine öğrenmesindeki temel uzlaşmalarla ilişkisini inceleyeceğiz.</p>
+				<p>Sorularınız veya düşüncelerinizi duymayı çok isteriz. <a href="https://twitter.com/r2d3us" target="_blank">@r2d3us</a> hesabına tweet atabilir ya da mail adresinden bize ulaşabilirsiniz  <a href="mailto:team@r2d3.us">team@r2d3.us</a>.</p>
+
+				
+				<p>Son olarak, çeviri için Ayşegül Pekel'e 
+				   (<a href="https://tr.linkedin.com/in/aysegulpekel" target="_blank">LinkedIn</a>) 
+				    teşekkür ederiz.</p>
+				
+				<hr class="whitespace" style="height: 5vh;" />
+			</div>
+		</div>
+
+		<div>
+<!-- 			TO DO: Make it so these move around better for mobile -->
+			
+			<div class="col-sm-4">
+				<p class="small">Twitter'dan bizi takip edin</p>
+					<blockquote class="twitter-tweet" lang="en"><p lang="fr" dir="ltr">Makine öğrenmesine görsel başlangıç </p>Posted by <a href="https://www.twitter.com/r2d3us">@r2d3us</a> on <a href="https://twitter.com/r2d3us/status/625681063893864449">Twitter</a></blockquote>
+					<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</div>
+			
+			
+			<div class="col-sm-4">
+				<p class="small">...or Facebook...</p>
+					<div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script><div class="fb-post" data-href="https://www.facebook.com/r2d3us/posts/514027158774699" data-width="200"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/r2d3us/posts/514027158774699"><p>Makine öğrenmesine görsel başlangıç</p>Posted by <a href="https://www.facebook.com/r2d3us/">R2D3</a> on&nbsp;<a href="https://www.facebook.com/r2d3us/posts/514027158774699">Facebook</a></blockquote></div></div>
+			</div>
+			
+
+			<div class="col-sm-4">
+				<p class="small">Ya da e-maillinizi bırakın.</p>
+				<div class="mailing-list">
+					<form action="http://r2d3.createsend.com/t/i/s/tywdu/" method="post" id="subForm">
+						<h4>Posts from R2D3.us</h4>
+						<div class="form-group">
+						  <input id="fieldEmail" name="cm-tywdu-tywdu" class="form-control" type="email" value="your email here" required />
+						</div>
+						<div class="form-group">
+						  <button  class="btn btn-primary" type="submit">Keep in touch!</button>
+					 	</div>
+					</form>
+				</div>
+
+				<hr class="whitespace" style="height: 25vh;" />
+			</div>
+
+
+		</div>
+		
+
+		<div class="row" id="footnotes">
+			<div class="col-xs-8">
+				<h3>Footnotes</h3>
+				<ol id="footnote-list">
+					<li>Makine öğrenmesi konseptleri disiplinlerarası olduğu için (bilgisayar bilimleri, istatistik, mühendisik, psikoloji v.b) farklı isimlendirmeler de olabilir.</li>
+					<li>Burada da gördüğümüz gibi, tek bir özellik için bile en iyi ayrım noktası, San Francisco ve New York’taki evleri tam olarak ayıramamaktadır. </li>
+					<li>Bilgisayarların istatiksel öğrenme tekniklerinde çok iyi olmalarının sebebi bilgisayarların yineleyen işleri hızla ve sıkılmadan yapabiliyor olmalarıdır.</li>
+					<li>TBurada bahsedilen algoritma greedy algoritmasıdır, çünkü greedy algoritması baştan sona bir yaklaşımla veriyi ayırır. Diğer bir deyişle, her altkümeyi o nokta için en homojen şekilde ayırabilecek değişkeni arar.</li>
+					<li>Farenizi noktaların üzerine getirerek, ağaçtan nasıl geldiklerini görebilirsiniz.</li>
+					<li>Küçük ipucu: Sistematik hata/varyans uzlaşmasına değineceğiz.</li>
+
+				</ol>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="static-container" id="shadow-scatterplot"></div>
+<div class="static-container" id="intro-scatterplot"></div>
+<div class="static-container" id="split-quality"></div>
+<div class="static-container" id="decision-tree"></div>
+<div class="static-container" id="train-vs-test"></div>
+
+<div id="resolution-disclaimer">
+  <div id="disclaimer-wrapper">
+    <p>We are so sorry, but we designed this site for desktop
+    rather than mobile viewing. Please come back on
+    a desktop (or a screen at least 1024 by 768 pixels in size)!</p>
+    <p id="dismiss-disclaimer">&hellip;or go ahead anyway.</p>
+  </div>
+</div>
+
+    <div id="footer" class="tracking-section">
+      <div class="container">
+  <div id="footer-content" class="row">
+    <div id="about-r2d3" class="col-xs-12 col-sm-5">
+      <div class="row">
+        <div class="col-xs-3">
+          <a id="footer-logo" class="hide-text" href="../index.html">R2D3</a>
+        </div>
+        <div class="col-xs-9">
+          <p>R2D3 is an experiment in expressing statistical thinking with interactive design. Find us at <a target="_blank" href="https://twitter.com/r2d3us">@r2d3us</a>.</p>
+          <p>Questions? Check out the <a href="../about/faqs/index.html">FAQs</a>.</p>
+        </div>
+      </div>
+    </div>
+    <div id="bio-column" class="col-xs-12 col-sm-7">
+      <div class="row team-bio">
+        <div class="col-xs-3">
+          <img class="footer-portrait" alt="Stephanie" src="../static/app/global/jadeyee.jpg" />
+        </div>
+        <div class="col-xs-8">
+          <h3>Stephanie interprets R2</h3>
+          <p>Stephanie is currently at <a target="_blank" href="https://jobs.netflix.com/teams/data-science-and-engineering">Netflix</a>
+  (<a target="_blank" href="https://jobs.netflix.com/search?team=Data%20Science%20and%20Engineering"><strong>& hiring  !!!</strong></a>). In the past, she's been at <a target="_blank"  href="http://multithreaded.stitchfix.com/algorithms/">Stitch Fix</a>, <a  target="_blank" href="https://cardiogr.am">Cardiogram</a>, <a  target="_blank" href="https://siftscience.com/">Sift Science</a>, Google, <a  target="_blank" href="http://www.bain.com/">Bain & Company</a>, and <a  target="_blank" href="http://www.vectorcapital.com/">Vector Capital</a>. She's got a MS in Statistics from Stanford.</p>
+
+          <p>Find Stephanie: <a href="http://www.linkedin.com/in/stephaniejyee" target="_blank">LinkedIn</a> <a href="http://twitter.com/stephaniejyee" target="_blank" >Twitter</a> <a href="mailto:yee@r2d3.us" target="_blank">Email</a></p>
+        </div>
+      </div>
+      <div class="row team-bio">
+        <div class="col-xs-3">
+          <img class="footer-portrait" alt="Tony" src="../static/app/global/tonyhschu.jpg" />
+        </div>
+        <div class="col-xs-8">
+          <h3>Tony visualizes with D3</h3>
+          <p>Tony is a product designer at <a href="http://tecton.ai">Tecton.ai</a>, where he works on UX for Data Scientists and Data Engineers. Prior to Tecton, Tony worked at <a href="https://ai.facebook.com/">Facebook AI</a> <a href="http://noodle.ai/">Noodle Analytics</a>, <a href="http://h2o.ai/">H2O</a> and at <a href="https://siftscience.com/">Sift Science</a>. He holds an <a href="http://interactiondesign.sva.edu/">MFA in Interaction Design at the School of Visual Arts</a> in New York City, where he tried to <a href="http://letsfreecongress.org">change congress with a fancy infographic</a>.</p>
+          <p>Find Tony: <a href="http://tonyhschu.ca/" target="_blank">Portfolio</a> <a href="http://twitter.com/tonyhschu/" target="_blank">Twitter</a> <a href="http://blog.tonyhschu.ca" target="_blank">Blog</a> <a href="https://www.linkedin.com/in/tonyhschu" target="_blank">LinkedIn</a> <a href="mailto:chu@r2d3.us">Email</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+
+
+<script type="text/javascript" src="../static/dist/c814f45e5cce5d96ddf550688fefd942.js"></script>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56084033-1', 'auto');
+  ga('send', 'pageview');
+</script>
+    
+<script src="../static/pages/decision-trees-part-1/housing-data/tree-training-set-98.js"></script>
+<script type="text/javascript" src="../static/dist/24a2beb93032441d9bd16ce805264f95.js"></script>
+
+  </body>
+</html>

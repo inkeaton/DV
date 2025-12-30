@@ -1,0 +1,120 @@
+// Ryzen 9 7900X Topology
+digraph {
+	compound=true rankdir=TB splines=ortho
+	subgraph cluster_machine {
+		label="Machine: laura" style=dashed
+		RAM [label="System RAM
+30GB"]
+		subgraph cluster_package {
+			color=lightgrey label="Package L#0 (Ryzen 9 7900X)" style=filled
+			subgraph cluster_die_0 {
+				color=white label="CCD / Die L#0" style=filled
+				L3_0 [label="L3 Cache
+32MB" shape=box width=4]
+				subgraph cluster_core_0 {
+					label="Core 0"
+					L2_0 [label="L2
+1MB"]
+					L1_0 [label="L1
+64KB"]
+					L2_0 -> L1_0
+				}
+				subgraph cluster_core_1 {
+					label="Core 1"
+					L2_1 [label="L2
+1MB"]
+					L1_1 [label="L1
+64KB"]
+					L2_1 -> L1_1
+				}
+				subgraph cluster_core_2 {
+					label="Core 2"
+					L2_2 [label="L2
+1MB"]
+					L1_2 [label="L1
+64KB"]
+					L2_2 -> L1_2
+				}
+				subgraph cluster_core_3 {
+					label="Core 3"
+					L2_3 [label="L2
+1MB"]
+					L1_3 [label="L1
+64KB"]
+					L2_3 -> L1_3
+				}
+				subgraph cluster_core_4 {
+					label="Core 4"
+					L2_4 [label="L2
+1MB"]
+					L1_4 [label="L1
+64KB"]
+					L2_4 -> L1_4
+				}
+				subgraph cluster_core_5 {
+					label="Core 5"
+					L2_5 [label="L2
+1MB"]
+					L1_5 [label="L1
+64KB"]
+					L2_5 -> L1_5
+				}
+				L3_0 -> L2_0 [style=invis]
+			}
+			subgraph cluster_die_1 {
+				color=white label="CCD / Die L#1" style=filled
+				L3_1 [label="L3 Cache
+32MB" shape=box width=4]
+				subgraph cluster_core_6 {
+					label="Core 6"
+					L2_6 [label="L2
+1MB"]
+					L1_6 [label="L1
+64KB"]
+					L2_6 -> L1_6
+				}
+				subgraph cluster_core_7 {
+					label="Core 7"
+					L2_7 [label="L2
+1MB"]
+					L1_7 [label="L1
+64KB"]
+					L2_7 -> L1_7
+				}
+				subgraph cluster_core_8 {
+					label="Core 8"
+					L2_8 [label="L2
+1MB"]
+					L1_8 [label="L1
+64KB"]
+					L2_8 -> L1_8
+				}
+				subgraph cluster_core_9 {
+					label="Core 9"
+					L2_9 [label="L2
+1MB"]
+					L1_9 [label="L1
+64KB"]
+					L2_9 -> L1_9
+				}
+				subgraph cluster_core_10 {
+					label="Core 10"
+					L2_10 [label="L2
+1MB"]
+					L1_10 [label="L1
+64KB"]
+					L2_10 -> L1_10
+				}
+				subgraph cluster_core_11 {
+					label="Core 11"
+					L2_11 [label="L2
+1MB"]
+					L1_11 [label="L1
+64KB"]
+					L2_11 -> L1_11
+				}
+				L3_1 -> L2_6 [style=invis]
+			}
+		}
+	}
+}

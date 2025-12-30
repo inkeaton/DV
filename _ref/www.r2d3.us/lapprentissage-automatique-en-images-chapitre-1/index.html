@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+L’apprentissage automatique en images
+</title>
+
+    <link rel="shortcut icon" href="../static/app/global/favicon.ico">
+    <link rel="apple-touch-icon" href="../static/app/global/r2d3-logo.png">
+    <!-- Bootstrap -->
+    <link href="../static/app/_bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/app/global/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+
+<!-- Social media  -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@r2d3us" />
+<meta name="twitter:title" content="L’apprentissage automatique en images" />
+<meta name="twitter:description" content= "À travers un exemple autour du logement, nous allons créer un modèle d’apprentissage automatique capable de distinguer les maisons situées à New-York de celles situées à San Francisco." />
+<meta name="twitter:image" content="http://www.r2d3.us/static/pages/decision-trees-part-1/preview-fr.png" />
+
+<meta property="og:url" content="http://www.r2d3.us/lapprentissage-automatique-en-images-chapitre-1/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="L’apprentissage automatique en images" />
+<meta property="og:description" content="À travers un exemple autour du logement, nous allons créer un modèle d’apprentissage automatique capable de distinguer les maisons situées à New-York de celles situées à San Francisco." />
+<meta property="og:image" content="http://www.r2d3.us/static/pages/decision-trees-part-1/preview-fr.png" />
+<!-- ...................   -->
+
+<link href="../static/pages/decision-trees-part-1/styles.css" rel="stylesheet">
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    var dismissText = document.getElementById("dismiss-disclaimer")
+    var removeDisclaimer
+  
+    removeDisclaimer = function() {
+      var disclaimer = document.getElementById('resolution-disclaimer')
+      disclaimer.remove()
+  
+      dismissText.removeEventListener("click", removeDisclaimer, false)
+    }
+  
+    dismissText.addEventListener("click", removeDisclaimer, false)
+  });  
+</script>
+<style>
+  #resolution-disclaimer {
+    display: none;
+  }
+  
+  @media (max-width: 1023px) and (max-height: 767px) {
+    #resolution-disclaimer {
+      z-index: 10000;
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      background: rgba(0,0,0,0.85);
+    }
+  
+    #disclaimer-wrapper {
+      width: 95vw;
+      margin: 20px auto;
+      color: #fff;
+    }
+  
+    #dismiss-disclaimer {
+      text-decoration: underline;
+      cursor: pointer;
+      color: #777;
+    }
+  }
+</style>  
+
+<!-- Language Annotations  -->
+
+<link rel="alternate" hreflang="pt" href="../uma-introducao-visual-ao-aprendizado-de-maquina-1/index.html"/> 
+<link rel="alternate" hreflang="en" href="../visual-intro-to-machine-learning-part-1/index.html"/> 
+<link rel="alternate" hreflang="zh-Hant" href="http://www.r2d3.us/圖解機器學習第一章/"/> 
+<link rel="alternate" hreflang="ru" href="http://www.r2d3.us/Наглядное-Введение-в-Теорию-Машинного-Обучения/"/> 
+<link rel="alternate" hreflang="es" href="../una-introduccion-visual-al-machine-learning-1/index.html"/> 
+<link rel="alternate" hreflang="tr" href="../makine-ogrenmesine-gorsel-baslangic-1/index.html"/> 
+<link rel="alternate" hreflang="it" href="../una-introduzione-visuale-al-machine-learning-1/index.html"/> 
+<link rel="alternate" hreflang="ar" href="../visual-intro-to-machine-learning-part-1-ar/index.html"/> 
+<link rel="alternate" hreflang="id" href="../pengantar-visual-pembelajaran-mesin-bag-1/index.html"/> 
+<link rel="alternate" hreflang="zh-Hans" href="../图解机器学习/index.html"/> 
+<link rel="alternate" hreflang="el" href="../οπτική-εισαγωγή-στη-μηχανική-μάθηση-μέρος-1/index.html"/> 
+<link rel="alternate" hreflang="de" href="../visuelle-einfuehrung-ins-maschinelle-lernen-teil-1/index.html"/> 
+<link rel="alternate" hreflang="x-default" href="../visual-intro-to-machine-learning-part-1/index.html"/>
+<link rel="alternate" hreflang="fr" href="index.html"/>
+<link rel="canonical" href="index.html"/>
+<!-- ...................   -->
+
+
+
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-11 col-sm-4">
+            <a id="logo" class="hide-text" href="../index.html">R2D3</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+<div class="container" id="main">
+	<div class="row" id="intro">
+		<div class="col-xs-5">
+			<div id="set-up" class="tracking-section">
+				<h1>L’apprentissage automatique en images</h1>
+				<p class="small"><img style="height:1.2em;filter:contrast(1%);" alt="language:" src="../static/app/global/world.png" />: <select id="translation-selector" onChange="window.document.location.href=this.options[this.selectedIndex].value;">
+					<option value="/lapprentissage-automatique-en-images-chapitre-1">
+						Français
+					</option>
+					
+					<option value="/uma-introducao-visual-ao-aprendizado-de-maquina-1">Português</a> 
+					
+					<option value="/visual-intro-to-machine-learning-part-1">English</a> 
+					
+					<option value="/圖解機器學習第一章">中文</a> 
+					
+					<option value="/Наглядное-Введение-в-Теорию-Машинного-Обучения">русский</a> 
+					
+					<option value="/una-introduccion-visual-al-machine-learning-1">Español</a> 
+					
+					<option value="/makine-ogrenmesine-gorsel-baslangic-1">Türk</a> 
+					
+					<option value="/una-introduzione-visuale-al-machine-learning-1">Italiano</a> 
+					
+					<option value="/visual-intro-to-machine-learning-part-1-ar">لعربية</a> 
+					
+					<option value="/pengantar-visual-pembelajaran-mesin-bag-1">Bahasa Indonesia</a> 
+					
+					<option value="/图解机器学习">简体</a> 
+					
+					<option value="/οπτική-εισαγωγή-στη-μηχανική-μάθηση-μέρος-1">ελληνικά</a> 
+					
+					<option value="/visuelle-einfuehrung-ins-maschinelle-lernen-teil-1">Deutsch</a> 
+					
+				</select></p>
+				<p>En apprentissage automatique (“<strong>machine learning</strong>” en anglais), les machines utilisent des méthodes d’<strong>apprentissage statistiques </strong> afin d’extraire automatiquement des motifs des données. Ces méthodes peuvent être utilisées pour faire des prédictions avec une très grande précision.</p>
+				<p><em>Continuer à faire défiler la page.</em> À travers un exemple autour du logement, nous allons créer un modèle d’apprentissage automatique capable de distinguer les maisons situées à New-York de celles situées à San Francisco. </p>
+			</div>
+			<div id="keep-scrolling">
+				<div id="animated-arrow">
+					<p>Scroll</p>
+					<svg width="40" height="10">
+						<path d="M0,0L40,0L20,10Z" fill="#000" stroke="none" />
+					</svg>
+				</div>
+			</div>
+			<hr class="whitespace" style="height: 30vh;" />
+			<div id="first-two" class="tracking-section">
+				<h2> Tout d’abord, un peu d’intuition </h2>
+				<p> Prenons le cas où vous désirez savoir si une maison se trouve à <strong style="color:rgb(65, 153, 43);">San Francisco</strong>  ou à <strong style="color:rgb(16, 70, 131);">New York</strong>. En apprentissage automatique, on parle d’un problème de <strong>classification</strong> lorsque l’on cherche à catégoriser un élément. </p>
+				<p> Vu que San Francisco est une ville plutôt vallonnée (par rapport à New-York), l’altitude de la maison semble être un bon moyen de distinguer entre les deux villes. </p>
+				<p> À partir des données d’altitude de maisons présentées à droite, on pourrait décider qu’une maison au-dessus de 240 pieds (240 ft ~ 73 m) devrait être <strong> classée </strong> comme située à San Francisco. </p>
+			</div>
+			<hr class="whitespace" style="height: 40vh;" />
+			<div id="add-nuance">
+				<h2> Puis en ajoutant de la nuance </h2>
+				<p> Ajouter une autre <strong>dimension</strong> que l’altitude permet de nuancer. Par exemple, les appartements new-yorkais peuvent atteindre des prix au mètre carré très élevés. </p>
+				<p> Ainsi, en visualisant l’altitude <em>et</em> le prix au mètre carré avec un <strong>nuage de points</strong>, on peut mieux différencier parmi les maisons situées à faible altitude. </p>
+				<p> Les données suggèrent que parmi les maisons situées à moins de 240 ft d’altitude, celles valant plus de 1776 $ le pied carré (per sqft) se situent à New-York. </p>
+				<p> Les dimensions selon lesquelles on représente les données sont communément appelées <strong>variables</strong>, <strong>prédicteurs</strong> ou <strong>caractéristiques</strong> (“features” en anglais). <span class="footnote-anchor"></span></p>
+			</div>
+			<hr class="whitespace" style="height: 30vh;" />
+			<div id="set-boundaries" class="tracking-section">
+				<h2> Dessiner des frontières </h2>
+				<p> Vous pouvez visualiser l’altitude de plus de 240 ft et le prix au pied carré de plus de 1776 $ comme des frontières délimitants des régions dans votre nuage de points. Les maisons situées dans les régions en vert et en bleu correspondent respectivement à San Francisco et New-York. </p>
+				<p> L’essence de l’apprentissage statistique repose sur sa capacité à identifier les frontières de décision dans les données. </p>
+				<p> Bien évidemment, pour différencier parmi les maisons à faible altitude <em>et</em> à faible prix au mètre carré (région blanche dans le coin inférieur gauche), on aura besoin d’informations supplémentaires. </p>
+			</div>
+			<hr class="whitespace" style="height: 55vh;" />
+			<div id="more-variables">
+				<div id="getting-more-data" class="tracking-section">
+				</div>
+				<div id="listing-the-variables">
+					<!--<div id="data-table"></div>-->
+				<p> Les données que l’on utilise pour produire le modèle se base sur 7 variables différentes. La production d’un modèle est communément appelé l’<strong>apprentissage</strong> d’un modèle (“training” en anglais). </p>
+				<p> À droite, on visualise les variables dans une <strong>matrice dite “à nuage de points</strong>” afin de montrer les relations entre chaque paire de variables (parmi les 7) </p>
+				<p> Il y a des motifs apparents dans les données mais les frontières de décision pour les délimiter ne sont pas pour autant évidentes. </p>
+				</div>
+				<div id="from-boundaries-to-pattern" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+
+				<h2> Et maintenant, de l’apprentissage automatique </h2>
+				<p> L’extraction de motifs est à la base de l’apprentissage automatique. L’utilisation de méthodes d’apprentissage statistique permet d’obtenir des frontières de décision. </p>
+				<p> <strong>L’arbre de décision</strong> est un exemple de méthode d’apprentissage automatique. Les arbres de décision considèrent les variables une à une et sont une méthode plutôt accessible à tous bien que rudimentaire. </p>
+				</div>
+
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+		</div>
+	</div>
+	<div class="row" id="split">
+		<div class="col-xs-4 col-xs-push-8">
+			<div id="elevation-to-histogram" class="tracking-section">
+				<hr class="whitespace" style="height: 20vh;" />
+				<h2> Obtenir de meilleures frontières </h2>
+				<p> Considèrons à nouveau la frontière autour de l’altitude de 240 ft établie précédemment afin de voir comment améliorer notre intuition. </p>
+				<p> Nous allons avoir besoin d’une nouvelle perspective. </p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p> En transformant notre nuage de points en un <strong>histogramme</strong>, on peut mieux voir le nombre de maisons à chaque altitude. </p>
+				<p> Bien que la maison la plus haute de New-York se situe à 73 m d’altitude, la majorité d’entres elles se situent à des altitudes bien plus basses. </p>
+
+			</div>
+			<div id="introduce-split" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>Votre premier embranchement</h2>
+				<p> Un arbre de décision utilise des conditions si-alors pour définir des motifs dans les données. </p>
+				<p> Par exemple, <em>si</em> l’altitude d’une maison est supérieure à un nombre donné, <em>alors</em> cette maison est probablement située à San Francisco. </p>
+
+			</div>
+			<div id="explain-gini" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<p> En apprentissage automatique, ces conditions sont appellées <strong>embranchements</strong> et elles divisent les données en deux <strong>branches</strong> en fonction de la valeur d’une variable. </p>
+				<p> Cette valeur qui sépare en deux branches est appellée <strong>point de séparation</strong> (“split point” en anglais). Les maisons à sa gauche sont classifiées dans une catégorie et celles à sa droite dans une autre. Un point de séparation correspond à l’idée de frontière pour un arbre de décision. </p>
+
+				<hr class="whitespace" style="height: 50vh;" />
+				<h2>Compromis</h2>
+				<p> Choisir un point de séparation implique un compromis. Notre frontière initiale (~73 m) catégorise incorrectement des maisons situées à San Francisco comme situées à New-York. </p>
+				<p> Si l’on considère la partie verte dans le diagramme circulaire ci-contre, elle correspond à toutes les maisons situées à San Francisco mal classifiées par le modèle. On parle de <strong>faux négatifs</strong>. </p>
+
+				<hr class="whitespace" style="height: 50vh;" />
+				<p> Cependant, un point de séparation qui classifie comme situées à San Francisco toutes les maisons à sa droite incluera des maisons situées à New-York. On parle alors de <strong>faux positifs</strong>. </p>
+				<hr class="whitespace" style="height: 50vh;" />
+
+				<h2>La meilleure séparation</h2>
+				<p> La <strong>meilleure séparation</strong> correspondrait à avoir des branches les plus homogènes possible. Il existe plusieurs méthodes mathématiques pour calculer cette meilleure séparation.<span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 20vh;" />
+				<p>Comme on peut le voir ci-contre, même la meilleure séparation à l’aide d’une seule dimension ne permet pas de séparer clairement les maisons situées à San Francisco de celles situées à New-York.</p>
+				<hr class="whitespace" style="height: 10vh;" />
+			</div>
+			<div id="further-split" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>Récursivité</h2>
+				<p>Afin d’ajouter un point de séparation supplémentaire, l’algorithme réapplique le principe à chaque branche, correspondante à un sous-ensemble des données. On parle de <strong>récursivité</strong>, un concept qui survient souvent lorsque l’on apprend des modèles.<span class="footnote-anchor"></span></p>
+
+				<p class="small">Les histogrammes à gauche montrent la distribution des valeurs de chacune des dimensions pour chacun des deux sous-ensembles.</p>
+				<hr class="whitespace" style="height: 30vh;" />
+				<p>La meilleure séparation dépend de quelle branche de l’arbre de décision on considère.<span class="footnote-anchor"></span></p> 
+				<p>Pour les maisons à faible altitude, le prix par mètre carré, à <em id='left-side-split-value'>X $/sqft</em>, est la meilleure dimension pour la prochaine condition si-alors. Pour les maisons à plus haute altitude, c’est le prix, à <em id='right-side-split-value'>Y$</em></p>.
+
+				<hr class="whitespace" style="height: 40vh;" />
+			</div>
+
+		</div>
+	</div>
+	<div class="row" id="tree">
+		<div class="col-xs-4">
+			<div class="growing-the-tree" class="tracking-section">
+				<hr class="whitespace" style="height: 30vh;" />
+				<h2>Faire pousser un arbre</h2>
+				<p>Des embranchements supplémentaires ajouteront de l’information qui augmentera <strong>la précision de la prédiction</strong> faite par l’arbre.</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Ainsi, en séparant une nouvelles fois, la précision passe à <strong>84%</strong>.</p>
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>Et en ajoutant encore plus de niveaux de séparation, on arrive à <strong>96%</strong>.</p>
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>On peut même ré-appliquer le principe jusqu’à atteindre les <strong>100%</strong>, si bien qu’au bout de chaque branche, les maisons sont soit toujours situées à San Francisco soit toujours à New-York.</p>
+
+			</div>
+			<div class="leaf-nodes" class="tracking-section">
+				<hr class="whitespace" style="height: 60vh;" />
+				<p>Les noeuds situés au bout des branches sont <strong>appellés des feuilles</strong>. Un arbre de décision classifiera les maisons au niveau d’une feuille selon la catégorie la plus fréquente pour cette feuille.</p>
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+
+		</div>
+	</div>
+	<div class="row" id="test">
+		<div class="col-xs-4">
+			<div id="classify-training-data" class="tracking-section">
+				<hr class="whitespace" style="height: 35vh;" />
+				<h2>Prédire</h2>
+				<p>L’arbre de décision ainsi obtenu permet de déterminer si une maison se situe à San Francisco ou New-York en parcourant les branches de l’arbre correspondant aux données.</p>
+				<hr class="whitespace" style="height: 35vh;"/>
+				<p>Ci-contre vous pouvez voir les données utilisées pour apprendre le modèle parcourir l’arbre.</p>
+
+				<p>Ces données sont dites <strong>d’apprentissage</strong> parce qu’elles ont été utilisées pour apprendre le modèle.</p>
+
+				<hr class="whitespace" style="height: 35vh;" />
+				<p>Parce que l’on a construit l’arbre jusqu’à atteindre 100% de précision sur les données d’apprentissage, cet arbre permet de prédire parfaitement dans quelle ville les maisons utilisées en apprentissage se situent.</p>
+
+			</div>
+			<div id="classify-test-data" class="tracking-section">
+				<hr class="whitespace" style="height: 40vh;" />
+				<h2>Confronter la réalité</h2>
+				<p>Bien évidemment, ce qui importe c’est la précision de l’arbre à effectuer des prédictions pour des données jamais vues.</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Pour <strong>évaluer</strong> les performances de l’arbre sur de nouvelles données, nous avons besoin de l’appliquer à des données jamais rencontrées. Ces données sont dites de <strong>test</strong> (par opposition à celles dites d’apprentissage).</p>
+				<hr class="whitespace" style="height: 40vh;" />
+				<p>Idéalement, l’arbre devrait être aussi bon pour prédire à partir de données connues et jamais utilisées.</p>
+				<hr class="whitespace" style="height: 25vh;" />
+				<p>Celui-ci est loin d’être idéal.<span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 25vh;" />
+
+			</div>
+			<div id="misclassification" class="tracking-section">
+
+				<p>Ces erreurs sont dues à du <strong>sur-apprentissage</strong>. Notre modèle a appris à considérer toutes les caractéristiques des données d’apprentissage comme importantes, même celles qui le sont moins.</p>
+
+				<p>Le sur-apprentissage est un concept fondamental en apprentissage que l’on expliquera dans notre prochain article.<span class="footnote-anchor"></span></p>
+				<hr class="whitespace" style="height: 30vh;" />
+			</div>
+		</div>
+	</div>
+	<div id="conclusion" class="tracking-section">
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<hr class="whitespace" style="height: 10vh;" />
+				<h2>Recap</h2>
+				<ol>
+					<li>L’apprentissage automatique (“<strong>machine learning</strong>” en anglais) permet d’identifier des motifs dans les données à l’aide de <strong>méthodes statistiques</strong> capable de découvrir des <strong>frontières de décision</strong>. On peut l’utiliser pour faire des prédictions.</li>					
+					<li>Les arbres de décision sont l’une des méthodes pour faire de telles prédictions. Ils sont basés sur des conditions si-alors qui définissent des frontières dans les données.</li>
+					<li>Le phénomène de <strong>sur-apprentissage</strong> survient lorsque certaines frontières sont basées sur des distinctions qui ne sont pas importantes. Une façon de voir si un modèle sur-apprend est de tester ses prédictions sur des données inconnues.</li>
+				</ol>
+				<hr class="whitespace" style="height: 25vh;" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<h2> À suivre </h2>
+				<p>Dans notre prochain article, nous parlerons de sur-apprentissage et de sa relation avec un compromis fondamental en apprentissage automatique.</p>
+				<p>Des questions? Des commentaires? N’hésitez pas à nous contacter, sur Twitter  <a href="https://twitter.com/r2d3us" target="_blank">@r2d3us</a> ou par mail à <a href="mailto:team@r2d3.us">team@r2d3.us</a>.</p>
+
+				
+				<p>Enfin, merci beaucoup à François Rousseau 
+				   (<a href="https://www.linkedin.com/in/frncsrss" target="_blank">LinkedIn</a>, <a href="https://twitter.com/frncsrss" target="_blank">Twitter</a>) 
+				   -- un ami et 'machine teacher' -- pour la traduction de l'article. :-)</p>
+				
+				<hr class="whitespace" style="height: 5vh;" />
+			</div>
+		</div>
+
+		<div>
+<!-- 			TO DO: Make it so these move around better for mobile -->
+			
+			<div class="col-sm-4">
+				<p class="small">Follow us on Twitter...</p>
+					<blockquote class="twitter-tweet" lang="en"><p lang="fr" dir="ltr">L’apprentissage automatique en images </p>Posted by <a href="https://www.twitter.com/r2d3us">@r2d3us</a> on <a href="https://twitter.com/r2d3us/status/669694047330537473">Twitter</a></blockquote>
+					<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</div>
+			
+			
+			<div class="col-sm-4">
+				<p class="small">...or Facebook...</p>
+					<div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script><div class="fb-post" data-href="https://www.facebook.com/r2d3us/posts/514027158774699" data-width="200"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/r2d3us/posts/514027158774699"><p>L’apprentissage automatique en images</p>Posted by <a href="https://www.facebook.com/r2d3us/">R2D3</a> on&nbsp;<a href="https://www.facebook.com/r2d3us/posts/514027158774699">Facebook</a></blockquote></div></div>
+			</div>
+			
+
+			<div class="col-sm-4">
+				<p class="small">...or keep in touch with email</p>
+				<div class="mailing-list">
+					<form action="http://r2d3.createsend.com/t/i/s/tywdu/" method="post" id="subForm">
+						<h4>Posts from R2D3.us</h4>
+						<div class="form-group">
+						  <input id="fieldEmail" name="cm-tywdu-tywdu" class="form-control" type="email" value="your email here" required />
+						</div>
+						<div class="form-group">
+						  <button  class="btn btn-primary" type="submit">Keep in touch!</button>
+					 	</div>
+					</form>
+				</div>
+
+				<hr class="whitespace" style="height: 25vh;" />
+			</div>
+
+
+		</div>
+		
+
+		<div class="row" id="footnotes">
+			<div class="col-xs-8">
+				<h3>Footnotes</h3>
+				<ol id="footnote-list">
+					<li>Le concept d’apprentissage automatique a été exploré dans de nombreuses disciplines (informatique, statistiques, ingénieurie, psychologie, etc.), ce qui explique les différentes terminologies.</li>
+					<li>Pour en savoir plus sur comment calculer la meilleure séparation, vous pouvez vous renseigner sur le ‘coefficient de Gini’ ou ‘l’entropie croisée’</li>
+					<li>L’une des raisons pour lesquelles les machines sont si aptes à appliquer les méthodes d’apprentissage statistique est leur abilité à effectuer des tâches répétitives rapidement et sans s’ennuyer.</li>
+					<li>L’algorithme ici décrit est dit <strong>glouton</strong> car il suit une approche descendante pour séparer les données. C’est-à-dire qu’il cherche la variable qui rend chaque sous-ensemble le plus homogène possible <em>à ce moment-là.</em>.</li>
+					<li>Placer le curseur de la souris sur l’un des points situés au bas de l’arbre pour voir le trajet qu’il a suivi dans l’arbre.</li>
+					<li>Attention, spoiler : il s’agit du compromis biais/variance !</li>
+
+				</ol>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="static-container" id="shadow-scatterplot"></div>
+<div class="static-container" id="intro-scatterplot"></div>
+<div class="static-container" id="split-quality"></div>
+<div class="static-container" id="decision-tree"></div>
+<div class="static-container" id="train-vs-test"></div>
+
+<div id="resolution-disclaimer">
+  <div id="disclaimer-wrapper">
+    <p>We are so sorry, but we designed this site for desktop
+    rather than mobile viewing. Please come back on
+    a desktop (or a screen at least 1024 by 768 pixels in size)!</p>
+    <p id="dismiss-disclaimer">&hellip;or go ahead anyway.</p>
+  </div>
+</div>
+
+    <div id="footer" class="tracking-section">
+      <div class="container">
+  <div id="footer-content" class="row">
+    <div id="about-r2d3" class="col-xs-12 col-sm-5">
+      <div class="row">
+        <div class="col-xs-3">
+          <a id="footer-logo" class="hide-text" href="../index.html">R2D3</a>
+        </div>
+        <div class="col-xs-9">
+          <p>R2D3 is an experiment in expressing statistical thinking with interactive design. Find us at <a target="_blank" href="https://twitter.com/r2d3us">@r2d3us</a>.</p>
+          <p>Questions? Check out the <a href="../about/faqs/index.html">FAQs</a>.</p>
+        </div>
+      </div>
+    </div>
+    <div id="bio-column" class="col-xs-12 col-sm-7">
+      <div class="row team-bio">
+        <div class="col-xs-3">
+          <img class="footer-portrait" alt="Stephanie" src="../static/app/global/jadeyee.jpg" />
+        </div>
+        <div class="col-xs-8">
+          <h3>Stephanie interprets R2</h3>
+          <p>Stephanie is currently at <a target="_blank" href="https://jobs.netflix.com/teams/data-science-and-engineering">Netflix</a>
+  (<a target="_blank" href="https://jobs.netflix.com/search?team=Data%20Science%20and%20Engineering"><strong>& hiring  !!!</strong></a>). In the past, she's been at <a target="_blank"  href="http://multithreaded.stitchfix.com/algorithms/">Stitch Fix</a>, <a  target="_blank" href="https://cardiogr.am">Cardiogram</a>, <a  target="_blank" href="https://siftscience.com/">Sift Science</a>, Google, <a  target="_blank" href="http://www.bain.com/">Bain & Company</a>, and <a  target="_blank" href="http://www.vectorcapital.com/">Vector Capital</a>. She's got a MS in Statistics from Stanford.</p>
+
+          <p>Find Stephanie: <a href="http://www.linkedin.com/in/stephaniejyee" target="_blank">LinkedIn</a> <a href="http://twitter.com/stephaniejyee" target="_blank" >Twitter</a> <a href="mailto:yee@r2d3.us" target="_blank">Email</a></p>
+        </div>
+      </div>
+      <div class="row team-bio">
+        <div class="col-xs-3">
+          <img class="footer-portrait" alt="Tony" src="../static/app/global/tonyhschu.jpg" />
+        </div>
+        <div class="col-xs-8">
+          <h3>Tony visualizes with D3</h3>
+          <p>Tony is a product designer at <a href="http://tecton.ai">Tecton.ai</a>, where he works on UX for Data Scientists and Data Engineers. Prior to Tecton, Tony worked at <a href="https://ai.facebook.com/">Facebook AI</a> <a href="http://noodle.ai/">Noodle Analytics</a>, <a href="http://h2o.ai/">H2O</a> and at <a href="https://siftscience.com/">Sift Science</a>. He holds an <a href="http://interactiondesign.sva.edu/">MFA in Interaction Design at the School of Visual Arts</a> in New York City, where he tried to <a href="http://letsfreecongress.org">change congress with a fancy infographic</a>.</p>
+          <p>Find Tony: <a href="http://tonyhschu.ca/" target="_blank">Portfolio</a> <a href="http://twitter.com/tonyhschu/" target="_blank">Twitter</a> <a href="http://blog.tonyhschu.ca" target="_blank">Blog</a> <a href="https://www.linkedin.com/in/tonyhschu" target="_blank">LinkedIn</a> <a href="mailto:chu@r2d3.us">Email</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+
+
+<script type="text/javascript" src="../static/dist/c814f45e5cce5d96ddf550688fefd942.js"></script>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56084033-1', 'auto');
+  ga('send', 'pageview');
+</script>
+    
+<script src="../static/pages/decision-trees-part-1/housing-data/tree-training-set-98.js"></script>
+<script type="text/javascript" src="../static/dist/24a2beb93032441d9bd16ce805264f95.js"></script>
+
+  </body>
+</html>

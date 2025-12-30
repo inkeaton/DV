@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no, shrink-to-fit=no"
+    />
+
+    <meta
+      name="description"
+      content="A look at the 98 ice cream flavors available around the world"
+    />
+    <meta
+      name="news_keywords"
+      content="ice cream, ben & jerry's, flavors, base flavor, chocolate, vanilla, additions"
+    />
+
+    <meta property="og:title" content="The Inside Scoop of Ben & Jerry's" />
+    <meta property="og:site_name" content="Hesh & Linds Data Viz" />
+    <meta property="og:url" content="https://benjerry.heshlindsdataviz.com/" />
+    <meta
+      property="og:description"
+      content="A look at the 98 ice cream flavors available around the world"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta
+      property="og:image"
+      content="https://s3.amazonaws.com/hesham.eissa-first.bucket/b%26j.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="600" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Inside Scoop of Ben & Jerry's" />
+    <meta
+      name="twitter:description"
+      content="A look at the 98 ice cream flavors available around the world"
+    />
+    <meta
+      name="twitter:image:src"
+      content="https://s3.amazonaws.com/hesham.eissa-first.bucket/b%26j.png"
+    />
+
+    <link rel="icon" href="flavor.svg" type="image/svg" />
+    <title>The Inside Scoop of Ben & Jerry's</title>
+    <link rel="stylesheet" href="https://use.typekit.net/dls2bij.css" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-179404136-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-179404136-1");
+    </script>
+  </head>
+
+  <body>
+    <!-- INTRO TEXT -->
+    <section id="intro_wrapper">
+      <p class="intro_title_small">The Inside Scoop of</p>
+      <h1 class="intro_title">Ben & Jerry's</h1>
+      <p class="intro_title_subtitle_small">
+        A look at the 98 ice cream flavors available around the world
+      </p>
+      <br />
+      <p class="names">
+        By
+        <a href="https://twitter.com/hesheissa" target="_blank">Hesham Eissa</a>
+        &
+        <a href="https://twitter.com/datavizlinds" target="_blank"
+          >Lindsey Poulter</a
+        >
+      </p>
+      <p class="dataAsOf">Data as of July 19, 2020</p>
+      <div class="intro_subtitle_container">
+        <div class="intro_subtitle">
+          As two frequent ice cream consumers in different countries, with
+          different preferences, we were curious to know more about our favorite
+          ice cream brand, Ben & Jerry's. We wanted to know how our options in
+          the U.S. and U.K. differed and what we were missing out on by only
+          buying our favorite flavors. To answer these questions we collected
+          the necessary data, including consuming
+          <span class="ourFlavorsHover">35 pints of ice cream ourselves.</span
+          ><br />
+          <div class="ourFlavors">
+            <embed src="ourflavors.svg" class="flavorsvg" />
+          </div>
+        </div>
+
+        We looked exclusively at the most common size of Ben & Jerry's ice
+        cream, the pint (473 mL), and to make things simple, we are using the
+        following definitions:
+        <div class="formula">
+          <div>
+            <embed
+              src="formula.svg"
+              width="100%"
+              style="background-color: none"
+            />
+          </div>
+        </div>
+
+        <div class="intro_subtitle">
+          We looked at every country listed on
+          <a href="https://www.benjerry.com/" target="_blank">Ben & Jerry's</a>
+          website and recorded the available flavors and descriptions. Then, we
+          standardized the naming conventions to allow for comparison and
+          grouping. For example, there is a dairy and non-dairy version of
+          Chocolate Chip Cookie Dough. We counted these as one flavor.
+          Additionally, it is called Cookie Dough in the U.K., but we
+          standardized it to the U.S. name of Chocolate Chip Cookie Dough.
+        </div>
+        <div class="intro_subtitle">
+          Now, let's begin by looking at how many flavors exist and seeing which
+          base flavor is the most popular.
+        </div>
+        <!-- <div class="intro_subtitle">
+          We found that Ben & Jerry's currently sells 98 unique ice cream
+          flavors, containing 79 additions, in 30 countries. These flavors are
+          available in 3 different varieties: Dairy, Non-Dairy & Light
+          (Moo-Phoria).
+        </div> -->
+      </div>
+    </section>
+
+    <div class="content">
+      <div class="first-group-container">
+        <div class="section-intro-div">
+          <embed
+            class="icon-center"
+            src="baseflavor.svg"
+            style="width: 100px"
+          />
+          <p class="section-intro-small">FLAVORS & BASE FLAVORS</p>
+          <p class="section-intro-big">Choco-lot of Flavors</p>
+          <!-- <p class="section-intro-text">
+            Have you noticed how many ice cream related words start with a C?
+            Chocolate, cookie, caramel, the list goes on! And if you want more
+            proof, we mapped out every flavor and addition below.
+          </p> -->
+        </div>
+        <!-- INTRO WAFFLES SECTION -->
+        <section id="scrolly">
+          <figure id="waffleSection" class="chart1">
+            <div class="chart_title_first_section_container">
+              <p class="chart_title_first_section">
+                The 98 Flavors of Ben & Jerry's
+              </p>
+              <p class="chart_subtitle">
+                Each circle below represents one flavor
+              </p>
+            </div>
+          </figure>
+
+          <!-- INTRO WAFFLES - TEXT -->
+          <article>
+            <div class="step" data-step="1">
+              <div class="shade-div">
+                <div class="">
+                  <h5>Multiple Base Flavors</h5>
+                  <p>
+                    We began by asking what's the most popular base flavor? But
+                    we quickly realized that it wasn't as easy as it seemed!
+                  </p>
+                </div>
+                <div class="">
+                  <p>
+                    Ben & Jerry's has simple, classic flavors with one base
+                    flavor like
+                    <span class="flavor_bold_text"
+                      >Chocolate Fudge Brownie</span
+                    >
+                    (<span class="chocolate_text">chocolate</span> ice cream
+                    with brownies) and
+                    <span class="flavor_bold_text"
+                      >Chocolate Chip Cookie Dough</span
+                    >
+                    (<span class="vanilla_text">vanilla</span> ice cream with
+                    cookie dough & chocolate chunks).
+                  </p>
+                </div>
+
+                <div class="">
+                  <p>
+                    However, part of their popularity is how they combine
+                    different flavors together.
+                    <span class="flavor_bold_text">Half Baked</span>, for
+                    example, mixes the two aforementioned flavors together into
+                    one. This leaves Half Baked with two base flavors,
+                    <span class="vanilla_text">vanilla</span> and
+                    <span class="chocolate_text">chocolate</span>.
+                  </p>
+                </div>
+              </div>
+
+              <!-- <div>
+                <p>
+                  Not only does Ben & Jerry's creatively mix flavors together, they also make flavors to promote social and
+                  political issues (<span class="flavor_bold_text"
+                    >Save our Swirled</span
+                  >), late night shows (<span class="flavor_bold_text"
+                    >The Tonight Dough</span
+                  >), and brands (<span class="flavor_bold_text"
+                    >Netflix & Chilll'd</span
+                  >).
+                </p>
+              </div> -->
+            </div>
+            <div class="step" data-step="2">
+              <div class="shade-div">
+                <div class="">
+                  <h5>Top Base Flavors</h5>
+                  <p>
+                    Once we classified flavors with two base flavors as
+                    <span class="flavor_bold_text">mixed</span> we were able to
+                    identify <span class="chocolate_text">chocolate</span> as
+                    the most popular base flavor.
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    <span class="chocolate_text">Chocolate</span> is featured in
+                    33 flavors. 20 flavors only have a base flavor of chocolate
+                    while 13 flavors are chocolate mixed with something else (5
+                    of which are <span class="vanilla_text">vanilla</span>!)
+                  </p>
+                </div>
+
+                <div>
+                  <p>
+                    All other base flavors, everything from brown sugar to
+                    pistachio to cookie milk, we grouped into
+                    <span class="other_text">other</span>.
+                  </p>
+                </div>
+              </div>
+              <!-- DO we think people really care about this? I mentioning netflix but maybe we put somewhere else -->
+              <!-- <div>
+                <p>
+                  <span class="peanut_butter_text">Peanut Butter</span> recently increased its count due to the global launch of a new flavor, Netflix & Chilll'd. 
+                
+                </p>
+              </div> -->
+            </div>
+
+            <div class="step" data-step="3">
+              <div class="shade-div">
+                <div class="">
+                  <h5>Top Flavors</h5>
+                  <p>
+                    Hesham wanted a way to prove that a
+                    <span class="vanilla_text">vanilla</span> base flavor was
+                    not boring and that Chocolate Chip Cookie Dough was the best
+                    flavor.
+                  </p>
+                </div>
+                <p>
+                  Conveniently, every year Ben & Jerry's publishes the top
+                  flavors in each country. We aggregated the 2019 lists and
+                  looked at the number of countries a flavor was in to come up
+                  with the top 5 flavors in the world:
+                </p>
+
+                <div class="additions_list_main_container">
+                  <div
+                    class="chocolate_cookie_dough_list flavor_list"
+                    value="Chocolate Chip Cookie Dough"
+                  >
+                    <div
+                      id="chocolate_cookie_dough_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Chip Cookie Dough<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">28 </span> countries,
+                        <span class="additions_list_ban"> 1.4 </span> average
+                        rank
+                      </span>
+                    </div>
+                    <div class="additions_list_tertiary_label">1</div>
+                  </div>
+
+                  <div class="half_baked_list flavor_list" value="Half Baked">
+                    <div
+                      id="half_baked_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Half Baked<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">23 </span>countries,
+                        <span class="additions_list_ban"> 2.7 </span> average
+                        rank
+                      </span>
+                    </div>
+                    <div class="additions_list_tertiary_label">2</div>
+                  </div>
+
+                  <div
+                    class="salted_caramel_brownie_list flavor_list"
+                    value="Salted Caramel Brownie"
+                  >
+                    <div
+                      id="salted_caramel_brownie_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Salted Caramel Brownie<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">13 </span>countries,
+                        <span class="additions_list_ban"> 4.0 </span> average
+                        rank
+                      </span>
+                    </div>
+                    <div class="additions_list_tertiary_label">3</div>
+                  </div>
+
+                  <div
+                    class="peanut_butter_cup_list flavor_list"
+                    value="Peanut Butter Cup"
+                  >
+                    <div
+                      id="peanut_butter_cup_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Peanut Butter Cup<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">19 </span>countries,
+                        <span class="additions_list_ban"> 4.7 </span> average
+                        rank
+                      </span>
+                    </div>
+                    <div class="additions_list_tertiary_label">4</div>
+                  </div>
+
+                  <div
+                    class="chocolate_fudge_brownie_list flavor_list"
+                    value="Chocolate Fudge Brownie"
+                  >
+                    <div
+                      id="chocolate_fudge_brownie_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Fudge Brownie<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">29 </span>countries,
+                        <span class="additions_list_ban"> 5.2 </span> average
+                        rank
+                      </span>
+                    </div>
+                    <div class="additions_list_tertiary_label">5</div>
+                  </div>
+                </div>
+                <p></p>
+              </div>
+            </div>
+
+            <div class="step" data-step="4">
+              <div class="shade-div">
+                <div class="">
+                  <h5>Flavor Types</h5>
+                  <p>
+                    Lindsey (a vegan) was excited when Ben & Jerry's introduced
+                    non-dairy ice cream in 2016.
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    So, we were curious how the non-dairy line compared to the
+                    dairy or Moo-Phoria (light ice cream, introduced in 2018)
+                    lines.
+                  </p>
+                </div>
+
+                <div>
+                  <p>
+                    Is <span class="chocolate_text">chocolate</span> the top
+                    base flavor for all types? Kind of. In non-dairy there is a
+                    three way tie for first while it is the clear winner in
+                    Moo-Phoria.
+                  </p>
+
+                  <div>
+                    <p>
+                      Did Ben & Jerry's simply recreate dairy flavors or did
+                      they introduce new flavors exclusive to the non-dairy
+                      line? Well, as it turns out, it's a little bit of both! 17
+                      of the 98 flavors are available in non-dairy. Of those, 9
+                      are also available as a dairy option while 8 are only
+                      available as non-dairy.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="section-intro-div">
+          <embed class="icon-center" src="globe.svg" style="width: 180px" />
+          <p class="section-intro-small">COUNTRIES</p>
+          <p class="section-intro-big">A World of Flavors</p>
+          <p class="section-intro-text">
+            After we learned more about the 98 different flavors, we were
+            curious to know more about their availability around the world. Did
+            every country have the same base flavor preferences and types?
+          </p>
+        </div>
+        <!-- <div class="section-transition-text"> -->
+
+        <!-- COUNTRIES SECTION -->
+        <div class="second_chart_container">
+          <p class="chart_title_second_section">
+            The 30 Countries Where You Can Enjoy Ben & Jerry's
+          </p>
+          <div id="nav-container-top"></div>
+
+          <div id="catLegend">
+            <div class="legend-flavor-container">
+              <div class="legendCircle chocolate_div"></div>
+              <div class="legendText">Chocolate</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle mix_div"></div>
+              <div class="legendText">Mix</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle vanilla_div"></div>
+              <div class="legendText">Vanilla</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle caramel_div"></div>
+              <div class="legendText">Caramel</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle coffee_div"></div>
+              <div class="legendText">Coffee</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle peanut_butter_div"></div>
+              <div class="legendText">Peanut Butter</div>
+            </div>
+            <div class="legend-flavor-container">
+              <div class="legendCircle other_div"></div>
+              <div class="legendText">Other</div>
+            </div>
+          </div>
+
+          <p class="chart_subtitle"></p>
+          <div id="countriesSection" class="chart2"></div>
+          <button class="buttonMore">See More Countries</button>
+        </div>
+      </div>
+      <!-- ADDITIONS SECTION -->
+      <div class="second-group-container">
+        <div class="section-intro-div">
+          <embed
+            class="icon-center"
+            src="additions.svg"
+            style="width: 190px"
+          />
+          <p class="section-intro-small">ADDITIONS</p>
+          <p class="section-intro-big">
+            The Best Part About Ice Cream is What's Inside!
+          </p>
+          <!-- <p class="section-intro-text">
+            Have you noticed how many ice cream related words start with a C?
+            Chocolate, cookie, caramel, the list goes on! And if you want more
+            proof, we mapped out every flavor and addition below.
+          </p> -->
+        </div>
+        <section id="scrolly2">
+          <figure id="additionsSection">
+            <div class="chart_title_third_section_container">
+              <p class="chart_title_third_section">
+                The 79 Additions of Ben & Jerry's
+              </p>
+              <p class="chart_subtitle">
+                Each filled circle below represents one flavor while each
+                outline represents one addition
+              </p>
+            </div>
+            <div id="additions_label_container">
+              <div class="addition_category_label">
+                <div class="addition_category_ban">Chocolate</div>
+                <span class="add-label"> 26 additions</span>
+              </div>
+              <div class="addition_category_label">
+                <div class="addition_category_ban">Mix</div>
+                <span class="add-label">27 additions</span>
+              </div>
+              <div class="addition_category_label">
+                <div class="addition_category_ban">Vanilla</div>
+                <span class="add-label">24 additions</span>
+              </div>
+              <div class="addition_category_label">
+                <div class="addition_category_ban">Caramel</div>
+                <span class="add-label"> 18 additions</span>
+              </div>
+              <div class="addition_category_label">
+                <div class="addition_category_ban">Other</div>
+                <span class="add-label">35 additions</span>
+              </div>
+            </div>
+            <div class="legend-big-container">
+              <embed src="additionslegend.svg" width="100%" />
+
+              <!-- <p class="circleLegend-title">
+                Circles Sized by Number of Flavors
+              </p>
+              <div class="circleLegend-container">
+                <p class="circleLegend-text" style="text-align: right">#1</p>
+                <div class="circleLegend-all">
+                  <div class="circleLegend-small"></div>
+                  <div class="circleLegend-medium"></div>
+                  <div class="circleLegend-big"></div>
+                </div>
+                <p class="circleLegend-text" style="text-align: left">#26</p>
+              </div> -->
+            </div>
+          </figure>
+
+          <!-- ADDITIONS TEXT -->
+          <article>
+            <div class="step2" data-step="0">
+              <div class="shade-div">
+                <div>
+                  <h5>Top Additions</h5>
+                  <p>
+                    We discussed how additions influence our purchasing
+                    decisions much more than the base flavor! So, we wanted to
+                    learn more about what existed and how many flavors each
+                    addition appears in.
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    We found that 45% of additions, including
+                    <span class="other_text">crunchy potato chip swirl</span> or
+                    <span class="other_text">pink frosting</span>, are only
+                    available in one flavor.
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    However, some additions are a staple in Ben & Jerry's
+                    flavors. If you were to pick a random flavor, there is a 50%
+                    chance it would contain either
+                    <span class="chocolatechunks_text">chocolate chunks</span>,
+                    <span class="caramelswirl_text">caramel swirl</span>,
+                    <span class="chocolatebrownies_text"
+                      >chocolate brownies</span
+                    >, or
+                    <span class="marshmallowswirl_text">marshmallow swirl</span
+                    >.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="step2" data-step="1">
+              <div class="shade-div">
+                <div>
+                  <h5>Additions by Base Flavor</h5>
+                  <p>
+                    We were then curious about the relationship between base
+                    flavors and additions. Were
+                    <span class="chocolatechunks_text">chocolate chunks</span>
+                    the top addition for each base flavor? Were additions only
+                    in one base flavor?
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    It turns out
+                    <span class="chocolatechunks_text">chocolate chunks</span>
+                    are pretty popular! They are the top addtion for chocolate,
+                    mix, and other. Meanwhile, vanilla and caramel both have
+                    <span class="caramelswirl_text">caramel swirl</span> as
+                    their top addition.
+                  </p>
+                </div>
+
+                <div>
+                  <p>
+                    <span class="marshmallowswirl_text">Marshmallow swirl</span>
+                    is mostly paired with choclate base flavors while a
+                    <span class="other_text">graham cracker swirl</span> is
+                    usually with an other base flavor.
+                  </p>
+                </div>
+
+                <div>
+                  <p>Only base flavors with 10+ flavors are shown.</p>
+                </div>
+              </div>
+            </div>
+            <div class="step2" data-step="2">
+              <div class="shade-div">
+                <h5>Commonly Paired Additions</h5>
+                <p>
+                  We know that on average a flavor has two additions. So, we
+                  wanted to see which additions were commonly paired together.
+                  It's no surprise that
+                  <span class="chocolatechunks_text">chocolate chunks</span> and
+                  <span class="caramelswirl_text">caramel swirl</span> appear in
+                  8 flavors together!
+                </p>
+
+                <!-- ADDITIONS LIST TABLE -->
+                <div class="additions_list_main_container">
+                  <div
+                    class="chocolate_chunks_list addition_list"
+                    value="Chocolate Chunks"
+                  >
+                    <div
+                      id="chocolate_chunks_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Chunks<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">26 </span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">Candy</div>
+                  </div>
+
+                  <div
+                    class="caramel_swirl_list addition_list"
+                    value="Caramel Swirl"
+                  >
+                    <div
+                      id="caramel_swirl_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Caramel Swirl<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">20</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">Swirl</div>
+                  </div>
+
+                  <div
+                    class="chocolate_brownies_list addition_list"
+                    value="Chocolate Brownies"
+                  >
+                    <div
+                      id="chocolate_brownies_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Brownies<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">12</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">
+                      Cookies, Brownies & Cake
+                    </div>
+                  </div>
+
+                  <div
+                    class="marshmallow_swirl_list addition_list"
+                    value="Marshmallow Swirl"
+                  >
+                    <div
+                      id="marshmallow_swirl_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Marshmallow Swirl<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">9</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">Swirl</div>
+                  </div>
+                  <div
+                    class="chocolate_cookie_swirl_list addition_list"
+                    value="Chocolate Cookie Swirl"
+                  >
+                    <div
+                      id="chocolate_cookie_swirl_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Cookie Swirl<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">10</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">Swirl</div>
+                  </div>
+                  <div
+                    class="cookie_dough_list addition_list"
+                    value="Cookie Dough"
+                  >
+                    <div
+                      id="cookie_dough_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Cookie Dough<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">7 </span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">
+                      Cookies, Brownies & Cake
+                    </div>
+                  </div>
+                  <div
+                    class="chocolate_sandwich_cookies_list addition_list"
+                    value="Chocolate Sandwich Cookies"
+                  >
+                    <div
+                      id="chocolate_sandwich_cookies_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Sandwich Cookies<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">4</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">
+                      Cookies, Brownies & Cake
+                    </div>
+                  </div>
+
+                  <div
+                    class="chocolate_cookies_list addition_list"
+                    value="Chocolate Cookies"
+                  >
+                    <div
+                      id="chocolate_cookies_list"
+                      class="additions_circle_list"
+                    ></div>
+                    <div class="additions_list_primary_label">
+                      Chocolate Cookies<br /><span
+                        class="additions_list_secondary_label"
+                        ><span class="additions_list_ban">9</span>
+                        pairings</span
+                      >
+                    </div>
+                    <div class="additions_list_tertiary_label">
+                      Cookies, Brownies & Cake
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+      <div class="section-intro-div">
+        <embed src="flavor.svg" style="width: 100px" />
+        <p class="section-intro-small">EXPLORE</p>
+        <p class="section-intro-big">We all scream for ice cream!</p>
+        <!-- <div class="section-transition-text"> -->
+        <p class="section-intro-text">
+          Explore all the flavors, including their base flavors, types,
+          additions, and available countries below!
+        </p>
+        <!-- </div> -->
+      </div>
+
+      <div class="third-group-container">
+        <!-- TREE SECTION -->
+        <!-- <div class="tett"> -->
+        <div class="chart_title_forth_section_container">
+          <p class="chart_title_first_section">
+            The Complete Ben & Jerry's Flavor Guide
+          </p>
+          <p class="chart_subtitle_tree">
+            Interact with the visual to learn more or search for a specific item
+          </p>
+        </div>
+        <section id="scrolly3">
+          <div id="tree-right-side">
+            <div id="tree_input_div">
+              <form class="autocomplete_container" autocomplete="off">
+                <div class="autocomplete" style="width: 300px">
+                  <input
+                    style="font-size: 15px"
+                    id="myInput"
+                    type="text"
+                    name="myCountry"
+                    placeholder="Find a Flavor, Addition or Country..."
+                  />
+                  <div class="find_icon">
+                    <svg
+                      class="search-icon-svg"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      version="1.1"
+                      x="0px"
+                      y="0px"
+                      viewbox="0 0 100 125"
+                      enable-background="new 0 0 100 100"
+                      xml:space="preserve"
+                    >
+                      <g>
+                        <path
+                          fill=""
+                          d="M84.755,64.56c12.914-12.914,12.914-33.927,0-46.841c-12.913-12.915-33.927-12.915-46.842,0     c-11.272,11.273-12.706,28.717-4.297,41.559l-22.72,22.72c-2.625,2.626-2.611,6.909,0.03,9.551s6.926,2.654,9.55,0.03     l22.72-22.72C56.038,77.266,73.481,75.834,84.755,64.56z M44.955,57.52c-9.032-9.032-9.032-23.727,0-32.76     c9.031-9.031,23.727-9.031,32.758,0c9.031,9.033,9.031,23.728,0,32.76C68.682,66.55,53.986,66.55,44.955,57.52z"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                <input class="reset" type="reset" />
+              </form>
+            </div>
+            <div id="rightTable"></div>
+            <div class="tree-legend-main">
+              <embed src="newtreelegend.svg" width="90%" />
+            </div>
+            <div class="filler"></div>
+          </div>
+          <div id="treeSection"></div>
+          <div class="tree-legend-small">
+            <embed src="newtreelegend.svg" width="70%" />
+          </div>
+        </section>
+      </div>
+    </div>
+    <!-- <div class="footer">bye bye</div> -->
+    <section id="footer">
+      <div id="footer-inner">
+        <div class="footer-content-div">
+          <div class="data-footer-div">
+            <p style="margin: 0" class="footer-title">Data and Methods</p>
+            <p>
+              We visited benjerry.com on July 19, 2020 and looked at the
+              available options on the “Our Flavors” page. Due to Ben & Jerry’s
+              continuous changes, what is reflected in our visualization may not
+              be accurate as of today.
+            </p>
+            <p>
+              We used our best judgement to only collect pint sized flavors and
+              limited our dataset to Ice Cream (including Cores and Topped),
+              Non-Dairy, and Moo-Phoria. This excluded frozen yogurt, mini cups,
+              and Scoop Shop flavors. Each pint had its own page which included
+              the name as well as a short description. We recorded this
+              information for all pints. Then, we went to each individual
+              country website listed and repeated the process. Therefore, our
+              dataset only includes countries who have their own Ben & Jerry’s
+              website. Additionally, we relied on Google Translate to record
+              anything that wasn’t in English.
+            </p>
+            <p>
+              After we collected all of the data, we standardized the flavor
+              names to allow for comparison across countries and types. We
+              looked at the imagery on the pint as well as the description to
+              match which flavors were the same with different names. To collect
+              the additions and base flavors, we pulled out words used in the
+              description. We used our best judgement to standardize these and
+              as a result the names we chose may not match exactly what is
+              printed on a pint.
+            </p>
+          </div>
+          <div class="data-footer-div">
+            <p style="padding-top: 15px" class="footer-title">
+              Learning Process and Special Thanks
+            </p>
+            <p>
+              We set out to learn D3.js with very limited knowledge of
+              HTML/CSS/JavaScript. Dr.
+              <a href="https://www.appbrewery.co/" target="_blank"
+                >Angela Wu’s</a
+              >
+              Udemy course and
+              <a href="https://www.newline.co/fullstack-d3" target="_blank"
+                >Amelia Wattenberger’s</a
+              >
+              book helped us create a foundation and understanding of key
+              concepts. From there, we were constantly inspired by and learning
+              from the great works of
+              <a href="https://pudding.cool/" target="_blank">The Pudding</a>,
+              <a href="https://observablehq.com/@mbostock" target="_blank">
+                Mike Bostock</a
+              >, and
+              <a href="https://www.visualcinnamon.com/" target="_blank">
+                Nadieh Bremer.</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://unpkg.com/intersection-observer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/2.2.1/scrollama.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
