@@ -9,67 +9,109 @@ import '@material/web/all.js';
 // 1. APP HEADER COMPONENT
 // ============================================================================
 class AppHeader extends HTMLElement {
-    connectedCallback() {
-        this.innerHTML = `
-            <header class="app-bar">
-                <div class="app-bar-start">
-                    <md-icon-button id="menu-btn"><md-icon>menu</md-icon></md-icon-button>
-                    <a href="/" style="text-decoration: none; color: inherit;">
-                        <span class="brand-logo">DV2</span>
-                    </a>
-                </div>
-                
-                <div class="app-bar-end">
-                    <nav class="desktop-nav">
-                        <md-text-button href="/">Home</md-text-button>
-                        <md-text-button href="/pages/section1/section1.html">Section 1</md-text-button>
-                        <md-text-button href="/pages/section2/section2.html">Section 2</md-text-button>
-                        <md-text-button href="/pages/about.html">About</md-text-button>
-                    </nav>
-                    
-                    <md-icon-button id="theme-toggle">
-                        <md-icon id="theme-icon">light_mode</md-icon>
-                    </md-icon-button>
-                </div>
-            </header>
-        `;
+  connectedCallback() {
+    const REPO = "DV";
+    const isGitHubPages = location.hostname.endsWith("github.io");
+    const BASE = isGitHubPages ? `/${REPO}` : "";
 
-        this.setupTheme();
-        this.setupDrawerEvent();
-    }
+    // true se stiamo in /pages/... (qualunque profondità sotto pages)
+    const inPages = window.location.pathname.includes("/pages/");
 
-    setupDrawerEvent() {
-        this.querySelector('#menu-btn').addEventListener('click', () => {
-            document.dispatchEvent(new CustomEvent('toggle-drawer'));
-        });
-    }
+    // costruisce href: relativo in locale, e con /DV prefix su GitHub Pages
+    const build = (fromRoot, fromPages) => {
+      const relPath = inPages ? fromPages : fromRoot; // es: "./" o "../../pages/..."
+      // normalizza: se è "./" mettiamo "" così diventa "/DV/" pulito
+      const cleaned = relPath === "./" ? "" : relPath;
 
-    setupTheme() {
-        const toggle = this.querySelector('#theme-toggle');
-        const icon = this.querySelector('#theme-icon');
-        const savedTheme = localStorage.getItem('dv2-theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+      // su GitHub Pages conviene usare assoluto con base (/DV/...) per evitare problemi di profondità
+      if (BASE) {
+        // converti i relativi in path "assoluto nel sito"
+        // mapping semplice per la tua struttura:
+        // - Home: "" -> "/DV/"
+        // - "../../pages/x" oppure "./pages/x" -> "/DV/pages/x"
+        if (cleaned === "" || cleaned === "../" || cleaned === "../../") return `${BASE}/`;
 
-        if (isDark) document.body.classList.add('dark-theme');
-        icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+        // se contiene "/pages/" portiamolo sempre a "/DV/pages/..."
+        const pagesIdx = cleaned.indexOf("pages/");
+        if (pagesIdx !== -1) return `${BASE}/${cleaned.slice(pagesIdx)}`;
 
-        toggle.addEventListener('click', () => {
-            const isNowDark = document.body.classList.toggle('dark-theme');
-            icon.textContent = isNowDark ? 'dark_mode' : 'light_mode';
-            localStorage.setItem('dv2-theme', isNowDark ? 'dark' : 'light');
-        });
-    }
+        // fallback
+        return `${BASE}/${cleaned.replace(/^(\.\/|(\.\.\/)+)/, "")}`;
+      }
+
+      // locale: tieni il relativo puro
+      return relPath;
+    };
+
+
+    const homeHref = build("./", "../../");
+    const s1Href = build("./pages/section1/section1.html", "../../pages/section1/section1.html");
+    const s2Href = build("./pages/section2/section2.html", "../../pages/section2/section2.html");
+    const aboutHref = build("./pages/about/about.html", "../../pages/about/about.html");
+
+    this.innerHTML = `
+      <header class="app-bar">
+        <div class="app-bar-start">
+          <md-icon-button id="menu-btn"><md-icon>menu</md-icon></md-icon-button>
+
+          <a href="${homeHref}" style="text-decoration: none; color: inherit;">
+            <span class="brand-logo">DV2</span>
+          </a>
+        </div>
+
+        <div class="app-bar-end">
+          <nav class="desktop-nav">
+            <md-text-button href="${homeHref}">Home</md-text-button>
+            <md-text-button href="${s1Href}">Section 1</md-text-button>
+            <md-text-button href="${s2Href}">Section 2</md-text-button>
+            <md-text-button href="${aboutHref}">About</md-text-button>
+          </nav>
+
+          <md-icon-button id="theme-toggle">
+            <md-icon id="theme-icon">light_mode</md-icon>
+          </md-icon-button>
+        </div>
+      </header>
+    `;
+
+    this.setupTheme();
+    this.setupDrawerEvent();
+  }
+
+  setupDrawerEvent() {
+    this.querySelector('#menu-btn').addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('toggle-drawer'));
+    });
+  }
+
+  setupTheme() {
+    const toggle = this.querySelector('#theme-toggle');
+    const icon = this.querySelector('#theme-icon');
+    const savedTheme = localStorage.getItem('dv2-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+
+    if (isDark) document.body.classList.add('dark-theme');
+    icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+
+    toggle.addEventListener('click', () => {
+      const isNowDark = document.body.classList.toggle('dark-theme');
+      icon.textContent = isNowDark ? 'dark_mode' : 'light_mode';
+      localStorage.setItem('dv2-theme', isNowDark ? 'dark' : 'light');
+    });
+  }
 }
+
 customElements.define('app-header', AppHeader);
 
 
+
 // ============================================================================
-// 2. APP DRAWER COMPONENT
+// 2. APP DRAWER COMPONENT INDEX.html
 // ============================================================================
 class AppDrawer extends HTMLElement {
-    connectedCallback() {
-        this.innerHTML = `
+  connectedCallback() {
+    this.innerHTML = `
             <aside id="drawer" class="drawer">
                 <md-list>
                     <md-list-item type="link" href="/">
@@ -87,7 +129,7 @@ class AppDrawer extends HTMLElement {
                         <md-icon slot="start">auto_stories</md-icon>
                     </md-list-item>
                     
-                    <md-list-item type="link" href="/pages/about.html">
+                    <md-list-item type="link" href="/pages/about/about.html">
                         <div slot="headline">About</div>
                         <md-icon slot="start">info</md-icon>
                     </md-list-item>
@@ -96,37 +138,37 @@ class AppDrawer extends HTMLElement {
             <div id="scrim" class="scrim"></div>
         `;
 
-        this.drawer = this.querySelector('#drawer');
-        this.scrim = this.querySelector('#scrim');
+    this.drawer = this.querySelector('#drawer');
+    this.scrim = this.querySelector('#scrim');
 
-        document.addEventListener('toggle-drawer', () => this.toggle());
-        this.scrim.addEventListener('click', () => this.close());
-        this.highlightActiveLink();
-    }
+    document.addEventListener('toggle-drawer', () => this.toggle());
+    this.scrim.addEventListener('click', () => this.close());
+    this.highlightActiveLink();
+  }
 
-    toggle() {
-        this.drawer.classList.toggle('open');
-        this.scrim.classList.toggle('open');
-    }
+  toggle() {
+    this.drawer.classList.toggle('open');
+    this.scrim.classList.toggle('open');
+  }
 
-    close() {
-        this.drawer.classList.remove('open');
-        this.scrim.classList.remove('open');
-    }
+  close() {
+    this.drawer.classList.remove('open');
+    this.scrim.classList.remove('open');
+  }
 
-    highlightActiveLink() {
-        const currentPath = window.location.pathname;
-        const links = this.querySelectorAll('md-list-item');
-        
-        links.forEach(link => {
-            // Updated logic to handle exact matches better
-            if (link.href.endsWith(currentPath) && currentPath !== '/') {
-                link.classList.add('active');
-            } else if (currentPath === '/' && link.href.endsWith('/')) {
-                 link.classList.add('active');
-            }
-        });
-    }
+  highlightActiveLink() {
+    const currentPath = window.location.pathname;
+    const links = this.querySelectorAll('md-list-item');
+
+    links.forEach(link => {
+      // Updated logic to handle exact matches better
+      if (link.href.endsWith(currentPath) && currentPath !== '/') {
+        link.classList.add('active');
+      } else if (currentPath === '/' && link.href.endsWith('/')) {
+        link.classList.add('active');
+      }
+    });
+  }
 }
 customElements.define('app-drawer', AppDrawer);
 
@@ -136,6 +178,26 @@ customElements.define('app-drawer', AppDrawer);
 class AppFooter extends HTMLElement {
   connectedCallback() {
     const year = new Date().getFullYear();
+
+    // GitHub Pages base (repo = DV). In locale BASE = ""
+    const REPO = "DV";
+    const isGitHubPages = location.hostname.endsWith("github.io");
+    const BASE = isGitHubPages ? `/${REPO}` : "";
+
+    // Se non siamo su GitHub Pages, usiamo percorsi relativi (index vs /pages/)
+    const inPages = window.location.pathname.includes("/pages/");
+    const rel = (fromRoot, fromPages) => (inPages ? fromPages : fromRoot);
+
+    // Helper unico: su GitHub Pages forza path assoluto con /DV, in locale usa il relativo
+    const asset = (fromRoot, fromPages) => {
+      if (BASE) return `${BASE}/assets/img/${fromRoot.split("/").pop()}`; // /DV/assets/img/...
+      return rel(fromRoot, fromPages); // locale: ./assets/... oppure ../../assets/...
+    };
+
+    const person1 = asset("./assets/img/edo.jpeg", "../../assets/img/edo.jpeg");
+    const person2 = asset("./assets/img/iri.jpeg", "../../assets/img/iri.jpeg");
+
+
 
     this.innerHTML = `
       <footer class="footer-r2d3" role="contentinfo">
@@ -172,44 +234,44 @@ class AppFooter extends HTMLElement {
         </div>
 
         <div class="f-right">
-          <div class="team-row">
+          <div class="footer-team-row">
             <img
-              src="/assets/img/edo.jpeg"
-              class="team-pic"
+              src="${person1}"
+              class="footer-team-pic"
               alt="Edoardo Vassallo"
               loading="lazy"
               decoding="async"
             >
-            <div class="team-text">
+            <div class="footer-team-text">
               <h3>Edoardo Vassallo</h3>
-              <span class="team-role">Data Engineering &amp; Analysis</span>
-              <p class="team-bio">
+              <span class="footer-team-role">Data Engineering &amp; Analysis</span>
+              <p class="footer-team-bio">
                 Master Student in Data Science. Attualmente lavora su modelli NLP per l'analisi
                 di abstract scientifici. Ha curato la pipeline Python e il cleaning.
               </p>
-              <div class="team-links">
+              <div class="footer-team-links">
                 <a href="#" rel="noopener">LinkedIn</a>
                 <a href="https://github.com/inkeaton" rel="noopener">GitHub</a>
               </div>
             </div>
           </div>
 
-          <div class="team-row">
+          <div class="footer-team-row">
             <img
-              src="/assets/img/iri.jpg"
-              class="team-pic"
+              src="${person2}"
+              class="footer-team-pic"
               alt="Iryna Savchuk"
               loading="lazy"
               decoding="async"
             >
-            <div class="team-text">
+            <div class="footer-team-text">
               <h3>Iryna Savchuk</h3>
-              <span class="team-role">Visualization &amp; Frontend</span>
-              <p class="team-bio">
+              <span class="footer-team-role">Visualization &amp; Frontend</span>
+              <p class="footer-team-bio">
                 Master Student in Computer Science. Specializzata in Human-Computer Interaction.
                 Ha progettato l'interfaccia Scrollytelling e l'implementazione D3.js.
               </p>
-              <div class="team-links">
+              <div class="footer-team-links">
                 <a href="#" rel="noopener">LinkedIn</a>
                 <a href="https://github.com/IRYNASAVCHUK" rel="noopener">GitHub</a>
               </div>

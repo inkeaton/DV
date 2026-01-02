@@ -388,13 +388,13 @@ body {
   gap: clamp(1.5rem, 4vw, 3rem);
 }
 
-.team-row {
+.footer-team-row {
   display: flex;
   gap: 16px;
   align-items: flex-start;
 }
 
-.team-pic {
+.footer-team-pic {
   width: 96px;
   height: 96px;
   object-fit: cover;
@@ -406,24 +406,24 @@ body {
   flex: 0 0 auto;
 }
 
-.team-row:hover .team-pic {
+.footer-team-row:hover .footer-team-pic {
   filter: grayscale(0%);
 }
 
 /* On touch devices, avoid hover-only UX */
 @media (hover: none) {
-  .team-pic {
+  .footer-team-pic {
     filter: none;
   }
 }
 
-.team-text h3 {
+.footer-team-text h3 {
   margin: 0 0 0.35rem;
   color: var(--footer-text);
   font-size: 1.2rem;
 }
 
-.team-role {
+.footer-team-role {
   text-transform: uppercase;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
@@ -432,20 +432,20 @@ body {
   margin-bottom: 0.6rem;
 }
 
-.team-bio {
+.footer-team-bio {
   font-size: 0.95rem;
   line-height: 1.45;
   color: var(--footer-muted);
   margin: 0 0 0.65rem;
 }
 
-.team-links {
+.footer-team-links {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.team-links a {
+.footer-team-links a {
   font-size: 0.9rem;
   color: var(--footer-link);
   text-decoration: none;
@@ -454,7 +454,7 @@ body {
 }
 
 /* Focus styles (keyboard accessibility) */
-.team-links a:focus-visible,
+.footer-team-links a:focus-visible,
 .f-desc a:focus-visible,
 .f-cta-link:focus-visible {
   outline: 2px solid var(--footer-border);
@@ -628,11 +628,11 @@ main.home {
 
 /* Footer: team rows become vertical on very small screens */
 @media (max-width: 520px) {
-  .team-row {
+  .footer-team-row {
     flex-direction: column;
   }
 
-  .team-pic {
+  .footer-team-pic {
     width: 110px;
     height: 110px;
   }
