@@ -74,25 +74,32 @@ customElements.define("app-header", AppHeader);
 // ============================================================================
 class AppDrawer extends HTMLElement {
   connectedCallback() {
+    const { build } = createShellHelpers();
+
+    const homeHref  = build("./", "../../");
+    const s1Href    = build("./pages/section1/section1.html", "../../pages/section1/section1.html");
+    const s2Href    = build("./pages/section2/section2.html", "../../pages/section2/section2.html");
+    const aboutHref = build("./pages/about/about.html", "../../pages/about/about.html");
+
     this.innerHTML = `
       <aside id="drawer" class="drawer">
         <md-list>
-          <md-list-item type="link" href="/">
+          <md-list-item type="link" href="${homeHref}">
             <div slot="headline">Home</div>
             <md-icon slot="start">home</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="/pages/section1/section1.html">
+          <md-list-item type="link" href="${s1Href}">
             <div slot="headline">Section 1</div>
             <md-icon slot="start">bar_chart</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="/pages/section2/section2.html">
+          <md-list-item type="link" href="${s2Href}">
             <div slot="headline">Section 2</div>
             <md-icon slot="start">auto_stories</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="/pages/about/about.html">
+          <md-list-item type="link" href="${aboutHref}">
             <div slot="headline">About</div>
             <md-icon slot="start">info</md-icon>
           </md-list-item>
@@ -107,6 +114,11 @@ class AppDrawer extends HTMLElement {
     document.addEventListener("toggle-drawer", () => this.toggle());
     this.scrim.addEventListener("click", () => this.close());
     this.highlightActiveLink();
+
+    // opzionale: chiudi il drawer dopo click su una voce
+    this.querySelectorAll('md-list-item[type="link"]').forEach(item => {
+      item.addEventListener("click", () => this.close());
+    });
   }
 
   toggle() {
@@ -133,6 +145,7 @@ class AppDrawer extends HTMLElement {
   }
 }
 customElements.define("app-drawer", AppDrawer);
+
 
 // ============================================================================
 // 3. APP FOOTER COMPONENT
