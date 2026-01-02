@@ -1,48 +1,14 @@
 // assets/js/shell.js
-// ============================================================================
-// REUSABLE WEB COMPONENTS FOR SITE SHELL
-// ============================================================================
 
-import '@material/web/all.js';
+import "@material/web/all.js";
+import { SITE, createShellHelpers } from "./shell_utils.js";
 
 // ============================================================================
 // 1. APP HEADER COMPONENT
 // ============================================================================
 class AppHeader extends HTMLElement {
   connectedCallback() {
-    const REPO = "DV";
-    const isGitHubPages = location.hostname.endsWith("github.io");
-    const BASE = isGitHubPages ? `/${REPO}` : "";
-
-    // true se stiamo in /pages/... (qualunque profondità sotto pages)
-    const inPages = window.location.pathname.includes("/pages/");
-
-    // costruisce href: relativo in locale, e con /DV prefix su GitHub Pages
-    const build = (fromRoot, fromPages) => {
-      const relPath = inPages ? fromPages : fromRoot; // es: "./" o "../../pages/..."
-      // normalizza: se è "./" mettiamo "" così diventa "/DV/" pulito
-      const cleaned = relPath === "./" ? "" : relPath;
-
-      // su GitHub Pages conviene usare assoluto con base (/DV/...) per evitare problemi di profondità
-      if (BASE) {
-        // converti i relativi in path "assoluto nel sito"
-        // mapping semplice per la tua struttura:
-        // - Home: "" -> "/DV/"
-        // - "../../pages/x" oppure "./pages/x" -> "/DV/pages/x"
-        if (cleaned === "" || cleaned === "../" || cleaned === "../../") return `${BASE}/`;
-
-        // se contiene "/pages/" portiamolo sempre a "/DV/pages/..."
-        const pagesIdx = cleaned.indexOf("pages/");
-        if (pagesIdx !== -1) return `${BASE}/${cleaned.slice(pagesIdx)}`;
-
-        // fallback
-        return `${BASE}/${cleaned.replace(/^(\.\/|(\.\.\/)+)/, "")}`;
-      }
-
-      // locale: tieni il relativo puro
-      return relPath;
-    };
-
+    const { build } = createShellHelpers();
 
     const homeHref = build("./", "../../");
     const s1Href = build("./pages/section1/section1.html", "../../pages/section1/section1.html");
@@ -55,7 +21,7 @@ class AppHeader extends HTMLElement {
           <md-icon-button id="menu-btn"><md-icon>menu</md-icon></md-icon-button>
 
           <a href="${homeHref}" style="text-decoration: none; color: inherit;">
-            <span class="brand-logo">DV2</span>
+            <span class="brand-logo">${SITE.BRAND}</span>
           </a>
         </div>
 
@@ -79,131 +45,113 @@ class AppHeader extends HTMLElement {
   }
 
   setupDrawerEvent() {
-    this.querySelector('#menu-btn').addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('toggle-drawer'));
+    this.querySelector("#menu-btn").addEventListener("click", () => {
+      document.dispatchEvent(new CustomEvent("toggle-drawer"));
     });
   }
 
   setupTheme() {
-    const toggle = this.querySelector('#theme-toggle');
-    const icon = this.querySelector('#theme-icon');
-    const savedTheme = localStorage.getItem('dv2-theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+    const toggle = this.querySelector("#theme-toggle");
+    const icon = this.querySelector("#theme-icon");
+    const savedTheme = localStorage.getItem("dv2-theme");
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = savedTheme === "dark" || (!savedTheme && systemDark);
 
-    if (isDark) document.body.classList.add('dark-theme');
-    icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+    if (isDark) document.body.classList.add("dark-theme");
+    icon.textContent = isDark ? "dark_mode" : "light_mode";
 
-    toggle.addEventListener('click', () => {
-      const isNowDark = document.body.classList.toggle('dark-theme');
-      icon.textContent = isNowDark ? 'dark_mode' : 'light_mode';
-      localStorage.setItem('dv2-theme', isNowDark ? 'dark' : 'light');
+    toggle.addEventListener("click", () => {
+      const isNowDark = document.body.classList.toggle("dark-theme");
+      icon.textContent = isNowDark ? "dark_mode" : "light_mode";
+      localStorage.setItem("dv2-theme", isNowDark ? "dark" : "light");
     });
   }
 }
-
-customElements.define('app-header', AppHeader);
-
-
+customElements.define("app-header", AppHeader);
 
 // ============================================================================
-// 2. APP DRAWER COMPONENT INDEX.html
+// 2. APP DRAWER COMPONENT
 // ============================================================================
 class AppDrawer extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-            <aside id="drawer" class="drawer">
-                <md-list>
-                    <md-list-item type="link" href="/">
-                        <div slot="headline">Home</div>
-                        <md-icon slot="start">home</md-icon>
-                    </md-list-item>
-                    
-                    <md-list-item type="link" href="/pages/section1/section1.html">
-                        <div slot="headline">Section 1</div>
-                        <md-icon slot="start">bar_chart</md-icon>
-                    </md-list-item>
-                    
-                    <md-list-item type="link" href="/pages/section2/section2.html">
-                        <div slot="headline">Section 2</div>
-                        <md-icon slot="start">auto_stories</md-icon>
-                    </md-list-item>
-                    
-                    <md-list-item type="link" href="/pages/about/about.html">
-                        <div slot="headline">About</div>
-                        <md-icon slot="start">info</md-icon>
-                    </md-list-item>
-                </md-list>
-            </aside>
-            <div id="scrim" class="scrim"></div>
-        `;
+      <aside id="drawer" class="drawer">
+        <md-list>
+          <md-list-item type="link" href="/">
+            <div slot="headline">Home</div>
+            <md-icon slot="start">home</md-icon>
+          </md-list-item>
 
-    this.drawer = this.querySelector('#drawer');
-    this.scrim = this.querySelector('#scrim');
+          <md-list-item type="link" href="/pages/section1/section1.html">
+            <div slot="headline">Section 1</div>
+            <md-icon slot="start">bar_chart</md-icon>
+          </md-list-item>
 
-    document.addEventListener('toggle-drawer', () => this.toggle());
-    this.scrim.addEventListener('click', () => this.close());
+          <md-list-item type="link" href="/pages/section2/section2.html">
+            <div slot="headline">Section 2</div>
+            <md-icon slot="start">auto_stories</md-icon>
+          </md-list-item>
+
+          <md-list-item type="link" href="/pages/about/about.html">
+            <div slot="headline">About</div>
+            <md-icon slot="start">info</md-icon>
+          </md-list-item>
+        </md-list>
+      </aside>
+      <div id="scrim" class="scrim"></div>
+    `;
+
+    this.drawer = this.querySelector("#drawer");
+    this.scrim = this.querySelector("#scrim");
+
+    document.addEventListener("toggle-drawer", () => this.toggle());
+    this.scrim.addEventListener("click", () => this.close());
     this.highlightActiveLink();
   }
 
   toggle() {
-    this.drawer.classList.toggle('open');
-    this.scrim.classList.toggle('open');
+    this.drawer.classList.toggle("open");
+    this.scrim.classList.toggle("open");
   }
 
   close() {
-    this.drawer.classList.remove('open');
-    this.scrim.classList.remove('open');
+    this.drawer.classList.remove("open");
+    this.scrim.classList.remove("open");
   }
 
   highlightActiveLink() {
     const currentPath = window.location.pathname;
-    const links = this.querySelectorAll('md-list-item');
+    const links = this.querySelectorAll("md-list-item");
 
-    links.forEach(link => {
-      // Updated logic to handle exact matches better
-      if (link.href.endsWith(currentPath) && currentPath !== '/') {
-        link.classList.add('active');
-      } else if (currentPath === '/' && link.href.endsWith('/')) {
-        link.classList.add('active');
+    links.forEach((link) => {
+      if (link.href.endsWith(currentPath) && currentPath !== "/") {
+        link.classList.add("active");
+      } else if (currentPath === "/" && link.href.endsWith("/")) {
+        link.classList.add("active");
       }
     });
   }
 }
-customElements.define('app-drawer', AppDrawer);
+customElements.define("app-drawer", AppDrawer);
 
 // ============================================================================
-// 3. APP FOOTER COMPONENT (R2D3 FOOTER)
+// 3. APP FOOTER COMPONENT
 // ============================================================================
 class AppFooter extends HTMLElement {
   connectedCallback() {
     const year = new Date().getFullYear();
-
-    // GitHub Pages base (repo = DV). In locale BASE = ""
-    const REPO = "DV";
-    const isGitHubPages = location.hostname.endsWith("github.io");
-    const BASE = isGitHubPages ? `/${REPO}` : "";
-
-    // Se non siamo su GitHub Pages, usiamo percorsi relativi (index vs /pages/)
-    const inPages = window.location.pathname.includes("/pages/");
-    const rel = (fromRoot, fromPages) => (inPages ? fromPages : fromRoot);
-
-    // Helper unico: su GitHub Pages forza path assoluto con /DV, in locale usa il relativo
-    const asset = (fromRoot, fromPages) => {
-      if (BASE) return `${BASE}/assets/img/${fromRoot.split("/").pop()}`; // /DV/assets/img/...
-      return rel(fromRoot, fromPages); // locale: ./assets/... oppure ../../assets/...
-    };
+    const { build, asset } = createShellHelpers();
 
     const person1 = asset("./assets/img/edo.jpeg", "../../assets/img/edo.jpeg");
     const person2 = asset("./assets/img/iri.jpeg", "../../assets/img/iri.jpeg");
 
-
+    const aboutHref = build("./pages/about/about.html", "../../pages/about/about.html");
 
     this.innerHTML = `
       <footer class="footer-r2d3" role="contentinfo">
         <div class="f-left">
           <div class="f-brand-box">
-            <h2>DV2</h2>
+            <h2>${SITE.BRAND}</h2>
             <p class="f-year">© ${year}</p>
           </div>
 
@@ -228,20 +176,14 @@ class AppFooter extends HTMLElement {
             </ul>
 
             <p class="f-cta">
-              <a href="#" class="f-cta-link">View GitHub Repository &rarr;</a>
+              <a href="${aboutHref}" class="f-cta-link">View About</a>
             </p>
           </div>
         </div>
 
         <div class="f-right">
           <div class="footer-team-row">
-            <img
-              src="${person1}"
-              class="footer-team-pic"
-              alt="Edoardo Vassallo"
-              loading="lazy"
-              decoding="async"
-            >
+            <img src="${person1}" class="footer-team-pic" alt="Edoardo Vassallo" loading="lazy" decoding="async">
             <div class="footer-team-text">
               <h3>Edoardo Vassallo</h3>
               <span class="footer-team-role">Data Engineering &amp; Analysis</span>
@@ -257,13 +199,7 @@ class AppFooter extends HTMLElement {
           </div>
 
           <div class="footer-team-row">
-            <img
-              src="${person2}"
-              class="footer-team-pic"
-              alt="Iryna Savchuk"
-              loading="lazy"
-              decoding="async"
-            >
+            <img src="${person2}" class="footer-team-pic" alt="Iryna Savchuk" loading="lazy" decoding="async">
             <div class="footer-team-text">
               <h3>Iryna Savchuk</h3>
               <span class="footer-team-role">Visualization &amp; Frontend</span>
