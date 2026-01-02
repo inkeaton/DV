@@ -646,38 +646,24 @@ main.home {
 }
 
 /* Navigation: hide hamburger menu on larger screens */
-@media (min-width: 601px) {
+@media (min-width: 600px) {
   #menu-btn {
     display: none;
   }
 }
 /* Home hero (<= 1000px): typography + facts row (horizontal scroll) */
 @media (max-width: 1000px) {
-  /* Slightly smaller subtitle on small screens */
-  .hero-subtitle {
-    font-size: 15px;
-  }
-
-  /* Facts: single horizontal row (scrollable) */
   .hero-facts {
     display: flex;
+    flex-wrap: wrap;     
     gap: 10px;
-    flex-wrap: nowrap;        /* force one row */
-    overflow-x: auto;         /* horizontal scroll when needed */
-    padding-bottom: 6px;
-
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;    /* Firefox: hide scrollbar */
+    overflow: visible;   
+    padding-bottom: 0;
   }
 
-  .hero-facts::-webkit-scrollbar {
-    display: none;            /* Safari/Chrome: hide scrollbar */
-  }
-
-  /* Each capsule: fixed-ish width so they don't wrap */
   .fact {
-    flex: 0 0 auto;
-    min-width: 130px;
+    flex: 1 1 140px;     
+    min-width: 140px;
     padding: 10px 12px;
     border-radius: 14px;
   }
@@ -685,4 +671,5 @@ main.home {
   .fact-num { font-size: 18px; }
   .fact-lab { font-size: 12px; }
 }
+
 
