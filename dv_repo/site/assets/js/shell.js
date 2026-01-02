@@ -176,7 +176,7 @@ class AppFooter extends HTMLElement {
             </ul>
 
             <p class="f-cta">
-              <a href="${aboutHref}" class="f-cta-link">View About</a>
+              <a href="${aboutHref}" class="f-cta-link">View About!!!</a>
             </p>
           </div>
         </div>
