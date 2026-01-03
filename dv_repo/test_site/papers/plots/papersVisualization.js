@@ -30,7 +30,6 @@ import { authorshipData, authorshipTrends, collaborationTypes } from './authorsh
 export class PapersVisualization extends ScrollyVisualization {
   constructor(containerId) {
     super(containerId);
-    this.currentStep = -1;
     this.tooltip = null;
     this.defaultMargin = { top: 50, right: 60, bottom: 70, left: 60 };
     this.margin = { ...this.defaultMargin };
@@ -76,12 +75,13 @@ export class PapersVisualization extends ScrollyVisualization {
 
   /**
    * Get inner dimensions (minus margins)
+   * Ensures dimensions are never negative to prevent D3 rendering errors
    */
   getInnerDimensions() {
     const { width, height } = this.getDimensions();
     return {
-      width: width - this.margin.left - this.margin.right,
-      height: height - this.margin.top - this.margin.bottom
+      width: Math.max(0, width - this.margin.left - this.margin.right),
+      height: Math.max(0, height - this.margin.top - this.margin.bottom)
     };
   }
 
@@ -89,39 +89,31 @@ export class PapersVisualization extends ScrollyVisualization {
    * Transition to a specific step
    */
   transitionToStep(stepIndex, stepElement, previousStep) {
-    if (stepIndex === this.currentStep) return;
-    
-    // Clear previous content with fade out
-    this.g.selectAll('*')
-      .transition()
-      .duration(200)
-      .style('opacity', 0)
-      .remove();
+    super.transitionToStep(stepIndex, stepElement, previousStep);
 
-    this.currentStep = stepIndex;
+    // Clear current visualization
+    this.g.selectAll('*').remove();
 
-    // Render appropriate visualization
-    setTimeout(() => {
-      switch (stepIndex) {
-        case 0:
-          this.renderPublicationTimeline();
-          break;
-        case 1:
-          this.renderCitationDistribution();
-          break;
-        case 2:
-          this.renderKeywordTrends();
-          break;
-        case 3:
-          this.renderPaperLength();
-          break;
-        case 4:
-          this.renderAuthorshipPatterns();
-          break;
-        default:
-          this.renderPublicationTimeline();
-      }
-    }, 250);
+    // Render appropriate visualization for step
+    switch (stepIndex) {
+      case 0:
+        this.renderPublicationTimeline();
+        break;
+      case 1:
+        this.renderCitationDistribution();
+        break;
+      case 2:
+        this.renderKeywordTrends();
+        break;
+      case 3:
+        this.renderPaperLength();
+        break;
+      case 4:
+        this.renderAuthorshipPatterns();
+        break;
+      default:
+        this.renderPublicationTimeline();
+    }
   }
 
   /**
@@ -297,7 +289,7 @@ export class PapersVisualization extends ScrollyVisualization {
       .duration(800)
       .delay((d, i) => i * 80)
       .attr('y', d => yScale(d.count))
-      .attr('height', d => height - yScale(d.count));
+      .attr('height', d => Math.max(0, height - yScale(d.count)));
 
     // Tooltip
     this.g.selectAll('.bar')
@@ -583,7 +575,7 @@ export class PapersVisualization extends ScrollyVisualization {
       .duration(800)
       .delay((d, i) => i * 80)
       .attr('y', d => yScale(d.count))
-      .attr('height', d => height - yScale(d.count));
+      .attr('height', d => Math.max(0, height - yScale(d.count)));
 
     // Tooltip
     this.g.selectAll('.bar')

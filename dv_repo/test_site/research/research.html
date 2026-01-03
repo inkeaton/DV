@@ -67,6 +67,82 @@
           visualization.transitionToStep(stepIndex, stepElement, previousStep);
         }
       });
+
+      // ======================================================================
+      // MOBILE MODAL HANDLING
+      // ======================================================================
+      const modal = document.getElementById('plot-modal');
+      const modalVis = document.getElementById('plot-modal-vis');
+      const modalClose = document.getElementById('plot-modal-close');
+      const landscapeToast = document.getElementById('landscape-toast');
+      let modalVisualization = null;
+
+      // Check if we're on mobile
+      const isMobile = () => window.innerWidth <= 1024;
+
+      // Show landscape suggestion toast
+      const showLandscapeToast = () => {
+        // Only show in portrait mode
+        if (window.innerHeight > window.innerWidth) {
+          landscapeToast.classList.add('is-visible');
+          setTimeout(() => {
+            landscapeToast.classList.add('is-hiding');
+            setTimeout(() => {
+              landscapeToast.classList.remove('is-visible', 'is-hiding');
+            }, 300);
+          }, 3000);
+        }
+      };
+
+      // Open modal with visualization for given step
+      const openModal = async (stepIndex) => {
+        // Create modal visualization if not exists
+        if (!modalVisualization) {
+          modalVisualization = new ResearchVisualization('plot-modal-vis');
+          await modalVisualization.init(d3);
+        }
+
+        // Render the step
+        modalVisualization.transitionToStep(stepIndex, null, -1);
+
+        // Show modal
+        modal.classList.add('is-open');
+        document.body.classList.add('modal-open');
+
+        // Show landscape toast
+        showLandscapeToast();
+      };
+
+      // Close modal
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
+      };
+
+      // Bind show-plot buttons
+      document.querySelectorAll('.show-plot-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const stepIndex = parseInt(btn.dataset.step, 10);
+          openModal(stepIndex);
+        });
+      });
+
+      // Bind close button
+      modalClose.addEventListener('click', closeModal);
+
+      // Close on backdrop click (outside content)
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
     });
   </script>
 </head>
@@ -126,6 +202,10 @@
               distinct communities but <em>increasing overlap</em>.
             </p>
           </div>
+          <button class="show-plot-btn" data-step="0">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
         </div>
 
         <!-- Step 1: Methodology Trends -->
@@ -141,6 +221,10 @@
               reflecting higher methodological standards.
             </p>
           </div>
+          <button class="show-plot-btn" data-step="1">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
         </div>
 
         <!-- Step 2: Domain Applications -->
@@ -156,6 +240,10 @@
               <em>communicating climate change</em> to diverse audiences.
             </p>
           </div>
+          <button class="show-plot-btn" data-step="2">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
         </div>
 
         <!-- Step 3: Data Types -->
@@ -171,6 +259,10 @@
               NLP and LLM-powered tools reshape how we explore unstructured data.
             </p>
           </div>
+          <button class="show-plot-btn" data-step="3">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
         </div>
 
         <!-- Step 4: Reproducibility -->
@@ -186,6 +278,10 @@
               preregistration (12%) and replication studies (8%) remain rare.
             </p>
           </div>
+          <button class="show-plot-btn" data-step="4">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
         </div>
 
         <!-- Spacer for final step visibility -->
@@ -207,6 +303,24 @@
       </ol>
     </section>
   </main>
+
+  <!-- ========================================================================
+       FULLSCREEN PLOT MODAL (Mobile only)
+       ======================================================================== -->
+  <div class="plot-modal" id="plot-modal">
+    <div class="plot-modal-content">
+      <button class="plot-modal-close" id="plot-modal-close" aria-label="Close visualization">
+        <md-icon>close</md-icon>
+      </button>
+      <div class="plot-modal-vis" id="plot-modal-vis"></div>
+    </div>
+  </div>
+
+  <!-- Landscape suggestion toast -->
+  <div class="landscape-toast" id="landscape-toast">
+    <md-icon>screen_rotation</md-icon>
+    <span>Rotate to landscape for a better view</span>
+  </div>
 
   <!-- ========================================================================
        FOOTER

@@ -13,7 +13,6 @@ import { reproducibilityData } from './reproducibilityData.js';
 export class ResearchVisualization extends ScrollyVisualization {
   constructor(containerId) {
     super(containerId);
-    this.currentStep = -1;
     this.tooltip = null;
     
     // Default margin
@@ -53,12 +52,13 @@ export class ResearchVisualization extends ScrollyVisualization {
 
   /**
    * Get inner dimensions (minus margins)
+   * Ensures dimensions are never negative to prevent D3 rendering errors
    */
   getInnerDimensions() {
     const { width, height } = this.getDimensions();
     return {
-      width: width - this.margin.left - this.margin.right,
-      height: height - this.margin.top - this.margin.bottom
+      width: Math.max(0, width - this.margin.left - this.margin.right),
+      height: Math.max(0, height - this.margin.top - this.margin.bottom)
     };
   }
 
@@ -74,39 +74,31 @@ export class ResearchVisualization extends ScrollyVisualization {
    * Transition to a specific step in the scrollytelling sequence
    */
   transitionToStep(stepIndex, stepElement, previousStep) {
-    if (stepIndex === this.currentStep) return;
-    
-    // Clear previous content with fade out
-    this.g.selectAll('*')
-      .transition()
-      .duration(200)
-      .style('opacity', 0)
-      .remove();
+    super.transitionToStep(stepIndex, stepElement, previousStep);
 
-    this.currentStep = stepIndex;
+    // Clear current visualization
+    this.g.selectAll('*').remove();
 
-    // Render appropriate visualization
-    setTimeout(() => {
-      switch (stepIndex) {
-        case 0:
-          this.renderTopicsDistribution();
-          break;
-        case 1:
-          this.renderMethodologyTrends();
-          break;
-        case 2:
-          this.renderDomainApplications();
-          break;
-        case 3:
-          this.renderDataTypes();
-          break;
-        case 4:
-          this.renderReproducibilityTrends();
-          break;
-        default:
-          this.renderTopicsDistribution();
-      }
-    }, 250);
+    // Render appropriate visualization for step
+    switch (stepIndex) {
+      case 0:
+        this.renderTopicsDistribution();
+        break;
+      case 1:
+        this.renderMethodologyTrends();
+        break;
+      case 2:
+        this.renderDomainApplications();
+        break;
+      case 3:
+        this.renderDataTypes();
+        break;
+      case 4:
+        this.renderReproducibilityTrends();
+        break;
+      default:
+        this.renderTopicsDistribution();
+    }
   }
 
   // ============================================================================
