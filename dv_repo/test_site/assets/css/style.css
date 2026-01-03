@@ -1,0 +1,718 @@
+/**
+ * test_site/assets/css/style.css
+ * ============================================================================
+ * DV2 Test Site — Main Stylesheet (Material Design 3)
+ * 
+ * Contents:
+ * 0) Web Components layout fix
+ * 1) Design tokens + layout variables (Light)
+ * 2) Design tokens overrides (Dark)
+ * 3) Base styles + typography
+ * 4) Layout utilities
+ * 5) App Bar (top navigation)
+ * 6) Drawer + Scrim (mobile navigation)
+ * 7) Bento grid + Cards
+ * 8) Footer (R2D3-style)
+ * 9) Home Hero (index - bento landing)
+ * 10) Responsive rules
+ * 
+ * Notes:
+ * - Theming is driven by CSS custom properties (variables)
+ * - body.dark-theme overrides tokens for dark mode
+ * - Import colors.css before this file
+ * ============================================================================
+ */
+
+
+/* ============================================================================
+   0) WEB COMPONENTS: "display: contents" to avoid extra layout wrappers
+   ============================================================================ */
+app-header,
+app-drawer,
+app-footer {
+  display: contents;
+}
+
+
+/* ============================================================================
+   1) TOKENS + LAYOUT VARIABLES — Light theme (default)
+   ============================================================================ */
+:root {
+  /* --- Typography --- */
+  --font-head: "Merriweather", serif;
+
+  /* --- Layout --- */
+  --app-bar-height: 64px;
+  --max-width: 1100px;
+
+  /* --- Stacking order (z-index) --- */
+  --z-app-bar: 1000;
+  --z-scrim: 1050;
+  --z-drawer: 1100;
+
+  /* --- MD3 Color Tokens (Light) --- */
+  --md-sys-color-primary: #00687A;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #ADECFF;
+  --md-sys-color-on-primary-container: #001F26;
+
+  --md-sys-color-secondary: #4B6269;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #CEE7EF;
+  --md-sys-color-on-secondary-container: #061F25;
+
+  --md-sys-color-tertiary: #575C7E;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #DEE1FF;
+  --md-sys-color-on-tertiary-container: #131937;
+
+  --md-sys-color-surface: #F5FAFC;
+  --md-sys-color-on-surface: #171C1E;
+  --md-sys-color-surface-variant: #DBE4E7;
+  --md-sys-color-on-surface-variant: #3F484B;
+
+  --md-sys-color-surface-container-low: #EFF4F7;
+  --md-sys-color-surface-container: #E9EFF1;
+  --md-sys-color-surface-container-high: #E4E9EB;
+
+  --md-sys-color-outline: #70797C;
+  --md-sys-color-outline-variant: #BFC8CB;
+
+  /* --- Footer tokens (derived from MD3 tokens) --- */
+  --footer-bg: var(--md-sys-color-surface-container);
+  --footer-text: var(--md-sys-color-on-surface);
+  --footer-muted: var(--md-sys-color-on-surface-variant);
+  --footer-strong: var(--md-sys-color-on-surface);
+  --footer-divider: var(--md-sys-color-outline-variant);
+  --footer-link: var(--md-sys-color-primary);
+  --footer-link-underline: var(--md-sys-color-outline);
+  --footer-border: var(--md-sys-color-primary);
+}
+
+
+/* ============================================================================
+   2) TOKENS OVERRIDES — Dark theme
+   ============================================================================ */
+body.dark-theme {
+  --md-sys-color-primary: #85D2E7;
+  --md-sys-color-on-primary: #003640;
+  --md-sys-color-primary-container: #004E5D;
+  --md-sys-color-on-primary-container: #ADECFF;
+
+  --md-sys-color-secondary: #B2CBD3;
+  --md-sys-color-on-secondary: #1D343A;
+  --md-sys-color-secondary-container: #334A51;
+  --md-sys-color-on-secondary-container: #CEE7EF;
+
+  --md-sys-color-tertiary: #BFC4EB;
+  --md-sys-color-on-tertiary: #292E4D;
+  --md-sys-color-tertiary-container: #3F4565;
+  --md-sys-color-on-tertiary-container: #DEE1FF;
+
+  --md-sys-color-surface: #0F1416;
+  --md-sys-color-on-surface: #DEE3E5;
+  --md-sys-color-surface-variant: #3F484B;
+  --md-sys-color-on-surface-variant: #BFC8CB;
+
+  --md-sys-color-surface-container-low: #171C1E;
+  --md-sys-color-surface-container: #1B2022;
+  --md-sys-color-surface-container-high: #252B2D;
+
+  --md-sys-color-outline: #899295;
+  --md-sys-color-outline-variant: #3F484B;
+
+  /* Footer in dark mode */
+  --footer-bg: var(--md-sys-color-surface-container-high);
+  --footer-text: var(--md-sys-color-on-surface);
+  --footer-muted: var(--md-sys-color-on-surface-variant);
+  --footer-strong: var(--md-sys-color-on-surface);
+  --footer-divider: var(--md-sys-color-outline-variant);
+  --footer-link: var(--md-sys-color-primary);
+  --footer-link-underline: var(--md-sys-color-outline);
+  --footer-border: var(--md-sys-color-primary);
+}
+
+
+/* ============================================================================
+   3) BASE STYLES + TYPOGRAPHY
+   ============================================================================ */
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+
+  /* Sticky footer layout */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  /* Smooth theme transitions */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  color: var(--md-sys-color-on-surface);
+  margin-top: 0;
+}
+
+/* Material Design Icons - ensure they use the correct font */
+md-icon {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+/* Links */
+a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Focus styles for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+
+/* ============================================================================
+   4) LAYOUT UTILITIES
+   ============================================================================ */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 24px 16px;
+  box-sizing: border-box;
+
+  /* Grow to push footer to bottom */
+  flex: 1;
+}
+
+/* Main content area */
+main {
+  flex: 1;
+}
+
+
+/* ============================================================================
+   5) APP BAR (Top Navigation)
+   ============================================================================ */
+.app-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: var(--app-bar-height);
+
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+
+  position: sticky;
+  top: 0;
+  z-index: var(--z-app-bar);
+
+  border-bottom: 1px solid var(--md-sys-color-surface-container-high);
+}
+
+.app-bar-start,
+.app-bar-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 0 8px;
+}
+
+/* Desktop navigation links */
+.desktop-nav {
+  display: flex;
+  gap: 4px;
+}
+
+
+/* ============================================================================
+   6) DRAWER + SCRIM (Mobile Navigation)
+   ============================================================================ */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+
+  z-index: var(--z-drawer);
+  padding: 12px 0;
+
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  z-index: var(--z-scrim);
+}
+
+.scrim.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* ============================================================================
+   7) BENTO GRID + CARDS
+   ============================================================================ */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Base card styling */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 24px;
+  border-radius: 24px;
+
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+
+  text-decoration: none;
+  overflow: hidden;
+
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Card with icon */
+.card-icon {
+  font-size: 40px;
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Card title */
+.card-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Card description */
+.card-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Card label (small text above title) */
+.card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: -8px;
+}
+
+
+/* ============================================================================
+   8) FOOTER (R2D3-style, mobile friendly)
+   ============================================================================ */
+.footer-r2d3 {
+  background: var(--footer-bg, #2D3436);
+  color: var(--footer-text, #fff);
+
+  margin-top: auto;
+  border-top: 6px solid var(--footer-border, #00687A);
+
+  padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.f-left {
+  min-width: 0;
+  padding-right: clamp(0rem, 2vw, 2rem);
+  border-right: 1px solid var(--footer-divider);
+}
+
+.f-brand-box {
+  border: 2px solid var(--footer-text);
+  padding: 1.25rem 1.5rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.f-brand-box h2 {
+  margin: 0;
+  color: var(--footer-text);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.1;
+}
+
+.f-year {
+  margin: 0.5rem 0 0 0;
+  color: var(--footer-muted);
+  font-size: 0.9rem;
+}
+
+.f-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+  color: var(--footer-text);
+}
+
+.f-desc a {
+  color: var(--footer-link);
+  text-decoration: underline;
+  text-decoration-color: var(--footer-link-underline);
+  text-underline-offset: 3px;
+}
+
+.f-methodology h4 {
+  color: var(--footer-text);
+  border-bottom: 1px solid var(--footer-divider);
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+.f-methodology p,
+.f-methodology ul {
+  font-size: 0.95rem;
+  color: var(--footer-muted);
+}
+
+.f-methodology p {
+  margin: 0 0 1rem;
+}
+
+.f-methodology ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.f-methodology li {
+  margin-bottom: 0.4rem;
+}
+
+.f-methodology strong {
+  color: var(--footer-strong, var(--footer-text));
+}
+
+.f-cta {
+  margin-top: 1rem;
+}
+
+.f-cta-link {
+  color: var(--footer-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Right column: team blocks */
+.f-right {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.footer-team-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.footer-team-pic {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 6px;
+
+  filter: grayscale(100%);
+  transition: filter 0.25s;
+
+  flex: 0 0 auto;
+}
+
+.footer-team-row:hover .footer-team-pic {
+  filter: grayscale(0%);
+}
+
+/* On touch devices, avoid hover-only UX */
+@media (hover: none) {
+  .footer-team-pic {
+    filter: none;
+  }
+}
+
+.footer-team-text h3 {
+  margin: 0 0 0.35rem;
+  color: var(--footer-text);
+  font-size: 1.2rem;
+}
+
+.footer-team-role {
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--footer-muted);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.footer-team-bio {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--footer-muted);
+  margin: 0 0 0.65rem;
+}
+
+.footer-team-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-team-links a {
+  font-size: 0.9rem;
+  color: var(--footer-link);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--footer-link-underline);
+  padding-bottom: 2px;
+}
+
+/* Focus styles (keyboard accessibility) */
+.footer-team-links a:focus-visible,
+.f-desc a:focus-visible,
+.f-cta-link:focus-visible {
+  outline: 2px solid var(--footer-border);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+
+/* ============================================================================
+   9) HOME HERO / BENTO LANDING
+   ============================================================================ */
+
+/* Main wrapper for home page (use: <main class="home">) */
+main.home {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+
+  /* Subtle gradient background */
+  background:
+    radial-gradient(900px 520px at 22% 25%,
+      color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
+      transparent 60%),
+    radial-gradient(700px 460px at 72% 30%,
+      color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent),
+      transparent 62%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent) 0%,
+      color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent) 55%,
+      color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent) 100%);
+}
+
+/* Bento container for landing page */
+.bento-landing {
+  display: grid;
+  gap: 16px;
+  max-width: 900px;
+  width: 100%;
+  
+  /* 
+   * Grid layout matching mockup:
+   * Row 1: Hero card (2 cols) | Dataset card (1 col)
+   * Row 2: Researcher card (1 col) | Student card (1 col)
+   */
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+/* Hero card (main description) */
+.bento-hero {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  padding: 32px;
+  border-radius: 28px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.bento-hero .card-title {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+/* Dataset card (top right) */
+.bento-dataset {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 150px;
+}
+
+.bento-dataset .card-title {
+  font-size: 1.75rem;
+}
+
+/* Bottom row cards */
+.bento-researcher,
+.bento-student {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 140px;
+}
+
+
+/* ============================================================================
+   10) RESPONSIVE RULES
+   ============================================================================ */
+
+/* Footer: stack columns on smaller screens */
+@media (max-width: 900px) {
+  .footer-r2d3 {
+    grid-template-columns: 1fr;
+  }
+
+  .f-left {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid var(--footer-divider);
+    padding-bottom: 1.75rem;
+  }
+}
+
+/* Footer: team rows become vertical on very small screens */
+@media (max-width: 520px) {
+  .footer-team-row {
+    flex-direction: column;
+  }
+
+  .footer-team-pic {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* Navigation: hide desktop nav on small screens */
+@media (max-width: 600px) {
+  .desktop-nav {
+    display: none;
+  }
+}
+
+/* Navigation: hide hamburger menu on larger screens */
+@media (min-width: 600px) {
+  #menu-btn {
+    display: none;
+  }
+}
+
+/* Bento landing: stack on mobile */
+@media (max-width: 700px) {
+  .bento-landing {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .bento-hero {
+    grid-column: 1 / 2;
+    grid-row: auto;
+  }
+  
+  .bento-dataset {
+    grid-column: 1 / 2;
+    grid-row: auto;
+  }
+  
+  .bento-researcher,
+  .bento-student {
+    grid-column: 1 / 2;
+  }
+  
+  .bento-hero .card-title {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIS 35 for Students - Explore data visualization research opportunities, trending topics, and career paths">
+  
+  <title>For Students — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/scrolly.css">
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    // Import Material Web Components
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Import shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+
+    // Import scroll controller and visualization
+    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
+    import { loadD3 } from '../assets/js/visualization-base.js';
+    import { StudentVisualization } from './plots/studentVisualization.js';
+
+    // ========================================================================
+    // INITIALIZE SCROLLYTELLING
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load D3.js
+      const d3 = await loadD3();
+
+      // Initialize visualization
+      const visualization = new StudentVisualization('scrolly-vis');
+      await visualization.init(d3);
+
+      // Count steps and create progress dots
+      const steps = document.querySelectorAll('.scrolly-step');
+      createProgressDots(steps.length);
+
+      // Initialize scroll controller
+      const controller = initScrollController({
+        onStepChange: (stepIndex, stepElement, previousStep) => {
+          visualization.transitionToStep(stepIndex, stepElement, previousStep);
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       SHELL COMPONENTS (Navbar + Drawer)
+       ======================================================================== -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main>
+    <!-- ====================================================================
+         INTRO SECTION
+         ==================================================================== -->
+    <section class="scrolly-intro">
+      <h1>For Students</h1>
+      <p>
+        Starting your journey in data visualization research? This guide will help you
+        discover trending topics, find beginner-friendly areas, explore academic programs
+        around the world, and understand how collaboration works in this field.
+      </p>
+      <p>
+        Scroll down to explore insights tailored for aspiring visualization researchers.
+      </p>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLLYTELLING CONTAINER
+         ==================================================================== -->
+    <div class="scrolly-container">
+      
+      <!-- ================================================================
+           STICKY VISUALIZATION PANEL
+           ================================================================ -->
+      <div class="scrolly-graphic">
+        <div id="scrolly-vis" class="scrolly-vis"></div>
+      </div>
+
+      <!-- ================================================================
+           SCROLLING TEXT COLUMN
+           ================================================================ -->
+      <div class="scrolly-text">
+        
+        <!-- Step 0: Trending Topics -->
+        <div class="scrolly-step" data-step="0">
+          <div class="scrolly-step-content">
+            <h2>What's Trending?</h2>
+            <p>
+              The visualization research landscape is constantly evolving. 
+              <strong>Machine Learning for Visualization</strong> and 
+              <strong>Immersive Analytics</strong> are seeing the highest growth rates.
+            </p>
+            <p>
+              Topics are color-coded by difficulty level, helping you find areas 
+              that match your current skills while showing paths for advancement.
+            </p>
+            <p>
+              <em>Green topics</em> are great starting points for newcomers!
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 1: Beginner-Friendly Areas -->
+        <div class="scrolly-step" data-step="1">
+          <div class="scrolly-step-content">
+            <h2>Where to Start?</h2>
+            <p>
+              Some research areas are particularly welcoming to newcomers. 
+              <strong>User Studies</strong>, <strong>Dashboard Design</strong>, 
+              and <strong>Color Studies</strong> have lower barriers to entry.
+            </p>
+            <p>
+              These areas often require less technical infrastructure and can 
+              produce meaningful contributions with solid experimental design.
+            </p>
+            <p>
+              Click on any area to learn more about what research in that 
+              domain typically involves.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2: Geographic Opportunities -->
+        <div class="scrolly-step" data-step="2">
+          <div class="scrolly-step-content">
+            <h2>Where to Study?</h2>
+            <p>
+              Visualization research is a global endeavor. The <strong>United States</strong> 
+              leads with 42 PhD programs, followed by <strong>China</strong> and 
+              <strong>Germany</strong>.
+            </p>
+            <p>
+              Europe offers excellent opportunities with strong programs in the UK, 
+              France, Netherlands, Switzerland, and Austria.
+            </p>
+            <p>
+              Consider factors beyond rankings: research culture, advisor fit, 
+              and international collaboration opportunities matter greatly.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3: Collaboration Patterns -->
+        <div class="scrolly-step" data-step="3">
+          <div class="scrolly-step-content">
+            <h2>How Collaboration Works</h2>
+            <p>
+              Visualization papers typically have <strong>3-4 authors</strong>. 
+              The most common pattern is a student working with their advisor 
+              and possibly a postdoc or industry collaborator.
+            </p>
+            <p>
+              <strong>68.5%</strong> of papers have a student as first author, 
+              making this an excellent field for student-led research.
+            </p>
+            <p>
+              International collaborations account for about 32% of papers, 
+              so building a global network early can be valuable.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4: Awards & Recognition -->
+        <div class="scrolly-step" data-step="4">
+          <div class="scrolly-step-content">
+            <h2>Aiming for Excellence</h2>
+            <p>
+              IEEE VIS recognizes outstanding work through several awards. 
+              The <strong>Best Student Paper</strong> award specifically 
+              celebrates student-led contributions.
+            </p>
+            <p>
+              Student awards have been increasing over the years, reflecting 
+              growing investment in student research and mentorship.
+            </p>
+            <p>
+              Award-winning papers often feature <em>novel techniques</em>, 
+              <em>rigorous evaluation</em>, and <em>clear presentation</em>.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CONCLUSION SECTION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways for Students</h2>
+      <ol>
+        <li><strong>Start with accessible topics</strong> — User studies, dashboard design, and perception research are great entry points.</li>
+        <li><strong>Follow the trends</strong> — ML for Vis and immersive analytics are growing rapidly.</li>
+        <li><strong>Build collaborations early</strong> — The field values teamwork and international networks.</li>
+        <li><strong>Aim high</strong> — Student awards recognize excellent work, and student-first authorship is the norm.</li>
+        <li><strong>Explore globally</strong> — Great programs exist on every continent.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <app-footer></app-footer>
+
+</body>
+</html>
