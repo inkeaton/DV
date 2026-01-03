@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIS 35 Research - Explore research topics, methods, and trends in visualization papers">
+  
+  <title>Research — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/scrolly.css">
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    // Import Material Web Components
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Import shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+
+    // Import scroll controller and visualization
+    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
+    import { loadD3 } from '../assets/js/visualization-base.js';
+    import { ResearchVisualization } from './plots/researchVisualization.js';
+
+    // ========================================================================
+    // INITIALIZE SCROLLYTELLING
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load D3.js
+      const d3 = await loadD3();
+
+      // Initialize visualization
+      const visualization = new ResearchVisualization('scrolly-vis');
+      await visualization.init(d3);
+
+      // Count steps and create progress dots
+      const steps = document.querySelectorAll('.scrolly-step');
+      createProgressDots(steps.length);
+
+      // Initialize scroll controller
+      const controller = initScrollController({
+        onStepChange: (stepIndex, stepElement, previousStep) => {
+          visualization.transitionToStep(stepIndex, stepElement, previousStep);
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       SHELL COMPONENTS (Navbar + Drawer)
+       ======================================================================== -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main>
+    <!-- ====================================================================
+         INTRO SECTION
+         ==================================================================== -->
+    <section class="scrolly-intro">
+      <h1>The Research</h1>
+      <p>
+        What topics drive visualization research? How have methods evolved? 
+        Explore the intellectual landscape of 35 years of IEEE VIS papers.
+      </p>
+      <p>
+        From scientific visualization to AI-powered analytics, discover how 
+        the field has transformed.
+      </p>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLLYTELLING CONTAINER
+         ==================================================================== -->
+    <div class="scrolly-container">
+      <!-- Sticky visualization panel -->
+      <div class="scrolly-graphic">
+        <div id="scrolly-vis" class="scrolly-vis"></div>
+      </div>
+
+      <!-- Scrolling narrative text -->
+      <div class="scrolly-text">
+        
+        <!-- Step 0: Research Topics -->
+        <div class="scrolly-step" data-step="0">
+          <div class="scrolly-step-content">
+            <h2>Core Research Areas</h2>
+            <p>
+              <strong>Information Visualization</strong> leads with 28% of papers, 
+              followed closely by Scientific Visualization and Visual Analytics.
+            </p>
+            <p>
+              These three tracks now form the core of the conference, each with 
+              distinct communities but <em>increasing overlap</em>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 1: Methodology Trends -->
+        <div class="scrolly-step" data-step="1">
+          <div class="scrolly-step-content">
+            <h2>Rising Rigor</h2>
+            <p>
+              User studies have become the <strong>gold standard</strong>. In 2024, 
+              68% of papers include formal user evaluation — up from just 15% in 1995.
+            </p>
+            <p>
+              Papers without evaluation have dropped from 40% to just <em>5%</em>, 
+              reflecting higher methodological standards.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2: Domain Applications -->
+        <div class="scrolly-step" data-step="2">
+          <div class="scrolly-step-content">
+            <h2>Real-World Impact</h2>
+            <p>
+              <strong>Biology & Medicine</strong> remains the top application domain, 
+              but <strong>Cybersecurity</strong> is growing fastest at +42%.
+            </p>
+            <p>
+              Climate visualization is surging (+22%) as researchers tackle 
+              <em>communicating climate change</em> to diverse audiences.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3: Data Types -->
+        <div class="scrolly-step" data-step="3">
+          <div class="scrolly-step-content">
+            <h2>Data Diversity</h2>
+            <p>
+              <strong>Tabular data</strong> dominates, but network and graph 
+              visualization has become the second most common focus.
+            </p>
+            <p>
+              New challenges around <em>text and documents</em> are growing as 
+              NLP and LLM-powered tools reshape how we explore unstructured data.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4: Reproducibility -->
+        <div class="scrolly-step" data-step="4">
+          <div class="scrolly-step-content">
+            <h2>Open Science Revolution</h2>
+            <p>
+              <strong>82% of papers</strong> now share open-source code — a dramatic 
+              shift from just 8% in 2010.
+            </p>
+            <p>
+              The community has embraced <em>reproducibility</em>, though 
+              preregistration (12%) and replication studies (8%) remain rare.
+            </p>
+          </div>
+        </div>
+
+        <!-- Spacer for final step visibility -->
+        <div class="scrolly-spacer"></div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CONCLUSION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways</h2>
+      <ol>
+        <li>InfoVis, SciVis, and VA form a balanced trifecta of research focus</li>
+        <li>User studies are now <strong>expected</strong>, not optional</li>
+        <li>Healthcare and climate are driving applied visualization research</li>
+        <li>Data complexity has grown exponentially — 80 dimensions is now normal</li>
+        <li><strong>Open science</strong> has transformed from exception to norm</li>
+      </ol>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <app-footer></app-footer>
+
+</body>
+</html>

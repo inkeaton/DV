@@ -557,6 +557,7 @@ main.home {
   width: 100%;
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
@@ -581,61 +582,126 @@ main.home {
 .bento-landing {
   display: grid;
   gap: 16px;
-  max-width: 900px;
+  max-width: 800px;
   width: 100%;
   
   /* 
-   * Grid layout matching mockup:
-   * Row 1: Hero card (2 cols) | Dataset card (1 col)
-   * Row 2: Researcher card (1 col) | Student card (1 col)
+   * Grid layout (4 cols x 3 rows):
+   * Left section (3 cols): Hero (2x2), Stats (1x1 x4), Dataset link (1x1)
+   * Right section (1 col): Papers, Authors, Institutions stacked
    */
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, auto);
 }
 
-/* Hero card (main description) */
+/* Landing page header */
+.landing-header {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Hero card (main description) - spans 2x2 */
 .bento-hero {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
   
   background-color: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
-  padding: 32px;
-  border-radius: 28px;
+  padding: 28px;
+  border-radius: 24px;
   
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .bento-hero .card-title {
-  font-size: 2rem;
+  font-size: 1.75rem;
   line-height: 1.2;
 }
 
-/* Dataset card (top right) */
-.bento-dataset {
-  grid-column: 2 / 3;
+.bento-hero .card-description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Statistics cards (1x1 each) */
+.bento-stat-1 {
+  grid-column: 3 / 4;
   grid-row: 1 / 2;
+}
+
+.bento-stat-2 {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.bento-stat-3 {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.bento-stat-4 {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+
+/* Dataset card (1x1) */
+.bento-dataset {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
   
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
   
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
-  min-height: 150px;
+  min-height: 100px;
 }
 
-.bento-dataset .card-title {
-  font-size: 1.75rem;
+.bento-dataset .card-title,
+.bento-papers .card-title,
+.bento-authors .card-title,
+.bento-institutions .card-title {
+  font-size: 1.25rem;
 }
 
-/* Bottom row cards */
+/* Right column link cards (Papers, Authors, Institutions) */
+.bento-papers {
+  grid-column: 4 / 5;
+  grid-row: 1 / 2;
+}
+
+.bento-authors {
+  grid-column: 4 / 5;
+  grid-row: 2 / 3;
+}
+
+.bento-institutions {
+  grid-column: 4 / 5;
+  grid-row: 3 / 4;
+}
+
+.bento-papers,
+.bento-authors,
+.bento-institutions {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+}
+
+/* Bottom row cards (no longer used, kept for reference) */
 .bento-researcher,
 .bento-student {
+  grid-column: span 2;
+  
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   
@@ -697,12 +763,15 @@ main.home {
     grid-template-rows: auto;
   }
   
-  .bento-hero {
-    grid-column: 1 / 2;
-    grid-row: auto;
-  }
-  
-  .bento-dataset {
+  .bento-hero,
+  .bento-stat-1,
+  .bento-stat-2,
+  .bento-stat-3,
+  .bento-stat-4,
+  .bento-dataset,
+  .bento-papers,
+  .bento-authors,
+  .bento-institutions {
     grid-column: 1 / 2;
     grid-row: auto;
   }

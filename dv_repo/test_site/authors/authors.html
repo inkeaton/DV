@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIS 35 Authors - Explore the research community behind 35 years of visualization papers">
+  
+  <title>Authors — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/scrolly.css">
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    // Import Material Web Components
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Import shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+
+    // Import scroll controller and visualization
+    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
+    import { loadD3 } from '../assets/js/visualization-base.js';
+    import { AuthorsVisualization } from './plots/authorsVisualization.js';
+
+    // ========================================================================
+    // INITIALIZE SCROLLYTELLING
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load D3.js
+      const d3 = await loadD3();
+
+      // Initialize visualization
+      const visualization = new AuthorsVisualization('scrolly-vis');
+      await visualization.init(d3);
+
+      // Count steps and create progress dots
+      const steps = document.querySelectorAll('.scrolly-step');
+      createProgressDots(steps.length);
+
+      // Initialize scroll controller
+      const controller = initScrollController({
+        onStepChange: (stepIndex, stepElement, previousStep) => {
+          visualization.transitionToStep(stepIndex, stepElement, previousStep);
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       SHELL COMPONENTS (Navbar + Drawer)
+       ======================================================================== -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main>
+    <!-- ====================================================================
+         INTRO SECTION
+         ==================================================================== -->
+    <section class="scrolly-intro">
+      <h1>The Authors</h1>
+      <p>
+        Behind every paper is a team of researchers. Meet the 5,000+ authors who have 
+        shaped the field of visualization over the past 35 years.
+      </p>
+      <p>
+        Discover career trajectories, collaboration patterns, and how the community 
+        has grown more diverse and interconnected.
+      </p>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLLYTELLING CONTAINER
+         ==================================================================== -->
+    <div class="scrolly-container">
+      <!-- Sticky visualization panel -->
+      <div class="scrolly-graphic">
+        <div id="scrolly-vis" class="scrolly-vis"></div>
+      </div>
+
+      <!-- Scrolling narrative text -->
+      <div class="scrolly-text">
+        
+        <!-- Step 0: Author Demographics -->
+        <div class="scrolly-step" data-step="0">
+          <div class="scrolly-step-content">
+            <h2>Who Publishes at VIS?</h2>
+            <p>
+              <strong>PhD students</strong> are the largest contributor group, 
+              authoring over a third of all papers.
+            </p>
+            <p>
+              Faculty at all levels make up another 46%, while industry researchers 
+              contribute a small but growing <em>3% of papers</em>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 1: Collaboration Network -->
+        <div class="scrolly-step" data-step="1">
+          <div class="scrolly-step-content">
+            <h2>Growing Connections</h2>
+            <p>
+              The collaboration network has grown from <strong>85 authors</strong> 
+              in 1990 to over <strong>2,850 today</strong>.
+            </p>
+            <p>
+              More importantly, the average number of collaborators per author has 
+              increased from 2.8 to <em>10.2</em> — showing a more interconnected community.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2: Prolific Authors -->
+        <div class="scrolly-step" data-step="2">
+          <div class="scrolly-step-content">
+            <h2>Prolific Contributors</h2>
+            <p>
+              A small group of researchers have been incredibly prolific. 
+              The top 10 authors have published over <strong>600 papers combined</strong>.
+            </p>
+            <p>
+              Bubble size shows <em>h-index</em> — Jeffrey Heer has the highest 
+              impact-per-paper ratio, thanks to influential tools like Prefuse and Vega.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3: Career Trajectory -->
+        <div class="scrolly-step" data-step="3">
+          <div class="scrolly-step-content">
+            <h2>Publishing Patterns</h2>
+            <p>
+              Publication rates peak during years <strong>11-15</strong> of a career, 
+              when researchers are typically associate professors with active labs.
+            </p>
+            <p>
+              The gap between average and median shows that a few <em>super-prolific</em> 
+              researchers skew the distribution upward.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4: Diversity Trends -->
+        <div class="scrolly-step" data-step="4">
+          <div class="scrolly-step-content">
+            <h2>Toward Equity</h2>
+            <p>
+              Women's representation has increased from <strong>12% in 1990</strong> 
+              to <strong>38% in 2024</strong>.
+            </p>
+            <p>
+              While progress has been steady, the community still has work to do 
+              to reach <em>gender parity</em> and address other dimensions of diversity.
+            </p>
+          </div>
+        </div>
+
+        <!-- Spacer for final step visibility -->
+        <div class="scrolly-spacer"></div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CONCLUSION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways</h2>
+      <ol>
+        <li>PhD students drive a significant portion of VIS research output</li>
+        <li>The collaboration network has grown <strong>10x more connected</strong> since 1990</li>
+        <li>A small group of prolific authors have outsized influence on the field</li>
+        <li>Peak productivity occurs mid-career (years 11-15)</li>
+        <li>Gender diversity has <strong>tripled</strong> but more progress is needed</li>
+      </ol>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <app-footer></app-footer>
+
+</body>
+</html>

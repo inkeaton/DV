@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIS 35 Papers - Explore publication trends, citation patterns, and keyword evolution in visualization research">
+  
+  <title>Papers — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/scrolly.css">
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    // Import Material Web Components
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Import shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+
+    // Import scroll controller and visualization
+    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
+    import { loadD3 } from '../assets/js/visualization-base.js';
+    import { PapersVisualization } from './plots/papersVisualization.js';
+
+    // ========================================================================
+    // INITIALIZE SCROLLYTELLING
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load D3.js
+      const d3 = await loadD3();
+
+      // Initialize visualization
+      const visualization = new PapersVisualization('scrolly-vis');
+      await visualization.init(d3);
+
+      // Count steps and create progress dots
+      const steps = document.querySelectorAll('.scrolly-step');
+      createProgressDots(steps.length);
+
+      // Initialize scroll controller
+      const controller = initScrollController({
+        onStepChange: (stepIndex, stepElement, previousStep) => {
+          visualization.transitionToStep(stepIndex, stepElement, previousStep);
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       SHELL COMPONENTS (Navbar + Drawer)
+       ======================================================================== -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main>
+    <!-- ====================================================================
+         INTRO SECTION
+         ==================================================================== -->
+    <section class="scrolly-intro">
+      <h1>The Papers</h1>
+      <p>
+        Dive into 35 years of IEEE VIS publications. Explore how paper characteristics
+        have evolved, from publication volumes and citation patterns to trending keywords
+        and authorship dynamics.
+      </p>
+      <p>
+        Scroll down to discover the story behind 3,500+ visualization research papers.
+      </p>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLLYTELLING CONTAINER
+         ==================================================================== -->
+    <div class="scrolly-container">
+      <!-- Sticky visualization panel -->
+      <div class="scrolly-graphic">
+        <div id="scrolly-vis" class="scrolly-vis"></div>
+      </div>
+
+      <!-- Scrolling narrative text -->
+      <div class="scrolly-text">
+        
+        <!-- Step 0: Publication Timeline -->
+        <div class="scrolly-step" data-step="0">
+          <div class="scrolly-step-content">
+            <h2>Publication Growth</h2>
+            <p>
+              IEEE VIS has grown from a single conference track to a major venue 
+              with <strong>three distinct tracks</strong>: InfoVis, SciVis, and VAST.
+            </p>
+            <p>
+              The stacked area chart shows how each track has contributed to the 
+              growing body of visualization research over <em>35 years</em>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 1: Citation Distribution -->
+        <div class="scrolly-step" data-step="1">
+          <div class="scrolly-step-content">
+            <h2>Citation Impact</h2>
+            <p>
+              Most papers receive between <strong>10-50 citations</strong>, but a 
+              small number of highly influential papers drive the field forward.
+            </p>
+            <p>
+              The top 1% of papers account for over <em>25% of all citations</em>,
+              showing the outsized impact of seminal works like D3.js.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2: Keyword Trends -->
+        <div class="scrolly-step" data-step="2">
+          <div class="scrolly-step-content">
+            <h2>Trending Topics</h2>
+            <p>
+              Keywords reveal what's hot in visualization research. 
+              <strong>Machine Learning</strong> and <strong>Deep Learning</strong> 
+              have exploded in recent years.
+            </p>
+            <p>
+              Meanwhile, traditional topics like <em>Volume Rendering</em> are 
+              declining as new challenges emerge around explainability and accessibility.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3: Paper Length -->
+        <div class="scrolly-step" data-step="3">
+          <div class="scrolly-step-content">
+            <h2>Getting Longer</h2>
+            <p>
+              Papers have grown from an average of <strong>8 pages</strong> in 1990 
+              to over <strong>11 pages</strong> today.
+            </p>
+            <p>
+              This reflects increasing expectations for thorough evaluation, 
+              reproducibility details, and <em>supplementary materials</em> like 
+              code and data.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4: Authorship Patterns -->
+        <div class="scrolly-step" data-step="4">
+          <div class="scrolly-step-content">
+            <h2>Collaboration is Key</h2>
+            <p>
+              The most common paper has <strong>3-4 authors</strong>. Single-author 
+              papers are increasingly rare (only 4% of all publications).
+            </p>
+            <p>
+              <em>International collaborations</em> now account for 25% of all 
+              papers, reflecting the global nature of visualization research.
+            </p>
+          </div>
+        </div>
+
+        <!-- Spacer for final step visibility -->
+        <div class="scrolly-spacer"></div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CONCLUSION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways</h2>
+      <ol>
+        <li>Publication volume has <strong>tripled</strong> since the 1990s across all tracks</li>
+        <li>A small number of seminal papers drive most of the citation impact</li>
+        <li><strong>ML/AI integration</strong> is the fastest-growing trend in visualization</li>
+        <li>Papers are getting longer with more comprehensive evaluations</li>
+        <li>Collaboration is essential — solo papers are nearly extinct</li>
+      </ol>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <app-footer></app-footer>
+
+</body>
+</html>

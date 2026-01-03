@@ -38,8 +38,9 @@ class AppHeader extends HTMLElement {
     // Build navigation paths based on current location
     const homeHref = build("./index.html", "../index.html");
     const datasetHref = build("./dataset/dataset.html", "../dataset/dataset.html");
-    const studentHref = build("./student/student.html", "../student/student.html");
-    const researcherHref = build("./researcher/researcher.html", "../researcher/researcher.html");
+    const papersHref = build("./papers/papers.html", "../papers/papers.html");
+    const authorsHref = build("./authors/authors.html", "../authors/authors.html");
+    const researchHref = build("./research/research.html", "../research/research.html");
 
     this.innerHTML = `
       <header class="app-bar" role="banner">
@@ -60,8 +61,9 @@ class AppHeader extends HTMLElement {
           <nav class="desktop-nav" aria-label="Main navigation">
             <md-text-button href="${homeHref}">Home</md-text-button>
             <md-text-button href="${datasetHref}">Dataset</md-text-button>
-            <md-text-button href="${studentHref}">Student</md-text-button>
-            <md-text-button href="${researcherHref}">Researcher</md-text-button>
+            <md-text-button href="${papersHref}">Papers</md-text-button>
+            <md-text-button href="${authorsHref}">Authors</md-text-button>
+            <md-text-button href="${researchHref}">Institutions</md-text-button>
           </nav>
 
           <!-- Theme toggle button -->
@@ -133,8 +135,9 @@ class AppDrawer extends HTMLElement {
     // Build navigation paths
     const homeHref = build("./index.html", "../index.html");
     const datasetHref = build("./dataset/dataset.html", "../dataset/dataset.html");
-    const studentHref = build("./student/student.html", "../student/student.html");
-    const researcherHref = build("./researcher/researcher.html", "../researcher/researcher.html");
+    const papersHref = build("./papers/papers.html", "../papers/papers.html");
+    const authorsHref = build("./authors/authors.html", "../authors/authors.html");
+    const researchHref = build("./research/research.html", "../research/research.html");
 
     this.innerHTML = `
       <aside id="drawer" class="drawer" role="navigation" aria-label="Mobile navigation">
@@ -149,14 +152,19 @@ class AppDrawer extends HTMLElement {
             <md-icon slot="start">dataset</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="${studentHref}">
-            <div slot="headline">Student</div>
-            <md-icon slot="start">school</md-icon>
+          <md-list-item type="link" href="${papersHref}">
+            <div slot="headline">Papers</div>
+            <md-icon slot="start">description</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="${researcherHref}">
-            <div slot="headline">Researcher</div>
-            <md-icon slot="start">science</md-icon>
+          <md-list-item type="link" href="${authorsHref}">
+            <div slot="headline">Authors</div>
+            <md-icon slot="start">group</md-icon>
+          </md-list-item>
+
+          <md-list-item type="link" href="${researchHref}">
+            <div slot="headline">Institutions</div>
+            <md-icon slot="start">apartment</md-icon>
           </md-list-item>
         </md-list>
       </aside>

@@ -50,6 +50,29 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
+    /* Landing header with title and author */
+    .landing-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .landing-title {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      margin: 0;
+    }
+
+    .landing-author {
+      font-size: 0.95rem;
+      color: var(--md-sys-color-on-surface-variant);
+      margin: 0;
+    }
+
     /* Card hover ripple effect */
     .card {
       cursor: pointer;
@@ -67,6 +90,31 @@
     .card:hover .card-arrow {
       opacity: 1;
       transform: translateX(4px);
+    }
+
+    /* Statistics cards for landing page */
+    .bento-stat {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      padding: 20px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .bento-stat .stat-value {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .bento-stat .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-top: 6px;
+      line-height: 1.3;
     }
   </style>
 
@@ -136,59 +184,97 @@
   <!-- ========================================================================
        MAIN CONTENT: BENTO LANDING GRID
        
-       Layout matches the mockup:
-       - Row 1: Hero card (left, 2/3 width) | Dataset card (right, 1/3 width)
-       - Row 2: Researcher card (left) | Student card (right)
+       Layout:
+       - Header: Title + Author label
+       - Grid (4 cols x 3 rows):
+         - Left section (3 cols): Hero (2x2), 4 stat cards (1x1), Dataset link (1x1)
+         - Right section (1 col): Papers, Authors, Institutions (stacked)
        ======================================================================== -->
   <main class="home">
+    <!-- Landing header -->
+    <header class="landing-header">
+      <h1 class="landing-title">Data Visualization</h1>
+      <p class="landing-author">by Ex-twist team</p>
+    </header>
+
     <div class="bento-landing">
       
       <!-- ================================================================
-           HERO CARD
-           Main description of the project (top left, spans 2/3 width)
+           HERO CARD (2x2)
+           Main description of the project
            ================================================================ -->
       <div class="card bento-hero">
-        <h1 class="card-title">Data Visualization</h1>
         <p class="card-description">
           Explore 35 years of data visualization research through interactive 
           storytelling. Discover trends, influential papers, and the evolution 
           of visualization techniques from 1990 to 2024.
         </p>
-        <p class="card-description">
-          This project analyzes over 3,500 papers from IEEE VIS conferences, 
-          revealing patterns in topics, collaboration networks, and geographic 
-          distribution of research.
-        </p>
       </div>
 
       <!-- ================================================================
-           DATASET CARD
-           Link to dataset exploration page (top right)
+           STATISTICS CARDS (1x1 each)
+           Key dataset metrics
+           ================================================================ -->
+      <div class="bento-stat bento-stat-1">
+        <div class="stat-value">3,553</div>
+        <div class="stat-label">Total Papers</div>
+      </div>
+
+      <div class="bento-stat bento-stat-2">
+        <div class="stat-value">8,234</div>
+        <div class="stat-label">Unique Authors</div>
+      </div>
+
+      <div class="bento-stat bento-stat-3">
+        <div class="stat-value">35</div>
+        <div class="stat-label">Years of Research</div>
+      </div>
+
+      <div class="bento-stat bento-stat-4">
+        <div class="stat-value">52</div>
+        <div class="stat-label">Countries</div>
+      </div>
+
+      <!-- ================================================================
+           DATASET CARD (1x1)
+           Link to dataset exploration page
            ================================================================ -->
       <a href="./dataset/dataset.html" class="card bento-dataset">
+        <span class="card-label">explore</span>
         <h2 class="card-title">Dataset</h2>
         <md-icon class="card-arrow">arrow_forward</md-icon>
         <md-ripple></md-ripple>
       </a>
 
       <!-- ================================================================
-           RESEARCHER CARD
-           Link to researcher-focused visualizations (bottom left)
+           PAPERS CARD
+           Link to papers-focused visualizations
            ================================================================ -->
-      <a href="./researcher/researcher.html" class="card bento-researcher">
-        <span class="card-label">for the</span>
-        <h2 class="card-title">Researcher</h2>
+      <a href="./papers/papers.html" class="card bento-papers">
+        <span class="card-label">explore</span>
+        <h2 class="card-title">Papers</h2>
         <md-icon class="card-arrow">arrow_forward</md-icon>
         <md-ripple></md-ripple>
       </a>
 
       <!-- ================================================================
-           STUDENT CARD
-           Link to student-focused visualizations (bottom right)
+           AUTHORS CARD
+           Link to authors-focused visualizations
            ================================================================ -->
-      <a href="./student/student.html" class="card bento-student">
-        <span class="card-label">for the</span>
-        <h2 class="card-title">Student</h2>
+      <a href="./authors/authors.html" class="card bento-authors">
+        <span class="card-label">explore</span>
+        <h2 class="card-title">Authors</h2>
+        <md-icon class="card-arrow">arrow_forward</md-icon>
+        <md-ripple></md-ripple>
+      </a>
+
+      <!-- ================================================================
+           INSTITUTIONS CARD
+           Link to research institutions-focused visualizations
+           ================================================================ -->
+      <a href="./research/research.html" class="card bento-institutions">
+        <span class="card-label">explore</span>
+        <h2 class="card-title">Institutions</h2>
         <md-icon class="card-arrow">arrow_forward</md-icon>
         <md-ripple></md-ripple>
       </a>
