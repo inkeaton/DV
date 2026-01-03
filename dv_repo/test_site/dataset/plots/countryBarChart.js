@@ -2,24 +2,15 @@
  * dataset/plots/countryBarChart.js
  * ============================================================================
  * VISUALIZATION: Papers by Country Horizontal Bar Chart
- * 
- * This module renders a horizontal bar chart showing the top countries
- * by number of papers. Uses D3.js for rendering and reads theme colors 
- * from CSS variables.
  * ============================================================================
  */
 
-import { countryData } from './countryData.js';
+import { loadCountryData } from "./countryData.js";
 
-/**
- * Get theme-aware colors from CSS custom properties
- * @returns {Object} Object containing color values
- */
 function getColors() {
   const styles = getComputedStyle(document.body);
   return {
     primary: styles.getPropertyValue('--md-sys-color-primary').trim() || '#00687A',
-    secondary: styles.getPropertyValue('--md-sys-color-secondary').trim() || '#4B6269',
     onSurface: styles.getPropertyValue('--md-sys-color-on-surface').trim() || '#171C1E',
     onSurfaceVariant: styles.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#3F484B',
     surfaceContainer: styles.getPropertyValue('--md-sys-color-surface-container').trim() || '#E9EFF1',
@@ -28,37 +19,30 @@ function getColors() {
   };
 }
 
-/**
- * Renders the country bar chart visualization
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
- */
-export function renderCountryBarChart(containerId, d3) {
+export async function renderCountryBarChart(containerId, d3) {
   const container = document.getElementById(containerId);
   if (!container) {
     console.error(`Container ${containerId} not found`);
     return;
   }
 
-  // Clear any existing content
   container.innerHTML = '';
 
-  // Get container dimensions
+  // Load real data from CSV
+  const countryData = await loadCountryData(d3, "./countryData.csv");
+
+  // Take top 10
+  const topN = 10;
+  const sortedData = countryData.slice(0, topN);
+
   const width = container.clientWidth;
   const height = container.clientHeight || 400;
-  const margin = { top: 20, right: 30, bottom: 40, left: 120 };
+  const margin = { top: 20, right: 30, bottom: 40, left: 160 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  // Get theme colors
   const colors = getColors();
 
-  // Sort data and take top 10
-  const sortedData = [...countryData]
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  // Create SVG
   const svg = d3.select(container)
     .append('svg')
     .attr('width', width)
@@ -69,21 +53,22 @@ export function renderCountryBarChart(containerId, d3) {
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  // Create scales
   const yScale = d3.scaleBand()
     .domain(sortedData.map(d => d.country))
     .range([0, innerHeight])
     .padding(0.2);
 
   const xScale = d3.scaleLinear()
-    .domain([0, d3.max(sortedData, d => d.count)])
+    .domain([0, d3.max(sortedData, d => d.count) || 0])
     .nice()
     .range([0, innerWidth]);
 
-  // Create gradient
-  const gradient = svg.append('defs')
-    .append('linearGradient')
-    .attr('id', 'bar-gradient')
+  // Make gradient id unique per chart to avoid collisions
+  const gradientId = `bar-gradient-${containerId}`;
+
+  const defs = svg.append('defs');
+  const gradient = defs.append('linearGradient')
+    .attr('id', gradientId)
     .attr('x1', '0%')
     .attr('x2', '100%');
 
@@ -95,7 +80,7 @@ export function renderCountryBarChart(containerId, d3) {
     .attr('offset', '100%')
     .attr('stop-color', colors.primaryContainer);
 
-  // Create and append Y axis
+  // Y axis
   const yAxis = g.append('g')
     .attr('class', 'y-axis')
     .call(d3.axisLeft(yScale));
@@ -104,10 +89,9 @@ export function renderCountryBarChart(containerId, d3) {
     .style('fill', colors.onSurface)
     .style('font-size', '13px');
 
-  yAxis.selectAll('line, path')
-    .style('stroke', 'transparent');
+  yAxis.selectAll('line, path').style('stroke', 'transparent');
 
-  // Create and append X axis
+  // X axis
   const xAxis = g.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0,${innerHeight})`)
@@ -130,7 +114,7 @@ export function renderCountryBarChart(containerId, d3) {
     .style('font-size', '14px')
     .text('Number of Papers');
 
-  // Create bars
+  // Bars
   g.selectAll('.bar')
     .data(sortedData)
     .join('rect')
@@ -139,34 +123,41 @@ export function renderCountryBarChart(containerId, d3) {
     .attr('x', 0)
     .attr('height', yScale.bandwidth())
     .attr('width', d => xScale(d.count))
-    .attr('fill', 'url(#bar-gradient)')
+    .attr('fill', `url(#${gradientId})`)
     .attr('rx', 4)
     .style('cursor', 'pointer')
-    .on('mouseenter', function(event, d) {
-      d3.select(this).attr('opacity', 0.8);
-      showTooltip(event, d, colors);
+    .on('mouseenter', function (event, d) {
+      d3.select(this).attr('opacity', 0.85);
+      showTooltip(event, d, colors, countryData);
     })
-    .on('mouseleave', function() {
+    .on('mouseleave', function () {
       d3.select(this).attr('opacity', 1);
       hideTooltip();
     });
 
-  // Add value labels at end of bars
+  // Value labels
+  // Add value labels with smart positioning (inside if bar is too long)
   g.selectAll('.bar-label')
     .data(sortedData)
     .join('text')
     .attr('class', 'bar-label')
     .attr('y', d => yScale(d.country) + yScale.bandwidth() / 2)
-    .attr('x', d => xScale(d.count) + 8)
     .attr('dy', '0.35em')
-    .style('fill', colors.onSurfaceVariant)
+    .attr('x', d => {
+      const barEnd = xScale(d.count);
+      const padding = 8;
+      // If the label would overflow, move it inside the bar
+      return (barEnd > innerWidth - 40) ? (barEnd - padding) : (barEnd + padding);
+    })
+    .attr('text-anchor', d => (xScale(d.count) > innerWidth - 40) ? 'end' : 'start')
+    .style('fill', colors.onSurfaceVariant)  
     .style('font-size', '12px')
     .text(d => d.count.toLocaleString());
 
-  // Tooltip functions
-  function showTooltip(event, d, colors) {
-    const total = d3.sum(countryData, t => t.count);
-    const percentage = ((d.count / total) * 100).toFixed(1);
+
+  function showTooltip(event, d, colors, allData) {
+    const total = d3.sum(allData, t => t.count);
+    const percentage = total > 0 ? ((d.count / total) * 100).toFixed(1) : "0.0";
 
     const tooltip = d3.select('body').selectAll('.country-tooltip').data([0]);
     const tooltipEnter = tooltip.enter()
@@ -186,7 +177,7 @@ export function renderCountryBarChart(containerId, d3) {
       .style('left', `${event.pageX + 10}px`)
       .style('top', `${event.pageY - 28}px`)
       .html(`
-        <strong>${d.country}</strong> (${d.code})<br>
+        <strong>${d.country}</strong><br>
         ${d.count.toLocaleString()} papers (${percentage}% of total)
       `);
   }
@@ -196,11 +187,6 @@ export function renderCountryBarChart(containerId, d3) {
   }
 }
 
-/**
- * Updates the visualization (e.g., on theme change)
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
- */
-export function updateCountryBarChart(containerId, d3) {
-  renderCountryBarChart(containerId, d3);
+export async function updateCountryBarChart(containerId, d3) {
+  await renderCountryBarChart(containerId, d3);
 }

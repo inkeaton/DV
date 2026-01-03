@@ -2,19 +2,11 @@
  * dataset/plots/yearHistogram.js
  * ============================================================================
  * VISUALIZATION: Papers by Year Histogram
- * 
- * This module renders a bar chart showing the number of papers published
- * each year from 1990 to 2024. Uses D3.js for rendering and reads theme
- * colors from CSS variables.
  * ============================================================================
  */
 
-import { yearData } from './yearData.js';
+import { loadYearData } from './yearData.js';
 
-/**
- * Get theme-aware colors from CSS custom properties
- * @returns {Object} Object containing color values
- */
 function getColors() {
   const styles = getComputedStyle(document.body);
   return {
@@ -26,59 +18,61 @@ function getColors() {
   };
 }
 
-/**
- * Renders the year histogram visualization
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
- */
-export function renderYearHistogram(containerId, d3) {
+export async function renderYearHistogram(containerId, d3) {
   const container = document.getElementById(containerId);
   if (!container) {
     console.error(`Container ${containerId} not found`);
     return;
   }
 
-  // Clear any existing content
   container.innerHTML = '';
 
-  // Get container dimensions
+  // Load real data from CSV
+  const yearData = await loadYearData(d3, "./yearData.csv");
+
+  // OPTIONAL: fill missing years with 0 counts (helps show continuous timeline)
+  const minYear = d3.min(yearData, d => d.year);
+  const maxYear = d3.max(yearData, d => d.year);
+  const map = new Map(yearData.map(d => [d.year, d.count]));
+  const fullYearData = d3.range(minYear, maxYear + 1).map(y => ({
+    year: y,
+    count: map.get(y) ?? 0
+  }));
+
   const width = container.clientWidth;
   const height = container.clientHeight || 300;
   const margin = { top: 30, right: 30, bottom: 50, left: 60 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  // Get theme colors
   const colors = getColors();
 
-  // Create SVG
   const svg = d3.select(container)
     .append('svg')
     .attr('width', width)
     .attr('height', height)
     .attr('role', 'img')
-    .attr('aria-label', 'Bar chart showing number of papers published per year from 1990 to 2024');
+    .attr('aria-label', 'Bar chart showing number of papers published per year');
 
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  // Create scales
   const xScale = d3.scaleBand()
-    .domain(yearData.map(d => d.year))
+    .domain(fullYearData.map(d => d.year))
     .range([0, innerWidth])
     .padding(0.1);
 
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(yearData, d => d.count)])
+    .domain([0, d3.max(fullYearData, d => d.count) || 0])
     .nice()
     .range([innerHeight, 0]);
 
-  // Create and append X axis
   const xAxis = g.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0,${innerHeight})`)
-    .call(d3.axisBottom(xScale)
-      .tickValues(xScale.domain().filter((d, i) => i % 5 === 0)) // Show every 5th year
+    .call(
+      d3.axisBottom(xScale)
+        .tickValues(xScale.domain().filter((d, i) => i % 5 === 0))
     );
 
   xAxis.selectAll('text')
@@ -88,10 +82,9 @@ export function renderYearHistogram(containerId, d3) {
   xAxis.selectAll('line, path')
     .style('stroke', colors.outline);
 
-  // Create and append Y axis
   const yAxis = g.append('g')
     .attr('class', 'y-axis')
-    .call(d3.axisLeft(yScale));
+    .call(d3.axisLeft(yScale).ticks(5));
 
   yAxis.selectAll('text')
     .style('fill', colors.onSurfaceVariant)
@@ -100,7 +93,6 @@ export function renderYearHistogram(containerId, d3) {
   yAxis.selectAll('line, path')
     .style('stroke', colors.outline);
 
-  // Y axis label
   g.append('text')
     .attr('class', 'y-axis-label')
     .attr('transform', 'rotate(-90)')
@@ -111,7 +103,6 @@ export function renderYearHistogram(containerId, d3) {
     .style('font-size', '14px')
     .text('Number of Papers');
 
-  // X axis label
   g.append('text')
     .attr('class', 'x-axis-label')
     .attr('y', innerHeight + 40)
@@ -121,9 +112,8 @@ export function renderYearHistogram(containerId, d3) {
     .style('font-size', '14px')
     .text('Year');
 
-  // Create bars
   g.selectAll('.bar')
-    .data(yearData)
+    .data(fullYearData)
     .join('rect')
     .attr('class', 'bar')
     .attr('x', d => xScale(d.year))
@@ -142,7 +132,6 @@ export function renderYearHistogram(containerId, d3) {
       hideTooltip();
     });
 
-  // Tooltip functions
   function showTooltip(event, d, colors) {
     const tooltip = d3.select('body').selectAll('.histogram-tooltip').data([0]);
     const tooltipEnter = tooltip.enter()
@@ -161,7 +150,7 @@ export function renderYearHistogram(containerId, d3) {
     tooltipEnter.merge(tooltip)
       .style('left', `${event.pageX + 10}px`)
       .style('top', `${event.pageY - 28}px`)
-      .html(`<strong>${d.year}</strong>: ${d.count} papers`);
+      .html(`<strong>${d.year}</strong>: ${d.count.toLocaleString()} papers`);
   }
 
   function hideTooltip() {
@@ -169,11 +158,6 @@ export function renderYearHistogram(containerId, d3) {
   }
 }
 
-/**
- * Updates the visualization (e.g., on theme change)
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
- */
-export function updateYearHistogram(containerId, d3) {
-  renderYearHistogram(containerId, d3);
+export async function updateYearHistogram(containerId, d3) {
+  await renderYearHistogram(containerId, d3);
 }

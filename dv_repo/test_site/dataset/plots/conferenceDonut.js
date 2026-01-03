@@ -2,19 +2,11 @@
  * dataset/plots/conferenceDonut.js
  * ============================================================================
  * VISUALIZATION: Papers by Conference Track Donut Chart
- * 
- * This module renders a donut chart showing the distribution of papers
- * across different IEEE VIS conference tracks. Uses D3.js for rendering 
- * and reads theme colors from CSS variables.
  * ============================================================================
  */
 
-import { conferenceData, conferenceDescriptions } from './conferenceData.js';
+import { loadConferenceData, conferenceDescriptions } from './conferenceData.js';
 
-/**
- * Get theme-aware colors from CSS custom properties
- * @returns {Object} Object containing color values
- */
 function getColors() {
   const styles = getComputedStyle(document.body);
   return {
@@ -28,33 +20,31 @@ function getColors() {
 
 /**
  * Renders the conference donut chart visualization
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
+ * @param {string} containerId
+ * @param {Object} d3
  */
-export function renderConferenceDonut(containerId, d3) {
+export async function renderConferenceDonut(containerId, d3) {
   const container = document.getElementById(containerId);
   if (!container) {
     console.error(`Container ${containerId} not found`);
     return;
   }
 
-  // Clear any existing content
   container.innerHTML = '';
 
-  // Get container dimensions
+  // Load real data from CSV (Conference,Count) and enrich with colors
+  const conferenceData = await loadConferenceData(d3);
+
   const width = container.clientWidth;
   const height = container.clientHeight || 300;
   const radius = Math.min(width * 0.5, height) / 2 - 20;
 
-  // Get theme colors
   const colors = getColors();
 
-  // Create color scale
   const colorScale = d3.scaleOrdinal()
     .domain(conferenceData.map(d => d.conference))
     .range(conferenceData.map(d => d.color));
 
-  // Create SVG
   const svg = d3.select(container)
     .append('svg')
     .attr('width', width)
@@ -62,27 +52,22 @@ export function renderConferenceDonut(containerId, d3) {
     .attr('role', 'img')
     .attr('aria-label', 'Donut chart showing distribution of papers across conference tracks');
 
-  // Chart group (left side)
   const chartG = svg.append('g')
     .attr('transform', `translate(${width * 0.35},${height / 2})`);
 
-  // Create pie layout
   const pie = d3.pie()
     .value(d => d.count)
     .sort(null);
 
-  // Create arc generators
   const arc = d3.arc()
     .innerRadius(radius * 0.6)
     .outerRadius(radius);
 
-  // Create arcs
   const arcs = chartG.selectAll('.arc')
     .data(pie(conferenceData))
     .join('g')
     .attr('class', 'arc');
 
-  // Draw slices
   arcs.append('path')
     .attr('d', arc)
     .attr('fill', d => colorScale(d.data.conference))
@@ -109,7 +94,6 @@ export function renderConferenceDonut(containerId, d3) {
       hideTooltip();
     });
 
-  // Center text
   chartG.append('text')
     .attr('text-anchor', 'middle')
     .attr('dy', '0.35em')
@@ -118,7 +102,6 @@ export function renderConferenceDonut(containerId, d3) {
     .style('font-weight', '500')
     .text('Conference');
 
-  // Legend (right side)
   const legendG = svg.append('g')
     .attr('transform', `translate(${width * 0.6}, ${height / 2 - (conferenceData.length * 25) / 2})`);
 
@@ -128,14 +111,12 @@ export function renderConferenceDonut(containerId, d3) {
     .attr('class', 'legend-item')
     .attr('transform', (d, i) => `translate(0, ${i * 30})`);
 
-  // Legend color boxes
   legendItems.append('rect')
     .attr('width', 16)
     .attr('height', 16)
     .attr('rx', 4)
     .attr('fill', d => colorScale(d.conference));
 
-  // Legend labels
   legendItems.append('text')
     .attr('x', 24)
     .attr('y', 8)
@@ -144,7 +125,6 @@ export function renderConferenceDonut(containerId, d3) {
     .style('font-size', '14px')
     .text(d => d.conference);
 
-  // Legend counts
   legendItems.append('text')
     .attr('x', 24)
     .attr('y', 8)
@@ -154,10 +134,9 @@ export function renderConferenceDonut(containerId, d3) {
     .style('font-size', '12px')
     .text(d => `(${d.count.toLocaleString()})`);
 
-  // Tooltip functions
   function showTooltip(event, d, colors) {
     const total = d3.sum(conferenceData, t => t.count);
-    const percentage = ((d.data.count / total) * 100).toFixed(1);
+    const percentage = total > 0 ? ((d.data.count / total) * 100).toFixed(1) : "0.0";
     const description = conferenceDescriptions[d.data.conference] || '';
 
     const tooltip = d3.select('body').selectAll('.conference-tooltip').data([0]);
@@ -190,11 +169,6 @@ export function renderConferenceDonut(containerId, d3) {
   }
 }
 
-/**
- * Updates the visualization (e.g., on theme change)
- * @param {string} containerId - The ID of the container element
- * @param {Object} d3 - D3.js library reference
- */
-export function updateConferenceDonut(containerId, d3) {
-  renderConferenceDonut(containerId, d3);
+export async function updateConferenceDonut(containerId, d3) {
+  await renderConferenceDonut(containerId, d3);
 }
