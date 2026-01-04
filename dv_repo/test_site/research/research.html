@@ -41,107 +41,17 @@
     // Import shell components (navbar, drawer, footer)
     import '../assets/js/shell.js';
 
-    // Import scroll controller and visualization
-    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
-    import { loadD3 } from '../assets/js/visualization-base.js';
+    // Import page controller and visualization
+    import { initScrollyPage } from '../assets/js/scrolly-page-controller.js';
     import { ResearchVisualization } from './plots/researchVisualization.js';
+    import '../assets/js/components/plot-modal.js';
 
     // ========================================================================
-    // INITIALIZE SCROLLYTELLING
+    // INITIALIZE SCROLLYTELLING (simplified using page controller)
     // ========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      // Load D3.js
-      const d3 = await loadD3();
-
-      // Initialize visualization
-      const visualization = new ResearchVisualization('scrolly-vis');
-      await visualization.init(d3);
-
-      // Count steps and create progress dots
-      const steps = document.querySelectorAll('.scrolly-step');
-      createProgressDots(steps.length);
-
-      // Initialize scroll controller
-      const controller = initScrollController({
-        onStepChange: (stepIndex, stepElement, previousStep) => {
-          visualization.transitionToStep(stepIndex, stepElement, previousStep);
-        }
-      });
-
-      // ======================================================================
-      // MOBILE MODAL HANDLING
-      // ======================================================================
-      const modal = document.getElementById('plot-modal');
-      const modalVis = document.getElementById('plot-modal-vis');
-      const modalClose = document.getElementById('plot-modal-close');
-      const landscapeToast = document.getElementById('landscape-toast');
-      let modalVisualization = null;
-
-      // Check if we're on mobile
-      const isMobile = () => window.innerWidth <= 1024;
-
-      // Show landscape suggestion toast
-      const showLandscapeToast = () => {
-        // Only show in portrait mode
-        if (window.innerHeight > window.innerWidth) {
-          landscapeToast.classList.add('is-visible');
-          setTimeout(() => {
-            landscapeToast.classList.add('is-hiding');
-            setTimeout(() => {
-              landscapeToast.classList.remove('is-visible', 'is-hiding');
-            }, 300);
-          }, 3000);
-        }
-      };
-
-      // Open modal with visualization for given step
-      const openModal = async (stepIndex) => {
-        // Create modal visualization if not exists
-        if (!modalVisualization) {
-          modalVisualization = new ResearchVisualization('plot-modal-vis');
-          await modalVisualization.init(d3);
-        }
-
-        // Render the step
-        modalVisualization.transitionToStep(stepIndex, null, -1);
-
-        // Show modal
-        modal.classList.add('is-open');
-        document.body.classList.add('modal-open');
-
-        // Show landscape toast
-        showLandscapeToast();
-      };
-
-      // Close modal
-      const closeModal = () => {
-        modal.classList.remove('is-open');
-        document.body.classList.remove('modal-open');
-      };
-
-      // Bind show-plot buttons
-      document.querySelectorAll('.show-plot-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const stepIndex = parseInt(btn.dataset.step, 10);
-          openModal(stepIndex);
-        });
-      });
-
-      // Bind close button
-      modalClose.addEventListener('click', closeModal);
-
-      // Close on backdrop click (outside content)
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
-          closeModal();
-        }
+      await initScrollyPage({
+        VisualizationClass: ResearchVisualization
       });
     });
   </script>
@@ -164,12 +74,13 @@
     <section class="scrolly-intro">
       <h1>The Research</h1>
       <p>
-        What topics drive visualization research? How have methods evolved? 
-        Explore the intellectual landscape of 35 years of IEEE VIS papers.
+        Where does visualization research happen? Who collaborates with whom? 
+        Explore the global geography and institutional networks behind 35 years 
+        of IEEE VIS papers.
       </p>
       <p>
-        From scientific visualization to AI-powered analytics, discover how 
-        the field has transformed.
+        From leading research universities to international collaborations, 
+        discover the institutions shaping the field.
       </p>
       <div class="scroll-indicator">
         <span>Scroll to explore</span>
@@ -189,17 +100,19 @@
       <!-- Scrolling narrative text -->
       <div class="scrolly-text">
         
-        <!-- Step 0: Research Topics -->
+        <!-- Step 0: Global Institution Map -->
         <div class="scrolly-step" data-step="0">
           <div class="scrolly-step-content">
-            <h2>Core Research Areas</h2>
+            <h2>A Global Community</h2>
             <p>
-              <strong>Information Visualization</strong> leads with 28% of papers, 
-              followed closely by Scientific Visualization and Visual Analytics.
+              <strong>55 leading institutions</strong> span six continents, from 
+              Massachusetts to Beijing. North America and Europe dominate with 
+              62% of papers, but Asia's presence is growing rapidly.
             </p>
             <p>
-              These three tracks now form the core of the conference, each with 
-              distinct communities but <em>increasing overlap</em>.
+              University of Washington leads with 134 papers, followed by Harvard 
+              and MIT. Research concentrates in tech hubs: <em>Boston, Bay Area, 
+              London, Beijing</em>.
             </p>
           </div>
           <button class="show-plot-btn" data-step="0">
@@ -208,17 +121,18 @@
           </button>
         </div>
 
-        <!-- Step 1: Methodology Trends -->
+        <!-- Step 1: Institution-Topic Sankey -->
         <div class="scrolly-step" data-step="1">
           <div class="scrolly-step-content">
-            <h2>Rising Rigor</h2>
+            <h2>Institutional Specializations</h2>
             <p>
-              User studies have become the <strong>gold standard</strong>. In 2024, 
-              68% of papers include formal user evaluation — up from just 15% in 1995.
+              Top institutions show distinct <strong>research profiles</strong>. 
+              University of Washington excels in InfoVis (52 papers), while 
+              UBC and University of Oxford lead in SciVis.
             </p>
             <p>
-              Papers without evaluation have dropped from 40% to just <em>5%</em>, 
-              reflecting higher methodological standards.
+              Stanford and MIT contribute broadly across all topics, while Georgia Tech 
+              and NYU specialize in <em>Visual Analytics and Interaction</em>.
             </p>
           </div>
           <button class="show-plot-btn" data-step="1">
@@ -227,58 +141,22 @@
           </button>
         </div>
 
-        <!-- Step 2: Domain Applications -->
+        <!-- Step 2: Collaboration Chord Diagram -->
         <div class="scrolly-step" data-step="2">
           <div class="scrolly-step-content">
-            <h2>Real-World Impact</h2>
+            <h2>Collaboration Networks</h2>
             <p>
-              <strong>Biology & Medicine</strong> remains the top application domain, 
-              but <strong>Cybersecurity</strong> is growing fastest at +42%.
+              <strong>561 collaborations</strong> connect the top 15 institutions. 
+              University of Washington and Harvard lead with 45 and 42 joint papers, 
+              while MIT collaborates with 12 different institutions.
             </p>
             <p>
-              Climate visualization is surging (+22%) as researchers tackle 
-              <em>communicating climate change</em> to diverse audiences.
+              Cross-regional partnerships are common (32% of collaborations), 
+              especially between <em>North America and Europe</em>. UBC bridges 
+              continents with 38 international collaborations.
             </p>
           </div>
           <button class="show-plot-btn" data-step="2">
-            <md-icon>bar_chart</md-icon>
-            <span>View Visualization</span>
-          </button>
-        </div>
-
-        <!-- Step 3: Data Types -->
-        <div class="scrolly-step" data-step="3">
-          <div class="scrolly-step-content">
-            <h2>Data Diversity</h2>
-            <p>
-              <strong>Tabular data</strong> dominates, but network and graph 
-              visualization has become the second most common focus.
-            </p>
-            <p>
-              New challenges around <em>text and documents</em> are growing as 
-              NLP and LLM-powered tools reshape how we explore unstructured data.
-            </p>
-          </div>
-          <button class="show-plot-btn" data-step="3">
-            <md-icon>bar_chart</md-icon>
-            <span>View Visualization</span>
-          </button>
-        </div>
-
-        <!-- Step 4: Reproducibility -->
-        <div class="scrolly-step" data-step="4">
-          <div class="scrolly-step-content">
-            <h2>Open Science Revolution</h2>
-            <p>
-              <strong>82% of papers</strong> now share open-source code — a dramatic 
-              shift from just 8% in 2010.
-            </p>
-            <p>
-              The community has embraced <em>reproducibility</em>, though 
-              preregistration (12%) and replication studies (8%) remain rare.
-            </p>
-          </div>
-          <button class="show-plot-btn" data-step="4">
             <md-icon>bar_chart</md-icon>
             <span>View Visualization</span>
           </button>
@@ -305,22 +183,9 @@
   </main>
 
   <!-- ========================================================================
-       FULLSCREEN PLOT MODAL (Mobile only)
+       FULLSCREEN PLOT MODAL (Mobile only - Web Component)
        ======================================================================== -->
-  <div class="plot-modal" id="plot-modal">
-    <div class="plot-modal-content">
-      <button class="plot-modal-close" id="plot-modal-close" aria-label="Close visualization">
-        <md-icon>close</md-icon>
-      </button>
-      <div class="plot-modal-vis" id="plot-modal-vis"></div>
-    </div>
-  </div>
-
-  <!-- Landscape suggestion toast -->
-  <div class="landscape-toast" id="landscape-toast">
-    <md-icon>screen_rotation</md-icon>
-    <span>Rotate to landscape for a better view</span>
-  </div>
+  <plot-modal id="plot-modal"></plot-modal>
 
   <!-- ========================================================================
        FOOTER
@@ -329,3 +194,16 @@
 
 </body>
 </html>
+    <!-- ====================================================================
+         CONCLUSION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways</h2>
+      <ol>
+        <li>Visualization research is truly <strong>global</strong>, spanning 55 institutions across six continents</li>
+        <li>North America leads in volume, but Asia is the fastest-growing region</li>
+        <li>Top institutions develop <strong>distinct specializations</strong> — UW for InfoVis, UBC for SciVis</li>
+        <li>Collaboration is extensive: 561 partnerships connect the top 15 institutions</li>
+        <li><strong>International networks</strong> are thriving, with 32% of collaborations crossing regional boundaries</li>
+      </ol>
+    </section>

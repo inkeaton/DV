@@ -6,12 +6,70 @@
  * This module provides a base class/utilities for building scrollytelling
  * visualizations. It handles:
  * - D3.js loading
+ * - SVG creation and management
  * - Theme-aware color management
- * - Step-based state transitions
+ * - Step-based state transitions with registered render functions
  * - Responsive resize handling
+ * - Built-in tooltip management
  * 
- * Each scrollytelling page (student, researcher) will import this module
- * and use it as the foundation for their visualizations.
+ * Each scrollytelling page extends ScrollyVisualization and registers
+ * step configurations to create a complete visualization experience.
+ * 
+ * ============================================================================
+ * HOW TO ADD A NEW PLOT
+ * ============================================================================
+ * 
+ * 1. Create a new file in the section's plots/ folder (e.g., papers/plots/myNewPlot.js)
+ *    
+ *    ```javascript
+ *    // myNewPlot.js
+ *    import { myNewPlotData } from '../../data/papers/myNewPlotData.js';
+ *    
+ *    export const myNewPlotConfig = {
+ *      data: myNewPlotData,
+ *      margins: { left: 60, right: 40 },  // Optional custom margins
+ *      render: (ctx) => {
+ *        const { g, d3, width, height, colors, tooltip, data } = ctx;
+ *        // Your D3 rendering code here
+ *      }
+ *    };
+ *    ```
+ * 
+ * 2. Create the data file in data/[section]/ folder
+ *    
+ *    ```javascript
+ *    // data/papers/myNewPlotData.js
+ *    export const myNewPlotData = [...];
+ *    ```
+ * 
+ * 3. Import and register the plot in the section's visualization file
+ *    
+ *    ```javascript
+ *    // papersVisualization.js
+ *    import { myNewPlotConfig } from './plots/myNewPlot.js';
+ *    
+ *    // In constructor:
+ *    this.registerSteps([
+ *      ...existingSteps,
+ *      myNewPlotConfig
+ *    ]);
+ *    ```
+ * 
+ * 4. Add the corresponding HTML step in the section's HTML file
+ *    
+ *    ```html
+ *    <div class="scrolly-step" data-step="N">
+ *      <div class="scrolly-step-content">
+ *        <h2>My New Plot Title</h2>
+ *        <p>Description of what this visualization shows.</p>
+ *      </div>
+ *      <button class="show-plot-btn" data-step="N">
+ *        <md-icon>bar_chart</md-icon>
+ *        Show Plot
+ *      </button>
+ *    </div>
+ *    ```
+ * 
  * ============================================================================
  */
 
@@ -68,35 +126,128 @@ export function getThemeColors() {
  */
 export class ScrollyVisualization {
   /**
-   * @param {string} containerId - ID of the container element for the visualization
+   * Default margins for visualizations
+   * Can be overridden per-step via step config
    */
-  constructor(containerId) {
-    this.containerId = containerId;
-    this.container = document.getElementById(containerId);
+  static DEFAULT_MARGIN = { top: 60, right: 40, bottom: 60, left: 60 };
+
+  /**
+   * @param {string|HTMLElement} containerOrId - ID of the container element or the element itself
+   * @param {Object} options - Optional configuration { tooltipClass }
+   */
+  constructor(containerOrId, options = {}) {
+    // Accept either an ID string or a DOM element
+    if (typeof containerOrId === 'string') {
+      this.containerId = containerOrId;
+      this.container = document.getElementById(containerOrId);
+    } else if (containerOrId instanceof HTMLElement) {
+      this.containerId = containerOrId.id || 'visualization-container';
+      this.container = containerOrId;
+    } else {
+      this.containerId = 'unknown';
+      this.container = null;
+    }
+    
     this.svg = null;
+    this.g = null;
     this.d3 = null;
     this.currentStep = -1;
     this.isInitialized = false;
+    this.stepConfigs = [];
+    this.tooltipClass = options.tooltipClass || 'vis-tooltip';
+    this.tooltip = null;
+    
+    // Margins
+    this.defaultMargin = { ...ScrollyVisualization.DEFAULT_MARGIN };
+    this.margin = { ...this.defaultMargin };
     
     if (!this.container) {
-      console.error(`Visualization container '${containerId}' not found`);
+      console.warn(`Visualization container '${this.containerId}' not found`);
     }
   }
 
   /**
+   * Register step configurations for the visualization
+   * Each step config defines: { render, data, margins }
+   * @param {Array} stepConfigs - Array of step configuration objects
+   */
+  registerSteps(stepConfigs) {
+    this.stepConfigs = stepConfigs;
+  }
+
+  /**
    * Initialize the visualization
-   * Override this method in subclasses to set up the visualization
    * @param {Object} d3 - D3.js library reference
    */
   async init(d3) {
     this.d3 = d3;
     this.isInitialized = true;
     
+    // Create tooltip
+    this.tooltip = createTooltip(d3, this.tooltipClass);
+    
     // Set up resize observer for responsive updates
     this.setupResizeObserver();
     
     // Set up theme change observer
     this.setupThemeObserver();
+    
+    // Only create SVG and render if container is visible (has dimensions)
+    // This handles cases like modal containers that are hidden on init
+    const { width, height } = this.getDimensions();
+    if (width > 0 && height > 0) {
+      // Create SVG
+      this.createSvg();
+      
+      // Render first step
+      if (this.stepConfigs.length > 0) {
+        this.transitionToStep(0, null, -1);
+      }
+    }
+  }
+
+  /**
+   * Create or recreate the SVG element
+   */
+  createSvg() {
+    const { width, height } = this.getDimensions();
+    
+    if (this.svg) {
+      this.svg.remove();
+    }
+
+    this.svg = this.d3.select(this.container)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('role', 'img');
+
+    this.g = this.svg.append('g')
+      .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+  }
+
+  /**
+   * Get inner dimensions (minus margins)
+   * Ensures dimensions are never negative to prevent D3 rendering errors
+   * @returns {Object} { width, height } inner dimensions
+   */
+  getInnerDimensions() {
+    const { width, height } = this.getDimensions();
+    return {
+      width: Math.max(0, width - this.margin.left - this.margin.right),
+      height: Math.max(0, height - this.margin.top - this.margin.bottom)
+    };
+  }
+
+  /**
+   * Set margins for the current visualization and update group transform
+   * @param {Object} customMargin - Custom margin values to merge with defaults
+   */
+  setMargins(customMargin) {
+    this.margin = { ...this.defaultMargin, ...customMargin };
+    if (this.g) {
+      this.g.attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+    }
   }
 
   /**
@@ -162,30 +313,83 @@ export class ScrollyVisualization {
 
   /**
    * Transition to a specific step
-   * Override this method in subclasses to handle step transitions
+   * Clears the current visualization and renders the registered step
    * @param {number} stepIndex - Index of the step to transition to
-   * @param {HTMLElement} stepElement - The step DOM element
+   * @param {HTMLElement} stepElement - The step DOM element (optional)
    * @param {number} previousStep - Previous step index
    */
   transitionToStep(stepIndex, stepElement, previousStep) {
     this.currentStep = stepIndex;
-    // Override in subclass to implement step-specific transitions
+    
+    // Validate step index
+    if (stepIndex < 0 || stepIndex >= this.stepConfigs.length) {
+      console.warn(`Invalid step index: ${stepIndex}`);
+      return;
+    }
+    
+    // Skip rendering if SVG hasn't been created (container hidden/zero dimensions)
+    if (!this.svg || !this.g) {
+      return;
+    }
+    
+    const stepConfig = this.stepConfigs[stepIndex];
+    
+    // Apply step-specific margins if defined
+    if (stepConfig.margins) {
+      this.setMargins(stepConfig.margins);
+    } else {
+      this.setMargins({});
+    }
+    
+    // Clear current visualization
+    this.g.selectAll('*').remove();
+    
+    // Build render context
+    const { width, height } = this.getInnerDimensions();
+    const ctx = {
+      g: this.g,
+      svg: this.svg,
+      d3: this.d3,
+      tooltip: this.tooltip,
+      width,
+      height,
+      colors: this.getColors(),
+      data: stepConfig.data
+    };
+    
+    // Call the render function
+    if (stepConfig.render && typeof stepConfig.render === 'function') {
+      stepConfig.render(ctx);
+    }
   }
 
   /**
-   * Handle window resize
-   * Override this method in subclasses to handle resize
+   * Handle window resize or when container becomes visible
+   * Recreates SVG and re-renders current step
    */
   resize() {
-    // Override in subclass
+    if (!this.isInitialized) return;
+    
+    const { width, height } = this.getDimensions();
+    if (width <= 0 || height <= 0) return;
+    
+    this.createSvg();
+    
+    if (this.currentStep >= 0 && this.currentStep < this.stepConfigs.length) {
+      this.transitionToStep(this.currentStep, null, this.currentStep);
+    }
   }
 
   /**
    * Handle theme change
-   * Override this method in subclasses to update colors
+   * Re-renders current step with new colors
    */
   onThemeChange() {
-    // Override in subclass
+    if (!this.isInitialized) return;
+    
+    if (this.currentStep >= 0 && this.currentStep < this.stepConfigs.length) {
+      this.transitionToStep(this.currentStep, null, this.currentStep);
+    }
   }
 
   /**
@@ -198,9 +402,20 @@ export class ScrollyVisualization {
     if (this.themeObserver) {
       this.themeObserver.disconnect();
     }
+    if (this.tooltip) {
+      this.tooltip.hide();
+    }
     if (this.container) {
       this.container.innerHTML = '';
     }
+  }
+
+  /**
+   * Get the number of registered steps
+   * @returns {number} Number of steps
+   */
+  getStepCount() {
+    return this.stepConfigs.length;
   }
 }
 

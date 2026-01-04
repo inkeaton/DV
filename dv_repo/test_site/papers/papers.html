@@ -41,107 +41,17 @@
     // Import shell components (navbar, drawer, footer)
     import '../assets/js/shell.js';
 
-    // Import scroll controller and visualization
-    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
-    import { loadD3 } from '../assets/js/visualization-base.js';
+    // Import page controller and visualization
+    import { initScrollyPage } from '../assets/js/scrolly-page-controller.js';
     import { PapersVisualization } from './plots/papersVisualization.js';
+    import '../assets/js/components/plot-modal.js';
 
     // ========================================================================
-    // INITIALIZE SCROLLYTELLING
+    // INITIALIZE SCROLLYTELLING (simplified using page controller)
     // ========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      // Load D3.js
-      const d3 = await loadD3();
-
-      // Initialize visualization
-      const visualization = new PapersVisualization('scrolly-vis');
-      await visualization.init(d3);
-
-      // Count steps and create progress dots
-      const steps = document.querySelectorAll('.scrolly-step');
-      createProgressDots(steps.length);
-
-      // Initialize scroll controller
-      const controller = initScrollController({
-        onStepChange: (stepIndex, stepElement, previousStep) => {
-          visualization.transitionToStep(stepIndex, stepElement, previousStep);
-        }
-      });
-
-      // ======================================================================
-      // MOBILE MODAL HANDLING
-      // ======================================================================
-      const modal = document.getElementById('plot-modal');
-      const modalVis = document.getElementById('plot-modal-vis');
-      const modalClose = document.getElementById('plot-modal-close');
-      const landscapeToast = document.getElementById('landscape-toast');
-      let modalVisualization = null;
-
-      // Check if we're on mobile
-      const isMobile = () => window.innerWidth <= 1024;
-
-      // Show landscape suggestion toast
-      const showLandscapeToast = () => {
-        // Only show in portrait mode
-        if (window.innerHeight > window.innerWidth) {
-          landscapeToast.classList.add('is-visible');
-          setTimeout(() => {
-            landscapeToast.classList.add('is-hiding');
-            setTimeout(() => {
-              landscapeToast.classList.remove('is-visible', 'is-hiding');
-            }, 300);
-          }, 3000);
-        }
-      };
-
-      // Open modal with visualization for given step
-      const openModal = async (stepIndex) => {
-        // Create modal visualization if not exists
-        if (!modalVisualization) {
-          modalVisualization = new PapersVisualization('plot-modal-vis');
-          await modalVisualization.init(d3);
-        }
-
-        // Render the step
-        modalVisualization.transitionToStep(stepIndex, null, -1);
-
-        // Show modal
-        modal.classList.add('is-open');
-        document.body.classList.add('modal-open');
-
-        // Show landscape toast
-        showLandscapeToast();
-      };
-
-      // Close modal
-      const closeModal = () => {
-        modal.classList.remove('is-open');
-        document.body.classList.remove('modal-open');
-      };
-
-      // Bind show-plot buttons
-      document.querySelectorAll('.show-plot-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const stepIndex = parseInt(btn.dataset.step, 10);
-          openModal(stepIndex);
-        });
-      });
-
-      // Bind close button
-      modalClose.addEventListener('click', closeModal);
-
-      // Close on backdrop click (outside content)
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
-          closeModal();
-        }
+      await initScrollyPage({
+        VisualizationClass: PapersVisualization
       });
     });
   </script>
@@ -189,17 +99,17 @@
       <!-- Scrolling narrative text -->
       <div class="scrolly-text">
         
-        <!-- Step 0: Publication Timeline -->
+        <!-- Step 0: Papers Per Year -->
         <div class="scrolly-step" data-step="0">
           <div class="scrolly-step-content">
-            <h2>Publication Growth</h2>
+            <h2>35 Years of Papers</h2>
             <p>
-              IEEE VIS has grown from a single conference track to a major venue 
-              with <strong>three distinct tracks</strong>: InfoVis, SciVis, and VAST.
+              IEEE VIS has published over <strong>6,000 papers</strong> since 1990,
+              making it one of the premier venues for visualization research.
             </p>
             <p>
-              The stacked area chart shows how each track has contributed to the 
-              growing body of visualization research over <em>35 years</em>.
+              Publication volume has grown steadily, from just 45 papers in 1990
+              to over <em>350 papers per year</em> today.
             </p>
           </div>
           <button class="show-plot-btn" data-step="0">
@@ -208,17 +118,18 @@
           </button>
         </div>
 
-        <!-- Step 1: Citation Distribution -->
+        <!-- Step 1: Papers by Conference Track -->
         <div class="scrolly-step" data-step="1">
           <div class="scrolly-step-content">
-            <h2>Citation Impact</h2>
+            <h2>Three Conference Tracks</h2>
             <p>
-              Most papers receive between <strong>10-50 citations</strong>, but a 
-              small number of highly influential papers drive the field forward.
+              IEEE VIS comprises <strong>three distinct tracks</strong>: InfoVis
+              (information visualization), SciVis (scientific visualization), and
+              VAST (visual analytics).
             </p>
             <p>
-              The top 1% of papers account for over <em>25% of all citations</em>,
-              showing the outsized impact of seminal works like D3.js.
+              InfoVis started in 1995, and VAST was added in 2006, reflecting the
+              field's <em>expanding scope</em> and diverse research communities.
             </p>
           </div>
           <button class="show-plot-btn" data-step="1">
@@ -227,18 +138,17 @@
           </button>
         </div>
 
-        <!-- Step 2: Keyword Trends -->
+        <!-- Step 2: Papers by Publication Type -->
         <div class="scrolly-step" data-step="2">
           <div class="scrolly-step-content">
-            <h2>Trending Topics</h2>
+            <h2>Publication Venues</h2>
             <p>
-              Keywords reveal what's hot in visualization research. 
-              <strong>Machine Learning</strong> and <strong>Deep Learning</strong> 
-              have exploded in recent years.
+              Most VIS papers are published in <strong>IEEE TVCG</strong> (Transactions
+              on Visualization and Computer Graphics), the flagship journal.
             </p>
             <p>
-              Meanwhile, traditional topics like <em>Volume Rendering</em> are 
-              declining as new challenges emerge around explainability and accessibility.
+              Conference papers and workshop papers provide additional venues for
+              <em>work-in-progress</em> and emerging research directions.
             </p>
           </div>
           <button class="show-plot-btn" data-step="2">
@@ -247,18 +157,18 @@
           </button>
         </div>
 
-        <!-- Step 3: Paper Length -->
+        <!-- Step 3: Topics Treemap -->
         <div class="scrolly-step" data-step="3">
           <div class="scrolly-step-content">
-            <h2>Getting Longer</h2>
+            <h2>Research Topics</h2>
             <p>
-              Papers have grown from an average of <strong>8 pages</strong> in 1990 
-              to over <strong>11 pages</strong> today.
+              Visualization research spans a wide range of topics, from
+              <strong>graph visualization</strong> to <strong>visual analytics</strong>
+              and perception studies.
             </p>
             <p>
-              This reflects increasing expectations for thorough evaluation, 
-              reproducibility details, and <em>supplementary materials</em> like 
-              code and data.
+              The treemap shows the most discussed topics, grouped by category.
+              <em>Graph/Network visualization</em> remains the most popular area.
             </p>
           </div>
           <button class="show-plot-btn" data-step="3">
@@ -267,20 +177,39 @@
           </button>
         </div>
 
-        <!-- Step 4: Authorship Patterns -->
+        <!-- Step 4: Awards Pictogram -->
         <div class="scrolly-step" data-step="4">
           <div class="scrolly-step-content">
-            <h2>Collaboration is Key</h2>
+            <h2>Recognition & Awards</h2>
             <p>
-              The most common paper has <strong>3-4 authors</strong>. Single-author 
-              papers are increasingly rare (only 4% of all publications).
+              Each year, the community recognizes outstanding work with
+              <strong>Best Paper</strong> and <strong>Honorable Mention</strong> awards.
             </p>
             <p>
-              <em>International collaborations</em> now account for 25% of all 
-              papers, reflecting the global nature of visualization research.
+              The <em>Test of Time</em> award honors papers that have had lasting
+              impact on the field, often 10+ years after publication.
             </p>
           </div>
           <button class="show-plot-btn" data-step="4">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
+        </div>
+
+        <!-- Step 5: Citation Distribution -->
+        <div class="scrolly-step" data-step="5">
+          <div class="scrolly-step-content">
+            <h2>Citation Impact</h2>
+            <p>
+              Most papers receive between <strong>10-50 citations</strong>, but a
+              small number of highly influential papers drive the field forward.
+            </p>
+            <p>
+              The top 1% of papers account for over <em>25% of all citations</em>,
+              including seminal works like the D3.js paper with 2,400+ citations.
+            </p>
+          </div>
+          <button class="show-plot-btn" data-step="5">
             <md-icon>bar_chart</md-icon>
             <span>View Visualization</span>
           </button>
@@ -297,32 +226,19 @@
     <section class="scrolly-conclusion">
       <h2>Key Takeaways</h2>
       <ol>
-        <li>Publication volume has <strong>tripled</strong> since the 1990s across all tracks</li>
+        <li>Publication volume has grown <strong>8x</strong> since 1990 across all tracks</li>
+        <li>Three distinct tracks serve different visualization communities</li>
+        <li><strong>Graph/Network visualization</strong> is the most popular research topic</li>
+        <li>Best Paper and Test of Time awards recognize outstanding contributions</li>
         <li>A small number of seminal papers drive most of the citation impact</li>
-        <li><strong>ML/AI integration</strong> is the fastest-growing trend in visualization</li>
-        <li>Papers are getting longer with more comprehensive evaluations</li>
-        <li>Collaboration is essential — solo papers are nearly extinct</li>
       </ol>
     </section>
   </main>
 
   <!-- ========================================================================
-       FULLSCREEN PLOT MODAL (Mobile only)
+       FULLSCREEN PLOT MODAL (Mobile only - Web Component)
        ======================================================================== -->
-  <div class="plot-modal" id="plot-modal">
-    <div class="plot-modal-content">
-      <button class="plot-modal-close" id="plot-modal-close" aria-label="Close visualization">
-        <md-icon>close</md-icon>
-      </button>
-      <div class="plot-modal-vis" id="plot-modal-vis"></div>
-    </div>
-  </div>
-
-  <!-- Landscape suggestion toast -->
-  <div class="landscape-toast" id="landscape-toast">
-    <md-icon>screen_rotation</md-icon>
-    <span>Rotate to landscape for a better view</span>
-  </div>
+  <plot-modal id="plot-modal"></plot-modal>
 
   <!-- ========================================================================
        FOOTER

@@ -41,107 +41,17 @@
     // Import shell components (navbar, drawer, footer)
     import '../assets/js/shell.js';
 
-    // Import scroll controller and visualization
-    import { initScrollController, createProgressDots } from '../assets/js/scroll-controller.js';
-    import { loadD3 } from '../assets/js/visualization-base.js';
+    // Import page controller and visualization
+    import { initScrollyPage } from '../assets/js/scrolly-page-controller.js';
     import { AuthorsVisualization } from './plots/authorsVisualization.js';
+    import '../assets/js/components/plot-modal.js';
 
     // ========================================================================
-    // INITIALIZE SCROLLYTELLING
+    // INITIALIZE SCROLLYTELLING (simplified using page controller)
     // ========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      // Load D3.js
-      const d3 = await loadD3();
-
-      // Initialize visualization
-      const visualization = new AuthorsVisualization('scrolly-vis');
-      await visualization.init(d3);
-
-      // Count steps and create progress dots
-      const steps = document.querySelectorAll('.scrolly-step');
-      createProgressDots(steps.length);
-
-      // Initialize scroll controller
-      const controller = initScrollController({
-        onStepChange: (stepIndex, stepElement, previousStep) => {
-          visualization.transitionToStep(stepIndex, stepElement, previousStep);
-        }
-      });
-
-      // ======================================================================
-      // MOBILE MODAL HANDLING
-      // ======================================================================
-      const modal = document.getElementById('plot-modal');
-      const modalVis = document.getElementById('plot-modal-vis');
-      const modalClose = document.getElementById('plot-modal-close');
-      const landscapeToast = document.getElementById('landscape-toast');
-      let modalVisualization = null;
-
-      // Check if we're on mobile
-      const isMobile = () => window.innerWidth <= 1024;
-
-      // Show landscape suggestion toast
-      const showLandscapeToast = () => {
-        // Only show in portrait mode
-        if (window.innerHeight > window.innerWidth) {
-          landscapeToast.classList.add('is-visible');
-          setTimeout(() => {
-            landscapeToast.classList.add('is-hiding');
-            setTimeout(() => {
-              landscapeToast.classList.remove('is-visible', 'is-hiding');
-            }, 300);
-          }, 3000);
-        }
-      };
-
-      // Open modal with visualization for given step
-      const openModal = async (stepIndex) => {
-        // Create modal visualization if not exists
-        if (!modalVisualization) {
-          modalVisualization = new AuthorsVisualization('plot-modal-vis');
-          await modalVisualization.init(d3);
-        }
-
-        // Render the step
-        modalVisualization.transitionToStep(stepIndex, null, -1);
-
-        // Show modal
-        modal.classList.add('is-open');
-        document.body.classList.add('modal-open');
-
-        // Show landscape toast
-        showLandscapeToast();
-      };
-
-      // Close modal
-      const closeModal = () => {
-        modal.classList.remove('is-open');
-        document.body.classList.remove('modal-open');
-      };
-
-      // Bind show-plot buttons
-      document.querySelectorAll('.show-plot-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const stepIndex = parseInt(btn.dataset.step, 10);
-          openModal(stepIndex);
-        });
-      });
-
-      // Bind close button
-      modalClose.addEventListener('click', closeModal);
-
-      // Close on backdrop click (outside content)
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
-          closeModal();
-        }
+      await initScrollyPage({
+        VisualizationClass: AuthorsVisualization
       });
     });
   </script>
@@ -164,12 +74,12 @@
     <section class="scrolly-intro">
       <h1>The Authors</h1>
       <p>
-        Behind every paper is a team of researchers. Meet the 5,000+ authors who have 
+        Behind every paper is a team of researchers. Meet the 18,900+ authors who have 
         shaped the field of visualization over the past 35 years.
       </p>
       <p>
-        Discover career trajectories, collaboration patterns, and how the community 
-        has grown more diverse and interconnected.
+        Discover how collaboration has grown, team sizes have evolved, and which researchers
+        have had the greatest impact on the field.
       </p>
       <div class="scroll-indicator">
         <span>Scroll to explore</span>
@@ -189,17 +99,21 @@
       <!-- Scrolling narrative text -->
       <div class="scrolly-text">
         
-        <!-- Step 0: Author Demographics -->
+        <!-- Step 0: Authors per Paper -->
         <div class="scrolly-step" data-step="0">
           <div class="scrolly-step-content">
-            <h2>Who Publishes at VIS?</h2>
+            <h2>Growing Research Teams</h2>
             <p>
-              <strong>PhD students</strong> are the largest contributor group, 
-              authoring over a third of all papers.
+              The average number of authors per paper has <strong>more than doubled</strong> 
+              from 2.1 in 1990 to 5.5 in 2024.
             </p>
             <p>
-              Faculty at all levels make up another 46%, while industry researchers 
-              contribute a small but growing <em>3% of papers</em>.
+              This <em>162% increase</em> reflects the growing complexity of visualization 
+              research and the trend toward larger, more interdisciplinary collaborations.
+            </p>
+            <p>
+              The shaded area shows the variance in team sizes — while the average continues 
+              to climb, papers still range from solo authors to teams of 8+ researchers.
             </p>
           </div>
           <button class="show-plot-btn" data-step="0">
@@ -208,17 +122,23 @@
           </button>
         </div>
 
-        <!-- Step 1: Collaboration Network -->
+        <!-- Step 1: Unique Authors Timeline -->
         <div class="scrolly-step" data-step="1">
           <div class="scrolly-step-content">
-            <h2>Growing Connections</h2>
+            <h2>An Expanding Community</h2>
             <p>
-              The collaboration network has grown from <strong>85 authors</strong> 
-              in 1990 to over <strong>2,850 today</strong>.
+              The visualization research community has grown exponentially, from 
+              <strong>85 authors in 1990</strong> to over <strong>18,900 unique authors</strong> 
+              by 2024.
             </p>
             <p>
-              More importantly, the average number of collaborators per author has 
-              increased from 2.8 to <em>10.2</em> — showing a more interconnected community.
+              Recent years have seen the fastest growth, with over 1,400 new authors 
+              joining the community in 2024 alone — <em>nearly triple</em> the average 
+              annual rate from the 1990s.
+            </p>
+            <p>
+              This explosive growth reflects both the increasing importance of data 
+              visualization across fields and VIS's success in attracting diverse talent.
             </p>
           </div>
           <button class="show-plot-btn" data-step="1">
@@ -227,17 +147,23 @@
           </button>
         </div>
 
-        <!-- Step 2: Prolific Authors -->
+        <!-- Step 2: Collaboration Network -->
         <div class="scrolly-step" data-step="2">
           <div class="scrolly-step-content">
-            <h2>Prolific Contributors</h2>
+            <h2>Connected Research Communities</h2>
             <p>
-              A small group of researchers have been incredibly prolific. 
-              The top 10 authors have published over <strong>600 papers combined</strong>.
+              This network shows collaboration patterns among the <strong>top 50 most 
+              collaborative authors</strong> in visualization research.
             </p>
             <p>
-              Bubble size shows <em>h-index</em> — Jeffrey Heer has the highest 
-              impact-per-paper ratio, thanks to influential tools like Prefuse and Vega.
+              Three distinct research communities emerge: the <em>Harvard/MIT cluster</em> 
+              (blue) focused on interactive systems, the <em>European/SciVis cluster</em> 
+              (teal) specializing in scientific visualization, and the <em>VAST/InfoVis 
+              cluster</em> (orange) working on visual analytics.
+            </p>
+            <p>
+              The thickness of connections shows collaboration frequency — some pairs have 
+              co-authored over 20 papers together, demonstrating long-term research partnerships.
             </p>
           </div>
           <button class="show-plot-btn" data-step="2">
@@ -246,39 +172,26 @@
           </button>
         </div>
 
-        <!-- Step 3: Career Trajectory -->
+        <!-- Step 3: Author Metrics -->
         <div class="scrolly-step" data-step="3">
           <div class="scrolly-step-content">
-            <h2>Publishing Patterns</h2>
+            <h2>Impact and Recognition</h2>
             <p>
-              Publication rates peak during years <strong>11-15</strong> of a career, 
-              when researchers are typically associate professors with active labs.
+              This chart maps author productivity (papers) against impact (citations), 
+              with bubble size representing <strong>award count</strong>.
             </p>
             <p>
-              The gap between average and median shows that a few <em>super-prolific</em> 
-              researchers skew the distribution upward.
+              <em>Ben Shneiderman</em> leads in both citations (18,900+) and awards (12), 
+              while <em>Jeffrey Heer's</em> work shows exceptional citation-to-paper ratio 
+              — averaging over 145 citations per paper.
+            </p>
+            <p>
+              Emerging authors (gray bubbles) show the next generation of visualization 
+              leaders, with strong early-career productivity even without yet accumulating 
+              the citations and awards of established researchers.
             </p>
           </div>
           <button class="show-plot-btn" data-step="3">
-            <md-icon>bar_chart</md-icon>
-            <span>View Visualization</span>
-          </button>
-        </div>
-
-        <!-- Step 4: Diversity Trends -->
-        <div class="scrolly-step" data-step="4">
-          <div class="scrolly-step-content">
-            <h2>Toward Equity</h2>
-            <p>
-              Women's representation has increased from <strong>12% in 1990</strong> 
-              to <strong>38% in 2024</strong>.
-            </p>
-            <p>
-              While progress has been steady, the community still has work to do 
-              to reach <em>gender parity</em> and address other dimensions of diversity.
-            </p>
-          </div>
-          <button class="show-plot-btn" data-step="4">
             <md-icon>bar_chart</md-icon>
             <span>View Visualization</span>
           </button>
@@ -295,32 +208,20 @@
     <section class="scrolly-conclusion">
       <h2>Key Takeaways</h2>
       <ol>
-        <li>PhD students drive a significant portion of VIS research output</li>
-        <li>The collaboration network has grown <strong>10x more connected</strong> since 1990</li>
-        <li>A small group of prolific authors have outsized influence on the field</li>
-        <li>Peak productivity occurs mid-career (years 11-15)</li>
-        <li>Gender diversity has <strong>tripled</strong> but more progress is needed</li>
+        <li>Team sizes have <strong>more than doubled</strong> — from 2.1 to 5.5 authors per paper</li>
+        <li>The community has grown <strong>222x</strong> since 1990 to nearly 19,000 authors</li>
+        <li>Three distinct research clusters show specialized focus areas and cross-pollination</li>
+        <li>Top researchers balance high productivity (100+ papers) with exceptional impact (10,000+ citations)</li>
+        <li>A new generation of emerging authors is building on this strong foundation</li>
       </ol>
     </section>
   </main>
 
-  <!-- ========================================================================
-       FULLSCREEN PLOT MODAL (Mobile only)
-       ======================================================================== -->
-  <div class="plot-modal" id="plot-modal">
-    <div class="plot-modal-content">
-      <button class="plot-modal-close" id="plot-modal-close" aria-label="Close visualization">
-        <md-icon>close</md-icon>
-      </button>
-      <div class="plot-modal-vis" id="plot-modal-vis"></div>
-    </div>
-  </div>
 
-  <!-- Landscape suggestion toast -->
-  <div class="landscape-toast" id="landscape-toast">
-    <md-icon>screen_rotation</md-icon>
-    <span>Rotate to landscape for a better view</span>
-  </div>
+  <!-- ========================================================================
+       FULLSCREEN PLOT MODAL (Mobile only - Web Component)
+       ======================================================================== -->
+  <plot-modal id="plot-modal"></plot-modal>
 
   <!-- ========================================================================
        FOOTER
