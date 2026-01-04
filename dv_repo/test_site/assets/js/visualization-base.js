@@ -341,8 +341,19 @@ export class ScrollyVisualization {
       this.setMargins({});
     }
     
-    // Clear current visualization
+    // Clear current visualization content
     this.g.selectAll('*').remove();
+    
+    // Remove any existing zoom behavior from SVG to prevent it from persisting across steps
+    // This ensures each step starts with a clean slate
+    this.svg.on('.zoom', null);
+    
+    // Remove zoom control buttons (they're added to SVG, not g)
+    this.svg.selectAll('.zoom-controls').remove();
+    
+    // Reset transform to proper margin position (not null, as that would break positioning)
+    // This clears any zoom/pan transforms while maintaining the margin offset
+    this.g.attr('transform', `translate(${this.margin.left},${this.margin.top})`);
     
     // Build render context
     const { width, height } = this.getInnerDimensions();

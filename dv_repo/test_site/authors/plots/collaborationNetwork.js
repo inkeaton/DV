@@ -14,7 +14,7 @@ export const collaborationNetworkConfig = {
   margins: { top: 60, right: 40, bottom: 40, left: 40 },
 
   render: (ctx) => {
-    const { g, d3, width, height, colors } = ctx;
+    const { g, d3, width, height, colors, svg } = ctx;
     const animationDuration = 800;
 
     // Group colors
@@ -23,6 +23,24 @@ export const collaborationNetworkConfig = {
       2: colors.secondary,
       3: colors.accent
     };
+
+    // Track current zoom level for tooltip scaling
+    let currentZoomLevel = 1.0;
+
+    // Calculate adjusted font size based on zoom level
+    function getAdjustedFontSize(baseFontSize, zoomLevel) {
+      return baseFontSize / zoomLevel;
+    }
+
+    // Calculate adjusted stroke width based on zoom level
+    function getAdjustedStrokeWidth(baseStrokeWidth, zoomLevel) {
+      return baseStrokeWidth / zoomLevel;
+    }
+
+    // Calculate adjusted padding based on zoom level
+    function getAdjustedPadding(basePadding, zoomLevel) {
+      return basePadding / zoomLevel;
+    }
 
     // Create force simulation
     const simulation = d3
@@ -61,6 +79,108 @@ export const collaborationNetworkConfig = {
     .attr('stroke', '#fff')
     .attr('stroke-width', 2)
     .style('cursor', 'pointer')
+    .on('mouseenter', function(event, d) {
+      // Highlight node
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
+
+      // Show tooltip
+      const tooltip = g.append('g').attr('class', 'node-tooltip');
+
+      const text = tooltip.append('text')
+        .attr('x', d.x)
+        .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
+        .attr('font-weight', 'bold')
+        .attr('fill', '#333');
+
+      text.append('tspan')
+        .attr('x', d.x)
+        .attr('dy', 0)
+        .text(d.id);
+
+      text.append('tspan')
+        .attr('x', d.x)
+        .attr('dy', '1.2em')
+        .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
+        .attr('font-weight', 'normal')
+        .attr('fill', '#666')
+        .text(`Group ${d.group} • ${d.collaborations} collaborations`);
+
+      const bbox = text.node().getBBox();
+      const padding = getAdjustedPadding(6, currentZoomLevel);
+      tooltip.insert('rect', 'text')
+        .attr('x', bbox.x - padding)
+        .attr('y', bbox.y - padding / 2)
+        .attr('width', bbox.width + padding * 2)
+        .attr('height', bbox.height + padding)
+        .attr('fill', '#fff')
+        .attr('stroke', groupColors[d.group])
+        .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
+        .attr('rx', getAdjustedPadding(4, currentZoomLevel));
+    })
+    .on('mouseleave', function(event, d) {
+      // Reset node
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr('stroke-width', 2);
+
+      // Remove tooltip
+      g.selectAll('.node-tooltip').remove();
+    })
+    .on('click', function(event, d) {
+      event.stopPropagation();
+      
+      // Remove any existing tooltips
+      g.selectAll('.node-tooltip').remove();
+      
+      // Reset all nodes
+      node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
+      
+      // Highlight clicked node
+      d3.select(this)
+        .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
+
+      // Show tooltip
+      const tooltip = g.append('g').attr('class', 'node-tooltip');
+
+      const text = tooltip.append('text')
+        .attr('x', d.x)
+        .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
+        .attr('font-weight', 'bold')
+        .attr('fill', '#333');
+
+      text.append('tspan')
+        .attr('x', d.x)
+        .attr('dy', 0)
+        .text(d.id);
+
+      text.append('tspan')
+        .attr('x', d.x)
+        .attr('dy', '1.2em')
+        .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
+        .attr('font-weight', 'normal')
+        .attr('fill', '#666')
+        .text(`Group ${d.group} • ${d.collaborations} collaborations`);
+
+      const bbox = text.node().getBBox();
+      const padding = getAdjustedPadding(6, currentZoomLevel);
+      tooltip.insert('rect', 'text')
+        .attr('x', bbox.x - padding)
+        .attr('y', bbox.y - padding / 2)
+        .attr('width', bbox.width + padding * 2)
+        .attr('height', bbox.height + padding)
+        .attr('fill', '#fff')
+        .attr('stroke', groupColors[d.group])
+        .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
+        .attr('rx', getAdjustedPadding(4, currentZoomLevel));
+    })
     .call(
       d3
         .drag()
@@ -176,6 +296,132 @@ export const collaborationNetworkConfig = {
     legend
       .transition()
       .delay(1000)
+      .duration(400)
+      .attr('opacity', 1);
+
+    // ========================================================================
+    // ZOOM AND PAN FUNCTIONALITY
+    // ========================================================================
+    
+    // Create zoom behavior
+    const zoom = d3.zoom()
+      .scaleExtent([0.5, 5])
+      .filter((event) => {
+        // Disable wheel zoom to avoid scroll conflicts
+        if (event.type === 'wheel') {
+          return false;
+        }
+        // Disable double-click zoom
+        if (event.type === 'dblclick') {
+          return false;
+        }
+        // Allow pan (drag) only
+        return !event.button;
+      })
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+        
+        // Update zoom level for tooltip scaling
+        currentZoomLevel = event.transform.k;
+        
+        // Update node stroke widths to compensate for zoom
+        node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
+      });
+
+    // Apply zoom behavior to SVG
+    svg.call(zoom);
+
+    // Click on background to close tooltips (for mobile)
+    svg.on('click', function(event) {
+      if (event.target === this || event.target.tagName === 'rect') {
+        g.selectAll('.node-tooltip').remove();
+        node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
+      }
+    });
+
+    // Add zoom control buttons
+    const zoomControls = svg.append('g')
+      .attr('class', 'zoom-controls')
+      .attr('transform', `translate(${width - 50}, 80)`);
+
+    // Zoom in button
+    const zoomInBtn = zoomControls.append('g')
+      .attr('class', 'zoom-btn')
+      .style('cursor', 'pointer')
+      .on('click', () => {
+        svg.transition().duration(300).call(zoom.scaleBy, 1.3);
+      });
+
+    zoomInBtn.append('circle')
+      .attr('r', 18)
+      .attr('fill', '#fff')
+      .attr('stroke', colors.primary)
+      .attr('stroke-width', 2);
+
+    zoomInBtn.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dy', 5)
+      .attr('font-size', '18px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.primary)
+      .text('+');
+
+    // Zoom out button
+    const zoomOutBtn = zoomControls.append('g')
+      .attr('class', 'zoom-btn')
+      .attr('transform', 'translate(0, 45)')
+      .style('cursor', 'pointer')
+      .on('click', () => {
+        svg.transition().duration(300).call(zoom.scaleBy, 0.77);
+      });
+
+    zoomOutBtn.append('circle')
+      .attr('r', 18)
+      .attr('fill', '#fff')
+      .attr('stroke', colors.primary)
+      .attr('stroke-width', 2);
+
+    zoomOutBtn.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dy', 5)
+      .attr('font-size', '18px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.primary)
+      .text('−');
+
+    // Reset zoom button
+    const resetBtn = zoomControls.append('g')
+      .attr('class', 'zoom-btn')
+      .attr('transform', 'translate(0, 90)')
+      .style('cursor', 'pointer')
+      .on('click', () => {
+        svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+      });
+
+    resetBtn.append('circle')
+      .attr('r', 18)
+      .attr('fill', '#fff')
+      .attr('stroke', colors.primary)
+      .attr('stroke-width', 2);
+
+    resetBtn.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dy', 5)
+      .attr('font-size', '14px')
+      .attr('fill', colors.primary)
+      .text('⟲');
+
+    // Instruction hint
+    zoomControls.append('text')
+      .attr('x', -10)
+      .attr('y', 130)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '10px')
+      .attr('fill', '#666')
+      .attr('opacity', 0)
+      .text('Use buttons to zoom')
+      .transition()
+      .delay(1500)
       .duration(400)
       .attr('opacity', 1);
   }
