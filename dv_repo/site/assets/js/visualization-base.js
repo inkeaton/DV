@@ -438,6 +438,13 @@ export class ScrollyVisualization {
  * @returns {Object} Tooltip control object with show/hide methods
  */
 export function createTooltip(d3, className = 'vis-tooltip') {
+  // Always include the base tooltip class so shared styles apply; allow an optional
+  // section-specific class (e.g., 'papers-tooltip') for accent borders.
+  const classes = className === 'vis-tooltip'
+    ? 'vis-tooltip'
+    : `vis-tooltip ${className}`;
+  const selector = classes.split(' ').map((c) => `.${c}`).join('');
+
   return {
     /**
      * Show the tooltip
@@ -445,10 +452,10 @@ export function createTooltip(d3, className = 'vis-tooltip') {
      * @param {string} content - HTML content for tooltip
      */
     show(event, content) {
-      const tooltip = d3.select('body').selectAll(`.${className}`).data([0]);
+      const tooltip = d3.select('body').selectAll(selector).data([0]);
       const tooltipEnter = tooltip.enter()
         .append('div')
-        .attr('class', className);
+        .attr('class', classes);
 
       tooltipEnter.merge(tooltip)
         .style('display', 'block')
@@ -462,7 +469,7 @@ export function createTooltip(d3, className = 'vis-tooltip') {
      * Hide the tooltip
      */
     hide() {
-      d3.select(`.${className}`).remove();
+      d3.selectAll(selector).remove();
     }
   };
 }
