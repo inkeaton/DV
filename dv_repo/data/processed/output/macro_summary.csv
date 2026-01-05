@@ -1,0 +1,11 @@
+MacroId,MacroName,Count,MacroCategory,MacroSlug
+2,Macro 2: medical imaging • tomography • analysts • unstructured meshes,945,Medical Imaging & Tomography,medical-imaging-tomography
+5,Macro 5: chart • bar charts • scatterplots • plots,602,Charts & Standard Plots,charts-standard-plots
+8,Macro 8: multidimensional scaling • scatterplots • continuous scatterplots • scatterplot matrices,543,Multidimensional / Projection Views,multidimensional-projection
+0,Macro 0: direct volume rendering • volume rendering • volume rendering transfer • rendering volume,317,Volume Rendering & Transfer Functions,volume-rendering
+3,Macro 3: flow field • flow fields • computational fluid dynamics • vector fields,313,Flow & Vector Field Visualization (CFD),flow-vector-fields-cfd
+4,Macro 4: volume rendering • molecular modeling • molecular dynamics md • molecular dynamics,245,Molecular Visualization & Dynamics,molecular-visualization-dynamics
+6,Macro 6: volume rendering • sketching • designers • design studies,165,Visualization Design & Sketching,viz-design-sketching
+1,Macro 1: explainable machine learning • deep neural networks • deep learning • deep neural,153,Explainable AI & Deep Learning,xai-deep-learning
+7,Macro 7: weather forecasting • weather prediction • weather forecasts • forecasts,126,Weather & Forecast Visualization,weather-forecast-viz
+9,Macro 9: sensemaking process • sensemaking • provenance • sense making,122,Sensemaking & Provenance,sensemaking-provenance
