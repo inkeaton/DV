@@ -344,6 +344,10 @@ export class ScrollyVisualization {
     // Clear current visualization content
     this.g.selectAll('*').remove();
     
+    // Clear fixed overlay elements (title, legend, stats, zoom controls)
+    // that were appended directly to svg instead of g
+    this.svg.selectAll('.chart-title, .legend, .stats-box, .zoom-controls').remove();
+    
     // Remove any existing zoom behavior from SVG to prevent it from persisting across steps
     // This ensures each step starts with a clean slate
     this.svg.on('.zoom', null);
@@ -445,6 +449,10 @@ export function createTooltip(d3, className = 'vis-tooltip') {
     : `vis-tooltip ${className}`;
   const selector = classes.split(' ').map((c) => `.${c}`).join('');
 
+  // Track the global click-to-hide handler so we can ignore the triggering click
+  // and remove it when not needed.
+  let clickHandler = null;
+
   return {
     /**
      * Show the tooltip
@@ -463,6 +471,21 @@ export function createTooltip(d3, className = 'vis-tooltip') {
         .style('left', `${event.pageX + 10}px`)
         .style('top', `${event.pageY - 28}px`)
         .html(content);
+
+      // On touch/mobile (and desktop), hide tooltip when clicking anywhere else.
+      // Defer binding to the next tick so the current click (that opened the tooltip)
+      // does not immediately close it.
+      if (!clickHandler) {
+        setTimeout(() => {
+          if (clickHandler) return;
+          clickHandler = (evt) => {
+            // If clicking inside the tooltip, do nothing
+            if (evt.target.closest(selector)) return;
+            this.hide();
+          };
+          document.addEventListener('click', clickHandler, { passive: true });
+        }, 0);
+      }
     },
 
     /**
@@ -470,6 +493,10 @@ export function createTooltip(d3, className = 'vis-tooltip') {
      */
     hide() {
       d3.selectAll(selector).remove();
+      if (clickHandler) {
+        document.removeEventListener('click', clickHandler, { passive: true });
+        clickHandler = null;
+      }
     }
   };
 }
