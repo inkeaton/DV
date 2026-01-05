@@ -1,317 +1,616 @@
-/* /assets/css/scrolly.css */
-/* ============================================================================
-   SCROLLYTELLING STYLES
-   ============================================================================
-   This file provides styles for scroll-driven narrative visualizations.
-   Inspired by R2D3 and similar scrollytelling patterns.
-   
-   Layout Structure:
-   - .scrolly-container: Main wrapper for the scrollytelling section
-   - .scrolly-graphic: Sticky visualization that stays fixed during scroll
-   - .scrolly-text: Scrolling narrative text container
-   - .scrolly-step: Individual text sections that trigger visualization states
-   ============================================================================ */
+/**
+ * test_site/assets/css/scrolly.css
+ * ============================================================================
+ * SCROLLYTELLING STYLES
+ * 
+ * This file provides styles for scroll-driven narrative visualizations,
+ * implementing a "scrolling powerpoint" pattern where:
+ * - Text cards appear on the left side
+ * - Visualization stays fixed on the right
+ * - Cards slide up/down as user scrolls
+ * 
+ * Inspired by R2D3 and similar scrollytelling patterns.
+ * 
+ * Layout Structure:
+ * - .scrolly-container: Main wrapper for the scrollytelling section
+ * - .scrolly-graphic: Sticky visualization that stays fixed during scroll
+ * - .scrolly-text: Scrolling narrative text container
+ * - .scrolly-step: Individual text sections that trigger visualization states
+ * ============================================================================
+ */
+
 
 /* ============================================================================
    SCROLLY CONTAINER
-   ============================================================================
    Main wrapper that creates the split-view layout
    ============================================================================ */
 .scrolly-container {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    gap: 0;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0;
 }
+
 
 /* ============================================================================
    SCROLLY GRAPHIC (STICKY VISUALIZATION)
-   ============================================================================
    The visualization panel that remains fixed while text scrolls past
    ============================================================================ */
 .scrolly-graphic {
-    position: sticky;
-    top: var(--app-bar-height);
-    height: calc(100vh - var(--app-bar-height));
-    width: 55%;
-    flex-shrink: 0;
-    
-    /* Center the visualization within */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Material Design surface styling */
-    background: var(--md-sys-color-surface-container);
-    border-radius: 0 24px 24px 0;
-    overflow: hidden;
+  position: sticky;
+  top: calc(var(--app-bar-height) + 24px);
+  height: calc(100vh - var(--app-bar-height) - 48px);
+  width: calc(55% - 24px);
+  flex-shrink: 0;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  
+  /* Center the visualization within */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Material Design surface styling */
+  background: var(--md-sys-color-surface-container);
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 /* The actual D3 visualization container */
 .scrolly-vis {
-    width: 100%;
-    height: 100%;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* Note: No padding here - visualizations handle their own margins internally */
 }
 
 .scrolly-vis svg {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
+
 
 /* ============================================================================
    SCROLLY TEXT (NARRATIVE COLUMN)
-   ============================================================================
    The scrolling text column with narrative content
    ============================================================================ */
 .scrolly-text {
-    width: 45%;
-    padding: 0 32px;
-    position: relative;
-    z-index: 0;
+  width: 45%;
+  padding: 0 32px 0 64px;
+  position: relative;
+  z-index: 0;
 }
+
 
 /* ============================================================================
    SCROLLY STEP (INDIVIDUAL NARRATIVE SECTIONS)
-   ============================================================================
-   Each step triggers a different state in the visualization
+   Each step triggers a different state in the visualization.
+   Steps are designed as "slides" that move up when scrolling.
    ============================================================================ */
 .scrolly-step {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 48px 0;
-    opacity: 0.3;
-    transition: opacity 0.4s ease;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 0;
+  opacity: 0.3;
+  
+  /* Smooth transition for the "slide" effect */
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+/* Active step styling */
 .scrolly-step.is-active {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* Material Design card styling for step content */
 .scrolly-step-content {
-    background: var(--md-sys-color-surface-container-low);
-    border-radius: 16px;
-    padding: 24px 28px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    max-width: 400px;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  max-width: 400px;
+  
+  /* Card slide effect */
+  transform: translateY(0);
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
 }
 
+/* Hover effect for cards */
+.scrolly-step-content:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Step title */
 .scrolly-step-content h2 {
-    color: var(--md-sys-color-primary);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-primary);
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--md-sys-color-primary-container);
+  font-size: 1.5rem;
 }
 
+/* Step paragraph text */
 .scrolly-step-content p {
-    color: var(--md-sys-color-on-surface);
-    line-height: 1.7;
-    margin: 12px 0;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.7;
+  margin: 12px 0;
 }
 
+/* Strong emphasis */
 .scrolly-step-content strong {
-    color: var(--md-sys-color-primary);
-    font-weight: 500;
+  color: var(--md-sys-color-primary);
+  font-weight: 500;
 }
 
+/* Italic emphasis */
 .scrolly-step-content em {
-    color: var(--md-sys-color-tertiary);
-    font-style: italic;
+  color: var(--md-sys-color-tertiary);
+  font-style: italic;
 }
+
 
 /* ============================================================================
    SPACERS
-   ============================================================================
    Vertical spacing between sections
    ============================================================================ */
 .scrolly-spacer {
-    height: 30vh;
+  height: 30vh;
 }
 
 .scrolly-spacer-large {
-    height: 50vh;
+  height: 50vh;
 }
+
 
 /* ============================================================================
    INTRO SECTION (FULL WIDTH BEFORE SCROLLY)
    ============================================================================ */
 .scrolly-intro {
-    text-align: center;
-    padding: 80px 32px;
-    max-width: 700px;
-    margin: 0 auto;
+  text-align: center;
+  padding: 80px 32px;
+  max-width: 700px;
+  margin: 0 auto;
+  min-height: calc(100vh - var(--app-bar-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .scrolly-intro h1 {
-    color: var(--md-sys-color-primary);
-    margin-bottom: 24px;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 24px;
+  font-size: 2.5rem;
 }
 
 .scrolly-intro p {
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
 }
 
-/* Scroll indicator */
+/* Scroll indicator animation */
 .scroll-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-top: 48px;
-    color: var(--md-sys-color-on-surface-variant);
-    animation: bounce 1.5s infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+  color: var(--md-sys-color-on-surface-variant);
+  animation: bounce 1.5s infinite;
 }
 
 .scroll-indicator md-icon {
-    font-size: 32px;
+  font-size: 32px;
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
+
 
 /* ============================================================================
    CONCLUSION SECTION
    ============================================================================ */
 .scrolly-conclusion {
-    text-align: center;
-    padding: 80px 32px;
-    max-width: 800px;
-    margin: 0 auto;
+  text-align: center;
+  padding: 80px 32px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .scrolly-conclusion h2 {
-    color: var(--md-sys-color-primary);
-    margin-bottom: 32px;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 32px;
 }
 
 .scrolly-conclusion ol {
-    text-align: left;
-    display: inline-block;
-    padding-left: 24px;
+  text-align: left;
+  display: inline-block;
+  padding-left: 24px;
 }
 
 .scrolly-conclusion li {
-    margin: 16px 0;
-    line-height: 1.6;
-    color: var(--md-sys-color-on-surface);
+  margin: 16px 0;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
 }
+
 
 /* ============================================================================
    CHART ANNOTATIONS
-   ============================================================================
    Labels and annotations that appear on the visualization
    ============================================================================ */
 .vis-annotation {
-    position: absolute;
-    background: var(--md-sys-color-inverse-surface);
-    color: var(--md-sys-color-inverse-on-surface);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  position: absolute;
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .vis-annotation.is-visible {
-    opacity: 1;
+  opacity: 1;
 }
+
 
 /* ============================================================================
    LEGEND STYLES
    ============================================================================ */
 .scrolly-legend {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: var(--md-sys-color-surface-container-high);
-    padding: 16px;
-    border-radius: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--md-sys-color-surface-container-high);
+  padding: 16px;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .scrolly-legend.is-visible {
-    opacity: 1;
+  opacity: 1;
 }
 
 .scrolly-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .scrolly-legend-color {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
 }
+
+
+/* ============================================================================
+   STEP COUNTER / PROGRESS INDICATOR
+   Optional: shows current step number
+   ============================================================================ */
+.scrolly-progress {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+}
+
+.scrolly-progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--md-sys-color-outline-variant);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.scrolly-progress-dot.is-active {
+  background: var(--md-sys-color-primary);
+  transform: scale(1.3);
+}
+
+
+/* ============================================================================
+   SHOW PLOT BUTTON (Mobile only)
+   Button to open fullscreen visualization modal
+   ============================================================================ */
+.show-plot-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 24px;
+  margin: 8px 0 24px 0;
+  
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 16px;
+  
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.show-plot-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.show-plot-btn:active {
+  transform: scale(0.98);
+}
+
+.show-plot-btn md-icon {
+  font-size: 20px;
+}
+
 
 /* ============================================================================
    RESPONSIVE DESIGN
-   ============================================================================
    Stack layout on smaller screens
    ============================================================================ */
 @media (max-width: 1024px) {
-    .scrolly-container {
-        flex-direction: column;
-    }
-    
-    .scrolly-graphic {
-        position: sticky;
-        top: var(--app-bar-height);
-        width: 100%;
-        height: 50vh;
-        border-radius: 0 0 24px 24px;
-    }
-    
-    .scrolly-text {
-        width: 100%;
-        padding: 24px 16px;
-    }
-    
-    .scrolly-step {
-        min-height: 60vh;
-    }
-    
-    .scrolly-step-content {
-        max-width: 100%;
-    }
+  .scrolly-container {
+    flex-direction: column;
+  }
+  
+  /* Hide sticky graphic on mobile - use modal instead */
+  .scrolly-graphic {
+    display: none;
+  }
+  
+  .scrolly-text {
+    width: 100%;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .scrolly-step {
+    min-height: auto;
+    padding: 16px 0;
+    opacity: 1;
+    width: 100%;
+    max-width: 500px;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .scrolly-step-content {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Show plot button on mobile */
+  .show-plot-btn {
+    display: flex;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Hide progress dots on mobile */
+  .scrolly-progress {
+    display: none;
+  }
 }
+
+@media (max-width: 600px) {
+  .scrolly-text {
+    padding: 16px 12px;
+  }
+  
+  .scrolly-step-content {
+    padding: 20px 20px;
+  }
+}
+
+
+/* ============================================================================
+   FULLSCREEN PLOT MODAL
+   Overlay for viewing visualizations on mobile
+   ============================================================================ */
+.plot-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: var(--md-sys-color-scrim);
+  opacity: 0;
+  visibility: hidden;
+  
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.plot-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal content container */
+.plot-modal-content {
+  position: relative;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 16px;
+  
+  background: var(--md-sys-color-surface-container);
+  border-radius: 24px;
+  overflow: hidden;
+  
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.plot-modal.is-open .plot-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* Modal visualization container */
+.plot-modal-vis {
+  width: 100%;
+  height: 100%;
+}
+
+.plot-modal-vis svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Close button */
+.plot-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  
+  width: 48px;
+  height: 48px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border: none;
+  border-radius: 50%;
+  
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.plot-modal-close:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  transform: scale(1.05);
+}
+
+.plot-modal-close:active {
+  transform: scale(0.95);
+}
+
+.plot-modal-close md-icon {
+  font-size: 24px;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+
+/* ============================================================================
+   LANDSCAPE SUGGESTION TOAST
+   Popup suggesting user rotate to landscape mode
+   ============================================================================ */
+.landscape-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  z-index: 2100;
+  
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  padding: 16px 24px;
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  font-size: 0.9rem;
+  
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.3s ease, 
+              visibility 0.3s ease;
+}
+
+.landscape-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.landscape-toast md-icon {
+  font-size: 24px;
+}
+
+/* Auto-hide after animation */
+.landscape-toast.is-hiding {
+  opacity: 0;
+  transform: translateX(-50%) translateY(100px);
+}
+
+@media (max-width: 600px) {
+  .scrolly-intro h1 {
+    font-size: 1.75rem;
+  }
+  
+  .scrolly-intro {
+    padding: 48px 16px;
+  }
+  
+  .scrolly-step-content h2 {
+    font-size: 1.25rem;
+  }
+}
+
 
 /* ============================================================================
    TRANSITIONS FOR VISUALIZATION ELEMENTS
-   ============================================================================
    Smooth transitions for D3 elements when state changes
    ============================================================================ */
 .scrolly-vis circle,
 .scrolly-vis rect,
 .scrolly-vis path,
 .scrolly-vis line {
-    transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 /* Highlight styles for active elements */
 .data-point-highlight {
-    stroke: var(--md-sys-color-primary);
-    stroke-width: 3px;
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 3px;
 }
 
 /* Dim styles for inactive elements */
 .data-point-dim {
-    opacity: 0.2;
+  opacity: 0.2;
 }

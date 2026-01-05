@@ -1,24 +1,27 @@
-/* /assets/css/style.css */
-/* ============================================================================
-   DV2 — Main Stylesheet (Material Design 3 tokens + layout + components)
-
-   Contents
-   0) Web Components layout fix
-   1) Design tokens + layout variables (Light)
-   2) Design tokens overrides (Dark)
-   3) Base styles + typography
-   4) Layout utilities
-   5) App Bar (top navigation)
-   6) Drawer + Scrim (mobile navigation)
-   7) Bento grid + Cards
-   8) Footer (R2D3-style)
-   9) Home Hero (index)
-  10) Responsive rules
-
-   Notes
-   - Theming is driven by CSS custom properties (variables).
-   - body.dark-theme overrides tokens for dark mode.
-   ============================================================================ */
+/**
+ * test_site/assets/css/style.css
+ * ============================================================================
+ * DV2 Test Site — Main Stylesheet (Material Design 3)
+ * 
+ * Contents:
+ * 0) Web Components layout fix
+ * 1) Design tokens + layout variables (Light)
+ * 2) Design tokens overrides (Dark)
+ * 3) Base styles + typography
+ * 4) Layout utilities
+ * 5) App Bar (top navigation)
+ * 6) Drawer + Scrim (mobile navigation)
+ * 7) Bento grid + Cards
+ * 8) Footer (R2D3-style)
+ * 9) Home Hero (index - bento landing)
+ * 10) Responsive rules
+ * 
+ * Notes:
+ * - Theming is driven by CSS custom properties (variables)
+ * - body.dark-theme overrides tokens for dark mode
+ * - Import colors.css before this file
+ * ============================================================================
+ */
 
 
 /* ============================================================================
@@ -148,6 +151,50 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  color: var(--md-sys-color-on-surface);
+  margin-top: 0;
+}
+
+/* Material Design Icons - ensure they use the correct font */
+md-icon {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+/* Links */
+a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Focus styles for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 
 /* ============================================================================
    4) LAYOUT UTILITIES
@@ -160,6 +207,11 @@ body {
   box-sizing: border-box;
 
   /* Grow to push footer to bottom */
+  flex: 1;
+}
+
+/* Main content area */
+main {
   flex: 1;
 }
 
@@ -195,6 +247,12 @@ body {
   font-weight: 700;
   font-size: 1.25rem;
   padding: 0 8px;
+}
+
+/* Desktop navigation links */
+.desktop-nav {
+  display: flex;
+  gap: 4px;
 }
 
 
@@ -252,14 +310,15 @@ body {
   margin-top: 24px;
 }
 
+/* Base card styling */
 .card {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
 
   padding: 24px;
-  border-radius: 16px;
+  border-radius: 24px;
 
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
@@ -272,13 +331,39 @@ body {
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
+/* Card with icon */
 .card-icon {
   font-size: 40px;
   color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Card title */
+.card-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Card description */
+.card-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Card label (small text above title) */
+.card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: -8px;
 }
 
 
@@ -464,23 +549,22 @@ body {
 
 
 /* ============================================================================
-   9) HOME HERO (Index) — full viewport + gradients (mobile friendly)
+   9) HOME HERO / BENTO LANDING
    ============================================================================ */
 
 /* Main wrapper for home page (use: <main class="home">) */
 main.home {
   width: 100%;
   flex: 1;
-}
-
-/* Hero section fills viewport below the sticky app bar */
-.home-hero {
-  min-height: calc(100vh - var(--app-bar-height));
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: clamp(2.2rem, 6vw, 4.2rem) 16px;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
 
-  /* Token-based gradients work in both light/dark themes */
+  /* Subtle gradient background */
   background:
     radial-gradient(900px 520px at 22% 25%,
       color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
@@ -494,122 +578,142 @@ main.home {
       color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent) 100%);
 }
 
-.hero-inner {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-/* Small label above the title */
-.hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--md-sys-color-on-surface-variant);
-
-  margin-bottom: 10px;
-}
-
-.k-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-
-  background: color-mix(in srgb, var(--md-sys-color-primary) 80%, #2ecc71);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
-}
-
-/* Title style (matches the screenshot vibe) */
-.hero-title {
-  margin: 0;
-  font-family: var(--font-head);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  font-size: clamp(44px, 6vw, 76px);
-  line-height: 1.02;
-}
-
-.hero-subtitle {
-  margin: 12px 0 0 0;
-  max-width: 78ch;
-  line-height: 1.65;
-
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 16px;
-}
-
-/* Fact cards */
-.hero-facts {
-  margin-top: 18px;
+/* Bento container for landing page */
+.bento-landing {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+  max-width: 800px;
+  width: 100%;
+  
+  /* 
+   * Grid layout (4 cols x 3 rows):
+   * Left section (3 cols): Hero (2x2), Stats (1x1 x4), Dataset link (1x1)
+   * Right section (1 col): Papers, Authors, Institutions stacked
+   */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, auto);
+}
+
+/* Landing page header */
+.landing-header {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Hero card (main description) - spans 2x2 */
+.bento-hero {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  padding: 28px;
+  border-radius: 24px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 12px;
 }
 
-.fact {
-  border-radius: 16px;
-  padding: 14px;
-
-  background: color-mix(in srgb, var(--md-sys-color-surface-container) 82%, transparent);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+.bento-hero .card-title {
+  font-size: 1.75rem;
+  line-height: 1.2;
 }
 
-.fact-num {
-  font-weight: 800;
-  font-size: 22px;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--md-sys-color-on-surface);
+.bento-hero .card-description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.fact-lab {
-  margin-top: 4px;
-  font-size: 13px;
-  color: var(--md-sys-color-on-surface-variant);
+/* Statistics cards (1x1 each) */
+.bento-stat-1 {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
 }
 
-/* CTA row (buttons) */
-.hero-cta {
-  margin-top: 18px;
+.bento-stat-2 {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.bento-stat-3 {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.bento-stat-4 {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
+
+/* Dataset card (1x1) */
+.bento-dataset {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Utility: center the CTA row */
-.hero-cta-center {
+  flex-direction: column;
   justify-content: center;
+  min-height: 100px;
 }
 
-/* Scroll hint (centered + subtle + animated) */
-.scroll-hint {
-  margin-top: 14px;
+.bento-dataset .card-title,
+.bento-papers .card-title,
+.bento-authors .card-title,
+.bento-institutions .card-title {
+  font-size: 1.25rem;
+}
+
+/* Right column link cards (Papers, Authors, Institutions) */
+.bento-papers {
+  grid-column: 4 / 5;
+  grid-row: 1 / 2;
+}
+
+.bento-authors {
+  grid-column: 4 / 5;
+  grid-row: 2 / 3;
+}
+
+.bento-institutions {
+  grid-column: 4 / 5;
+  grid-row: 3 / 4;
+}
+
+.bento-papers,
+.bento-authors,
+.bento-institutions {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  opacity: 0.35;
+  min-height: 100px;
 }
 
-.scroll-hint .material-symbols-rounded {
-  font-size: 28px;
-  color: var(--md-sys-color-on-surface-variant);
-  animation: heroFloat 1.4s ease-in-out infinite;
-}
-
-/* Single source of truth for the bounce animation */
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(7px); }
+/* Bottom row cards (no longer used, kept for reference) */
+.bento-researcher,
+.bento-student {
+  grid-column: span 2;
+  
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 140px;
 }
 
 
 /* ============================================================================
-  10) RESPONSIVE RULES
+   10) RESPONSIVE RULES
    ============================================================================ */
 
 /* Footer: stack columns on smaller screens */
@@ -651,25 +755,33 @@ main.home {
     display: none;
   }
 }
-/* Home hero (<= 1000px): typography + facts row (horizontal scroll) */
-@media (max-width: 1000px) {
-  .hero-facts {
-    display: flex;
-    flex-wrap: wrap;     
-    gap: 10px;
-    overflow: visible;   
-    padding-bottom: 0;
-  }
 
-  .fact {
-    flex: 1 1 140px;     
-    min-width: 140px;
-    padding: 10px 12px;
-    border-radius: 14px;
+/* Bento landing: stack on mobile */
+@media (max-width: 700px) {
+  .bento-landing {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
-
-  .fact-num { font-size: 18px; }
-  .fact-lab { font-size: 12px; }
+  
+  .bento-hero,
+  .bento-stat-1,
+  .bento-stat-2,
+  .bento-stat-3,
+  .bento-stat-4,
+  .bento-dataset,
+  .bento-papers,
+  .bento-authors,
+  .bento-institutions {
+    grid-column: 1 / 2;
+    grid-row: auto;
+  }
+  
+  .bento-researcher,
+  .bento-student {
+    grid-column: 1 / 2;
+  }
+  
+  .bento-hero .card-title {
+    font-size: 1.5rem;
+  }
 }
-
-

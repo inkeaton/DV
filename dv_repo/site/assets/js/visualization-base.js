@@ -344,10 +344,6 @@ export class ScrollyVisualization {
     // Clear current visualization content
     this.g.selectAll('*').remove();
     
-    // Clear fixed overlay elements (title, legend, stats, zoom controls)
-    // that were appended directly to svg instead of g
-    this.svg.selectAll('.chart-title, .legend, .stats-box, .zoom-controls').remove();
-    
     // Remove any existing zoom behavior from SVG to prevent it from persisting across steps
     // This ensures each step starts with a clean slate
     this.svg.on('.zoom', null);
@@ -436,67 +432,45 @@ export class ScrollyVisualization {
 
 /**
  * Creates a standard tooltip for visualizations
- * Styles are defined in chart-styles.css
  * @param {Object} d3 - D3.js library reference
  * @param {string} className - CSS class name for the tooltip
  * @returns {Object} Tooltip control object with show/hide methods
  */
 export function createTooltip(d3, className = 'vis-tooltip') {
-  // Always include the base tooltip class so shared styles apply; allow an optional
-  // section-specific class (e.g., 'papers-tooltip') for accent borders.
-  const classes = className === 'vis-tooltip'
-    ? 'vis-tooltip'
-    : `vis-tooltip ${className}`;
-  const selector = classes.split(' ').map((c) => `.${c}`).join('');
-
-  // Track the global click-to-hide handler so we can ignore the triggering click
-  // and remove it when not needed.
-  let clickHandler = null;
-
   return {
     /**
      * Show the tooltip
      * @param {Event} event - Mouse event
      * @param {string} content - HTML content for tooltip
+     * @param {Object} colors - Theme colors object
      */
-    show(event, content) {
-      const tooltip = d3.select('body').selectAll(selector).data([0]);
+    show(event, content, colors) {
+      const tooltip = d3.select('body').selectAll(`.${className}`).data([0]);
       const tooltipEnter = tooltip.enter()
         .append('div')
-        .attr('class', classes);
+        .attr('class', className)
+        .style('position', 'absolute')
+        .style('background', colors.surfaceContainer)
+        .style('color', colors.onSurface)
+        .style('padding', '12px 16px')
+        .style('border-radius', '8px')
+        .style('box-shadow', '0 2px 8px rgba(0,0,0,0.15)')
+        .style('pointer-events', 'none')
+        .style('font-size', '14px')
+        .style('z-index', '1000')
+        .style('max-width', '250px');
 
       tooltipEnter.merge(tooltip)
-        .style('display', 'block')
-        .style('opacity', '1')
         .style('left', `${event.pageX + 10}px`)
         .style('top', `${event.pageY - 28}px`)
         .html(content);
-
-      // On touch/mobile (and desktop), hide tooltip when clicking anywhere else.
-      // Defer binding to the next tick so the current click (that opened the tooltip)
-      // does not immediately close it.
-      if (!clickHandler) {
-        setTimeout(() => {
-          if (clickHandler) return;
-          clickHandler = (evt) => {
-            // If clicking inside the tooltip, do nothing
-            if (evt.target.closest(selector)) return;
-            this.hide();
-          };
-          document.addEventListener('click', clickHandler, { passive: true });
-        }, 0);
-      }
     },
 
     /**
      * Hide the tooltip
      */
     hide() {
-      d3.selectAll(selector).remove();
-      if (clickHandler) {
-        document.removeEventListener('click', clickHandler, { passive: true });
-        clickHandler = null;
-      }
+      d3.select(`.${className}`).remove();
     }
   };
 }

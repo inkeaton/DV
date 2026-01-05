@@ -1,15 +1,27 @@
-/*
-  _assets/css/colors.css
-  - Canonical color tokens for the site. Keep colors here so the rest of
-    the styles can map MD3 tokens to these variables (see `style.css`).
-  - This file exposes utility classes (`body.dark-theme`, `body.light-theme`)
-    to force a mode, and explicit `:root[data-theme='...']` overrides that
-    take precedence over `prefers-color-scheme` media queries.
-*/
+/**
+ * test_site/assets/css/colors.css
+ * ============================================================================
+ * Material Design 3 Color Tokens
+ * 
+ * This file contains all color definitions for the data visualization website.
+ * Colors are organized by:
+ * - Light theme (default)
+ * - Dark theme (body.dark-theme class)
+ * - Explicit overrides via data-theme attribute
+ * 
+ * Usage:
+ * - Import this file before style.css
+ * - Use CSS variables like var(--primary), var(--surface), etc.
+ * - Toggle dark mode by adding/removing 'dark-theme' class on <body>
+ * ============================================================================
+ */
 
-/* Utility class if you want to force dark mode manually via JavaScript
-   (e.g. <body class="dark-theme">) */
+/* ============================================================================
+   DARK THEME (via body.dark-theme class)
+   Applied when JavaScript adds 'dark-theme' class to <body>
+   ============================================================================ */
 body.dark-theme {
+  /* Primary colors */
   --primary: #85D2E7;
   --on-primary: #003640;
   --primary-container: #004E5D;
@@ -20,6 +32,7 @@ body.dark-theme {
   --on-primary-fixed: #001F26;
   --on-primary-fixed-variant: #004E5D;
   
+  /* Secondary colors */
   --secondary: #B2CBD3;
   --on-secondary: #1D343A;
   --secondary-container: #334A51;
@@ -29,6 +42,7 @@ body.dark-theme {
   --on-secondary-fixed: #061F25;
   --on-secondary-fixed-variant: #334A51;
   
+  /* Tertiary colors */
   --tertiary: #BFC4EB;
   --on-tertiary: #292E4D;
   --tertiary-container: #3F4565;
@@ -38,11 +52,13 @@ body.dark-theme {
   --on-tertiary-fixed: #131937;
   --on-tertiary-fixed-variant: #3F4565;
   
+  /* Error colors */
   --error: #FFB4AB;
   --on-error: #690005;
   --error-container: #93000A;
   --on-error-container: #FFDAD6;
   
+  /* Surface colors */
   --surface-dim: #0F1416;
   --surface: #0F1416;
   --surface-tint: #85D2E7;
@@ -53,26 +69,35 @@ body.dark-theme {
   --surface-container-high: #252B2D;
   --surface-container-highest: #303638;
   
+  /* On-surface colors */
   --on-surface: #DEE3E5;
   --on-surface-variant: #BFC8CB;
   
+  /* Outline colors */
   --outline: #899295;
   --outline-variant: #3F484B;
   
+  /* Inverse and variant colors */
   --inverse-surface: #DEE3E5;
   --inverse-on-surface: #2C3133;
   --surface-variant: #3F484B;
   
+  /* Background */
   --background: #0F1416;
   --on-background: #DEE3E5;
   
+  /* Shadows and overlays */
   --shadow: #FFFFFF;
   --scrim: #000000;
   --source-color: #3A626D;
 }
 
-/* Utility class to force light mode manually via JavaScript (e.g. <body class="light-theme">) */
+/* ============================================================================
+   LIGHT THEME (via body.light-theme class)
+   Can be used to force light mode regardless of system preference
+   ============================================================================ */
 body.light-theme {
+  /* Primary colors */
   --primary: #00687A;
   --on-primary: #FFFFFF;
   --primary-container: #ADECFF;
@@ -83,6 +108,7 @@ body.light-theme {
   --on-primary-fixed: #001F26;
   --on-primary-fixed-variant: #004E5D;
   
+  /* Secondary colors */
   --secondary: #4B6269;
   --on-secondary: #FFFFFF;
   --secondary-container: #CEE7EF;
@@ -92,6 +118,7 @@ body.light-theme {
   --on-secondary-fixed: #061F25;
   --on-secondary-fixed-variant: #334A51;
   
+  /* Tertiary colors */
   --tertiary: #575C7E;
   --on-tertiary: #FFFFFF;
   --tertiary-container: #DEE1FF;
@@ -101,11 +128,13 @@ body.light-theme {
   --on-tertiary-fixed: #131937;
   --on-tertiary-fixed-variant: #3F4565;
   
+  /* Error colors */
   --error: #BA1A1A;
   --on-error: #FFFFFF;
   --error-container: #FFDAD6;
   --on-error-container: #410002;
   
+  /* Surface colors */
   --surface-dim: #D5DBDD;
   --surface: #F5FAFC;
   --surface-tint: #00687A;
@@ -116,28 +145,33 @@ body.light-theme {
   --surface-container-high: #E4E9EB;
   --surface-container-highest: #DEE3E5;
   
+  /* On-surface colors */
   --on-surface: #171C1E;
   --on-surface-variant: #3F484B;
   
+  /* Outline colors */
   --outline: #70797C;
   --outline-variant: #BFC8CB;
   
+  /* Inverse and variant colors */
   --inverse-surface: #2C3133;
   --inverse-on-surface: #ECF2F4;
   --surface-variant: #DBE4E7;
   
+  /* Background */
   --background: #F5FAFC;
   --on-background: #171C1E;
   
-  /* In light mode shadows should be dark (black-ish) so elevation reads
-     correctly; android/web design systems typically use a dark shadow. */
+  /* Shadows and overlays */
   --shadow: #000000;
   --scrim: #000000;
   --source-color: #3A626D;
 }
 
-/* Explicit overrides when the page sets a data-theme attribute on <html>.
-   These should take precedence over @media prefers-color-scheme. */
+/* ============================================================================
+   EXPLICIT DARK THEME OVERRIDE (via html[data-theme='dark'])
+   Takes precedence over prefers-color-scheme media queries
+   ============================================================================ */
 :root[data-theme='dark'] {
   --primary: #85D2E7;
   --on-primary: #003640;
@@ -200,6 +234,10 @@ body.light-theme {
   --source-color: #3A626D;
 }
 
+/* ============================================================================
+   EXPLICIT LIGHT THEME OVERRIDE (via html[data-theme='light'])
+   Takes precedence over prefers-color-scheme media queries
+   ============================================================================ */
 :root[data-theme='light'] {
   --primary: #00687A;
   --on-primary: #FFFFFF;
