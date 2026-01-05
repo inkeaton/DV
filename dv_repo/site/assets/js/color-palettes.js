@@ -28,16 +28,18 @@ export const trackColors = {
 export const trackLabels = {
   infovis: 'InfoVis',
   scivis: 'SciVis',
-  vast: 'VAST'
+  vast: 'VAST', 
+  vis: 'VIS'
 };
 
 /**
  * Conference colors (alias for trackColors for clarity)
  */
 export const conferenceColors = {
-  infovis: '#4285F4',  // Blue
+  infovis: '#7c4dff',  // Blue
   scivis: '#34A853',   // Green
-  vast: '#FBBC04'      // Yellow/Gold
+  vast: '#FBBC04' ,     // Yellow/Gold
+  vis: '#4285F4'       // Purple
 };
 
 // ============================================================================
@@ -50,7 +52,6 @@ export const conferenceColors = {
 export const publicationColors = {
   journal: '#6750a4',      // Primary purple
   conference: '#4285F4',   // Blue
-  workshop: '#7c4dff'      // Light purple
 };
 
 // ============================================================================

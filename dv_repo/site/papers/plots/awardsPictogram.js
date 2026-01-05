@@ -19,8 +19,8 @@ export const awardsPictogramConfig = {
     renderTitle(ctx, 'Awards by Type');
 
     // Configuration
-    const cellSize = 14;
-    const cellPadding = 3;
+    const cellSize = 25; // 14
+    const cellPadding = 4;
     const rowHeight = height / data.length;
     const maxCells = Math.ceil(d3.max(data, d => d.count) / pictogramCellValue);
 

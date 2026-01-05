@@ -13,17 +13,16 @@
  * IMPORTANT: The 'category' strings must match the CSV values (after normalization).
  */
 export const topicColors = [
-  { category: "Core Visualization Techniques", color: "#00687A" },
-  { category: "AI for Vis & Text/Topics", color: "#4B6269" },
-  { category: "Data Representations & Multivariate Views", color: "#575C7E" },
-  { category: "Perception, Design & Evaluation", color: "#85D2E7" },
-  { category: "Visual Analytics & Sensemaking", color: "#B2CBD3" },
-  { category: "Bio & Medicine", color: "#BFC4EB" },
-  { category: "Earth/Geo/Weather/Urban", color: "#ADECFF" },
-  { category: "Graphs & Networks", color: "#CEE7EF" },
-  { category: "Physical Sciences & Engineering", color: "#DEE1FF" },
-  { category: "Interaction & Immersive Systems", color: "#899295" },
-  { category: "Metadata, Standards & Infrastructure", color: "#D3D6D8" }
+  { category: "Meshes & Volume Rendering", color: "#00687A" },
+  { category: "Flow Fields & CFD Visualization", color: "#4B6269" },
+  { category: "Dimensionality Reduction & Multivariate Plots", color: "#575C7E" },
+  { category: "Surgical Planning & Tomography", color: "#85D2E7" },
+  { category: "Diffusion MRI & Tractography", color: "#B2CBD3" },
+  { category: "VIS Literature & Bibliometrics", color: "#BFC4EB" },
+  { category: "Twitter & Social Media", color: "#ADECFF" },
+  { category: "Dashboards & Infographics", color: "#CEE7EF" },
+  { category: "Time Series & Temporal Patterns", color: "#DEE1FF" },
+  { category: "Ultrasound Volume Rendering & Segmentation", color: "#D3D6D8" }
 ];
 
 /**

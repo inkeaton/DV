@@ -1,18 +1,45 @@
 /**
  * papers/plots/papersPerYear.js
- * Simple bar chart showing papers per year
+ * Simple bar chart showing papers per year (loads from 2 CSV files)
+ *
+ * Required files:
+ * - papersPerYear.csv        (Year,Count)
+ * - papersPerYearStats.csv   (total,avgPerYear,peakYear,peakCount)  [single row]
  */
 
-import { papersPerYearData, papersPerYearStats } from '../../data/papers/papersPerYearData.js';
 import { renderTitle, renderXAxis, renderYAxis, styleAxes } from '../../assets/js/chart-utils.js';
 
 export const papersPerYearConfig = {
-  data: papersPerYearData,
   margins: { top: 60, right: 30, bottom: 50, left: 60 },
 
-  render: (ctx) => {
-    const { g, d3, tooltip, width, height, data, colors } = ctx;
+  // NOTE: render is async because we load CSVs
+  render: async (ctx) => {
+    const { g, d3, tooltip, width, height, colors } = ctx;
     const animationDuration = 800;
+
+    // ---- CSV paths (change if needed) ----
+    const dataCsvUrl = "../data/papers/papersPerYearData.csv";
+    const statsCsvUrl = "../data/papers/papersPerYearStats.csv";
+
+    // ---- Load data CSV: Year,Count ----
+    const rawData = await d3.csv(dataCsvUrl);
+    const data = rawData
+      .map(d => ({
+        year: Number(d.Year),
+        count: Number(String(d.Count ?? "").replace(/,/g, ""))
+      }))
+      .filter(d => Number.isFinite(d.year))
+      .sort((a, b) => a.year - b.year);
+
+    // ---- Load stats CSV: total,avgPerYear,peakYear,peakCount (single row) ----
+    const rawStats = await d3.csv(statsCsvUrl);
+    const s0 = rawStats[0] || {};
+    const papersPerYearStats = {
+      total: Number(String(s0.total ?? "").replace(/,/g, "")) || 0,
+      avgPerYear: Number(String(s0.avgPerYear ?? "").replace(/,/g, "")) || 0,
+      peakYear: Number(String(s0.peakYear ?? "").replace(/,/g, "")) || null,
+      peakCount: Number(String(s0.peakCount ?? "").replace(/,/g, "")) || 0,
+    };
 
     // Title
     renderTitle(ctx, 'Papers Published Per Year');
@@ -60,7 +87,7 @@ export const papersPerYearConfig = {
           .transition()
           .duration(150)
           .attr('fill', 'var(--md-sys-color-primary-container)');
-        
+
         tooltip.show(event, `<strong>${d.year}</strong><br>${d.count} papers`, colors);
       })
       .on('mousemove', function(event, d) {
@@ -71,11 +98,11 @@ export const papersPerYearConfig = {
           .transition()
           .duration(150)
           .attr('fill', 'var(--md-sys-color-primary)');
-        
+
         tooltip.hide();
       });
 
-    // Add stats annotation
+    // Add stats annotation (uses stats CSV)
     const statsText = g.append('text')
       .attr('class', 'stats-annotation')
       .attr('x', width - 10)

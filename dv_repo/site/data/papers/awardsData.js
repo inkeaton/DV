@@ -1,19 +1,44 @@
-/**
- * data/papers/awardsData.js
- * Award counts by type for pictogram bar chart
- */
+/** AUTO-GENERATED */
+// Award counts by type for pictogram bar chart
 
 export const awardsData = [
-  { type: 'Best Paper', count: 85, icon: '🏆' },
-  { type: 'Honorable Mention', count: 245, icon: '🎖️' },
-  { type: 'Best Case Study', count: 42, icon: '📊' },
-  { type: 'Test of Time', count: 35, icon: '⏰' }
+  {
+    "type": "Best Paper",
+    "count": 83,
+    "icon": "🏆",
+    "code": "BP"
+  },
+  {
+    "type": "Honorable Mention",
+    "count": 144,
+    "icon": "🎖️",
+    "code": "HM"
+  },
+  {
+    "type": "Best Case Study",
+    "count": 5,
+    "icon": "📊",
+    "code": "BCS"
+  },
+  {
+    "type": "Test of Time",
+    "count": 38,
+    "icon": "⏰",
+    "code": "TT"
+  },
+  {
+    "type": "Best Application Paper",
+    "count": 6,
+    "icon": "🧩",
+    "code": "BA"
+  }
 ];
 
 export const awardStats = {
-  total: 407,
-  percentageAwarded: 6.7 // percentage of total papers that received awards
+  "total": 276,
+  "percentageAwarded": 7.67,
+  "papersAwarded": 271,
+  "papersTotal": 3531
 };
 
-// For pictogram: each cell represents N papers
 export const pictogramCellValue = 5;
