@@ -8,7 +8,7 @@ import { renderTitle } from '../../assets/js/chart-utils.js';
 
 export const institutionsTopicsSankeyConfig = {
   data: institutionsTopicsData,
-  margins: { top: 60, right: 120, bottom: 60, left: 120 },
+  margins: { top: 60, right: 270, bottom: 60, left: 270 },
 
   render: async (ctx) => {
     const { g, d3, width, height, data, colors } = ctx;
@@ -35,8 +35,9 @@ export const institutionsTopicsSankeyConfig = {
 
     // Color scale for institutions by region
     const institutionColorScale = d3.scaleOrdinal()
-      .domain(['North America', 'Europe', 'Asia'])
-      .range([colors.primary, colors.secondary, colors.accent]);
+      .domain(['North America', 'Europe', 'Asia', 'Other'])
+      .range([colors.primary, colors.secondary, colors.accent, '#9ca3af'])
+      .unknown('#9ca3af');
 
     // Draw links
     const links = g.append('g')
@@ -48,7 +49,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('fill', 'none')
       .attr('stroke', d => {
         const sourceNode = sankeyData.nodes.find(n => n.id === d.source.id);
-        return sourceNode.type === 'institution' 
+        return sourceNode.type === 'institution'
           ? institutionColorScale(sourceNode.region)
           : topicColors[d.target.category];
       })
@@ -58,7 +59,7 @@ export const institutionsTopicsSankeyConfig = {
 
     // Link hover effects
     links
-      .on('mouseenter', function(event, d) {
+      .on('mouseenter', function (event, d) {
         d3.select(this)
           .transition()
           .duration(200)
@@ -68,7 +69,7 @@ export const institutionsTopicsSankeyConfig = {
         // Show tooltip
         const sourceNode = sankeyData.nodes.find(n => n.id === d.source.id);
         const targetNode = sankeyData.nodes.find(n => n.id === d.target.id);
-        
+
         const label = g.append('g').attr('class', 'hover-label');
         const text = label.append('text')
           .attr('x', width / 2)
@@ -90,7 +91,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('stroke-width', 2)
           .attr('rx', 4);
       })
-      .on('mouseleave', function(event, d) {
+      .on('mouseleave', function (event, d) {
         d3.select(this)
           .transition()
           .duration(200)
@@ -123,7 +124,7 @@ export const institutionsTopicsSankeyConfig = {
 
     // Node hover effects
     nodes
-      .on('mouseenter', function(event, d) {
+      .on('mouseenter', function (event, d) {
         d3.select(this)
           .transition()
           .duration(200)
@@ -133,11 +134,11 @@ export const institutionsTopicsSankeyConfig = {
         links
           .transition()
           .duration(200)
-          .attr('stroke-opacity', link => 
+          .attr('stroke-opacity', link =>
             link.source.id === d.id || link.target.id === d.id ? 0.7 : 0.1
           );
       })
-      .on('mouseleave', function(event, d) {
+      .on('mouseleave', function (event, d) {
         d3.select(this)
           .transition()
           .duration(200)
@@ -155,7 +156,7 @@ export const institutionsTopicsSankeyConfig = {
       .selectAll('text')
       .data(sankeyData.nodes)
       .join('text')
-      .attr('x', d => d.type === 'institution' ? d.x0 - 8 : d.x1 + 8)
+      .attr('x', d => d.type === 'institution' ? d.x0 - 20 : d.x1 + 20)
       .attr('y', d => (d.y0 + d.y1) / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', d => d.type === 'institution' ? 'end' : 'start')
