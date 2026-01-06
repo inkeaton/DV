@@ -88,9 +88,12 @@ export const uniqueAuthorsTimelineConfig = {
 
   // Milestone markers
   const milestones = [
-    { year: 1999, cumulative: 1392, label: '1,000+ authors' },
-    { year: 2010, cumulative: 5408, label: '5,000+ authors' },
-    { year: 2017, cumulative: 10728, label: '10,000+ authors' }
+    { year: 1990, cumulative: 119, label: '100+ authors' },
+    { year: 1994, cumulative: 555, label: '500+ authors' },
+    { year: 1997, cumulative: 1046, label: '1,000+ authors' },
+    { year: 2006, cumulative: 2641, label: '2,500+ authors' },
+    { year: 2013, cumulative: 4059, label: '4,000+ authors' },
+    { year: 2021, cumulative: 6059, label: '6,000+ authors' }
   ];
 
   const milestoneGroup = g

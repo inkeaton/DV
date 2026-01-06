@@ -4,6 +4,11 @@
  * X-axis: papers count, Y-axis: citations, Bubble size: awards
  */
 
+// Put images here:
+    // ../assets/img/authors/jeffrey-heer.jpg
+    // ../assets/img/authors/hanspeter-pfister.jpg
+    // ../assets/img/authors/john-stasko.jpg
+
 import { authorMetricsData, authorMetricsStats } from '../../data/authors/authorMetricsData.js';
 import {
   renderTitle,
@@ -126,9 +131,11 @@ export const authorMetricsConfig = {
   const sizeLegend = g.append('g').attr('class', 'size-legend').attr('opacity', 0);
 
   const sizeLegendData = [
+    { awards: 1, label: '1 awards' },
     { awards: 3, label: '3 awards' },
-    { awards: 6, label: '6 awards' },
-    { awards: 12, label: '12 awards' }
+    { awards: 5, label: '5 awards' },
+     { awards: 8, label: '8 awards' },
+    { awards: 10, label: '10 awards' }
   ];
 
     sizeLegend
