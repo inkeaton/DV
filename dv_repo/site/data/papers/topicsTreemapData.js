@@ -6,13 +6,8 @@ export const topicsTreemapData = {
       "name": "Dashboards & Infographics",
       "children": [
         {
-          "name": "Dashboards & Infographics",
-          "value": 52,
-          "topic_id": 18
-        },
-        {
           "name": "Eye Tracking & Gaze Analysis",
-          "value": 47,
+          "value": 52,
           "topic_id": 20
         }
       ]
@@ -21,19 +16,19 @@ export const topicsTreemapData = {
       "name": "Diffusion MRI & Tractography",
       "children": [
         {
-          "name": "Diffusion MRI & Tractography",
-          "value": 136,
-          "topic_id": 8
+          "name": "Computational Topology & Contour Trees",
+          "value": 134,
+          "topic_id": 6
         },
         {
-          "name": "NLP & Question Answering",
-          "value": 87,
-          "topic_id": 14
+          "name": "Dashboards & Infographics",
+          "value": 57,
+          "topic_id": 18
         },
         {
-          "name": "Financial Monitoring & Anomaly Detection",
-          "value": 35,
-          "topic_id": 27
+          "name": "Visualization Design & Perception",
+          "value": 50,
+          "topic_id": 24
         }
       ]
     },
@@ -41,24 +36,54 @@ export const topicsTreemapData = {
       "name": "Dimensionality Reduction & Multivariate Plots",
       "children": [
         {
-          "name": "Dimensionality Reduction & Scatterplots",
-          "value": 183,
-          "topic_id": 3
+          "name": "Mesh Simplification & Surface Reconstruction",
+          "value": 729,
+          "topic_id": 0
         },
         {
-          "name": "Computational Topology & Contour Trees",
-          "value": 153,
-          "topic_id": 6
+          "name": "Flow Fields & Vortices (CFD)",
+          "value": 286,
+          "topic_id": 2
         },
         {
-          "name": "Treemaps & Tree Layouts",
-          "value": 62,
-          "topic_id": 16
+          "name": "Multi-Projector & High-Res Displays",
+          "value": 137,
+          "topic_id": 5
         },
         {
-          "name": "Narrative Visualization & Storytelling",
-          "value": 37,
-          "topic_id": 25
+          "name": "Molecular Volume Rendering",
+          "value": 123,
+          "topic_id": 7
+        },
+        {
+          "name": "Diffusion MRI & Tractography",
+          "value": 114,
+          "topic_id": 8
+        },
+        {
+          "name": "Weather Forecast Visualization",
+          "value": 113,
+          "topic_id": 9
+        },
+        {
+          "name": "NLP & Question Answering",
+          "value": 71,
+          "topic_id": 14
+        },
+        {
+          "name": "Colormaps & Color Perception",
+          "value": 54,
+          "topic_id": 19
+        },
+        {
+          "name": "Tensor Field Topology",
+          "value": 51,
+          "topic_id": 21
+        },
+        {
+          "name": "Illustrative Volume Rendering",
+          "value": 38,
+          "topic_id": 28
         }
       ]
     },
@@ -66,29 +91,24 @@ export const topicsTreemapData = {
       "name": "Flow Fields & CFD Visualization",
       "children": [
         {
-          "name": "Flow Fields & Vortices (CFD)",
-          "value": 276,
-          "topic_id": 2
+          "name": "Twitter & Social Media",
+          "value": 110,
+          "topic_id": 11
         },
         {
-          "name": "Molecular Volume Rendering",
-          "value": 146,
-          "topic_id": 7
+          "name": "Sports Pattern Mining",
+          "value": 91,
+          "topic_id": 13
         },
         {
-          "name": "Weather Forecast Visualization",
-          "value": 126,
-          "topic_id": 9
+          "name": "IEEE VIS Bibliometrics",
+          "value": 70,
+          "topic_id": 15
         },
         {
-          "name": "Colormaps & Color Perception",
-          "value": 49,
-          "topic_id": 19
-        },
-        {
-          "name": "Cell Imaging & Machine Learning",
-          "value": 37,
-          "topic_id": 26
+          "name": "Line Charts & Temporal Patterns",
+          "value": 50,
+          "topic_id": 22
         }
       ]
     },
@@ -96,39 +116,14 @@ export const topicsTreemapData = {
       "name": "Meshes & Volume Rendering",
       "children": [
         {
-          "name": "Mesh Simplification & Surface Reconstruction",
-          "value": 555,
-          "topic_id": 0
-        },
-        {
           "name": "Direct Volume Rendering & Ray Casting",
-          "value": 428,
+          "value": 366,
           "topic_id": 1
         },
         {
-          "name": "Sensemaking & Provenance",
-          "value": 122,
-          "topic_id": 10
-        },
-        {
           "name": "Unstructured Tetrahedral Volume Rendering",
-          "value": 102,
+          "value": 93,
           "topic_id": 12
-        },
-        {
-          "name": "Sports Pattern Mining",
-          "value": 89,
-          "topic_id": 13
-        },
-        {
-          "name": "Gene Expression & Genomics",
-          "value": 43,
-          "topic_id": 23
-        },
-        {
-          "name": "Illustrative Volume Rendering",
-          "value": 33,
-          "topic_id": 28
         }
       ]
     },
@@ -137,18 +132,13 @@ export const topicsTreemapData = {
       "children": [
         {
           "name": "Surgical Planning & Tomography",
-          "value": 177,
+          "value": 139,
           "topic_id": 4
         },
         {
-          "name": "Multi-Projector & High-Res Displays",
-          "value": 159,
-          "topic_id": 5
-        },
-        {
-          "name": "Tensor Field Topology",
-          "value": 45,
-          "topic_id": 21
+          "name": "Financial Monitoring & Anomaly Detection",
+          "value": 43,
+          "topic_id": 27
         }
       ]
     },
@@ -156,9 +146,14 @@ export const topicsTreemapData = {
       "name": "Time Series & Temporal Patterns",
       "children": [
         {
-          "name": "Line Charts & Temporal Patterns",
-          "value": 44,
-          "topic_id": 22
+          "name": "Dimensionality Reduction & Scatterplots",
+          "value": 186,
+          "topic_id": 3
+        },
+        {
+          "name": "Gene Expression & Genomics",
+          "value": 50,
+          "topic_id": 23
         }
       ]
     },
@@ -166,9 +161,9 @@ export const topicsTreemapData = {
       "name": "Twitter & Social Media",
       "children": [
         {
-          "name": "Twitter & Social Media",
-          "value": 104,
-          "topic_id": 11
+          "name": "Sensemaking & Provenance",
+          "value": 111,
+          "topic_id": 10
         }
       ]
     },
@@ -176,9 +171,9 @@ export const topicsTreemapData = {
       "name": "Ultrasound Volume Rendering & Segmentation",
       "children": [
         {
-          "name": "Ultrasound Volume Rendering",
-          "value": 28,
-          "topic_id": 29
+          "name": "Narrative Visualization & Storytelling",
+          "value": 47,
+          "topic_id": 25
         }
       ]
     },
@@ -186,9 +181,9 @@ export const topicsTreemapData = {
       "name": "VIS Literature & Bibliometrics",
       "children": [
         {
-          "name": "IEEE VIS Bibliometrics",
-          "value": 79,
-          "topic_id": 15
+          "name": "Treemaps & Tree Layouts",
+          "value": 62,
+          "topic_id": 16
         },
         {
           "name": "Immersive Analytics (AR/VR)",
@@ -196,9 +191,9 @@ export const topicsTreemapData = {
           "topic_id": 17
         },
         {
-          "name": "Visualization Design & Perception",
-          "value": 39,
-          "topic_id": 24
+          "name": "Cell Imaging & Machine Learning",
+          "value": 45,
+          "topic_id": 26
         }
       ]
     }

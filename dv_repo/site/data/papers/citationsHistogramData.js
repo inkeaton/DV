@@ -3082,7 +3082,6 @@ export const citationsHistogramData = [
   35,
   42,
   178,
-  58,
   41,
   18,
   33,
@@ -3541,8 +3540,8 @@ export const citationStats = {
   "max": 3795,
   "papersWith100Plus": 776,
   "papersWith500Plus": 54,
-  "crossrefCoverage": 3531,
-  "aminerCoverage": 3118
+  "crossrefCoverage": 3530,
+  "aminerCoverage": 3117
 };
 
 export const histogramBins = {

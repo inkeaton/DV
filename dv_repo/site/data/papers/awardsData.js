@@ -36,9 +36,9 @@ export const awardsData = [
 
 export const awardStats = {
   "total": 276,
-  "percentageAwarded": 7.67,
+  "percentageAwarded": 7.68,
   "papersAwarded": 271,
-  "papersTotal": 3531
+  "papersTotal": 3530
 };
 
 export const pictogramCellValue = 5;

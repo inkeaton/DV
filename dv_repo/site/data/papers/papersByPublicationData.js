@@ -38,7 +38,7 @@ export const papersByPublicationData = [
   {
     "year": 1997,
     "journal": 0,
-    "conference": 88
+    "conference": 87
   },
   {
     "year": 1998,

@@ -34,25 +34,124 @@ export function renderTitle(ctx, text, options = {}) {
     .style('opacity', 1);
 }
 
+// /**
+//  * Render an X axis with optional label
+//  * @param {Object} ctx - Render context { g, d3, height, colors }
+//  * @param {Function} scale - D3 scale for the axis
+//  * @param {Object} options - Optional settings { label, tickFormat, tickCount, rotate }
+//  */
+// export function renderXAxis(ctx, scale, options = {}) {
+//   const { g, d3, height, colors } = ctx;
+//   const { 
+//     label = null, 
+//     tickFormat = null, 
+//     tickCount = null,
+//     rotate = 0,
+//     className = 'x-axis'
+//   } = options;
+
+//   let axis = d3.axisBottom(scale);
+//   if (tickFormat) axis = axis.tickFormat(tickFormat);
+//   if (tickCount) axis = axis.ticks(tickCount);
+
+//   const axisG = g.append('g')
+//     .attr('class', className)
+//     .attr('transform', `translate(0, ${height})`)
+//     .style('opacity', 0)
+//     .call(axis);
+
+//   axisG.transition()
+//     .duration(500)
+//     .style('opacity', 1);
+
+//   if (rotate !== 0) {
+//     axisG.selectAll('text')
+//       .attr('transform', `rotate(${rotate})`)
+//       .attr('text-anchor', rotate < 0 ? 'end' : 'start');
+//   }
+
+//   if (label) {
+//     g.append('text')
+//       .attr('class', 'axis-label x-axis-label')
+//       .attr('x', ctx.width / 2)
+//       .attr('y', height + 45)
+//       .attr('text-anchor', 'middle')
+//       .style('font-size', '12px')
+//       .style('fill', colors.onSurfaceVariant)
+//       .text(label);
+//   }
+
+//   return axisG;
+// }
+
+// /**
+//  * Render a Y axis with optional label
+//  * @param {Object} ctx - Render context { g, d3, height, colors }
+//  * @param {Function} scale - D3 scale for the axis
+//  * @param {Object} options - Optional settings { label, tickFormat, tickCount, position }
+//  */
+// export function renderYAxis(ctx, scale, options = {}) {
+//   const { g, d3, height, colors } = ctx;
+//   const { 
+//     label = null, 
+//     tickFormat = null, 
+//     tickCount = null,
+//     position = 'left',
+//     className = 'y-axis'
+//   } = options;
+
+//   let axis = position === 'left' ? d3.axisLeft(scale) : d3.axisRight(scale);
+//   if (tickFormat) axis = axis.tickFormat(tickFormat);
+//   if (tickCount) axis = axis.ticks(tickCount);
+
+//   const translateX = position === 'left' ? 0 : ctx.width;
+  
+//   const axisG = g.append('g')
+//     .attr('class', className)
+//     .attr('transform', `translate(${translateX}, 0)`)
+//     .style('opacity', 0)
+//     .call(axis);
+
+//   axisG.transition()
+//     .duration(500)
+//     .style('opacity', 1);
+
+//   if (label) {
+//     const labelX = position === 'left' ? -40 : ctx.width + 40;
+//     g.append('text')
+//       .attr('class', 'axis-label y-axis-label')
+//       .attr('transform', 'rotate(-90)')
+//       .attr('x', -height / 2)
+//       .attr('y', labelX)
+//       .attr('text-anchor', 'middle')
+//       .style('font-size', '12px')
+//       .style('fill', colors.onSurfaceVariant)
+//       .text(label);
+//   }
+
+//   return axisG;
+// }
+
 /**
  * Render an X axis with optional label
- * @param {Object} ctx - Render context { g, d3, height, colors }
- * @param {Function} scale - D3 scale for the axis
- * @param {Object} options - Optional settings { label, tickFormat, tickCount, rotate }
+ * NOW supports: tickValues
  */
 export function renderXAxis(ctx, scale, options = {}) {
   const { g, d3, height, colors } = ctx;
-  const { 
-    label = null, 
-    tickFormat = null, 
+  const {
+    label = null,
+    tickFormat = null,
     tickCount = null,
+    tickValues = null,      // <-- NEW
     rotate = 0,
     className = 'x-axis'
   } = options;
 
   let axis = d3.axisBottom(scale);
+
+  if (tickValues) axis = axis.tickValues(tickValues); // <-- NEW
   if (tickFormat) axis = axis.tickFormat(tickFormat);
-  if (tickCount) axis = axis.ticks(tickCount);
+  if (tickCount && !tickValues) axis = axis.ticks(tickCount);
 
   const axisG = g.append('g')
     .attr('class', className)
@@ -60,9 +159,7 @@ export function renderXAxis(ctx, scale, options = {}) {
     .style('opacity', 0)
     .call(axis);
 
-  axisG.transition()
-    .duration(500)
-    .style('opacity', 1);
+  axisG.transition().duration(500).style('opacity', 1);
 
   if (rotate !== 0) {
     axisG.selectAll('text')
@@ -86,35 +183,34 @@ export function renderXAxis(ctx, scale, options = {}) {
 
 /**
  * Render a Y axis with optional label
- * @param {Object} ctx - Render context { g, d3, height, colors }
- * @param {Function} scale - D3 scale for the axis
- * @param {Object} options - Optional settings { label, tickFormat, tickCount, position }
+ * NOW supports: tickValues
  */
 export function renderYAxis(ctx, scale, options = {}) {
   const { g, d3, height, colors } = ctx;
-  const { 
-    label = null, 
-    tickFormat = null, 
+  const {
+    label = null,
+    tickFormat = null,
     tickCount = null,
+    tickValues = null,      // <-- NEW
     position = 'left',
     className = 'y-axis'
   } = options;
 
   let axis = position === 'left' ? d3.axisLeft(scale) : d3.axisRight(scale);
+
+  if (tickValues) axis = axis.tickValues(tickValues); // <-- NEW
   if (tickFormat) axis = axis.tickFormat(tickFormat);
-  if (tickCount) axis = axis.ticks(tickCount);
+  if (tickCount && !tickValues) axis = axis.ticks(tickCount);
 
   const translateX = position === 'left' ? 0 : ctx.width;
-  
+
   const axisG = g.append('g')
     .attr('class', className)
     .attr('transform', `translate(${translateX}, 0)`)
     .style('opacity', 0)
     .call(axis);
 
-  axisG.transition()
-    .duration(500)
-    .style('opacity', 1);
+  axisG.transition().duration(500).style('opacity', 1);
 
   if (label) {
     const labelX = position === 'left' ? -40 : ctx.width + 40;
@@ -131,6 +227,7 @@ export function renderYAxis(ctx, scale, options = {}) {
 
   return axisG;
 }
+
 
 /**
  * Render a legend with colored items

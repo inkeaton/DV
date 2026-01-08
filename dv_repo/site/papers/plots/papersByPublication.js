@@ -15,26 +15,55 @@ export const papersByPublicationConfig = {
     const { g, d3, tooltip, width, height, data, colors } = ctx;
     const animationDuration = 800;
 
+    // -------------------------
+    // Force domain: 1990–2024
+    // -------------------------
+    const yearMin = 1990;
+    const yearMax = 2024;
+    const years = d3.range(yearMin, yearMax + 1);
+
+    // Extend/normalize data (missing years -> zeros)
+    const byYear = new Map(data.map(d => [d.year, d]));
+    const fullData = years.map(y => {
+      const row = byYear.get(y);
+      if (row) return row;
+
+      const empty = { year: y };
+      publicationKeys.forEach(k => { empty[k] = 0; });
+      return empty;
+    });
+
+    // Totals per publication type (for legend)
+    const totalsByKey = {};
+    publicationKeys.forEach(k => {
+      totalsByKey[k] = d3.sum(fullData, d => +d[k] || 0);
+    });
+
     // Title
     renderTitle(ctx, 'Papers by Publication Type');
 
-    // Stack the data
+    // Stack
     const stack = d3.stack()
       .keys(publicationKeys)
       .order(d3.stackOrderNone)
       .offset(d3.stackOffsetNone);
 
-    const stackedData = stack(data);
+    const stackedData = stack(fullData);
 
     // Scales
     const xScale = d3.scaleBand()
-      .domain(data.map(d => d.year))
+      .domain(years)
       .range([0, width])
       .padding(0.2);
 
-    const yMax = d3.max(data, d => publicationKeys.reduce((sum, key) => sum + d[key], 0));
+    const yMax = d3.max(fullData, d =>
+      publicationKeys.reduce((sum, key) => sum + (+d[key] || 0), 0)
+    ) || 0;
+
+    const yTop = Math.max(yMax, 160) * 1.05;
+
     const yScale = d3.scaleLinear()
-      .domain([0, yMax * 1.1])
+      .domain([0, yTop])
       .nice()
       .range([height, 0]);
 
@@ -42,12 +71,31 @@ export const papersByPublicationConfig = {
       .domain(publicationKeys)
       .range(publicationKeys.map(k => publicationColors[k]));
 
-    // Axes
-    renderXAxis(ctx, xScale, { label: 'Year', tickFormat: d => d, tickCount: 7 });
-    renderYAxis(ctx, yScale, { label: 'Number of Papers', tickCount: 6 });
+    // -------------------------
+    // Axes ticks
+    // -------------------------
+    const xTickYears = years.filter(y => (y % 5 === 0) || y === yearMax); // 1990,1995,...,2024
+    const yTickValues = [0, 40, 80, 120, 160];
+
+    renderXAxis(ctx, xScale, {
+      label: 'Year',
+      tickValues: xTickYears,
+      tickFormat: d => d
+    });
+
+    renderYAxis(ctx, yScale, {
+      label: 'Total number of papers',
+      tickValues: yTickValues,
+      tickFormat: d => d
+    });
+
     styleAxes(g);
 
-    // Create groups for each stack layer
+    // Remove axis lines (domain + tick lines)
+    g.selectAll('.x-axis .domain, .y-axis .domain').style('stroke', 'none');
+    g.selectAll('.x-axis .tick line, .y-axis .tick line').style('stroke', 'none');
+
+    // Layers
     const layers = g.selectAll('.layer')
       .data(stackedData)
       .enter()
@@ -55,7 +103,7 @@ export const papersByPublicationConfig = {
       .attr('class', 'layer')
       .attr('fill', d => colorScale(d.key));
 
-    // Add bars
+    // Bars
     const bars = layers.selectAll('.bar')
       .data(d => d.map(point => ({ ...point, key: d.key })))
       .enter()
@@ -67,26 +115,26 @@ export const papersByPublicationConfig = {
       .attr('height', 0)
       .attr('rx', 2);
 
-    // Animate bars
+    // Animate
     bars.transition()
       .duration(animationDuration)
       .delay((d, i) => i * 10)
       .attr('y', d => yScale(d[1]))
       .attr('height', d => Math.max(0, yScale(d[0]) - yScale(d[1])));
 
-    // Tooltip interactions
+    // Tooltip
     bars
       .on('mouseenter', function(event, d) {
         d3.select(this)
           .transition()
           .duration(150)
           .attr('opacity', 0.8);
-        
-        const value = d.data[d.key];
+
+        const value = d.data[d.key] || 0;
         tooltip.show(event, `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`, colors);
       })
       .on('mousemove', function(event, d) {
-        const value = d.data[d.key];
+        const value = d.data[d.key] || 0;
         tooltip.show(event, `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`, colors);
       })
       .on('mouseleave', function() {
@@ -94,15 +142,16 @@ export const papersByPublicationConfig = {
           .transition()
           .duration(150)
           .attr('opacity', 1);
-        
+
         tooltip.hide();
       });
 
-    // Legend
+    // Legend with totals
     const legendItems = publicationKeys.map(key => ({
-      label: publicationLabels[key],
+      label: `${publicationLabels[key]}: ${totalsByKey[key].toLocaleString()} papers`,
       color: publicationColors[key]
     }));
-    renderLegend(ctx, legendItems, { x: width - 120, y: 0 });
+
+    renderLegend(ctx, legendItems, { x: width - 170, y: 0 });
   }
 };

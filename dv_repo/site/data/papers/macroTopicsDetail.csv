@@ -1,31 +1,30 @@
 MacroCategory,TopicId,TopicShort,papers
-Dashboards & Infographics,18,Dashboards & Infographics,52
-Dashboards & Infographics,20,Eye Tracking & Gaze Analysis,47
-Diffusion MRI & Tractography,8,Diffusion MRI & Tractography,136
-Diffusion MRI & Tractography,14,NLP & Question Answering,87
-Diffusion MRI & Tractography,27,Financial Monitoring & Anomaly Detection,35
-Dimensionality Reduction & Multivariate Plots,3,Dimensionality Reduction & Scatterplots,183
-Dimensionality Reduction & Multivariate Plots,6,Computational Topology & Contour Trees,153
-Dimensionality Reduction & Multivariate Plots,16,Treemaps & Tree Layouts,62
-Dimensionality Reduction & Multivariate Plots,25,Narrative Visualization & Storytelling,37
-Flow Fields & CFD Visualization,2,Flow Fields & Vortices (CFD),276
-Flow Fields & CFD Visualization,7,Molecular Volume Rendering,146
-Flow Fields & CFD Visualization,9,Weather Forecast Visualization,126
-Flow Fields & CFD Visualization,19,Colormaps & Color Perception,49
-Flow Fields & CFD Visualization,26,Cell Imaging & Machine Learning,37
-Meshes & Volume Rendering,0,Mesh Simplification & Surface Reconstruction,555
-Meshes & Volume Rendering,1,Direct Volume Rendering & Ray Casting,428
-Meshes & Volume Rendering,10,Sensemaking & Provenance,122
-Meshes & Volume Rendering,12,Unstructured Tetrahedral Volume Rendering,102
-Meshes & Volume Rendering,13,Sports Pattern Mining,89
-Meshes & Volume Rendering,23,Gene Expression & Genomics,43
-Meshes & Volume Rendering,28,Illustrative Volume Rendering,33
-Surgical Planning & Tomography,4,Surgical Planning & Tomography,177
-Surgical Planning & Tomography,5,Multi-Projector & High-Res Displays,159
-Surgical Planning & Tomography,21,Tensor Field Topology,45
-Time Series & Temporal Patterns,22,Line Charts & Temporal Patterns,44
-Twitter & Social Media,11,Twitter & Social Media,104
-Ultrasound Volume Rendering & Segmentation,29,Ultrasound Volume Rendering,28
-VIS Literature & Bibliometrics,15,IEEE VIS Bibliometrics,79
+Dashboards & Infographics,20,Eye Tracking & Gaze Analysis,52
+Diffusion MRI & Tractography,6,Computational Topology & Contour Trees,134
+Diffusion MRI & Tractography,18,Dashboards & Infographics,57
+Diffusion MRI & Tractography,24,Visualization Design & Perception,50
+Dimensionality Reduction & Multivariate Plots,0,Mesh Simplification & Surface Reconstruction,729
+Dimensionality Reduction & Multivariate Plots,2,Flow Fields & Vortices (CFD),286
+Dimensionality Reduction & Multivariate Plots,5,Multi-Projector & High-Res Displays,137
+Dimensionality Reduction & Multivariate Plots,7,Molecular Volume Rendering,123
+Dimensionality Reduction & Multivariate Plots,8,Diffusion MRI & Tractography,114
+Dimensionality Reduction & Multivariate Plots,9,Weather Forecast Visualization,113
+Dimensionality Reduction & Multivariate Plots,14,NLP & Question Answering,71
+Dimensionality Reduction & Multivariate Plots,19,Colormaps & Color Perception,54
+Dimensionality Reduction & Multivariate Plots,21,Tensor Field Topology,51
+Dimensionality Reduction & Multivariate Plots,28,Illustrative Volume Rendering,38
+Flow Fields & CFD Visualization,11,Twitter & Social Media,110
+Flow Fields & CFD Visualization,13,Sports Pattern Mining,91
+Flow Fields & CFD Visualization,15,IEEE VIS Bibliometrics,70
+Flow Fields & CFD Visualization,22,Line Charts & Temporal Patterns,50
+Meshes & Volume Rendering,1,Direct Volume Rendering & Ray Casting,366
+Meshes & Volume Rendering,12,Unstructured Tetrahedral Volume Rendering,93
+Surgical Planning & Tomography,4,Surgical Planning & Tomography,139
+Surgical Planning & Tomography,27,Financial Monitoring & Anomaly Detection,43
+Time Series & Temporal Patterns,3,Dimensionality Reduction & Scatterplots,186
+Time Series & Temporal Patterns,23,Gene Expression & Genomics,50
+Twitter & Social Media,10,Sensemaking & Provenance,111
+Ultrasound Volume Rendering & Segmentation,25,Narrative Visualization & Storytelling,47
+VIS Literature & Bibliometrics,16,Treemaps & Tree Layouts,62
 VIS Literature & Bibliometrics,17,Immersive Analytics (AR/VR),58
-VIS Literature & Bibliometrics,24,Visualization Design & Perception,39
+VIS Literature & Bibliometrics,26,Cell Imaging & Machine Learning,45
