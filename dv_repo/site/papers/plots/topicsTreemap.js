@@ -50,6 +50,22 @@ export const topicsTreemapConfig = {
 
     treemap(root);
 
+    // --- FLIP Y: Invert vertically so larger items are at bottom-left ---
+    const treemapHeight = height - chartOffsetY;
+    const flipY = (node) => {
+      const oldY0 = node.y0;
+      const oldY1 = node.y1;
+      node.y0 = treemapHeight - oldY1;
+      node.y1 = treemapHeight - oldY0;
+      if (node.children) {
+        node.children.forEach(flipY);
+      }
+    };
+    if (root.children) {
+      root.children.forEach(flipY);
+    }
+    // --------------------------------------------------------------------
+
     const groups = root.children || [];
     const leaves = root.leaves();
 
@@ -115,6 +131,11 @@ export const topicsTreemapConfig = {
     groupRects
       .transition()
       .duration(ANIMATION_DURATION / 2)
+      .delay((d) => {
+        // Animation from bottom-left: smaller y1 (bottom) and smaller x0 (left) = less delay
+        const dist = d.x0 + (treemapHeight - d.y1);
+        return (dist / (width + treemapHeight)) * 300;
+      })
       .attr('opacity', 1);
 
     /** -----------------------------
@@ -127,7 +148,7 @@ export const topicsTreemapConfig = {
       .append('text')
       .attr('class', 'group-label')
       .attr('x', (d) => d.x0 + 6)
-      .attr('y', (d) => d.y0 + chartOffsetY + 16)
+      .attr('y', (d) => d.y1 + chartOffsetY - 6)
       .attr('fill', 'var(--md-sys-color-on-surface)')
       .attr('font-size', '11px')
       .attr('font-weight', '600')
@@ -168,7 +189,10 @@ export const topicsTreemapConfig = {
 
     groupLabels
       .transition()
-      .delay(ANIMATION_DURATION / 2)
+      .delay((d) => {
+        const dist = d.x0 + (treemapHeight - d.y1);
+        return ANIMATION_DURATION / 2 + (dist / (width + treemapHeight)) * 300;
+      })
       .duration(ANIMATION_DURATION / 2)
       .attr('opacity', 1);
 
@@ -182,7 +206,7 @@ export const topicsTreemapConfig = {
       .append('rect')
       .attr('class', 'leaf-rect')
       .attr('x', (d) => d.x0)
-      .attr('y', (d) => d.y0 + chartOffsetY)
+      .attr('y', (d) => d.y1 + chartOffsetY)  // Start from bottom
       .attr('width', (d) => Math.max(0, d.x1 - d.x0))
       .attr('height', 0)
       .attr('fill', (d) => {
@@ -195,7 +219,12 @@ export const topicsTreemapConfig = {
     leafRects
       .transition()
       .duration(ANIMATION_DURATION)
-      .delay((d, i) => 200 + i * 20)
+      .delay((d) => {
+        // Animation from bottom-left: smaller y1 (bottom) and smaller x0 (left) = less delay
+        const dist = d.x0 + (treemapHeight - d.y1);
+        return 200 + (dist / (width + treemapHeight)) * 600;
+      })
+      .attr('y', (d) => d.y0 + chartOffsetY)  // Animate to top position
       .attr('height', (d) => Math.max(0, d.y1 - d.y0));
 
     leafRects

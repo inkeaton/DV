@@ -29,7 +29,7 @@ export const awardsData = [
   {
     "type": "Best Application Paper",
     "count": 6,
-    "icon": "🥈",
+    "icon": "🚀",
     "code": "BA"
   }
 ];

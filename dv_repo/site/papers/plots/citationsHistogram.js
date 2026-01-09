@@ -21,9 +21,23 @@ export const citationsHistogramConfig = {
     renderTitle(ctx, 'Citation Distribution');
 
     // --- 1. CONFIGURAZIONE E COLORI ---
-    const colorMain = '#d0bcff'; // Lilla
-    const colorTail = '#6750a4'; // Viola Scuro
-    const CUTOFF = 500; 
+    const CUTOFF = 500;
+    const TAIL_MAX = 4000;
+
+    // 27 colori: 20 per grafico principale (0-500) + 7 per inset (500-4000)
+    const allColors = [
+      '#EAD0EE', '#E2C5E6', '#DABBDD', '#D2B0D5', '#CAA6CC',  // 1-5
+      '#C29BC4', '#BA91BB', '#B286B3', '#AA7CAA', '#A272A2',  // 6-10
+      '#9A6799', '#925D91', '#8A5288', '#824880', '#7A3D77',  // 11-15
+      '#72336F', '#6A2966', '#621E5E', '#5A1455', '#52094D',  // 16-20 (fine main)
+      '#4A0F48', '#420C44', '#3A093F', '#32063B', '#2A0436',  // 21-25 (inset)
+      '#230233', '#1F083B'                                    // 26-27
+    ];
+
+    // Colori per grafico principale (primi 20)
+    const mainColors = allColors.slice(0, 20);
+    // Colori per inset (ultimi 7)
+    const tailColors = allColors.slice(20, 27);
 
     // --- 2. GRAFICO PRINCIPALE (0 - 500) ---
     const mainBinWidth = 25; 
@@ -99,7 +113,7 @@ export const citationsHistogramConfig = {
       .attr('width', d => Math.max(0, xScale(d.x1) - xScale(d.x0) - 2))
       .attr('y', height) 
       .attr('height', 0)
-      .attr('fill', colorMain)
+      .attr('fill', (d, i) => mainColors[i])
       .attr('rx', 2); 
 
     bars.transition()
@@ -109,13 +123,14 @@ export const citationsHistogramConfig = {
       .attr('height', d => height - yScale(d.length));
 
     // Tooltip Main
-    bars.on('mouseenter', (event, d) => {
-        d3.select(event.currentTarget).attr('fill', colorTail); 
+    bars.on('mouseenter', function(event, d) {
+        d3.select(this).attr('fill', '#4A0F48'); 
         const pct = ((d.length / data.length) * 100).toFixed(1);
         tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
       })
-      .on('mouseleave', (event, d) => {
-        d3.select(event.currentTarget).attr('fill', colorMain);
+      .on('mouseleave', function(event, d) {
+        const i = mainBins.indexOf(d);
+        d3.select(this).attr('fill', mainColors[i]);
         tooltip.hide();
       });
 
@@ -173,7 +188,7 @@ export const citationsHistogramConfig = {
 
     // Dati Tail
     const tailDataPoints = data.filter(d => d > CUTOFF);
-    const tailMax = 4000; 
+    const tailMax = TAIL_MAX; 
     
     const iPad = { l: 40, r: 20, t: 40, b: 30 }; 
     
@@ -232,15 +247,16 @@ export const citationsHistogramConfig = {
       .attr('width', d => Math.max(0, insetXScale(d.x1) - insetXScale(d.x0) - 2))
       .attr('y', d => insetYScale(d.length))
       .attr('height', d => (insetH - iPad.b) - insetYScale(d.length))
-      .attr('fill', colorTail) 
+      .attr('fill', (d, i) => tailColors[i])
       .attr('rx', 1)
-      .on('mouseenter', (event, d) => {
-        d3.select(event.currentTarget).attr('fill', colorMain); 
+      .on('mouseenter', function(event, d) {
+        d3.select(this).attr('fill', '#EAD0EE'); 
         const pct = ((d.length / data.length) * 100).toFixed(2);
         tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
       })
-      .on('mouseleave', (event, d) => {
-        d3.select(event.currentTarget).attr('fill', colorTail); 
+      .on('mouseleave', function(event, d) {
+        const i = tailBins.indexOf(d);
+        d3.select(this).attr('fill', tailColors[i]); 
         tooltip.hide();
       });
 

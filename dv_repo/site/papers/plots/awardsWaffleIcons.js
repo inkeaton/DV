@@ -5,10 +5,13 @@
  * Update:
  * - Legend TOP-RIGHT, minimal style.
  * - Highlights dual-award papers (Test of Time + Best Paper) in BLACK.
- * - Highlights Replicability Stamp papers (1 BP, 3 HM) in GREEN.
+ * - Highlights Replicability Stamp papers in GREEN.
+ * - Shows title and year on hover
+ * - Uses REAL data from awardsDetailByType
  */
 
 import { awardsData, pictogramCellValue } from '../../data/papers/awardsData.js';
+import { awardsDetailByType } from '../../data/papers/awardsDetailData.js';
 import { renderTitle } from '../../assets/js/chart-utils.js';
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
 import { awardColors } from '../../assets/js/color-palettes.js';
@@ -74,52 +77,68 @@ export const awardsWaffleIconsConfig = {
       if (idx >= 0) allocated[idx].cells += 1;
     }
 
-    // --- GENERAZIONE CELLE CON LOGICA TAG & STAMP ---
+    // --- MAP CODE TO TYPE ---
+    const codeToType = {
+      'BP': 'Best Paper',
+      'HM': 'Honorable Mention',
+      'TT': 'Test of Time',
+      'BA': 'Best Application Paper',
+      'BCS': 'Best Case Study'
+    };
+    const typeToCode = Object.fromEntries(Object.entries(codeToType).map(([k,v]) => [v,k]));
+
+    // --- GENERAZIONE CELLE CON DATI REALI ---
     const cells = [];
     let cursor = 0;
 
     for (const cat of allocated) {
+      const code = typeToCode[cat.type] || cat.code;
+      const detailData = awardsDetailByType[code];
+      const papers = detailData ? detailData.papers : [];
+      
+      // Ordina per anno (dal più vecchio - così partiamo dal basso a sinistra con i più vecchi)
+      const sortedPapers = [...papers].sort((a, b) => (a.year || 0) - (b.year || 0));
+
       for (let k = 0; k < cat.cells; k++) {
         if (cursor >= totalCells) break;
 
+        const paper = sortedPapers[k] || null;
+        
         let isDual = false;
-        let isReplica = false; // Nuovo flag
+        let isReplica = false;
         let specialMsg = '';
+        let title = paper ? paper.title : '';
+        let year = paper ? paper.year : null;
 
-        // --- 1. LOGICA DUAL AWARDS (Bordo Nero) ---
-        // 'Test of Time' -> i primi 5 hanno anche Best Paper
-        if (cat.type === 'Test of Time' && k < 5) {
+        // --- 1. LOGICA DUAL AWARDS (da dati reali) ---
+        if (paper && paper.otherAwards && paper.otherAwards.length > 0) {
           isDual = true;
-          specialMsg = '★ Also received Best Paper';
-        }
-        // 'Best Paper' -> i primi 5 hanno anche Test of Time
-        else if (cat.type === 'Best Paper' && k < 5) {
-          isDual = true;
-          specialMsg = '★ Also received Test of Time';
+          const otherLabels = paper.otherAwardsLabels || paper.otherAwards.map(c => codeToType[c] || c);
+          specialMsg = `★ Also received ${otherLabels.join(', ')}`;
         }
 
-        // --- 2. LOGICA REPLICABILITY STAMP (Bordo Verde) ---
-        // Aggiungo 1 su BP (uso l'indice 5, cioè il sesto, per non coprire i duali)
-        if (cat.type === 'Best Paper' && k === 5) {
+        // --- 2. LOGICA REPLICABILITY STAMP (da dati reali) ---
+        if (paper && paper.hasGraphicsReplicabilityStamp) {
           isReplica = true;
-          specialMsg = '✔ Graphics Replicability Stamp';
-        }
-        // Aggiungo 3 su HM (Honorable Mention) (indici 0, 1, 2)
-        else if (cat.type === 'Honorable Mention' && k < 3) {
-          isReplica = true;
-          specialMsg = '✔ Graphics Replicability Stamp';
+          if (specialMsg) {
+            specialMsg += ' | ✔ Graphics Replicability Stamp';
+          } else {
+            specialMsg = '✔ Graphics Replicability Stamp';
+          }
         }
 
         cells.push({
           idx: cursor,
           type: cat.type,
-          code: cat.code,
+          code: code,
           icon: cat.icon,
           count: cat.count,
           color: cat.color,
           isDual: isDual,
           isReplica: isReplica,
           specialMsg: specialMsg,
+          title: title,
+          year: year,
         });
         cursor++;
       }
@@ -182,41 +201,91 @@ export const awardsWaffleIconsConfig = {
       .delay(d => d.idx * 8 + 80)
       .attr('opacity', 1);
 
-    // Tooltip Aggiornato
+    // Tooltip Aggiornato - formato pulito
     const showTooltip = (event, d) => {
-      const percent = fmtPct(pct(d.count));
+      let lines = [];
       
-      let noteHtml = '';
+      // Codice award
+      lines.push(`<strong>${d.code}</strong>`);
+      
+      // Titolo
+      if (d.title) {
+        lines.push(`<em>${d.title}</em>`);
+      }
+      
+      // Anno
+      if (d.year) {
+        lines.push(`<span style="font-weight:bold;">${d.year}</span>`);
+      }
+      
+      // Info speciali (dual award, stamp)
       if (d.specialMsg) {
-        // Colore del testo tooltip: Nero per Dual, Verde per Replica
-        const noteColor = d.isReplica ? '#00C853' : '#000000';
-        noteHtml = `<br><br><span style="color:${noteColor}; font-weight:bold;">${d.specialMsg}</span>`;
+        const noteColor = d.isReplica ? '#00C853' : (d.isDual ? '#000000' : 'inherit');
+        lines.push(`<span style="color:${noteColor}; font-weight:bold;">${d.specialMsg}</span>`);
       }
 
-      const content =
-        `<strong>${d.code} — ${d.type}</strong><br>` +
-        `${d.count} awards <span style="color:var(--md-sys-color-on-surface-variant)">(${percent}%)</span>` +
-        noteHtml;
-        
+      const content = lines.join('<br>');
       tooltip.show(event, content, colors);
     };
 
+    // --- HIGHLIGHT CATEGORIA ON HOVER ---
+    const highlightCategory = (event, d) => {
+      const hoveredType = d.type;
+      
+      // Sfuma le tile di altre categorie
+      grid.selectAll('rect.waffle-tile')
+        .transition()
+        .duration(150)
+        .attr('opacity', t => t.type === hoveredType ? 0.35 : 0.08);
+      
+      // Sfuma le icone di altre categorie
+      grid.selectAll('text.waffle-icon')
+        .transition()
+        .duration(150)
+        .attr('opacity', t => t.type === hoveredType ? 1 : 0.25);
+    };
+
+    const resetHighlight = () => {
+      // Ripristina opacità originale
+      grid.selectAll('rect.waffle-tile')
+        .transition()
+        .duration(150)
+        .attr('opacity', 0.18);
+      
+      grid.selectAll('text.waffle-icon')
+        .transition()
+        .duration(150)
+        .attr('opacity', 1);
+      
+      tooltip.hide();
+    };
+
     grid.selectAll('.waffle-tile, .waffle-icon')
-      .on('mouseenter', showTooltip)
+      .on('mouseenter', (event, d) => {
+        highlightCategory(event, d);
+        showTooltip(event, d);
+      })
       .on('mousemove', showTooltip)
-      .on('mouseleave', () => tooltip.hide());
+      .on('mouseleave', resetHighlight);
 
     // -------------------------------------------------------
-    // Legend (TOP-RIGHT, minimal: ICON + label)
+    // Legend (TOP-RIGHT, ordinata per percentuale decrescente)
     // -------------------------------------------------------
-    const legendItems = cats.map(d => ({
-      label: d.type,
-      icon: d.icon || '🎖️',
-    }));
+    const legendItems = cats.map(cat => {
+      const code = typeToCode[cat.type] || cat.code;
+      return {
+        code: code,
+        label: codeToType[code] || cat.type,
+        icon: cat.icon || '🎖️',
+        count: cat.count,
+        pct: pct(cat.count),
+        pctFmt: fmtPct(pct(cat.count))
+      };
+    }).sort((a, b) => b.pct - a.pct); // Ordina per percentuale decrescente
 
-    const legendX = width - 170; 
+    const legendX = width - 220; 
     const legendY = 50; 
-    const rowH = 18;
+    const rowH = 20;
 
     const legend = g.append('g')
       .attr('class', 'legend legend-awards-topright')
@@ -229,7 +298,7 @@ export const awardsWaffleIconsConfig = {
       .attr('dominant-baseline', 'hanging')
       .attr('fill', 'var(--md-sys-color-on-surface-variant)')
       .attr('font-size', '12px')
-      .text(`Total Awards: ${total} Papers`);
+      .text(`Total Awards: ${total}`);
 
   const rowsG = legend.selectAll('g.legend-item')
     .data(legendItems)
@@ -251,7 +320,54 @@ export const awardsWaffleIconsConfig = {
     .attr('dominant-baseline', 'middle')
     .attr('fill', 'var(--md-sys-color-on-surface-variant)')
     .attr('font-size', '12px')
-    .text(d => d.label);
+    .text(d => `${d.code}: ${d.label} (${d.count} - ${d.pctFmt}%)`);
+
+  // --- LEGENDA SPECIALE (Replicability Stamp + Dual Award) ---
+  const specialLegendY = 16 + legendItems.length * rowH + 15;
+  
+  // Graphics Replicability Stamp (bordo verde)
+  const stampG = legend.append('g')
+    .attr('transform', `translate(0, ${specialLegendY})`);
+  
+  stampG.append('rect')
+    .attr('x', 0)
+    .attr('y', -6)
+    .attr('width', 12)
+    .attr('height', 12)
+    .attr('rx', 2)
+    .attr('fill', 'var(--md-sys-color-surface)')
+    .attr('stroke', '#00C853')
+    .attr('stroke-width', 2);
+  
+  stampG.append('text')
+    .attr('x', 24)
+    .attr('y', 0)
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', 'var(--md-sys-color-on-surface-variant)')
+    .attr('font-size', '11px')
+    .text('Graphics Replicability Stamp');
+
+  // Dual Award (bordo nero/grigio)
+  const dualG = legend.append('g')
+    .attr('transform', `translate(0, ${specialLegendY + rowH})`);
+  
+  dualG.append('rect')
+    .attr('x', 0)
+    .attr('y', -6)
+    .attr('width', 12)
+    .attr('height', 12)
+    .attr('rx', 2)
+    .attr('fill', 'var(--md-sys-color-surface)')
+    .attr('stroke', '#666666')
+    .attr('stroke-width', 2);
+  
+  dualG.append('text')
+    .attr('x', 24)
+    .attr('y', 0)
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', 'var(--md-sys-color-on-surface-variant)')
+    .attr('font-size', '11px')
+    .text('Dual Award');
 
   legend.transition()
     .delay(WAFFLE_ANIMATION_DURATION)
