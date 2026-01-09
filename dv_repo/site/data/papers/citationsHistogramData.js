@@ -3579,3 +3579,16 @@ export const histogramBins = {
     "4000+"
   ]
 };
+
+export const topCitedPapers = [
+  {
+    "Title": "D\u00b3 Data-Driven Documents",
+    "Year": 2011,
+    "Citations": 3795
+  },
+  {
+    "Title": "Tree-maps: a space-filling approach to the visualization of hierarchical information structures",
+    "Year": 1991,
+    "Citations": 2238
+  }
+];

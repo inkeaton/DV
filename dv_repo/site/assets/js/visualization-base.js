@@ -460,8 +460,19 @@ export function createTooltip(d3, className = 'vis-tooltip') {
         .style('z-index', '1000')
         .style('max-width', '250px');
 
+      // Smart positioning: check if tooltip would overflow on right
+      const tooltipWidth = 260; // approximate max width
+      const windowWidth = window.innerWidth;
+      const mouseX = event.pageX;
+      
+      // If tooltip would overflow right edge, show on left side of cursor
+      let leftPos = mouseX + 10;
+      if (mouseX + tooltipWidth + 20 > windowWidth) {
+        leftPos = mouseX - tooltipWidth - 10;
+      }
+
       tooltipEnter.merge(tooltip)
-        .style('left', `${event.pageX + 10}px`)
+        .style('left', `${leftPos}px`)
         .style('top', `${event.pageY - 28}px`)
         .html(content);
     },

@@ -6,6 +6,8 @@
 import {
   citationsHistogramData,
   citationStats,
+  histogramBins,
+  topCitedPapers
 } from '../../data/papers/citationsHistogramData.js';
 
 import { renderTitle } from '../../assets/js/chart-utils.js';
@@ -237,6 +239,15 @@ export const citationsHistogramConfig = {
     axisLG.selectAll('.tick line').remove();
     axisLG.selectAll('text').style('font-size', '10px');
 
+    // Helper: compact bin label (0.5k-1k, 1k-1.5k, etc.)
+    function compactBinLabel(x0, x1) {
+      const fmt = (v) => {
+        if (v >= 1000) return (v / 1000) + 'k';
+        return v;
+      };
+      return `${fmt(x0)}-${fmt(x1)}`;
+    }
+
     // Barre Inset
     insetG.selectAll('.bar-tail')
       .data(tailBins)
@@ -250,13 +261,30 @@ export const citationsHistogramConfig = {
       .attr('fill', (d, i) => tailColors[i])
       .attr('rx', 1)
       .on('mouseenter', function(event, d) {
-        d3.select(this).attr('fill', '#EAD0EE'); 
+        d3.select(this).attr('fill', '#EAD0EE');
         const pct = ((d.length / data.length) * 100).toFixed(2);
-        tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
+        const binLabel = compactBinLabel(d.x0, d.x1);
+        let tooltipHtml = `<strong>${binLabel} Citations</strong><br>${d.length} papers (${pct}%)`;
+        
+        // Show top cited papers for bins 3.5k-4k (contains max 3795) and 2k-2.5k (contains 2238)
+        const showPaperDetails = (d.x0 === 3500 || d.x0 === 2000);
+        if (showPaperDetails && topCitedPapers && topCitedPapers.length > 0) {
+          // Filter papers that fall in this bin
+          const papersInBin = topCitedPapers.filter(p => p.Citations >= d.x0 && p.Citations < d.x1);
+          if (papersInBin.length > 0) {
+            tooltipHtml += '<hr style="margin:6px 0;">';
+            papersInBin.forEach(paper => {
+              tooltipHtml += `<em>${paper.Title}</em><br>`;
+              tooltipHtml += `<span style="font-weight:bold;">${paper.Year}</span><br>`;
+              tooltipHtml += `<span style="color:#B3261E;">${paper.Citations} citations</span>`;
+            });
+          }
+        }
+        tooltip.show(event, tooltipHtml, themeColors);
       })
       .on('mouseleave', function(event, d) {
         const i = tailBins.indexOf(d);
-        d3.select(this).attr('fill', tailColors[i]); 
+        d3.select(this).attr('fill', tailColors[i]);
         tooltip.hide();
       });
 
