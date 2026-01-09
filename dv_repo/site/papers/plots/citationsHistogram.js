@@ -1,10 +1,15 @@
 /**
  * papers/plots/citationsHistogram.js
- * Histogram showing citation distribution
+ * Histogram (true bins) + tail zoom inset with precise styling
  */
 
-import { citationsHistogramData, citationStats, histogramBins } from '../../data/papers/citationsHistogramData.js';
-import { renderTitle, renderXAxis, renderYAxis, styleAxes } from '../../assets/js/chart-utils.js';
+import {
+  citationsHistogramData,
+  citationStats,
+} from '../../data/papers/citationsHistogramData.js';
+
+import { renderTitle } from '../../assets/js/chart-utils.js';
+import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
 
 export const citationsHistogramConfig = {
   data: citationsHistogramData,
@@ -12,197 +17,263 @@ export const citationsHistogramConfig = {
 
   render: (ctx) => {
     const { g, d3, tooltip, width, height, data, colors: themeColors } = ctx;
-    const animationDuration = 800;
-
+    
     renderTitle(ctx, 'Citation Distribution');
 
-    // Helper CSS (solo per surface/outline)
-    const css = (v) =>
-      getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    // --- 1. CONFIGURAZIONE E COLORI ---
+    const colorMain = '#d0bcff'; // Lilla
+    const colorTail = '#6750a4'; // Viola Scuro
+    const CUTOFF = 500; 
 
-    // ----- FORCE MAX -----
-    const xMax = 4000;
+    // --- 2. GRAFICO PRINCIPALE (0 - 500) ---
+    const mainBinWidth = 25; 
+    const mainGenerator = d3.bin()
+      .domain([0, CUTOFF])
+      .thresholds(d3.range(0, CUTOFF + mainBinWidth, mainBinWidth));
 
-    // Filter thresholds to xMax + ensure xMax is included
-    const thresholds = histogramBins.thresholds
-      .filter(t => t <= xMax)
-      .concat([xMax]);
+    const mainDataPoints = data.filter(d => d <= CUTOFF);
+    const mainBins = mainGenerator(mainDataPoints);
+    
+    const maxYMain = d3.max(mainBins, d => d.length);
 
-    const lastThr = thresholds[thresholds.length - 1];
-
-    // Histogram
-    const histogram = d3.bin()
-      .domain([0, xMax])
-      .thresholds(thresholds);
-
-    const bins = histogram(data);
-
-    // Scales
-    const xScale = d3.scaleSymlog()
-      .constant(10)
-      .domain([0, xMax])
+    const xScale = d3.scaleLinear()
+      .domain([0, CUTOFF])
       .range([0, width]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(bins, d => d.length) * 1.1])
-      .nice()
+      .domain([0, maxYMain]) 
       .range([height, 0]);
 
-    // Axes (ticks = thresholds filtrati)
-    renderXAxis(ctx, xScale, {
-      label: 'Number of Citations',
-      tickValues: thresholds,
-      tickFormat: d3.format('~s')
-    });
-    renderYAxis(ctx, yScale, { label: 'Number of Papers', tickCount: 6 });
-    styleAxes(g);
+    // --- ASSI GRAFICO GRANDE ---
+    const xAxis = d3.axisBottom(xScale)
+      // Parte da 50 per evitare lo 0 sovrapposto
+      .tickValues(d3.range(50, 501, 50)) 
+      .tickFormat(d => d);
 
-    // ----- COLORS: LILAC -> PURPLE (FIXED, non dipende dal tema) -----
-    // (lilac = blu/viola chiaro, purple = viola, deepPurple = coda più scura)
-    const lilac = '#d0bcff';
-    const purple = '#6750a4';
-    const deepPurple = '#4a148c';
+    const yAxis = d3.axisLeft(yScale)
+      .ticks(5); 
 
-    // Separatore bar
-    const surface = css('--md-sys-color-surface') || '#ffffff';
-    const outline = css('--md-sys-color-outline') || '#2b2b2b';
+    const xAxisG = g.append('g')
+      .attr('transform', `translate(0, ${height})`)
+      .call(xAxis);
+    
+    xAxisG.select('.domain').remove(); 
+    xAxisG.selectAll('.tick line').remove(); 
+    xAxisG.selectAll('.tick text')
+      .attr('text-anchor', 'middle')
+      .attr('dy', '10px') 
+      .style('font-size', '11px');
 
-    // Base scale su tutto range
-    const baseScale = d3.scaleSequential()
-      .domain([0, xMax])
-      .interpolator(d3.interpolateLab(lilac, purple));
+    const yAxisG = g.append('g')
+      .call(yAxis);
+      
+    yAxisG.select('.domain').remove(); 
+    yAxisG.selectAll('.tick line').remove(); 
+    yAxisG.selectAll('.tick text').style('font-size', '11px');
+    
+    // Etichette Assi
+    g.append('text')
+      .attr('x', width / 2)
+      .attr('y', height + 40)
+      .attr('text-anchor', 'middle')
+      .attr('fill', 'var(--md-sys-color-on-surface-variant)')
+      .attr('font-size', '12px')
+      .text('Number of Citations');
 
-    // Tail emphasis (da 200 in su, diventa più scuro verso deepPurple)
-    const tailStart = 200;
-    const tailScale = d3.scaleSequential()
-      .domain([tailStart, xMax])
-      .interpolator(d3.interpolateLab(purple, deepPurple));
+    g.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -45)
+      .attr('x', -height / 2)
+      .attr('text-anchor', 'middle')
+      .attr('fill', 'var(--md-sys-color-on-surface-variant)')
+      .attr('font-size', '12px')
+      .text('Number of Papers');
 
-    const fillForBin = (d) => {
-      const mid = (d.x0 + d.x1) / 2;
-      if (mid >= tailStart) return tailScale(mid);
-      return baseScale(mid);
-    };
-
-    // Draw bars
-    const bars = g.selectAll('.bar')
-      .data(bins)
+    // Barre Main
+    const bars = g.selectAll('.bar-main')
+      .data(mainBins)
       .enter()
       .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => xScale(d.x0) + 1)
-      .attr('y', height)
+      .attr('class', 'bar-main')
+      .attr('x', d => xScale(d.x0) + 1) 
       .attr('width', d => Math.max(0, xScale(d.x1) - xScale(d.x0) - 2))
+      .attr('y', height) 
       .attr('height', 0)
-      .attr('fill', d => fillForBin(d))
-      .attr('opacity', 0.92)
-      .attr('stroke', surface)
-      .attr('stroke-width', 1)
-      .attr('rx', 2);
+      .attr('fill', colorMain)
+      .attr('rx', 2); 
 
-    // Animate
     bars.transition()
-      .duration(animationDuration)
-      .delay((d, i) => i * 60)
+      .duration(ANIMATION_DURATION)
+      .delay((d, i) => i * 30)
       .attr('y', d => yScale(d.length))
-      .attr('height', d => Math.max(0, height - yScale(d.length)));
+      .attr('height', d => height - yScale(d.length));
 
-    // Tooltip label
-    const labelForBin = (d) => {
-      if (d.x1 >= lastThr) return `${d.x0}+ citations`;
-      return `${d.x0}-${d.x1} citations`;
-    };
-
-    // Hover
-    bars
-      .on('mouseenter', function (event, d) {
-        d3.select(this)
-          .raise()
-          .transition()
-          .duration(150)
-          .attr('opacity', 1)
-          .attr('stroke', outline)
-          .attr('stroke-width', 2);
-
+    // Tooltip Main
+    bars.on('mouseenter', (event, d) => {
+        d3.select(event.currentTarget).attr('fill', colorTail); 
         const pct = ((d.length / data.length) * 100).toFixed(1);
-        tooltip.show(
-          event,
-          `<strong>${labelForBin(d)}</strong><br>${d.length} papers (${pct}%)`,
-          themeColors
-        );
+        tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
       })
-      .on('mousemove', function (event, d) {
-        const pct = ((d.length / data.length) * 100).toFixed(1);
-        tooltip.show(
-          event,
-          `<strong>${labelForBin(d)}</strong><br>${d.length} papers (${pct}%)`,
-          themeColors
-        );
-      })
-      .on('mouseleave', function () {
-        d3.select(this)
-          .transition()
-          .duration(150)
-          .attr('opacity', 0.92)
-          .attr('stroke', surface)
-          .attr('stroke-width', 1);
-
+      .on('mouseleave', (event, d) => {
+        d3.select(event.currentTarget).attr('fill', colorMain);
         tooltip.hide();
       });
 
-    // Median line
-    const medianX = xScale(citationStats.median);
+    // --- LINEA MEDIANA (FIXED) ---
+    const medianVal = citationStats && citationStats.median ? citationStats.median : 39;
+    const medianX = xScale(medianVal);
 
     const medianLine = g.append('line')
-      .attr('class', 'median-line')
-      .attr('x1', medianX)
-      .attr('x2', medianX)
-      .attr('y1', height)
-      .attr('y2', height)
-      .attr('stroke', 'var(--md-sys-color-error)')
+      .attr('x1', medianX).attr('x2', medianX)
+      .attr('y1', height).attr('y2', yScale(maxYMain)) 
+      .attr('stroke', '#B3261E') // Usa un rosso esplicito invece della variabile
       .attr('stroke-width', 2)
-      .attr('stroke-dasharray', '5,3');
+      .attr('stroke-dasharray', '4,4');
 
-    medianLine.transition()
-      .delay(animationDuration)
-      .duration(400)
-      .attr('y2', 0);
+    // Porta la linea in primo piano sopra le barre
+    medianLine.raise(); 
 
     g.append('text')
-      .attr('class', 'median-label')
-      .attr('x', medianX + 8)
-      .attr('y', 20)
-      .attr('fill', 'var(--md-sys-color-error)')
-      .attr('font-size', '11px')
-      .attr('font-weight', '600')
-      .text(`Median: ${citationStats.median}`);
-
-    // Mean line (usiamo purple per coerenza palette)
-    const meanX = xScale(citationStats.mean);
-
-    const meanLine = g.append('line')
-      .attr('class', 'mean-line')
-      .attr('x1', meanX)
-      .attr('x2', meanX)
-      .attr('y1', height)
-      .attr('y2', height)
-      .attr('stroke', purple)
-      .attr('stroke-width', 2)
-      .attr('stroke-dasharray', '2,3');
-
-    meanLine.transition()
-      .delay(animationDuration)
-      .duration(400)
-      .attr('y2', 0);
-
-    // Stats annotation
-    g.append('text')
-      .attr('class', 'stats-annotation')
-      .attr('x', width - 10)
-      .attr('y', 10)
-      .attr('text-anchor', 'end')
-      .attr('fill', 'var(--md-sys-color-on-surface-variant)')
+      .attr('x', medianX + 8) 
+      .attr('y', yScale(maxYMain)) 
+      .attr('fill', '#B3261E') // Rosso esplicito anche qui
       .attr('font-size', '12px')
-      .text(`Mean: ${citationStats.mean} citations`);
+      .attr('font-weight', 'bold')
+      .text(`Median: ${medianVal}`);
+
+
+    // =========================================================
+    // --- 3. INSET (PICCOLO GRAFICO) ---
+    // =========================================================
+    
+    const insetW = 560; 
+    const insetH = 300; 
+    const insetX = width - insetW; 
+    const insetY = 100; 
+
+    const insetG = g.append('g')
+      .attr('transform', `translate(${insetX}, ${insetY})`);
+
+    // Sfondo Inset
+    insetG.append('rect')
+      .attr('width', insetW)
+      .attr('height', insetH)
+      .attr('rx', 8)
+      .attr('fill', 'var(--md-sys-color-surface-container-high)') 
+      .attr('stroke', 'var(--md-sys-color-outline-variant)')
+      .attr('stroke-width', 1);
+
+    // Titolo Inset
+    insetG.append('text')
+      .attr('x', 15).attr('y', 25)
+      .attr('font-size', '14px')
+      .attr('font-weight', 'bold')
+      .attr('fill', 'var(--md-sys-color-on-surface)')
+      .text('Tail Zoom (500+ Citations)');
+
+    // Dati Tail
+    const tailDataPoints = data.filter(d => d > CUTOFF);
+    const tailMax = 4000; 
+    
+    const iPad = { l: 40, r: 20, t: 40, b: 30 }; 
+    
+    const insetXScale = d3.scaleLinear()
+      .domain([CUTOFF, tailMax])
+      .range([iPad.l, insetW - iPad.r]);
+
+    const tailBinWidth = 500;
+    const tailGenerator = d3.bin()
+      .domain([CUTOFF, tailMax])
+      .thresholds(d3.range(CUTOFF, tailMax + tailBinWidth, tailBinWidth)); 
+
+    const tailBins = tailGenerator(tailDataPoints);
+    const maxYInset = d3.max(tailBins, d => d.length);
+
+    // Scala Y Inset
+    const insetYScale = d3.scaleLinear()
+      .domain([0, maxYInset]) 
+      .nice() 
+      .range([insetH - iPad.b, iPad.t]);
+
+    // --- ASSI INSET ---
+    const axisB = d3.axisBottom(insetXScale)
+      .tickValues([500, 1000, 2000, 3000, 4000])
+      .tickFormat(d3.format('.1s')); 
+
+    const axisL = d3.axisLeft(insetYScale)
+      // Manualmente fermiamo a 30 per evitare il 40
+      .tickValues([0, 10, 20, 30]); 
+
+    const axisBG = insetG.append('g')
+      .attr('transform', `translate(0, ${insetH - iPad.b})`)
+      .call(axisB);
+
+    axisBG.select('.domain').remove(); 
+    axisBG.selectAll('.tick line').remove(); 
+    axisBG.selectAll('.tick text')
+      .attr('dy', '8px')
+      .style('font-size', '10px');
+
+    const axisLG = insetG.append('g')
+      .attr('transform', `translate(${iPad.l}, 0)`)
+      .call(axisL);
+
+    axisLG.select('.domain').remove();
+    axisLG.selectAll('.tick line').remove();
+    axisLG.selectAll('text').style('font-size', '10px');
+
+    // Barre Inset
+    insetG.selectAll('.bar-tail')
+      .data(tailBins)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar-tail')
+      .attr('x', d => insetXScale(d.x0) + 1)
+      .attr('width', d => Math.max(0, insetXScale(d.x1) - insetXScale(d.x0) - 2))
+      .attr('y', d => insetYScale(d.length))
+      .attr('height', d => (insetH - iPad.b) - insetYScale(d.length))
+      .attr('fill', colorTail) 
+      .attr('rx', 1)
+      .on('mouseenter', (event, d) => {
+        d3.select(event.currentTarget).attr('fill', colorMain); 
+        const pct = ((d.length / data.length) * 100).toFixed(2);
+        tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
+      })
+      .on('mouseleave', (event, d) => {
+        d3.select(event.currentTarget).attr('fill', colorTail); 
+        tooltip.hide();
+      });
+
+    // --- 4. FRECCIA ---
+    const startX = xScale(CUTOFF);
+    const startY = height; 
+
+    const endX = insetX + 5; 
+    const endY = insetY + insetH - 10; 
+
+    g.append('defs').append('marker')
+      .attr('id', 'arrowhead')
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 8).attr('refY', 0)
+      .attr('markerWidth', 6).attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('path')
+      .attr('d', 'M0,-5L10,0L0,5')
+      .attr('fill', 'var(--md-sys-color-on-surface-variant)');
+
+    const curvePath = `M ${startX},${startY} C ${startX + 60},${startY - 40} ${endX - 40},${endY + 60} ${endX},${endY}`;
+
+    const arrow = g.append('path')
+      .attr('d', curvePath)
+      .attr('fill', 'none')
+      .attr('stroke', 'var(--md-sys-color-on-surface-variant)')
+      .attr('stroke-width', 1.5)
+      .attr('marker-end', 'url(#arrowhead)')
+      .attr('opacity', 0);
+
+    arrow.transition()
+      .delay(1000)
+      .duration(800)
+      .attr('opacity', 1);
   }
 };

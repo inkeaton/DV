@@ -177,9 +177,9 @@ export const papersByPublicationData = [
   }
 ];
 
-export const publicationKeys = ["journal", "conference"];
+export const publicationKeys = ["conference", "journal"];
 
 export const publicationLabels = {
-  "journal": "Journal (TVCG)",
-  "conference": "Conference"
+  "conference": "Conference",
+  "journal": "Journal (TVCG)"
 };

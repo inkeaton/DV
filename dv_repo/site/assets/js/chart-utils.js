@@ -319,3 +319,158 @@ export function createVerticalGradient(ctx, id, color, options = {}) {
 
   return `url(#${id})`;
 }
+
+// ============================================================================
+// NEW UTILITIES - Extracted from plot files for reuse
+// ============================================================================
+
+/**
+ * Fill gaps in year-based data with empty/zero values
+ * @param {Object} d3 - D3.js library reference
+ * @param {Array} data - Array of data objects with a 'year' property
+ * @param {number} yearMin - Start year (inclusive)
+ * @param {number} yearMax - End year (inclusive)
+ * @param {Array} keys - Array of keys to initialize to 0 for missing years
+ * @returns {Array} Complete data array with all years filled
+ */
+export function fillYearGaps(d3, data, yearMin, yearMax, keys = []) {
+  const years = d3.range(yearMin, yearMax + 1);
+  const byYear = new Map(data.map(d => [d.year, d]));
+  
+  return years.map(y => {
+    const row = byYear.get(y);
+    if (row) return row;
+    
+    const empty = { year: y };
+    keys.forEach(k => { empty[k] = 0; });
+    return empty;
+  });
+}
+
+/**
+ * Generate tick years for axis (every N years + include max year)
+ * @param {Array} years - Array of all years
+ * @param {number} interval - Interval between ticks (e.g., 5 for every 5 years)
+ * @param {number} maxYear - The maximum year to always include
+ * @returns {Array} Array of years to show as ticks
+ */
+export function getTickYears(years, interval = 5, maxYear = null) {
+  const max = maxYear ?? years[years.length - 1];
+  return years.filter(y => (y % interval === 0) || y === max);
+}
+
+/**
+ * Create an arrowhead marker definition for annotations
+ * @param {Object} svg - D3 SVG selection
+ * @param {string} id - Unique ID for the marker (default: 'arrowhead')
+ * @param {Object} options - Optional settings { fill, size }
+ * @returns {Object} The defs selection
+ */
+export function createArrowMarker(svg, id = 'arrowhead', options = {}) {
+  const { fill = 'rgba(0,0,0,0.6)', size = 8 } = options;
+  
+  const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+  
+  if (defs.select(`#${id}`).empty()) {
+    defs.append('marker')
+      .attr('id', id)
+      .attr('viewBox', '0 0 10 10')
+      .attr('refX', 9)
+      .attr('refY', 5)
+      .attr('markerWidth', size)
+      .attr('markerHeight', size)
+      .attr('orient', 'auto-start-reverse')
+      .append('path')
+      .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+      .attr('fill', fill);
+  }
+  
+  return defs;
+}
+
+/**
+ * Darken a hex color by a factor
+ * @param {Object} d3 - D3.js library reference
+ * @param {string} hex - Hex color string
+ * @param {number} factor - Darkening factor (0-1, default 0.28)
+ * @returns {string} Darkened hex color
+ */
+export function darkenHex(d3, hex, factor = 0.28) {
+  const c = d3.color(hex);
+  if (!c) return hex;
+  const r = Math.round(c.r * (1 - factor));
+  const g = Math.round(c.g * (1 - factor));
+  const b = Math.round(c.b * (1 - factor));
+  return d3.rgb(r, g, b).formatHex();
+}
+
+/**
+ * Remove axis domain lines and tick lines (keep tick labels)
+ * Call this after styleAxes() to clean up axis appearance
+ * @param {Object} g - D3 selection of the chart group
+ */
+export function cleanAxes(g) {
+  g.selectAll('.x-axis .domain, .y-axis .domain').style('stroke', 'none');
+  g.selectAll('.x-axis .tick line, .y-axis .tick line').style('stroke', 'none');
+}
+
+/**
+ * Wrap text in SVG <text> element using <tspan> elements
+ * Useful for treemaps and other charts with constrained label space
+ * @param {Object} options - Configuration object
+ * @param {Object} options.d3 - D3.js library reference
+ * @param {Object} options.textSel - D3 selection of the text element
+ * @param {number} options.maxWidth - Maximum width before wrapping
+ * @param {number} options.maxLines - Maximum number of lines (default: 3)
+ * @param {number} options.lineHeightEm - Line height in em units (default: 1.1)
+ */
+export function wrapText({ d3, textSel, maxWidth, maxLines = 3, lineHeightEm = 1.1 }) {
+  const text = textSel;
+  const raw = (text.text() || '').trim();
+  if (!raw) return;
+
+  const words = raw.split(/\s+/);
+  text.text(null);
+
+  let line = [];
+  let lineNumber = 0;
+  let tspan = text.append('tspan').attr('x', text.attr('x')).attr('dy', '0em');
+
+  for (let i = 0; i < words.length; i++) {
+    line.push(words[i]);
+    tspan.text(line.join(' '));
+
+    if (tspan.node().getComputedTextLength() > maxWidth) {
+      line.pop();
+
+      // commit previous line
+      tspan.text(line.join(' '));
+
+      lineNumber += 1;
+      if (lineNumber >= maxLines) {
+        // ellipsis on last allowed line
+        let clipped = tspan.text();
+        while (tspan.node().getComputedTextLength() > maxWidth && clipped.length > 0) {
+          clipped = clipped.slice(0, -1);
+          tspan.text(clipped + '…');
+        }
+        return;
+      }
+
+      // start new line with current word
+      line = [words[i]];
+      tspan = text
+        .append('tspan')
+        .attr('x', text.attr('x'))
+        .attr('dy', `${lineHeightEm}em`)
+        .text(words[i]);
+    }
+  }
+
+  // final safety clip
+  let final = tspan.text();
+  while (tspan.node().getComputedTextLength() > maxWidth && final.length > 0) {
+    final = final.slice(0, -1);
+    tspan.text(final + '…');
+  }
+}

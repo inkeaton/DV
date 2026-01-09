@@ -1,0 +1,50 @@
+/**
+ * data/papers/papersPerYearData.js
+ * Pre-processed data for papers per year chart
+ * Converted from CSV for consistency with other data modules
+ */
+
+export const papersPerYearData = [
+  { year: 1990, count: 53 },
+  { year: 1991, count: 50 },
+  { year: 1992, count: 53 },
+  { year: 1993, count: 55 },
+  { year: 1994, count: 53 },
+  { year: 1995, count: 72 },
+  { year: 1996, count: 76 },
+  { year: 1997, count: 87 },
+  { year: 1998, count: 90 },
+  { year: 1999, count: 88 },
+  { year: 2000, count: 92 },
+  { year: 2001, count: 76 },
+  { year: 2002, count: 101 },
+  { year: 2003, count: 103 },
+  { year: 2004, count: 97 },
+  { year: 2005, count: 118 },
+  { year: 2006, count: 113 },
+  { year: 2007, count: 107 },
+  { year: 2008, count: 99 },
+  { year: 2009, count: 116 },
+  { year: 2010, count: 109 },
+  { year: 2011, count: 119 },
+  { year: 2012, count: 116 },
+  { year: 2013, count: 101 },
+  { year: 2014, count: 133 },
+  { year: 2015, count: 127 },
+  { year: 2016, count: 115 },
+  { year: 2017, count: 114 },
+  { year: 2018, count: 127 },
+  { year: 2019, count: 129 },
+  { year: 2020, count: 157 },
+  { year: 2021, count: 109 },
+  { year: 2022, count: 118 },
+  { year: 2023, count: 133 },
+  { year: 2024, count: 124 }
+];
+
+export const papersPerYearStats = {
+  total: 3530,
+  avgPerYear: 101,
+  peakYear: 2020,
+  peakCount: 157
+};

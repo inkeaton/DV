@@ -50,7 +50,7 @@ import { papersPerYearConfig } from './papersPerYear.js';
 import { papersByConferenceConfig } from './papersByConference.js';
 import { papersByPublicationConfig } from './papersByPublication.js';
 import { topicsTreemapConfig } from './topicsTreemap.js';
-import { awardsPictogramConfig } from './awardsPictogram.js';
+import { awardsWaffleIconsConfig} from './awardsWaffleIcons.js';
 import { citationsHistogramConfig } from './citationsHistogram.js';
 
 /**
@@ -67,7 +67,7 @@ export class PapersVisualization extends ScrollyVisualization {
       papersByConferenceConfig,
       papersByPublicationConfig,
       topicsTreemapConfig,
-      awardsPictogramConfig,
+      awardsWaffleIconsConfig,
       citationsHistogramConfig
     ]);
   }

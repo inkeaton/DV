@@ -1,30 +1,30 @@
 MacroCategory,TopicId,TopicShort,papers
-Dashboards & Infographics,20,Eye Tracking & Gaze Analysis,52
-Diffusion MRI & Tractography,6,Computational Topology & Contour Trees,134
-Diffusion MRI & Tractography,18,Dashboards & Infographics,57
-Diffusion MRI & Tractography,24,Visualization Design & Perception,50
-Dimensionality Reduction & Multivariate Plots,0,Mesh Simplification & Surface Reconstruction,729
-Dimensionality Reduction & Multivariate Plots,2,Flow Fields & Vortices (CFD),286
-Dimensionality Reduction & Multivariate Plots,5,Multi-Projector & High-Res Displays,137
-Dimensionality Reduction & Multivariate Plots,7,Molecular Volume Rendering,123
-Dimensionality Reduction & Multivariate Plots,8,Diffusion MRI & Tractography,114
-Dimensionality Reduction & Multivariate Plots,9,Weather Forecast Visualization,113
-Dimensionality Reduction & Multivariate Plots,14,NLP & Question Answering,71
-Dimensionality Reduction & Multivariate Plots,19,Colormaps & Color Perception,54
-Dimensionality Reduction & Multivariate Plots,21,Tensor Field Topology,51
-Dimensionality Reduction & Multivariate Plots,28,Illustrative Volume Rendering,38
-Flow Fields & CFD Visualization,11,Twitter & Social Media,110
-Flow Fields & CFD Visualization,13,Sports Pattern Mining,91
-Flow Fields & CFD Visualization,15,IEEE VIS Bibliometrics,70
-Flow Fields & CFD Visualization,22,Line Charts & Temporal Patterns,50
-Meshes & Volume Rendering,1,Direct Volume Rendering & Ray Casting,366
-Meshes & Volume Rendering,12,Unstructured Tetrahedral Volume Rendering,93
-Surgical Planning & Tomography,4,Surgical Planning & Tomography,139
-Surgical Planning & Tomography,27,Financial Monitoring & Anomaly Detection,43
-Time Series & Temporal Patterns,3,Dimensionality Reduction & Scatterplots,186
-Time Series & Temporal Patterns,23,Gene Expression & Genomics,50
-Twitter & Social Media,10,Sensemaking & Provenance,111
-Ultrasound Volume Rendering & Segmentation,25,Narrative Visualization & Storytelling,47
-VIS Literature & Bibliometrics,16,Treemaps & Tree Layouts,62
-VIS Literature & Bibliometrics,17,Immersive Analytics (AR/VR),58
-VIS Literature & Bibliometrics,26,Cell Imaging & Machine Learning,45
+AI & Immersive Interaction,4,Deep Learning & Neural Networks,139
+AI & Immersive Interaction,15,Augmented Reality & Immersive Environments,70
+AI & Immersive Interaction,23,Sketching & Creative Literacy,50
+AI & Immersive Interaction,27,Narrative Visualization & Storytelling,43
+Advanced Volume Illumination,18,Volumetric Shadows & Illumination,57
+Data Management & Interfaces,14,Database Interfaces & Exploration,71
+Display Calibration & Tensor Fields,5,Multi-Projector & Camera Calibration,137
+Display Calibration & Tensor Fields,21,Tensor Field Topology,51
+Flow Dynamics & Temporal Analysis,1,Flow Visualization & CFD,366
+Flow Dynamics & Temporal Analysis,12,Haptic Interfaces & Feedback,93
+Flow Dynamics & Temporal Analysis,22,Time Series & Temporal Patterns,50
+Geometry Processing & Analytics,0,Mesh Generation & Surface Reconstruction,729
+Geometry Processing & Analytics,2,Causal Inference & Analytics,286
+Geometry Processing & Analytics,7,Text Mining & Topic Modeling,123
+Geometry Processing & Analytics,8,Ensemble Simulation & Parameter Space,114
+Geometry Processing & Analytics,19,Vascular & Blood Flow Visualization,54
+Geospatial & Perceptual Studies,16,Geospatial & Earth Science,62
+Geospatial & Perceptual Studies,17,Graphics Systems & Frameworks,58
+Geospatial & Perceptual Studies,26,Eye Tracking & Graphical Perception,45
+High-Dimensional & Molecular Vis,3,Parallel Coordinates & Multidimensional Data,186
+High-Dimensional & Molecular Vis,11,Molecular Dynamics & Chemistry,110
+High-Dimensional & Molecular Vis,13,InfoVis & Sensemaking,91
+Multiresolution & Wavelets,20,Wavelet Transforms & Multiresolution,52
+Security & Anomaly Detection,25,Network Security & Anomaly Detection,47
+Topological Data Analysis,10,Topological Features & Contour Trees,111
+Volume Rendering & Hierarchical Data,6,Hierarchical Data & Treemaps,134
+Volume Rendering & Hierarchical Data,9,Direct Volume Rendering & Ray Tracing,113
+Volume Rendering & Hierarchical Data,24,Medical Imaging (MRI & DTI),50
+Volume Rendering & Hierarchical Data,28,Bibliometrics & Citation Analysis,38

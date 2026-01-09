@@ -1,11 +1,11 @@
 MacroId,MacroName,Count,MacroCategory,MacroSlug
-2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,1716,Dimensionality Reduction & Multivariate Plots,dimensionality-reduction-multivariate
-3,Macro 3: flow field • flow fields • computational fluid dynamics • vortices,459,Meshes & Volume Rendering,meshes-volume-rendering
-4,Macro 4: infographics • visualisations • chart • molecular dynamics,321,Flow Fields & CFD Visualization,flow-fields-cfd
-7,Macro 7: direct volume rendering • rendering volume • treemaps • treemap,241,Diffusion MRI & Tractography,diffusion-mri-tractography
-8,Macro 8: parallel coordinate plots • coordinate plots • parallel coordinates • multidimensional scaling,236,Time Series & Temporal Patterns,time-series-temporal-patterns
-1,Macro 1: deep neural networks • deep learning • deep neural • neural networks,182,Surgical Planning & Tomography,surgical-planning-tomography
-6,Macro 6: geophysical • geological • topography • earth science,165,VIS Literature & Bibliometrics,vis-literature-bibliometrics
-0,Macro 0: topological features • contour trees • contour tree • topological simplification,111,Twitter & Social Media,twitter-social-media
-5,Macro 5: wavelet • wavelets • multiresolution • curvilinear grids,52,Dashboards & Infographics,dashboards-infographics
-9,Macro 9: anomaly detection • network security • network traffic • attacks,47,Ultrasound Volume Rendering & Segmentation,ultrasound-volume-rendering-segmentation
+2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,1716,SciVis: Geometry & Meshes,scivis-geometry-meshes
+3,Macro 3: flow field • flow fields • computational fluid dynamics • vortices,459,SciVis: Flow & Fluid Dynamics,scivis-flow-fluid-dynamics
+4,Macro 4: infographics • visualisations • chart • molecular dynamics,321,Infographics & Bio-Visualization,infographics-bio-visualization
+7,Macro 7: direct volume rendering • rendering volume • treemaps • treemap,241,Volume Rendering & Hierarchies,volume-rendering-hierarchies
+8,Macro 8: parallel coordinate plots • coordinate plots • parallel coordinates • multidimensional scaling,236,InfoVis: High-Dimensional Data,info-vis-high-dimensional-data
+1,Macro 1: deep neural networks • deep learning • deep neural • neural networks,182,AI & Machine Learning for Vis,ai-machine-learning-for-vis
+6,Macro 6: geophysical • geological • topography • earth science,165,Geospatial & Earth Science,geospatial-earth-science
+0,Macro 0: topological features • contour trees • contour tree • topological simplification,111,Topological Data Analysis,topological-data-analysis
+5,Macro 5: wavelet • wavelets • multiresolution • curvilinear grids,52,Math Foundations & Compression,math-foundations-compression
+9,Macro 9: anomaly detection • network security • network traffic • attacks,47,Security & Anomaly Detection,security-anomaly-detection

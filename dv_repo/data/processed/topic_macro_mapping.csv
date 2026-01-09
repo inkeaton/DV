@@ -1,0 +1,30 @@
+topic_id,topic_name,macro_id,macro_name,count
+4,deep neural networks • deep learning • deep neural • neural networks,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,139
+15,immersive environments • augmented reality • visualisations • immersive environment,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,70
+23,sketching • infovis • literacy • creativity,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,50
+27,driven storytelling • narratives • storytelling • narration,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,43
+6,treemaps • treemap • volume exploration • volume illustration,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,134
+9,direct volume rendering • ray tracing • unstructured grids • tetrahedral meshes,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,113
+24,diffusion tensor • magnetic resonance imaging • tractography • mri,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,50
+28,scientific literature • citations • bibliographic • publications,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,38
+0,meshes • triangulation • surface reconstruction • marching cubes,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,729
+2,causality • causal • chart • inference,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,286
+7,unstructured text • topic modeling • text mining • document collections,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,123
+8,simulation ensembles • parameter space exploration • ensembles • ensemble,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,114
+19,blood vessels • blood flow • angiography • vascular,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,54
+3,parallel coordinate plots • coordinate plots • parallel coordinates • multidimensional scaling,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,186
+11,molecular dynamics • molecular • molecules • molecule,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,110
+13,visualisations • infographics • sensemaking • abstractions,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,91
+1,flow field • flow fields • computational fluid dynamics • vortices,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,366
+12,haptic interface • haptic feedback • haptic • tactile,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,93
+22,line charts • chart • temporal patterns • multivariate time series,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,50
+16,geophysical • geological • topography • earth science,5,Macro 5: geophysical • geological • topography • earth science,62
+17,visualisation tools • computer graphics • computational fluid • volume processing,5,Macro 5: geophysical • geological • topography • earth science,58
+26,eye tracking study • eye tracking • gaze • graphical perception,5,Macro 5: geophysical • geological • topography • earth science,45
+25,anomaly detection • network security • network traffic • attacks,6,Macro 6: anomaly detection • network security • network traffic • attacks,47
+18,volume illumination • volumetric shadows • direct volume rendering • rendering volume,7,Macro 7: volume illumination • volumetric shadows • direct volume rendering • rendering volume,57
+10,topological features • contour trees • contour tree • topological simplification,8,Macro 8: topological features • contour trees • contour tree • topological simplification,111
+14,interface exploration • database management • databases • database,9,Macro 9: interface exploration • database management • databases • database,71
+5,projector • calibration • camera • cameras,10,Macro 10: projector • calibration • camera • cameras,137
+21,tensor field topology • tensor fields • tensor field • fields tensor,10,Macro 10: projector • calibration • camera • cameras,51
+20,wavelet • wavelets • multiresolution • curvilinear grids,11,Macro 11: wavelet • wavelets • multiresolution • curvilinear grids,52

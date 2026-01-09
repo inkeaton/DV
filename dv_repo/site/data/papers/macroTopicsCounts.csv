@@ -1,11 +1,13 @@
 MacroCategory,topics,papers
-Dimensionality Reduction & Multivariate Plots,10,1716
-Flow Fields & CFD Visualization,4,321
-Diffusion MRI & Tractography,3,241
-VIS Literature & Bibliometrics,3,165
-Meshes & Volume Rendering,2,459
-Time Series & Temporal Patterns,2,236
-Surgical Planning & Tomography,2,182
-Twitter & Social Media,1,111
-Dashboards & Infographics,1,52
-Ultrasound Volume Rendering & Segmentation,1,47
+Geometry Processing & Analytics,5,1306
+Flow Dynamics & Temporal Analysis,3,509
+High-Dimensional & Molecular Vis,3,387
+Volume Rendering & Hierarchical Data,4,335
+AI & Immersive Interaction,4,302
+Display Calibration & Tensor Fields,2,188
+Geospatial & Perceptual Studies,3,165
+Topological Data Analysis,1,111
+Data Management & Interfaces,1,71
+Advanced Volume Illumination,1,57
+Multiresolution & Wavelets,1,52
+Security & Anomaly Detection,1,47

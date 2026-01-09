@@ -1,199 +1,209 @@
-/** AUTO-GENERATED */
+/** AUTO-GENERATED from topic_macro_mapping_renamed.csv */
 export const topicsTreemapData = {
   "name": "Topics",
   "children": [
     {
-      "name": "Dashboards & Infographics",
+      "name": "AI & Immersive Interaction",
       "children": [
         {
-          "name": "Eye Tracking & Gaze Analysis",
-          "value": 52,
-          "topic_id": 20
-        }
-      ]
-    },
-    {
-      "name": "Diffusion MRI & Tractography",
-      "children": [
-        {
-          "name": "Computational Topology & Contour Trees",
-          "value": 134,
-          "topic_id": 6
-        },
-        {
-          "name": "Dashboards & Infographics",
-          "value": 57,
-          "topic_id": 18
-        },
-        {
-          "name": "Visualization Design & Perception",
-          "value": 50,
-          "topic_id": 24
-        }
-      ]
-    },
-    {
-      "name": "Dimensionality Reduction & Multivariate Plots",
-      "children": [
-        {
-          "name": "Mesh Simplification & Surface Reconstruction",
-          "value": 729,
-          "topic_id": 0
-        },
-        {
-          "name": "Flow Fields & Vortices (CFD)",
-          "value": 286,
-          "topic_id": 2
-        },
-        {
-          "name": "Multi-Projector & High-Res Displays",
-          "value": 137,
-          "topic_id": 5
-        },
-        {
-          "name": "Molecular Volume Rendering",
-          "value": 123,
-          "topic_id": 7
-        },
-        {
-          "name": "Diffusion MRI & Tractography",
-          "value": 114,
-          "topic_id": 8
-        },
-        {
-          "name": "Weather Forecast Visualization",
-          "value": 113,
-          "topic_id": 9
-        },
-        {
-          "name": "NLP & Question Answering",
-          "value": 71,
-          "topic_id": 14
-        },
-        {
-          "name": "Colormaps & Color Perception",
-          "value": 54,
-          "topic_id": 19
-        },
-        {
-          "name": "Tensor Field Topology",
-          "value": 51,
-          "topic_id": 21
-        },
-        {
-          "name": "Illustrative Volume Rendering",
-          "value": 38,
-          "topic_id": 28
-        }
-      ]
-    },
-    {
-      "name": "Flow Fields & CFD Visualization",
-      "children": [
-        {
-          "name": "Twitter & Social Media",
-          "value": 110,
-          "topic_id": 11
-        },
-        {
-          "name": "Sports Pattern Mining",
-          "value": 91,
-          "topic_id": 13
-        },
-        {
-          "name": "IEEE VIS Bibliometrics",
-          "value": 70,
-          "topic_id": 15
-        },
-        {
-          "name": "Line Charts & Temporal Patterns",
-          "value": 50,
-          "topic_id": 22
-        }
-      ]
-    },
-    {
-      "name": "Meshes & Volume Rendering",
-      "children": [
-        {
-          "name": "Direct Volume Rendering & Ray Casting",
-          "value": 366,
-          "topic_id": 1
-        },
-        {
-          "name": "Unstructured Tetrahedral Volume Rendering",
-          "value": 93,
-          "topic_id": 12
-        }
-      ]
-    },
-    {
-      "name": "Surgical Planning & Tomography",
-      "children": [
-        {
-          "name": "Surgical Planning & Tomography",
+          "name": "Deep Learning & Neural Networks",
           "value": 139,
           "topic_id": 4
         },
         {
-          "name": "Financial Monitoring & Anomaly Detection",
+          "name": "Augmented Reality & Immersive Environments",
+          "value": 70,
+          "topic_id": 15
+        },
+        {
+          "name": "Sketching & Creative Literacy",
+          "value": 50,
+          "topic_id": 23
+        },
+        {
+          "name": "Narrative Visualization & Storytelling",
           "value": 43,
           "topic_id": 27
         }
       ]
     },
     {
-      "name": "Time Series & Temporal Patterns",
+      "name": "Advanced Volume Illumination",
       "children": [
         {
-          "name": "Dimensionality Reduction & Scatterplots",
+          "name": "Volumetric Shadows & Illumination",
+          "value": 57,
+          "topic_id": 18
+        }
+      ]
+    },
+    {
+      "name": "Data Management & Interfaces",
+      "children": [
+        {
+          "name": "Database Interfaces & Exploration",
+          "value": 71,
+          "topic_id": 14
+        }
+      ]
+    },
+    {
+      "name": "Display Calibration & Tensor Fields",
+      "children": [
+        {
+          "name": "Multi-Projector & Camera Calibration",
+          "value": 137,
+          "topic_id": 5
+        },
+        {
+          "name": "Tensor Field Topology",
+          "value": 51,
+          "topic_id": 21
+        }
+      ]
+    },
+    {
+      "name": "Flow Dynamics & Temporal Analysis",
+      "children": [
+        {
+          "name": "Flow Visualization & CFD",
+          "value": 366,
+          "topic_id": 1
+        },
+        {
+          "name": "Haptic Interfaces & Feedback",
+          "value": 93,
+          "topic_id": 12
+        },
+        {
+          "name": "Time Series & Temporal Patterns",
+          "value": 50,
+          "topic_id": 22
+        }
+      ]
+    },
+    {
+      "name": "Geometry Processing & Analytics",
+      "children": [
+        {
+          "name": "Mesh Generation & Surface Reconstruction",
+          "value": 729,
+          "topic_id": 0
+        },
+        {
+          "name": "Causal Inference & Analytics",
+          "value": 286,
+          "topic_id": 2
+        },
+        {
+          "name": "Text Mining & Topic Modeling",
+          "value": 123,
+          "topic_id": 7
+        },
+        {
+          "name": "Ensemble Simulation & Parameter Space",
+          "value": 114,
+          "topic_id": 8
+        },
+        {
+          "name": "Vascular & Blood Flow Visualization",
+          "value": 54,
+          "topic_id": 19
+        }
+      ]
+    },
+    {
+      "name": "Geospatial & Perceptual Studies",
+      "children": [
+        {
+          "name": "Geospatial & Earth Science",
+          "value": 62,
+          "topic_id": 16
+        },
+        {
+          "name": "Graphics Systems & Frameworks",
+          "value": 58,
+          "topic_id": 17
+        },
+        {
+          "name": "Eye Tracking & Graphical Perception",
+          "value": 45,
+          "topic_id": 26
+        }
+      ]
+    },
+    {
+      "name": "High-Dimensional & Molecular Vis",
+      "children": [
+        {
+          "name": "Parallel Coordinates & Multidimensional Data",
           "value": 186,
           "topic_id": 3
         },
         {
-          "name": "Gene Expression & Genomics",
-          "value": 50,
-          "topic_id": 23
+          "name": "Molecular Dynamics & Chemistry",
+          "value": 110,
+          "topic_id": 11
+        },
+        {
+          "name": "InfoVis & Sensemaking",
+          "value": 91,
+          "topic_id": 13
         }
       ]
     },
     {
-      "name": "Twitter & Social Media",
+      "name": "Multiresolution & Wavelets",
       "children": [
         {
-          "name": "Sensemaking & Provenance",
-          "value": 111,
-          "topic_id": 10
+          "name": "Wavelet Transforms & Multiresolution",
+          "value": 52,
+          "topic_id": 20
         }
       ]
     },
     {
-      "name": "Ultrasound Volume Rendering & Segmentation",
+      "name": "Security & Anomaly Detection",
       "children": [
         {
-          "name": "Narrative Visualization & Storytelling",
+          "name": "Network Security & Anomaly Detection",
           "value": 47,
           "topic_id": 25
         }
       ]
     },
     {
-      "name": "VIS Literature & Bibliometrics",
+      "name": "Topological Data Analysis",
       "children": [
         {
-          "name": "Treemaps & Tree Layouts",
-          "value": 62,
-          "topic_id": 16
+          "name": "Topological Features & Contour Trees",
+          "value": 111,
+          "topic_id": 10
+        }
+      ]
+    },
+    {
+      "name": "Volume Rendering & Hierarchical Data",
+      "children": [
+        {
+          "name": "Hierarchical Data & Treemaps",
+          "value": 134,
+          "topic_id": 6
         },
         {
-          "name": "Immersive Analytics (AR/VR)",
-          "value": 58,
-          "topic_id": 17
+          "name": "Direct Volume Rendering & Ray Tracing",
+          "value": 113,
+          "topic_id": 9
         },
         {
-          "name": "Cell Imaging & Machine Learning",
-          "value": 45,
-          "topic_id": 26
+          "name": "Medical Imaging (MRI & DTI)",
+          "value": 50,
+          "topic_id": 24
+        },
+        {
+          "name": "Bibliometrics & Citation Analysis",
+          "value": 38,
+          "topic_id": 28
         }
       ]
     }
@@ -201,14 +211,16 @@ export const topicsTreemapData = {
 };
 
 export const topicColors = {
-  "Meshes & Volume Rendering": "#1E88E5",
-  "Flow Fields & CFD Visualization": "#00897B",
-  "Dimensionality Reduction & Multivariate Plots": "#8E24AA",
-  "Surgical Planning & Tomography": "#D32F2F",
-  "Diffusion MRI & Tractography": "#3949AB",
-  "VIS Literature & Bibliometrics": "#6D4C41",
-  "Dashboards & Infographics": "#F57C00",
-  "Twitter & Social Media": "#C2185B",
-  "Time Series & Temporal Patterns": "#388E3C",
-  "Ultrasound Volume Rendering & Segmentation": "#455A64"
+  "Geometry Processing & Analytics": "#8E24AA",
+  "Flow Dynamics & Temporal Analysis": "#D32F2F",
+  "High-Dimensional & Molecular Vis": "#388E3C",
+  "Volume Rendering & Hierarchical Data": "#C2185B",
+  "Display Calibration & Tensor Fields": "#FB8C00",
+  "AI & Immersive Interaction": "#00897B",
+  "Topological Data Analysis": "#1E88E5",
+  "Data Management & Interfaces": "#5E35B1",
+  "Geospatial & Perceptual Studies": "#F57C00",
+  "Multiresolution & Wavelets": "#6D4C41",
+  "Advanced Volume Illumination": "#E91E63",
+  "Security & Anomaly Detection": "#455A64"
 };

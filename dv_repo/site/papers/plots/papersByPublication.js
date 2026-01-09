@@ -3,8 +3,26 @@
  * Stacked bar chart showing papers by publication type per year
  */
 
-import { papersByPublicationData, publicationKeys, publicationLabels } from '../../data/papers/papersByPublicationData.js';
-import { renderTitle, renderXAxis, renderYAxis, renderLegend, styleAxes } from '../../assets/js/chart-utils.js';
+import {
+  papersByPublicationData,
+  publicationKeys,
+  publicationLabels
+} from '../../data/papers/papersByPublicationData.js';
+
+import {
+  renderTitle,
+  renderXAxis,
+  renderYAxis,
+  renderLegend,
+  styleAxes,
+  cleanAxes,
+  fillYearGaps,
+  getTickYears,
+  createArrowMarker,
+  darkenHex
+} from '../../assets/js/chart-utils.js';
+
+import { ANIMATION_DURATION, YEAR_RANGE, DEFAULT_Y_TICKS } from '../../assets/js/chart-constants.js';
 import { publicationColors } from '../../assets/js/color-palettes.js';
 
 export const papersByPublicationConfig = {
@@ -12,28 +30,15 @@ export const papersByPublicationConfig = {
   margins: { top: 60, right: 30, bottom: 50, left: 60 },
 
   render: (ctx) => {
-    const { g, d3, tooltip, width, height, data, colors } = ctx;
-    const animationDuration = 800;
+    const { g, d3, tooltip, width, height, data, colors, svg } = ctx;
 
-    // -------------------------
-    // Force domain: 1990–2024
-    // -------------------------
-    const yearMin = 1990;
-    const yearMax = 2024;
-    const years = d3.range(yearMin, yearMax + 1);
+    // Years domain
+    const years = d3.range(YEAR_RANGE.min, YEAR_RANGE.max + 1);
 
-    // Extend/normalize data (missing years -> zeros)
-    const byYear = new Map(data.map(d => [d.year, d]));
-    const fullData = years.map(y => {
-      const row = byYear.get(y);
-      if (row) return row;
+    // Fill missing years with zeros
+    const fullData = fillYearGaps(d3, data, YEAR_RANGE.min, YEAR_RANGE.max, publicationKeys);
 
-      const empty = { year: y };
-      publicationKeys.forEach(k => { empty[k] = 0; });
-      return empty;
-    });
-
-    // Totals per publication type (for legend)
+    // Totals for legend
     const totalsByKey = {};
     publicationKeys.forEach(k => {
       totalsByKey[k] = d3.sum(fullData, d => +d[k] || 0);
@@ -71,11 +76,8 @@ export const papersByPublicationConfig = {
       .domain(publicationKeys)
       .range(publicationKeys.map(k => publicationColors[k]));
 
-    // -------------------------
-    // Axes ticks
-    // -------------------------
-    const xTickYears = years.filter(y => (y % 5 === 0) || y === yearMax); // 1990,1995,...,2024
-    const yTickValues = [0, 40, 80, 120, 160];
+    // Axes
+    const xTickYears = getTickYears(years, 5, YEAR_RANGE.max);
 
     renderXAxis(ctx, xScale, {
       label: 'Year',
@@ -85,15 +87,15 @@ export const papersByPublicationConfig = {
 
     renderYAxis(ctx, yScale, {
       label: 'Total number of papers',
-      tickValues: yTickValues,
+      tickValues: DEFAULT_Y_TICKS,
       tickFormat: d => d
     });
 
     styleAxes(g);
+    cleanAxes(g);
 
-    // Remove axis lines (domain + tick lines)
-    g.selectAll('.x-axis .domain, .y-axis .domain').style('stroke', 'none');
-    g.selectAll('.x-axis .tick line, .y-axis .tick line').style('stroke', 'none');
+    // Arrow marker for annotations
+    createArrowMarker(svg);
 
     // Layers
     const layers = g.selectAll('.layer')
@@ -109,6 +111,8 @@ export const papersByPublicationConfig = {
       .enter()
       .append('rect')
       .attr('class', 'bar')
+      .attr('data-year', d => d.data.year)
+      .attr('data-key', d => d.key)
       .attr('x', d => xScale(d.data.year))
       .attr('y', height)
       .attr('width', xScale.bandwidth())
@@ -117,27 +121,106 @@ export const papersByPublicationConfig = {
 
     // Animate
     bars.transition()
-      .duration(animationDuration)
+      .duration(ANIMATION_DURATION)
       .delay((d, i) => i * 10)
       .attr('y', d => yScale(d[1]))
       .attr('height', d => Math.max(0, yScale(d[0]) - yScale(d[1])));
 
+    // Highlight full bar (2006) + annotation
+    const highlightBarSpec = { year: 2006, label: 'VAST starts', placement: 'center' };
+
+    const yearToHighlight = highlightBarSpec.year;
+    const segs = g.selectAll(`.bar[data-year="${yearToHighlight}"]`);
+
+    if (!segs.empty()) {
+      // Pop all segments for that year
+      segs
+        .raise()
+        .transition()
+        .delay(ANIMATION_DURATION + 150)
+        .duration(400)
+        .attr('fill', function (d) {
+          const base = publicationColors[d.key];
+          return darkenHex(d3, base, 0.30);
+        })
+        .attr('stroke', 'rgba(0,0,0,0.40)')
+        .attr('stroke-width', 2);
+
+      // Arrow target = top of the full stacked bar
+      const row = fullData.find(d => d.year === yearToHighlight);
+      const total = row
+        ? publicationKeys.reduce((s, k) => s + (+row[k] || 0), 0)
+        : 0;
+
+      const xCenter = xScale(yearToHighlight) + xScale.bandwidth() / 2;
+      const targetX = xCenter + 2;
+      const targetY = yScale(total);
+
+      const noteG = g.append('g')
+        .attr('class', `full-bar-note note-${yearToHighlight}`)
+        .attr('opacity', 0)
+        .style('pointer-events', 'none');
+
+      const topY = Math.max(18, targetY - 60);
+      const tx = xCenter;
+      const ty = topY;
+
+      noteG.append('text')
+        .attr('x', tx)
+        .attr('y', ty)
+        .attr('fill', 'rgba(0,0,0,0.78)')
+        .attr('font-size', '12px')
+        .attr('font-weight', '700')
+        .attr('text-anchor', 'middle')
+        .text(highlightBarSpec.label);
+
+      noteG.append('line')
+        .attr('x1', tx)
+        .attr('y1', ty + 6)
+        .attr('x2', targetX)
+        .attr('y2', targetY)
+        .attr('stroke', 'rgba(0,0,0,0.6)')
+        .attr('stroke-width', 1.5)
+        .attr('marker-end', 'url(#arrowhead)');
+
+      noteG.append('circle')
+        .attr('cx', targetX)
+        .attr('cy', targetY)
+        .attr('r', 3)
+        .attr('fill', 'rgba(0,0,0,0.6)');
+
+      noteG.transition()
+        .delay(ANIMATION_DURATION + 260)
+        .duration(450)
+        .attr('opacity', 1);
+
+      noteG.raise();
+    }
+
     // Tooltip
     bars
-      .on('mouseenter', function(event, d) {
+      .on('mouseenter', function (event, d) {
         d3.select(this)
           .transition()
           .duration(150)
           .attr('opacity', 0.8);
 
         const value = d.data[d.key] || 0;
-        tooltip.show(event, `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`, colors);
+        tooltip.show(
+          event,
+          `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`,
+          colors
+        );
       })
-      .on('mousemove', function(event, d) {
+      .on('mousemove', function (event, d) {
         const value = d.data[d.key] || 0;
-        tooltip.show(event, `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`, colors);
+        tooltip.show(
+          event,
+          `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`,
+          colors
+        );
       })
-      .on('mouseleave', function() {
+      .on('mouseleave', function () {
         d3.select(this)
           .transition()
           .duration(150)
@@ -146,7 +229,7 @@ export const papersByPublicationConfig = {
         tooltip.hide();
       });
 
-    // Legend with totals
+    // Legend
     const legendItems = publicationKeys.map(key => ({
       label: `${publicationLabels[key]}: ${totalsByKey[key].toLocaleString()} papers`,
       color: publicationColors[key]

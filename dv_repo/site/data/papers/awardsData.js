@@ -17,7 +17,7 @@ export const awardsData = [
   {
     "type": "Best Case Study",
     "count": 5,
-    "icon": "📊",
+    "icon": "📚",
     "code": "BCS"
   },
   {
@@ -29,7 +29,7 @@ export const awardsData = [
   {
     "type": "Best Application Paper",
     "count": 6,
-    "icon": "🧩",
+    "icon": "🥈",
     "code": "BA"
   }
 ];
@@ -41,4 +41,4 @@ export const awardStats = {
   "papersTotal": 3530
 };
 
-export const pictogramCellValue = 5;
+export const pictogramCellValue = 1;

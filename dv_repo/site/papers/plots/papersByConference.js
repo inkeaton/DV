@@ -4,7 +4,19 @@
  */
 
 import { papersByConferenceData, conferenceKeys, conferenceLabels } from '../../data/papers/papersByConferenceData.js';
-import { renderTitle, renderXAxis, renderYAxis, renderLegend, styleAxes } from '../../assets/js/chart-utils.js';
+import { 
+  renderTitle, 
+  renderXAxis, 
+  renderYAxis, 
+  renderLegend, 
+  styleAxes,
+  cleanAxes,
+  fillYearGaps,
+  getTickYears,
+  createArrowMarker,
+  darkenHex
+} from '../../assets/js/chart-utils.js';
+import { ANIMATION_DURATION, YEAR_RANGE, DEFAULT_Y_TICKS } from '../../assets/js/chart-constants.js';
 import { conferenceColors } from '../../assets/js/color-palettes.js';
 
 export const papersByConferenceConfig = {
@@ -13,24 +25,12 @@ export const papersByConferenceConfig = {
 
   render: (ctx) => {
     const { g, d3, tooltip, width, height, data, colors, svg } = ctx;
-    const animationDuration = 800;
 
-    // -------------------------
-    // Years domain: 1990–2025
-    // -------------------------
-    const yearMin = 1990;
-    const yearMax = 2024;
-    const years = d3.range(yearMin, yearMax + 1);
+    // Years domain
+    const years = d3.range(YEAR_RANGE.min, YEAR_RANGE.max + 1);
 
     // Extend data to include missing years (zeros)
-    const byYear = new Map(data.map(d => [d.year, d]));
-    const fullData = years.map(y => {
-      const row = byYear.get(y);
-      if (row) return row;
-      const empty = { year: y };
-      conferenceKeys.forEach(k => { empty[k] = 0; });
-      return empty;
-    });
+    const fullData = fillYearGaps(d3, data, YEAR_RANGE.min, YEAR_RANGE.max, conferenceKeys);
 
     // Totals for legend
     const totalsByKey = {};
@@ -76,12 +76,8 @@ export const papersByConferenceConfig = {
       .domain(conferenceKeys)
       .range(conferenceKeys.map(k => conferenceColors[k]));
 
-    // -------------------------
-    // Axes (ticks fixed)
-    // -------------------------
-    const xTickYears = years.filter(y => (y % 5 === 0) || y === yearMax);
-
-    const yTickValues = [0, 40, 80, 120, 160];
+    // Axes
+    const xTickYears = getTickYears(years, 5, YEAR_RANGE.max);
 
     renderXAxis(ctx, xScale, {
       label: 'Year',
@@ -91,34 +87,15 @@ export const papersByConferenceConfig = {
 
     renderYAxis(ctx, yScale, {
       label: 'Total number of papers',
-      tickValues: yTickValues,
+      tickValues: DEFAULT_Y_TICKS,
       tickFormat: d => d
     });
 
     styleAxes(g);
+    cleanAxes(g);
 
-    // Remove axis lines and tick lines (keep labels)
-    g.selectAll('.x-axis .domain, .y-axis .domain').style('stroke', 'none');
-    g.selectAll('.x-axis .tick line, .y-axis .tick line').style('stroke', 'none');
-
-    // -------------------------
-    // Arrow marker (shared) - used for InfoVis/VAST annotations
-    // -------------------------
-    const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
-
-    if (defs.select('#arrowhead').empty()) {
-      defs.append('marker')
-        .attr('id', 'arrowhead')
-        .attr('viewBox', '0 0 10 10')
-        .attr('refX', 9)
-        .attr('refY', 5)
-        .attr('markerWidth', 8)
-        .attr('markerHeight', 8)
-        .attr('orient', 'auto-start-reverse')
-        .append('path')
-        .attr('d', 'M 0 0 L 10 5 L 0 10 z')
-        .attr('fill', 'rgba(0,0,0,0.6)');
-    }
+    // Arrow marker for annotations
+    createArrowMarker(svg);
 
     // -------------------------
     // Grey band 2012–2020 (ONLY rectangle, no text, no arrow)
@@ -175,42 +152,30 @@ export const papersByConferenceConfig = {
 
     // Animate bars
     bars.transition()
-      .duration(animationDuration)
+      .duration(ANIMATION_DURATION)
       .delay((d, i) => i * 10)
       .attr('y', d => yScale(d[1]))
       .attr('height', d => Math.max(0, yScale(d[0]) - yScale(d[1])));
 
-    // -------------------------
     // Highlight FIRST APPEARANCE segments
-    // -------------------------
     const highlightSpecs = [
       { year: 1995, key: 'infovis', label: 'InfoVis starts', placement: 'left' },
       { year: 2006, key: 'vast', label: 'VAST starts', placement: 'center' },
       { year: 2012, key: 'scivis', label: 'SciVis starts', placement: 'center' }
     ];
 
-
-    function darkenHex(hex, factor = 0.28) {
-      const c = d3.color(hex);
-      if (!c) return hex;
-      const r = Math.round(c.r * (1 - factor));
-      const g = Math.round(c.g * (1 - factor));
-      const b = Math.round(c.b * (1 - factor));
-      return d3.rgb(r, g, b).formatHex();
-    }
-
     highlightSpecs.forEach(spec => {
       const sel = g.selectAll(`.bar[data-year="${spec.year}"][data-key="${spec.key}"]`);
       if (sel.empty()) return;
 
       const baseColor = conferenceColors[spec.key];
-      const strongColor = darkenHex(baseColor, 0.30);
+      const strongColor = darkenHex(d3, baseColor, 0.30);
 
       // Pop the segment
       sel
         .raise()
         .transition()
-        .delay(animationDuration + 150)
+        .delay(ANIMATION_DURATION + 150)
         .duration(400)
         .attr('fill', strongColor)
         .attr('stroke', 'rgba(0,0,0,0.40)')
@@ -271,7 +236,7 @@ export const papersByConferenceConfig = {
           .attr('fill', 'rgba(0,0,0,0.6)');
 
         noteG.transition()
-          .delay(animationDuration + 260)
+          .delay(ANIMATION_DURATION + 260)
           .duration(450)
           .attr('opacity', 1);
 
