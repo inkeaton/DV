@@ -192,6 +192,9 @@ export const institutionsMapConfig = {
             .attr('dy', 0)
             .text(d.name);
 
+          // Calculate percentage of total papers
+          const pct = ((d.papers / institutionsMapStats.totalPapers) * 100).toFixed(1);
+          
           if (d.isCluster) {
             const detailSpan = text.append('tspan')
               .attr('x', x)
@@ -202,6 +205,7 @@ export const institutionsMapConfig = {
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
           } else {
             const detailSpan = text.append('tspan')
               .attr('x', x)
@@ -210,6 +214,7 @@ export const institutionsMapConfig = {
               .attr('fill', '#666');
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
           }
 
           const bbox = text.node().getBBox();
@@ -266,6 +271,9 @@ export const institutionsMapConfig = {
             .attr('dy', 0)
             .text(d.name);
 
+          // Calculate percentage of total papers
+          const pct = ((d.papers / institutionsMapStats.totalPapers) * 100).toFixed(1);
+          
           if (d.isCluster) {
             const detailSpan = text.append('tspan')
               .attr('x', x)
@@ -276,6 +284,7 @@ export const institutionsMapConfig = {
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
           } else {
             const detailSpan = text.append('tspan')
               .attr('x', x)
@@ -284,6 +293,7 @@ export const institutionsMapConfig = {
               .attr('fill', '#666');
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
           }
 
           const bbox = text.node().getBBox();
@@ -341,7 +351,7 @@ export const institutionsMapConfig = {
     // Legend - only show regions present in data
     const legend = g.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${width - 150}, 20)`)
+      .attr('transform', `translate(10, ${height - 120})`)
       .attr('opacity', 0);
 
     // Filter to only regions present in data
@@ -355,16 +365,18 @@ export const institutionsMapConfig = {
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(0, ${i * 22})`);
 
-    legendItems.append('circle')
-      .attr('cx', 6)
-      .attr('cy', 0)
-      .attr('r', 6)
+    legendItems.append('rect')
+      .attr('x', 0)
+      .attr('y', -8)
+      .attr('width', 16)
+      .attr('height', 16)
       .attr('fill', d => d[1])
       .attr('stroke', '#fff')
-      .attr('stroke-width', 1.5);
+      .attr('stroke-width', 1.5)
+      .attr('rx', 3);
 
     legendItems.append('text')
-      .attr('x', 18)
+      .attr('x', 22)
       .attr('y', 4)
       .attr('font-size', '11px')
       .attr('fill', '#333')
@@ -414,41 +426,104 @@ export const institutionsMapConfig = {
     statsBox.append('rect')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 180)
-      .attr('height', 85)
+      .attr('width', 320)
+      .attr('height', 135)
       .attr('fill', '#fff')
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
       .attr('rx', 5);
 
     const statsText = statsBox.append('text')
-      .attr('x', 10)
+      .attr('x', 12)
       .attr('y', 22)
       .attr('font-size', '11px')
       .attr('fill', '#333');
 
     statsText.append('tspan')
-      .attr('x', 10)
+      .attr('x', 12)
       .attr('dy', 0)
       .attr('font-weight', 'bold')
-      .text(`${institutionsMapStats.totalInstitutions} Institutions`);
+      .attr('font-size', '13px')
+      .text(`${institutionsMapStats.totalInstitutions} institutions`);
 
     statsText.append('tspan')
-      .attr('x', 10)
+      .attr('x', 12)
       .attr('dy', '1.4em')
-      .text(`${institutionsMapStats.totalPapers.toLocaleString()} Total Papers`);
+      .attr('font-size', '11px')
+      .text(`${institutionsMapStats.totalPapers.toLocaleString()} total papers`);
 
-    statsText.append('tspan')
-      .attr('x', 10)
-      .attr('dy', '1.4em')
+    // Row 1: North America, Europe, Asia
+    const row1Y = 58;
+    const row1 = statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', row1Y)
+      .attr('font-size', '10px');
+
+    row1.append('tspan').attr('fill', regionColors['North America']).attr('font-weight', 'bold').text('North America');
+    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['North America'] || 0}  `);
+    row1.append('tspan').attr('fill', regionColors['Europe']).text('●');
+    row1.append('tspan').attr('fill', '#666').text('  ');
+    row1.append('tspan').attr('fill', regionColors['Europe']).attr('font-weight', 'bold').text('Europe');
+    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Europe'] || 0}  `);
+    row1.append('tspan').attr('fill', regionColors['Asia']).text('●');
+    row1.append('tspan').attr('fill', '#666').text('  ');
+    row1.append('tspan').attr('fill', regionColors['Asia']).attr('font-weight', 'bold').text('Asia');
+    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Asia'] || 0}`);
+
+    // Row 2: Oceania, South America, Africa
+    const row2Y = 75;
+    const row2 = statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', row2Y)
+      .attr('font-size', '10px');
+
+    row2.append('tspan').attr('fill', regionColors['Oceania']).attr('font-weight', 'bold').text('Oceania');
+    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Oceania'] || 0}  `);
+    row2.append('tspan').attr('fill', regionColors['South America']).text('●');
+    row2.append('tspan').attr('fill', '#666').text('  ');
+    row2.append('tspan').attr('fill', regionColors['South America']).attr('font-weight', 'bold').text('South America');
+    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['South America'] || 0}  `);
+    row2.append('tspan').attr('fill', regionColors['Africa']).text('●');
+    row2.append('tspan').attr('fill', '#666').text('  ');
+    row2.append('tspan').attr('fill', regionColors['Africa']).attr('font-weight', 'bold').text('Africa');
+    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Africa'] || 0}`);
+
+    // Divider line
+    statsBox.append('line')
+      .attr('x1', 12)
+      .attr('y1', 92)
+      .attr('x2', 308)
+      .attr('y2', 92)
+      .attr('stroke', '#e5e5e5')
+      .attr('stroke-width', 1);
+
+    // Top Institution label
+    statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', 107)
+      .attr('font-size', '9px')
       .attr('fill', '#666')
-      .text(`Top: ${institutionsMapStats.topInstitution}`);
+      .text('Top Institution');
 
-    statsText.append('tspan')
-      .attr('x', 10)
-      .attr('dy', '1.4em')
-      .attr('fill', '#666')
-      .text(`(${institutionsMapStats.topInstitutionPapers} papers)`);
+    // Top Institution value
+    const topInstText = statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', 123)
+      .attr('font-size', '11px');
+
+    topInstText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', regionColors['North America'])  // Utah is in North America
+      .text(`${institutionsMapStats.topInstitution}`);
+
+    topInstText.append('tspan')
+      .attr('fill', '#333')
+      .text(' | ');
+
+    topInstText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', regionColors['North America'])
+      .text(`${institutionsMapStats.topInstitutionPapers} papers`);
 
     // Animate bubbles
     bubbles

@@ -71,10 +71,17 @@ export const institutionsCollaborationChordConfig = {
     // Ribbon hover effects - show full names and collaboration count
     ribbons
       .on('mouseenter', function(event, d) {
+        // Check if this is a cross-regional collaboration
+        const region1 = data.institutionRegions[d.source.index];
+        const region2 = data.institutionRegions[d.target.index];
+        const isCrossRegional = region1 !== region2;
+        
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('fill-opacity', 0.8);
+          .attr('fill-opacity', 0.8)
+          .attr('stroke', isCrossRegional ? '#ef4444' : colorScale(region1))  // Red for cross-regional, region color for same-region
+          .attr('stroke-width', 2);
 
         // Dim other ribbons
         ribbons
@@ -86,6 +93,16 @@ export const institutionsCollaborationChordConfig = {
         // Show label with full names
         const fullName1 = data.institutionsFull ? data.institutionsFull[d.source.index] : data.institutions[d.source.index];
         const fullName2 = data.institutionsFull ? data.institutionsFull[d.target.index] : data.institutions[d.target.index];
+        const shortName1 = data.institutions[d.source.index];
+        const shortName2 = data.institutions[d.target.index];
+        
+        // Calculate each institution's TOTAL collaborations (sum of their row in matrix)
+        const inst1TotalCollabs = data.matrix[d.source.index].reduce((sum, val) => sum + val, 0);
+        const inst2TotalCollabs = data.matrix[d.target.index].reduce((sum, val) => sum + val, 0);
+        
+        // Bidirectional percentages: this collaboration / each institution's own total
+        const inst1Pct = ((d.source.value / inst1TotalCollabs) * 100).toFixed(0);
+        const inst2Pct = ((d.source.value / inst2TotalCollabs) * 100).toFixed(0);
         
         const label = g.append('g').attr('class', 'hover-label');
         const text = label.append('text')
@@ -95,8 +112,20 @@ export const institutionsCollaborationChordConfig = {
           .attr('font-size', '13px')
           .attr('fill', '#333');
         
+        // First line: names and collaboration count
         text.append('tspan').text(`${fullName1} ↔ ${fullName2} | `);
-        text.append('tspan').attr('font-weight', 'bold').text(`${d.source.value} papers`);
+        text.append('tspan').attr('font-weight', 'bold').text(`${d.source.value} papers | `);
+        
+        // Second line: bidirectional percentages
+        text.append('tspan')
+          .attr('x', width / 2)
+          .attr('dy', '1.3em')
+          .attr('font-size', '12px')
+          .attr('fill', '#555');
+        text.append('tspan').attr('font-weight', 'bold').text(`${shortName1}`);
+        text.append('tspan').attr('font-weight', 'normal').text(` (${inst1Pct}%) ↔ `);
+        text.append('tspan').attr('font-weight', 'bold').text(`${shortName2}`);
+        text.append('tspan').attr('font-weight', 'normal').text(` (${inst2Pct}%)`);
 
         const bbox = text.node().getBBox();
         label.insert('rect', 'text')
@@ -105,7 +134,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('width', bbox.width + 16)
           .attr('height', bbox.height + 6)
           .attr('fill', '#fff')
-          .attr('stroke', colors.primary)
+          .attr('stroke', isCrossRegional ? '#ef4444' : colorScale(region1))  // Red for cross-regional, region color for same-region
           .attr('stroke-width', 2)
           .attr('rx', 4);
       })
@@ -113,7 +142,9 @@ export const institutionsCollaborationChordConfig = {
         ribbons
           .transition()
           .duration(200)
-          .attr('fill-opacity', 0.5);
+          .attr('fill-opacity', 0.5)
+          .attr('stroke', 'none')
+          .attr('stroke-width', 0);
 
         g.selectAll('.hover-label').remove();
       });
@@ -157,6 +188,11 @@ export const institutionsCollaborationChordConfig = {
         // Calculate total collaborations for this institution
         const totalCollabs = data.matrix[d.index].reduce((sum, val) => sum + val, 0);
         
+        // Calculate percentage: this institution's collaborations / total collaborations (x2 because matrix is symmetric)
+        // totalCollaborations in stats is the sum of upper triangle, but each institution counts both directions
+        const allCollabs = institutionsCollaborationStats.totalCollaborations * 2; // Total for all institutions
+        const collabPct = ((totalCollabs / allCollabs) * 100).toFixed(1);
+        
         const label = g.append('g').attr('class', 'hover-label');
         
         const text = label.append('text')
@@ -167,12 +203,11 @@ export const institutionsCollaborationChordConfig = {
           .attr('fill', '#333');
         
         text.append('tspan').text(`${fullName} | `);
+        text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
+        text.append('tspan').text(` (${collabPct}%)`);
         if (totalPapers !== null) {
-          text.append('tspan').attr('font-weight', 'bold').text(`${totalPapers} papers`);
           text.append('tspan').text(` | `);
-          text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
-        } else {
-          text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
+          text.append('tspan').attr('font-weight', 'bold').text(`${totalPapers} papers`);
         }
 
         const bbox = text.node().getBBox();
@@ -250,44 +285,95 @@ export const institutionsCollaborationChordConfig = {
       .attr('fill', '#333')
       .text(d => d[0]);
 
-    // Stats annotation
+    // Stats annotation (top left)
     const stats = g.append('g')
       .attr('class', 'stats')
-      .attr('transform', `translate(${width - 160}, ${height - 80})`)
+      .attr('transform', `translate(10, 10)`)
       .attr('opacity', 0);
 
     stats.append('rect')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 150)
-      .attr('height', 70)
+      .attr('width', 175)
+      .attr('height', 135)
       .attr('fill', '#fff')
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
       .attr('rx', 5);
 
     const statsText = stats.append('text')
-      .attr('x', 10)
-      .attr('y', 20)
+      .attr('x', 12)
+      .attr('y', 22)
       .attr('font-size', '11px')
       .attr('fill', '#333');
 
+    // Total Institutions
     statsText.append('tspan')
-      .attr('x', 10)
+      .attr('x', 12)
       .attr('dy', 0)
       .attr('font-weight', 'bold')
-      .text(`${institutionsCollaborationStats.totalCollaborations} Total`);
+      .attr('font-size', '13px')
+      .text(`${institutionsCollaborationStats.totalInstitutions} institutions`);
 
+    // Total Collaborations
     statsText.append('tspan')
-      .attr('x', 10)
-      .attr('dy', '1.4em')
-      .text(`Avg: ${institutionsCollaborationStats.avgCollaborationsPerInstitution.toFixed(1)}/institution`);
+      .attr('x', 12)
+      .attr('dy', '1.5em')
+      .attr('font-size', '11px')
+      .text(`${institutionsCollaborationStats.totalCollaborations} collaborations`);
 
+    // Average per institution
     statsText.append('tspan')
-      .attr('x', 10)
-      .attr('dy', '1.4em')
+      .attr('x', 12)
+      .attr('dy', '1.3em')
+      .attr('font-size', '10px')
       .attr('fill', '#666')
+      .text(`~${institutionsCollaborationStats.avgCollaborationsPerInstitution.toFixed(0)} per institution`);
+
+    // Cross-regional percentage
+    statsText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', '1.3em')
+      .attr('font-size', '10px')
+      .attr('fill', '#ef4444')  // Red color for cross-regional
       .text(`${(institutionsCollaborationStats.crossRegionalRate * 100).toFixed(0)}% cross-regional`);
+
+    // Divider line
+    stats.append('line')
+      .attr('x1', 12)
+      .attr('y1', 83)
+      .attr('x2', 163)
+      .attr('y2', 83)
+      .attr('stroke', '#e5e5e5')
+      .attr('stroke-width', 1);
+
+    // Strongest Pair label
+    stats.append('text')
+      .attr('x', 12)
+      .attr('y', 97)
+      .attr('font-size', '9px')
+      .attr('fill', '#666')
+      .text('Strongest Pair');
+
+    // Strongest Pair value - highlighted
+    const strongestPairText = stats.append('text')
+      .attr('x', 12)
+      .attr('y', 115)
+      .attr('font-size', '11px');
+
+    strongestPairText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#f59e0b')  // Gold/amber color for highlight
+      .text(`${institutionsCollaborationStats.strongestPair.inst1} ↔ ${institutionsCollaborationStats.strongestPair.inst2}`);
+
+    strongestPairText.append('tspan')
+      .attr('fill', '#333')
+      .text(` | `);
+
+    strongestPairText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#f59e0b')
+      .text(`${institutionsCollaborationStats.strongestPair.papers} papers`);
 
     // Animate arcs
     arcs

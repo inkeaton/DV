@@ -8,7 +8,7 @@ import { renderTitle } from '../../assets/js/chart-utils.js';
 
 export const institutionsTopicsSankeyConfig = {
   data: institutionsTopicsData,
-  margins: { top: 60, right: 270, bottom: 60, left: 270 },
+  margins: { top: 100, right: 180, bottom: 100, left: 220 },
 
   render: async (ctx) => {
     const { g, d3, width, height, data, colors } = ctx;
@@ -24,10 +24,10 @@ export const institutionsTopicsSankeyConfig = {
     // nodeSort(null) preserves input order (sorted by region in data)
     const sankey = d3Sankey.sankey()
       .nodeId(d => d.id)
-      .nodeWidth(20)
-      .nodePadding(15)
+      .nodeWidth(16)
+      .nodePadding(10)
       .nodeSort(null)  // Preserve order from data (grouped by region)
-      .extent([[0, 0], [width, height]]);
+      .extent([[0, 0], [width * 0.95, height * 0.9]]);
 
     // Generate Sankey layout
     const sankeyData = sankey({
@@ -80,8 +80,13 @@ export const institutionsTopicsSankeyConfig = {
           .attr('font-size', '13px')
           .attr('fill', '#333');
         
+        // Calculate percentage of this link relative to source institution's total
+        const sourceTotalPapers = sourceNode.totalPapers || 1;
+        const linkPct = ((d.value / sourceTotalPapers) * 100).toFixed(1);
+        
         text.append('tspan').text(`${sourceNode.id} → ${targetNode.id} | `);
         text.append('tspan').attr('font-weight', 'bold').text(`${d.value} papers`);
+        text.append('tspan').text(` (${linkPct}%)`);
 
         const bbox = text.node().getBBox();
         label.insert('rect', 'text')
@@ -146,6 +151,11 @@ export const institutionsTopicsSankeyConfig = {
         
         const displayName = d.type === 'institution' ? d.fullName : d.category;
         
+        // Calculate total papers for percentage
+        const totalInstitutionPapers = data.nodes
+          .filter(n => n.type === 'institution')
+          .reduce((sum, n) => sum + n.totalPapers, 0);
+        
         const text = label.append('text')
           .attr('x', width / 2)
           .attr('y', -25)
@@ -155,6 +165,14 @@ export const institutionsTopicsSankeyConfig = {
         
         text.append('tspan').text(`${displayName} | `);
         text.append('tspan').attr('font-weight', 'bold').text(`${d.totalPapers} papers`);
+        
+        // Add percentage for both institutions and topics
+        if (d.type === 'institution') {
+          const instPct = ((d.totalPapers / totalInstitutionPapers) * 100).toFixed(1);
+          text.append('tspan').text(` (${instPct}%)`);
+        } else if (d.type === 'topic' && d.percentage !== undefined) {
+          text.append('tspan').text(` (${d.percentage}%)`);
+        }
 
         const bbox = text.node().getBBox();
         label.insert('rect', 'text')
@@ -181,21 +199,47 @@ export const institutionsTopicsSankeyConfig = {
         g.selectAll('.hover-label').remove();
       });
 
+    // Helper function to split long labels into two lines
+    function wrapLabel(text) {
+      const words = text.split(/[\s&]+/);
+      if (words.length <= 2 || text.length <= 12) {
+        return [text];
+      }
+      // Split into two lines
+      const midpoint = Math.ceil(words.length / 2);
+      const line1 = words.slice(0, midpoint).join(' ');
+      const line2 = words.slice(midpoint).join(' ');
+      return [line1, line2];
+    }
+
     // Node labels
     const labels = g.append('g')
       .attr('class', 'labels')
-      .selectAll('text')
+      .selectAll('g')
       .data(sankeyData.nodes)
-      .join('text')
-      .attr('x', d => d.type === 'institution' ? d.x0 - 20 : d.x1 + 20)
-      .attr('y', d => (d.y0 + d.y1) / 2)
-      .attr('dy', '0.35em')
-      .attr('text-anchor', d => d.type === 'institution' ? 'end' : 'start')
-      .attr('font-size', '11px')
-      .attr('font-weight', '500')
-      .attr('fill', '#333')
-      .attr('opacity', 0)
-      .text(d => d.id);
+      .join('g')
+      .attr('class', 'node-label')
+      .attr('transform', d => `translate(${d.type === 'institution' ? d.x0 - 8 : d.x1 + 8}, ${(d.y0 + d.y1) / 2})`)
+      .attr('opacity', 0);
+
+    labels.each(function(d) {
+      const label = d3.select(this);
+      const lines = d.type === 'topic' ? wrapLabel(d.id) : [d.id];
+      const lineHeight = 12;
+      const startY = -(lines.length - 1) * lineHeight / 2;
+      
+      lines.forEach((line, i) => {
+        label.append('text')
+          .attr('x', 0)
+          .attr('y', startY + i * lineHeight)
+          .attr('dy', '0.35em')
+          .attr('text-anchor', d.type === 'institution' ? 'end' : 'start')
+          .attr('font-size', '10px')
+          .attr('font-weight', '500')
+          .attr('fill', '#333')
+          .text(line);
+      });
+    });
 
     // Section labels
     const sectionLabels = g.append('g').attr('class', 'section-labels').attr('opacity', 0);
@@ -217,6 +261,138 @@ export const institutionsTopicsSankeyConfig = {
       .attr('font-weight', 'bold')
       .attr('fill', '#666')
       .text('Research Topics');
+
+    // Legend - Part of the World (bottom left)
+    const legend = g.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(-210, ${height * 0.9 + 25})`)
+      .attr('opacity', 0);
+
+    // Filter to only regions present in data
+    const presentRegions = new Set(data.nodes.filter(n => n.type === 'institution').map(n => n.region));
+    const legendData = Object.entries(regionColors)
+      .filter(([region]) => presentRegions.has(region));
+
+    const legendItems = legend.selectAll('.legend-item')
+      .data(legendData)
+      .join('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d, i) => `translate(0, ${i * 24})`);
+
+    legendItems.append('rect')
+      .attr('x', 0)
+      .attr('y', -8)
+      .attr('width', 16)
+      .attr('height', 16)
+      .attr('fill', d => d[1])
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.5)
+      .attr('rx', 3);
+
+    legendItems.append('text')
+      .attr('x', 24)
+      .attr('y', 4)
+      .attr('font-size', '12px')
+      .attr('fill', '#333')
+      .text(d => d[0]);
+
+    // Stats box - Info (top left)
+    const statsBox = g.append('g')
+      .attr('class', 'stats-box')
+      .attr('transform', `translate(-210, -90)`)
+      .attr('opacity', 0);
+
+    statsBox.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 350)
+      .attr('height', 165)
+      .attr('fill', '#fff')
+      .attr('stroke', colors.primary)
+      .attr('stroke-width', 2)
+      .attr('rx', 5);
+
+    const statsText = statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', 22)
+      .attr('font-size', '11px')
+      .attr('fill', '#333');
+
+    // Total Institutions
+    statsText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', 0)
+      .attr('font-weight', 'bold')
+      .attr('font-size', '13px')
+      .text(`${institutionsTopicsStats.topInstitutions} institutions`);
+
+    // Total Topics
+    statsText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', '1.5em')
+      .attr('font-size', '11px')
+      .text(`${institutionsTopicsStats.topTopics} topics`);
+
+    // Total Connections
+    statsText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', '1.3em')
+      .attr('font-size', '10px')
+      .attr('fill', '#666')
+      .text(`${institutionsTopicsStats.totalConnections} connections`);
+
+    // Topics per institution (average)
+    const topicsPerInst = (institutionsTopicsStats.totalConnections / institutionsTopicsStats.topInstitutions).toFixed(1);
+    statsText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', '1.3em')
+      .attr('font-size', '10px')
+      .attr('fill', '#666')
+      .text(`~${topicsPerInst} topics per inst.`);
+
+    // Divider line
+    statsBox.append('line')
+      .attr('x1', 12)
+      .attr('y1', 95)
+      .attr('x2', 163)
+      .attr('y2', 95)
+      .attr('stroke', '#e5e5e5')
+      .attr('stroke-width', 1);
+
+    // Strongest Connection label
+    statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', 112)
+      .attr('font-size', '9px')
+      .attr('fill', '#666')
+      .text('Strongest Connection');
+
+    // Get region color for the strongest connection institution
+    const strongestInst = data.nodes.find(n => n.id === institutionsTopicsStats.strongestConnection.institution);
+    const strongestRegionColor = strongestInst ? regionColors[strongestInst.region] : '#3b82f6';
+    
+    // Get full institution name
+    const strongestFullName = strongestInst ? strongestInst.fullName : institutionsTopicsStats.strongestConnection.institution;
+
+    // Strongest Connection value - highlighted (same style as map top institution)
+    const strongestText = statsBox.append('text')
+      .attr('x', 12)
+      .attr('y', 130)
+      .attr('font-size', '10px');
+
+    strongestText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', strongestRegionColor)
+      .text(`${strongestFullName}`);
+
+    strongestText.append('tspan')
+      .attr('fill', '#333')
+      .text(' | ');
+
+    strongestText.append('tspan')
+      .attr('font-weight', 'bold')
+      .attr('fill', strongestRegionColor)
+      .text(`${institutionsTopicsStats.strongestConnection.papers} ${institutionsTopicsStats.strongestConnection.topic}`);
 
     // Animate links
     links
@@ -240,10 +416,31 @@ export const institutionsTopicsSankeyConfig = {
       .duration(400)
       .attr('opacity', 1);
 
+    // Also animate the parent labels container
+    g.select('.labels')
+      .transition()
+      .delay(animationDuration)
+      .duration(400)
+      .attr('opacity', 1);
+
     // Animate section labels
     sectionLabels
       .transition()
       .delay(animationDuration)
+      .duration(400)
+      .attr('opacity', 1);
+
+    // Animate legend
+    legend
+      .transition()
+      .delay(animationDuration + 200)
+      .duration(400)
+      .attr('opacity', 1);
+
+    // Animate stats box
+    statsBox
+      .transition()
+      .delay(animationDuration + 300)
       .duration(400)
       .attr('opacity', 1);
   }

@@ -33,7 +33,7 @@ export const institutionsTopicsData = {
       "region": "North America"
     },
     {
-      "id": "The Ohio State",
+      "id": "OSU",
       "type": "institution",
       "fullName": "The Ohio State University",
       "totalPapers": 77,
@@ -51,27 +51,6 @@ export const institutionsTopicsData = {
       "type": "institution",
       "fullName": "Purdue University West Lafayette",
       "totalPapers": 62,
-      "region": "North America"
-    },
-    {
-      "id": "LLNL",
-      "type": "institution",
-      "fullName": "Lawrence Livermore National Laboratory",
-      "totalPapers": 61,
-      "region": "North America"
-    },
-    {
-      "id": "Harvard",
-      "type": "institution",
-      "fullName": "Harvard University",
-      "totalPapers": 58,
-      "region": "North America"
-    },
-    {
-      "id": "Stanford",
-      "type": "institution",
-      "fullName": "Stanford University",
-      "totalPapers": 58,
       "region": "North America"
     },
     {
@@ -96,7 +75,7 @@ export const institutionsTopicsData = {
       "region": "Europe"
     },
     {
-      "id": "INRIA (FR))",
+      "id": "INRIA (FR)",
       "type": "institution",
       "fullName": "Institut national de recherche en informatique et en automatique",
       "totalPapers": 75,
@@ -107,20 +86,6 @@ export const institutionsTopicsData = {
       "type": "institution",
       "fullName": "VRVis GmbH (Austria)",
       "totalPapers": 74,
-      "region": "Europe"
-    },
-    {
-      "id": "TU/e",
-      "type": "institution",
-      "fullName": "Eindhoven University of Technology",
-      "totalPapers": 58,
-      "region": "Europe"
-    },
-    {
-      "id": "CNRS (FR)",
-      "type": "institution",
-      "fullName": "Centre National de la Recherche Scientifique",
-      "totalPapers": 53,
       "region": "Europe"
     },
     {
@@ -145,76 +110,88 @@ export const institutionsTopicsData = {
       "region": "Asia"
     },
     {
-      "id": "Causality & Temporal Analysis",
+      "id": "Volume Rendering & Immersive Tech",
       "type": "topic",
-      "category": "Causality & Temporal Analysis",
-      "totalPapers": 33
-    },
-    {
-      "id": "Geospatial & Seismic Vis",
-      "type": "topic",
-      "category": "Geospatial & Seismic Vis",
-      "totalPapers": 18
+      "category": "Volume Rendering & Immersive Tech",
+      "totalPapers": 459,
+      "percentage": 33.0
     },
     {
       "id": "Graph Visualization & Text Mining",
       "type": "topic",
       "category": "Graph Visualization & Text Mining",
-      "totalPapers": 262
-    },
-    {
-      "id": "High-Dimensional Data Analysis",
-      "type": "topic",
-      "category": "High-Dimensional Data Analysis",
-      "totalPapers": 210
-    },
-    {
-      "id": "Imaging & Display Technology",
-      "type": "topic",
-      "category": "Imaging & Display Technology",
-      "totalPapers": 86
-    },
-    {
-      "id": "Molecular Simulation",
-      "type": "topic",
-      "category": "Molecular Simulation",
-      "totalPapers": 24
-    },
-    {
-      "id": "Network Security & Anomaltic",
-      "type": "topic",
-      "category": "Network Security & Anomaltic",
-      "totalPapers": 35
-    },
-    {
-      "id": "Perception & Uncertainty Vis",
-      "type": "topic",
-      "category": "Perception & Uncertainty Vis",
-      "totalPapers": 66
-    },
-    {
-      "id": "Social & Biomedical Analytics",
-      "type": "topic",
-      "category": "Social & Biomedical Analytics",
-      "totalPapers": 80
-    },
-    {
-      "id": "Topological Data Analysis",
-      "type": "topic",
-      "category": "Topological Data Analysis",
-      "totalPapers": 66
+      "totalPapers": 223,
+      "percentage": 16.1
     },
     {
       "id": "Visual Programming & ML",
       "type": "topic",
       "category": "Visual Programming & ML",
-      "totalPapers": 252
+      "totalPapers": 198,
+      "percentage": 14.3
     },
     {
-      "id": "Volume Rendering & Immersive Tech",
+      "id": "High-Dimensional Data Analysis",
       "type": "topic",
-      "category": "Volume Rendering & Immersive Tech",
-      "totalPapers": 542
+      "category": "High-Dimensional Data Analysis",
+      "totalPapers": 191,
+      "percentage": 13.8
+    },
+    {
+      "id": "Social & Biomedical Analytics",
+      "type": "topic",
+      "category": "Social & Biomedical Analytics",
+      "totalPapers": 62,
+      "percentage": 4.5
+    },
+    {
+      "id": "Imaging & Display Technology",
+      "type": "topic",
+      "category": "Imaging & Display Technology",
+      "totalPapers": 61,
+      "percentage": 4.4
+    },
+    {
+      "id": "Perception & Uncertainty Vis",
+      "type": "topic",
+      "category": "Perception & Uncertainty Vis",
+      "totalPapers": 54,
+      "percentage": 3.9
+    },
+    {
+      "id": "Topological Data Analysis",
+      "type": "topic",
+      "category": "Topological Data Analysis",
+      "totalPapers": 39,
+      "percentage": 2.8
+    },
+    {
+      "id": "Network Security & Anomaltic",
+      "type": "topic",
+      "category": "Network Security & Anomaltic",
+      "totalPapers": 32,
+      "percentage": 2.3
+    },
+    {
+      "id": "Causality & Temporal Analysis",
+      "type": "topic",
+      "category": "Causality & Temporal Analysis",
+      "totalPapers": 31,
+      "percentage": 2.2
+    },
+    {
+      "id": "Molecular Simulation",
+      "type": "topic",
+      "category": "Molecular Simulation",
+      "totalPapers": 21,
+      "percentage": 1.5
+    },
+    {
+      "id": "Geospatial & Seismic Vis",
+      "type": "topic",
+      "category": "Geospatial & Seismic Vis",
+      "totalPapers": 18,
+      "percentage": 1.3
     }
   ],
   "links": [
@@ -264,71 +241,6 @@ export const institutionsTopicsData = {
       "value": 42
     },
     {
-      "source": "LLNL",
-      "target": "High-Dimensional Data Analysis",
-      "value": 2
-    },
-    {
-      "source": "LLNL",
-      "target": "Imaging & Display Technology",
-      "value": 2
-    },
-    {
-      "source": "LLNL",
-      "target": "Topological Data Analysis",
-      "value": 15
-    },
-    {
-      "source": "LLNL",
-      "target": "Visual Programming & ML",
-      "value": 18
-    },
-    {
-      "source": "LLNL",
-      "target": "Volume Rendering & Immersive Tech",
-      "value": 23
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Graph Visualization & Text Mining",
-      "value": 8
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "High-Dimensional Data Analysis",
-      "value": 2
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Molecular Simulation",
-      "value": 2
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Perception & Uncertainty Vis",
-      "value": 4
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Social & Biomedical Analytics",
-      "value": 2
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Topological Data Analysis",
-      "value": 10
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Visual Programming & ML",
-      "value": 6
-    },
-    {
-      "source": "CNRS (FR)",
-      "target": "Volume Rendering & Immersive Tech",
-      "value": 17
-    },
-    {
       "source": "Georgia Tech",
       "target": "Causality & Temporal Analysis",
       "value": 5
@@ -374,42 +286,42 @@ export const institutionsTopicsData = {
       "value": 24
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Causality & Temporal Analysis",
       "value": 2
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Geospatial & Seismic Vis",
       "value": 3
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Graph Visualization & Text Mining",
       "value": 13
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "High-Dimensional Data Analysis",
       "value": 8
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Perception & Uncertainty Vis",
       "value": 10
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Social & Biomedical Analytics",
       "value": 5
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Visual Programming & ML",
       "value": 5
     },
     {
-      "source": "INRIA (FR))",
+      "source": "INRIA (FR)",
       "target": "Volume Rendering & Immersive Tech",
       "value": 29
     },
@@ -457,41 +369,6 @@ export const institutionsTopicsData = {
       "source": "VRVis (AT)",
       "target": "Volume Rendering & Immersive Tech",
       "value": 24
-    },
-    {
-      "source": "Harvard",
-      "target": "Graph Visualization & Text Mining",
-      "value": 10
-    },
-    {
-      "source": "Harvard",
-      "target": "High-Dimensional Data Analysis",
-      "value": 2
-    },
-    {
-      "source": "Harvard",
-      "target": "Imaging & Display Technology",
-      "value": 16
-    },
-    {
-      "source": "Harvard",
-      "target": "Perception & Uncertainty Vis",
-      "value": 2
-    },
-    {
-      "source": "Harvard",
-      "target": "Social & Biomedical Analytics",
-      "value": 11
-    },
-    {
-      "source": "Harvard",
-      "target": "Visual Programming & ML",
-      "value": 5
-    },
-    {
-      "source": "Harvard",
-      "target": "Volume Rendering & Immersive Tech",
-      "value": 10
     },
     {
       "source": "TU Wien",
@@ -729,42 +606,42 @@ export const institutionsTopicsData = {
       "value": 57
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Graph Visualization & Text Mining",
       "value": 5
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "High-Dimensional Data Analysis",
       "value": 16
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Imaging & Display Technology",
       "value": 2
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Network Security & Anomaltic",
       "value": 2
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Social & Biomedical Analytics",
       "value": 3
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Topological Data Analysis",
       "value": 5
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Visual Programming & ML",
       "value": 7
     },
     {
-      "source": "The Ohio State",
+      "source": "OSU",
       "target": "Volume Rendering & Immersive Tech",
       "value": 34
     },
@@ -879,36 +756,6 @@ export const institutionsTopicsData = {
       "value": 9
     },
     {
-      "source": "TU/e",
-      "target": "Graph Visualization & Text Mining",
-      "value": 15
-    },
-    {
-      "source": "TU/e",
-      "target": "High-Dimensional Data Analysis",
-      "value": 9
-    },
-    {
-      "source": "TU/e",
-      "target": "Imaging & Display Technology",
-      "value": 2
-    },
-    {
-      "source": "TU/e",
-      "target": "Social & Biomedical Analytics",
-      "value": 3
-    },
-    {
-      "source": "TU/e",
-      "target": "Visual Programming & ML",
-      "value": 11
-    },
-    {
-      "source": "TU/e",
-      "target": "Volume Rendering & Immersive Tech",
-      "value": 15
-    },
-    {
       "source": "UC Davis",
       "target": "Geospatial & Seismic Vis",
       "value": 5
@@ -997,54 +844,14 @@ export const institutionsTopicsData = {
       "source": "HKU",
       "target": "Volume Rendering & Immersive Tech",
       "value": 23
-    },
-    {
-      "source": "Stanford",
-      "target": "Graph Visualization & Text Mining",
-      "value": 6
-    },
-    {
-      "source": "Stanford",
-      "target": "High-Dimensional Data Analysis",
-      "value": 4
-    },
-    {
-      "source": "Stanford",
-      "target": "Imaging & Display Technology",
-      "value": 4
-    },
-    {
-      "source": "Stanford",
-      "target": "Network Security & Anomaltic",
-      "value": 2
-    },
-    {
-      "source": "Stanford",
-      "target": "Perception & Uncertainty Vis",
-      "value": 5
-    },
-    {
-      "source": "Stanford",
-      "target": "Social & Biomedical Analytics",
-      "value": 2
-    },
-    {
-      "source": "Stanford",
-      "target": "Visual Programming & ML",
-      "value": 14
-    },
-    {
-      "source": "Stanford",
-      "target": "Volume Rendering & Immersive Tech",
-      "value": 18
     }
   ]
 };
 
 export const institutionsTopicsStats = {
-  "topInstitutions": 20,
+  "topInstitutions": 15,
   "topTopics": 12,
-  "totalConnections": 164,
+  "totalConnections": 130,
   "strongestConnection": {
     "institution": "Utah",
     "topic": "Volume Rendering & Immersive Tech",
