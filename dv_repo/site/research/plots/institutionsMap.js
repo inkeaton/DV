@@ -380,7 +380,7 @@ export const institutionsMapConfig = {
       .attr('y', 4)
       .attr('font-size', '11px')
       .attr('fill', '#333')
-      .text(d => d[0]);
+      .text(d => `${d[0]}: ${institutionsMapStats.regions[d[0]] || 0}`);
 
     // Size reference
     const sizeRef = legend.append('g')
@@ -426,8 +426,8 @@ export const institutionsMapConfig = {
     statsBox.append('rect')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 320)
-      .attr('height', 135)
+      .attr('width', 200)
+      .attr('height', 85)
       .attr('fill', '#fff')
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
@@ -452,55 +452,19 @@ export const institutionsMapConfig = {
       .attr('font-size', '11px')
       .text(`${institutionsMapStats.totalPapers.toLocaleString()} total papers`);
 
-    // Row 1: North America, Europe, Asia
-    const row1Y = 58;
-    const row1 = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', row1Y)
-      .attr('font-size', '10px');
-
-    row1.append('tspan').attr('fill', regionColors['North America']).attr('font-weight', 'bold').text('North America');
-    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['North America'] || 0}  `);
-    row1.append('tspan').attr('fill', regionColors['Europe']).text('●');
-    row1.append('tspan').attr('fill', '#666').text('  ');
-    row1.append('tspan').attr('fill', regionColors['Europe']).attr('font-weight', 'bold').text('Europe');
-    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Europe'] || 0}  `);
-    row1.append('tspan').attr('fill', regionColors['Asia']).text('●');
-    row1.append('tspan').attr('fill', '#666').text('  ');
-    row1.append('tspan').attr('fill', regionColors['Asia']).attr('font-weight', 'bold').text('Asia');
-    row1.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Asia'] || 0}`);
-
-    // Row 2: Oceania, South America, Africa
-    const row2Y = 75;
-    const row2 = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', row2Y)
-      .attr('font-size', '10px');
-
-    row2.append('tspan').attr('fill', regionColors['Oceania']).attr('font-weight', 'bold').text('Oceania');
-    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Oceania'] || 0}  `);
-    row2.append('tspan').attr('fill', regionColors['South America']).text('●');
-    row2.append('tspan').attr('fill', '#666').text('  ');
-    row2.append('tspan').attr('fill', regionColors['South America']).attr('font-weight', 'bold').text('South America');
-    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['South America'] || 0}  `);
-    row2.append('tspan').attr('fill', regionColors['Africa']).text('●');
-    row2.append('tspan').attr('fill', '#666').text('  ');
-    row2.append('tspan').attr('fill', regionColors['Africa']).attr('font-weight', 'bold').text('Africa');
-    row2.append('tspan').attr('fill', '#666').text(`: ${institutionsMapStats.regions['Africa'] || 0}`);
-
     // Divider line
     statsBox.append('line')
       .attr('x1', 12)
-      .attr('y1', 92)
-      .attr('x2', 308)
-      .attr('y2', 92)
+      .attr('y1', 52)
+      .attr('x2', 188)
+      .attr('y2', 52)
       .attr('stroke', '#e5e5e5')
       .attr('stroke-width', 1);
 
     // Top Institution label
     statsBox.append('text')
       .attr('x', 12)
-      .attr('y', 107)
+      .attr('y', 65)
       .attr('font-size', '9px')
       .attr('fill', '#666')
       .text('Top Institution');
@@ -508,7 +472,7 @@ export const institutionsMapConfig = {
     // Top Institution value
     const topInstText = statsBox.append('text')
       .attr('x', 12)
-      .attr('y', 123)
+      .attr('y', 78)
       .attr('font-size', '11px');
 
     topInstText.append('tspan')
