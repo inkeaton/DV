@@ -1,0 +1,27 @@
+# Core data stack
+pandas>=2.0
+numpy>=1.23
+
+# Topic modeling / clustering
+bertopic>=0.16
+sentence-transformers>=2.6
+scikit-learn>=1.3
+umap-learn>=0.5
+hdbscan>=0.8
+
+# Data collection / utilities
+requests>=2.31
+tqdm>=4.66
+
+# String / country utilities (used in OpenAlex pipeline)
+rapidfuzz>=3.5
+pycountry>=23.12
+countryinfo>=0.1.2
+
+# EDA / plotting
+matplotlib>=3.8
+seaborn>=0.13
+
+# Notebook runtime (recommended)
+jupyterlab>=4.0
+ipykernel>=6.0

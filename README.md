@@ -109,7 +109,21 @@ DV/
 pip install -r requirements.txt
 ```
 
-Key packages: `pandas`, `numpy`, `bertopic`, `sentence-transformers`, `scikit-learn`, `umap-learn`, `hdbscan`, `requests`, `tqdm` 🧪
+### Key packages
+- pandas, numpy
+- bertopic
+- sentence-transformers (requires PyTorch)
+- scikit-learn
+- umap-learn
+- hdbscan
+- requests
+- tqdm
+🧪
+
+### Notes
+- **PyTorch**: `sentence-transformers` depends on PyTorch. If `pip` cannot install a suitable wheel for your OS/CPU/GPU,
+  install PyTorch first following the official instructions, then re-run the command above.
+- **hdbscan** includes native extensions. On some systems you may need build tools (e.g., a C/C++ compiler). 
 
 ---
 
