@@ -99,7 +99,7 @@ class AppHeader extends HTMLElement {
   setupTheme() {
     const toggle = this.querySelector("#theme-toggle");
     const icon = this.querySelector("#theme-icon");
-    
+
     // Check for saved preference or system preference
     const savedTheme = localStorage.getItem("vis35-theme");
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -177,10 +177,10 @@ class AppDrawer extends HTMLElement {
 
     // Listen for toggle events from header
     document.addEventListener("toggle-drawer", () => this.toggle());
-    
+
     // Close drawer when clicking scrim
     this.scrim.addEventListener("click", () => this.close());
-    
+
     // Highlight the active navigation link
     this.highlightActiveLink();
 
@@ -238,6 +238,7 @@ class AppFooter extends HTMLElement {
     // Build asset paths for team photos
     const person1 = asset("./assets/img/edo.jpeg", "../assets/img/edo.jpeg");
     const person2 = asset("./assets/img/iri.jpeg", "../assets/img/iri.jpeg");
+    const methodologyLink = asset("./methodology.html", "../methodology.html");
 
     this.innerHTML = `
       <footer class="footer-r2d3" role="contentinfo">
@@ -252,60 +253,69 @@ class AppFooter extends HTMLElement {
           <div class="f-desc">
             <p>
               VIS 35 is an interactive storytelling experiment exploring 35 years of 
-              data visualization research. Built for the Data Visualization course 2024.
-            </p>
-            <p>Questions? <a href="#">Check the Documentation</a>.</p>
+              data visualization research. Built for the <a href="https://corsi.unige.it/en/off.f/2025/ins/83997?codcla=10852">Data Visualization</a> course 2025/2026.
+            
           </div>
 
           <!-- Methodology section -->
           <div class="f-methodology">
-            <h4>Data &amp; Methodology</h4>
-            <p>
-              This project uses data from <strong>VISpubdata</strong> (1990-2024) enriched via
-              <strong>OpenAlex API</strong>.
-            </p>
-            <ul>
-              <li><strong>Cleaning:</strong> Removed papers without authors and normalized conference tracks.</li>
-              <li><strong>Processing:</strong> Python scripts for keyword extraction (BERTopic) and growth rate calculation.</li>
-              <li><strong>Stack:</strong> D3.js v7, HTML5, CSS3 (No Frameworks).</li>
-            </ul>
+             <h2>Data &amp; Methodology</h2>
+
+  
+
+  <p>
+    We use <a href="https://www.vispubdata.org" target="_blank" rel="noopener">VISpubdata</a> (1990–2024),
+    enriched with structured metadata via the <strong>OpenAlex API</strong>.
+    After an initial EDA pass to understand the dataset, we cleaned and standardized key fields, then extracted themes
+    using BERTopic to support topic-based exploration.
+  </p>
+
+  <ul color: var(--md-sys-color-on-surface-variant);">
+    <li><strong>Cleaning:</strong> removed papers without authors, handled noisy/missing entries, normalized conference tracks.</li>
+    <li><strong>Processing:</strong> BERTopic for keyword/topic extraction; Python analysis for trends and growth rates.</li>
+    <li><strong>Stack:</strong> D3.js, HTML5, CSS3, Material Design 3.</li>
+  </ul>
+</p>
+  <p>Questions? <a href="${methodologyLink}">Read the full methodology</a>.</p>
           </div>
         </div>
 
         <div class="f-right">
-          <!-- Team member 1 -->
-          <div class="footer-team-row">
-            <img src="${person1}" class="footer-team-pic" alt="Edoardo Vassallo" loading="lazy" decoding="async">
-            <div class="footer-team-text">
-              <h3>Edoardo Vassallo</h3>
-              <span class="footer-team-role">Data Engineering &amp; Analysis</span>
-              <p class="footer-team-bio">
-                Master Student in Data Science. Currently working on NLP models for 
-                scientific abstract analysis. Curated the Python pipeline and data cleaning.
-              </p>
-              <div class="footer-team-links">
-                <a href="#" rel="noopener">LinkedIn</a>
-                <a href="https://github.com/inkeaton" rel="noopener">GitHub</a>
-              </div>
-            </div>
-          </div>
+           <!-- Team member 1 -->
+  <div class="footer-team-row">
+    <img src="${person1}" class="footer-team-pic" alt="Edoardo Vassallo" loading="lazy" decoding="async">
+    <div class="footer-team-text">
+      <h3>Edoardo Vassallo</h3>
+      <span class="footer-team-role">Data Engineering, Analysis &amp; Web Design</span>
+      <p class="footer-team-bio">
+        M.Sc. student in <strong>Data Science &amp; Engineering (Artificial Intelligence)</strong> at the
+        <strong>University of Genoa</strong>. Built the end-to-end Python pipeline (cleaning, enrichment, NLP) and
+        contributed to the website design and structure.
+      </p>
+      <div class="footer-team-links">
+        <a href="#" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/inkeaton" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
 
-          <!-- Team member 2 -->
-          <div class="footer-team-row">
-            <img src="${person2}" class="footer-team-pic" alt="Iryna Savchuk" loading="lazy" decoding="async">
-            <div class="footer-team-text">
-              <h3>Iryna Savchuk</h3>
-              <span class="footer-team-role">Visualization &amp; Frontend</span>
-              <p class="footer-team-bio">
-                Master Student in Computer Science. Specialized in Human-Computer Interaction.
-                Designed the Scrollytelling interface and D3.js implementation.
-              </p>
-              <div class="footer-team-links">
-                <a href="#" rel="noopener">LinkedIn</a>
-                <a href="https://github.com/IRYNASAVCHUK" rel="noopener">GitHub</a>
-              </div>
-            </div>
-          </div>
+  <!-- Team member 2 -->
+  <div class="footer-team-row">
+    <img src="${person2}" class="footer-team-pic" alt="Iryna Savchuk" loading="lazy" decoding="async">
+    <div class="footer-team-text">
+      <h3>Iryna Savchuk</h3>
+      <span class="footer-team-role">Data Analysis, Visualization &amp; Trend Discovery</span>
+      <p class="footer-team-bio">
+        M.Sc. student in <strong>Data Science &amp; Engineering (Artificial Intelligence)</strong> at the
+        <strong>University of Genoa</strong>. Focused on data analysis and visualization to understand patterns and
+        trends, and designed the scrollytelling experience.
+      </p>
+      <div class="footer-team-links">
+        <a href="#" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/IRYNASAVCHUK" rel="noopener">GitHub</a>
+      </div>
+    </div>
+       
         </div>
       </footer>
     `;
