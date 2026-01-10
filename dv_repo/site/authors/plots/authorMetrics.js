@@ -1,7 +1,13 @@
 /**
  * authors/plots/authorMetrics.js
  * Bubble scatter chart showing author metrics
- * X-axis: papers count, Y-axis: citations, Bubble size: awards
+ * X-axis: papers count, Y-axis: citations (symlog scale), Bubble size: awards
+ * 
+ * Features:
+ * - Symlog scale for Y-axis to handle wide range of citation counts
+ * - Scaled bubble sizes based on awards
+ * - Interactive hover effects with labels
+ * - Notable authors annotations with connecting lines
  */
 
 // Put images here:
@@ -15,8 +21,10 @@ import {
   renderXAxis,
   renderYAxis,
   styleAxes,
+  cleanAxes,
   renderLegend
 } from '../../assets/js/chart-utils.js';
+import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
 
 export const authorMetricsConfig = {
   data: authorMetricsData,
@@ -24,14 +32,14 @@ export const authorMetricsConfig = {
 
   render: (ctx) => {
     const { g, d3, width, height, data, colors } = ctx;
-    const animationDuration = 800;
+    const animationDuration = ANIMATION_DURATION;
 
     // Category colors
     const categoryColors = {
       prolific: colors.primary,
       'highly-cited': colors.accent,
       steady: colors.secondary,
-      emerging: '#95a5a6'
+      emerging: colors.tertiary
     };
 
     // Scales
@@ -40,15 +48,19 @@ export const authorMetricsConfig = {
       .domain([0, d3.max(data, (d) => d.papers) * 1.1])
       .range([0, width]);
 
+    // Use symlog scale for Y-axis to handle wide range of citation counts
+    // Symlog handles zero values gracefully (unlike log scale)
     const yScale = d3
-      .scaleLinear()
+      .scaleSymlog()
+      .constant(1000)  // Transition point from linear to log behavior
       .domain([0, d3.max(data, (d) => d.citations) * 1.1])
       .range([height, 0]);
 
+  // Smaller bubble sizes to reduce overlap
   const sizeScale = d3
     .scaleSqrt()
     .domain([0, authorMetricsStats.maxAwards])
-    .range([3, 30]);
+    .range([2, 18]);
 
     // Draw bubbles
     const bubbles = g
@@ -83,7 +95,7 @@ export const authorMetricsConfig = {
         .attr('text-anchor', 'middle')
         .attr('font-size', '12px')
         .attr('font-weight', 'bold')
-        .attr('fill', '#333')
+        .attr('fill', colors.onSurface)
         .text(d.name);
 
       const labelBBox = label.node().getBBox();
@@ -93,7 +105,7 @@ export const authorMetricsConfig = {
         .attr('y', labelBBox.y - 2)
         .attr('width', labelBBox.width + 8)
         .attr('height', labelBBox.height + 4)
-        .attr('fill', '#fff')
+        .attr('fill', colors.surfaceContainer)
         .attr('stroke', categoryColors[d.category])
         .attr('stroke-width', 1)
         .attr('rx', 3);
@@ -114,37 +126,39 @@ export const authorMetricsConfig = {
     renderXAxis(ctx, xScale, { label: 'Number of Papers' });
     renderYAxis(ctx, yScale, { label: 'Total Citations', tickFormat: d3.format(',') });
     styleAxes(g);
+    cleanAxes(g);  // Remove axis lines, keep only tick labels
 
-    // Legend
+    // Legend - positioned in top left corner (avoiding axes)
     const legendItems = Object.entries(authorMetricsStats.categories).map(([category, description]) => ({
       color: categoryColors[category],
       label: `${category.charAt(0).toUpperCase() + category.slice(1)}: ${description}`
     }));
 
+    // Position category legend at top left, with space from axis
     renderLegend(ctx, legendItems, {
-      x: width - 200,
-      y: 20,
+      x: 10,
+      y: 0,
       itemHeight: 25
     });
 
-  // Size legend for bubble sizes
+  // Size legend for bubble sizes - positioned in bottom right corner
   const sizeLegend = g.append('g').attr('class', 'size-legend').attr('opacity', 0);
 
   const sizeLegendData = [
-    { awards: 1, label: '1 awards' },
-    { awards: 3, label: '3 awards' },
-    { awards: 5, label: '5 awards' },
-     { awards: 8, label: '8 awards' },
-    { awards: 10, label: '10 awards' }
+    { awards: 1, label: '1' },
+    { awards: 3, label: '3' },
+    { awards: 5, label: '5' },
+    { awards: 8, label: '8' },
+    { awards: 10, label: '10' }
   ];
 
     sizeLegend
       .append('text')
-      .attr('x', 10)
-      .attr('y', height - 80)
+      .attr('x', width - 320)
+      .attr('y', height - 75)
       .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .text('Award Count:');
 
     const sizeLegendItems = sizeLegend
@@ -152,7 +166,7 @@ export const authorMetricsConfig = {
       .data(sizeLegendData)
       .join('g')
       .attr('class', 'size-legend-item')
-      .attr('transform', (d, i) => `translate(${20 + i * 60}, ${height - 50})`);
+      .attr('transform', (d, i) => `translate(${width - 310 + i * 60}, ${height - 50})`);
 
     sizeLegendItems
       .append('circle')
@@ -170,7 +184,7 @@ export const authorMetricsConfig = {
       .attr('y', 30)
       .attr('text-anchor', 'middle')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text((d) => d.label);
 
     // Notable authors annotation
@@ -190,16 +204,16 @@ export const authorMetricsConfig = {
     .append('line')
     .attr('x1', (d) => xScale(d.papers))
     .attr('y1', (d) => yScale(d.citations))
-    .attr('x2', (d) => xScale(d.papers) + 40)
-    .attr('y2', (d) => yScale(d.citations) - 40)
+    .attr('x2', (d) => xScale(d.papers) + 18)
+    .attr('y2', (d) => yScale(d.citations) - 18)
     .attr('stroke', colors.accent)
     .attr('stroke-width', 1.5)
     .attr('stroke-dasharray', '3,3');
 
   annotations
     .append('text')
-    .attr('x', (d) => xScale(d.papers) + 45)
-    .attr('y', (d) => yScale(d.citations) - 40)
+    .attr('x', (d) => xScale(d.papers) + 20)
+    .attr('y', (d) => yScale(d.citations) - 18)
     .attr('font-size', '11px')
     .attr('font-weight', 'bold')
     .attr('fill', colors.accent)

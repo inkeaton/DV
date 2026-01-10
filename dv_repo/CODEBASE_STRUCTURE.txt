@@ -1,0 +1,1104 @@
+VIS 35 CODE STRUCTURE DOCUMENTATION
+=====================================
+Last Updated: January 10, 2026
+
+OVERALL ARCHITECTURE
+====================
+
+The codebase follows a modular scrollytelling architecture where:
+- Each section (papers, authors, research) is independent
+- Shared utilities are centralized in `assets/`
+- Visualizations extend a base class for consistency
+- ES6 modules with no build step required
+- Material Design 3 Web Components for UI elements
+- Theme-aware design with light/dark mode support
+
+
+DIRECTORY STRUCTURE
+===================
+
+site/
+├── assets/              # Shared resources across all pages
+│   ├── css/            # Stylesheets (colors, style, scrolly)
+│   ├── js/             # JavaScript modules
+│   │   └── components/ # Web Components (plot-modal)
+│   └── img/            # Images
+├── data/               # Data files organized by section
+│   ├── papers/         # Papers section data modules
+│   ├── authors/        # Authors section data modules
+│   └── research/       # Research section data modules
+├── papers/             # Papers section
+│   ├── papers.html     # Papers page HTML
+│   └── plots/          # Papers-specific visualizations
+├── authors/            # Authors section (same structure)
+│   ├── authors.html
+│   └── plots/
+├── research/           # Research section (same structure)
+│   ├── research.html
+│   └── plots/
+├── dataset/            # Dataset exploration page
+│   ├── dataset.html
+│   ├── conferenceData.csv
+│   ├── countryData.csv
+│   └── plots/          # Dataset-specific visualizations
+└── index.html          # Homepage with bento grid layout
+
+
+FILE-BY-FILE BREAKDOWN
+======================
+
+CORE INFRASTRUCTURE (assets/js/)
+================================
+
+visualization-base.js
+---------------------
+Purpose: Base class for all scrollytelling visualizations
+Exports: ScrollyVisualization class, loadD3(), getThemeColors(), createTooltip()
+Used by: papersVisualization.js, authorsVisualization.js, researchVisualization.js
+Key responsibilities:
+  - D3.js initialization (v7) via CDN
+  - SVG container creation and management
+  - Theme-aware color system via CSS custom properties
+  - Step registration with config objects { data, margins, render }
+  - Step transitions with cleanup (g.selectAll('*').remove())
+  - Responsive resize handling with ResizeObserver
+  - Tooltip creation with theme-aware styling
+  - MutationObserver for theme changes (watches body.dark-theme class)
+
+Implementation notes:
+  - Each step config has: data (array/object), margins (object), render (function)
+  - Render function receives context: { g, svg, d3, width, height, colors, tooltip, data }
+  - Colors object contains Material Design 3 tokens (primary, surface, onSurface, etc.)
+  - Automatic cleanup prevents memory leaks between step transitions
+
+
+scrolly-page-controller.js
+---------------------------
+Purpose: Unified page initialization orchestrator
+Exports: initScrollyPage()
+Used by: All scrollytelling HTML pages (papers.html, authors.html, research.html)
+Key responsibilities:
+  - Load D3.js asynchronously
+  - Initialize main visualization (desktop sticky graphic)
+  - Initialize modal visualization (mobile fullscreen modal)
+  - Create progress dots for step navigation
+  - Set up scroll controller with step change callbacks
+  - Bind "Show Plot" buttons to modal for mobile experience
+
+Function signature:
+  initScrollyPage({
+    VisualizationClass,           // Required: Constructor for visualization
+    containerId = 'scrolly-vis',  // Main container ID
+    modalId = 'plot-modal',       // Modal element ID
+    modalContainerId = 'plot-modal-vis'  // Modal container ID
+  })
+
+Returns: Promise<{ visualization, modalVisualization, d3 }>
+
+
+scroll-controller.js
+--------------------
+Purpose: Scroll position detection and step tracking
+Exports: initScrollController(), createProgressDots()
+Used by: scrolly-page-controller.js
+Key responsibilities:
+  - Detect which .scrolly-step element is in viewport
+  - Update active step styling (.is-active class)
+  - Trigger visualization transitions via callback
+  - Use requestAnimationFrame for smooth performance (60fps)
+  - Update progress dots to reflect current step
+  - Debounce scroll events to prevent excessive updates
+
+Implementation details:
+  - Tracks viewport offset (default: 0.5 = middle of screen)
+  - Calculates step positions relative to viewport
+  - Fires onStepChange(stepIndex, stepElement) when step changes
+  - Returns controller object with destroy() method for cleanup
+
+
+chart-utils.js
+--------------
+Purpose: Reusable D3 chart components and utilities
+Exports: renderTitle(), renderXAxis(), renderYAxis(), styleAxes(), renderLegend(), 
+         cleanAxes(), getTickYears()
+Used by: All individual plot files
+Key responsibilities:
+  - Standardized chart titles with fade-in animation
+  - Consistent axis rendering with theme-aware colors
+  - Legend creation with color swatches
+  - Axis styling (font, color, stroke) based on theme
+  - Code deduplication across visualizations
+
+Function signatures:
+  - renderTitle(ctx, text, options = { y, fontSize, fontWeight })
+  - renderXAxis(ctx, scale, options = { label, tickFormat, tickCount, rotate, className })
+  - renderYAxis(ctx, scale, options = { label, tickFormat, tickCount, className })
+  - styleAxes(ctx, selector = '.axis')
+  - renderLegend(ctx, items, options = { x, y, itemWidth, swatchSize })
+  - cleanAxes(g, className) - Remove axes before re-render
+  - getTickYears(yearRange, interval) - Generate year tick values
+
+
+chart-constants.js
+------------------
+Purpose: Centralized constants for D3 visualizations
+Exports: ANIMATION_DURATION, YEAR_RANGE, DEFAULT_Y_TICKS
+Used by: All plot files
+Constants:
+  - ANIMATION_DURATION = 800 (ms) - Standard transition duration
+  - YEAR_RANGE = { min: 1990, max: 2024 } - Data time range
+  - DEFAULT_Y_TICKS = [0, 40, 80, 120, 160] - Paper count axis ticks
+
+
+color-palettes.js
+-----------------
+Purpose: Centralized categorical color scales
+Exports: trackColors, trackLabels, publicationColors, publicationLabels, 
+         topicColors, topicColorScheme, awardColors, awardLabels, and more
+Used by: All plot files requiring categorical colors
+Content:
+  - Conference track colors (InfoVis: blue, SciVis: green, VAST: yellow)
+  - Publication type colors (Journal, Conference, Poster, etc.)
+  - Topic colors for treemap visualization
+  - Award type colors and labels
+  - Ensures visual consistency across all sections
+
+
+shell.js
+--------
+Purpose: Application shell Web Components (header, drawer, footer)
+Exports: Defines and registers <app-header>, <app-drawer>, <app-footer>
+Used by: All HTML pages (except index.html which has custom layout)
+Key features:
+  - <app-header>: Top navigation bar with brand logo, navigation links, theme toggle
+    * Material Design icon button for theme switching
+    * Mobile hamburger menu button
+    * Sticky positioning with elevation shadow
+  - <app-drawer>: Mobile slide-out navigation menu
+    * Animated slide-in from right side
+    * Backdrop scrim overlay
+    * Navigation links matching header
+  - <app-footer>: Footer with project info and team members
+    * R2D3-inspired design
+    * Responsive grid layout for team members
+
+Theme toggle implementation:
+  - Adds/removes 'dark-theme' class on <body>
+  - Persists preference to localStorage
+  - Updates Material Design icon (light_mode/dark_mode)
+
+
+shell_utils.js
+--------------
+Purpose: Path resolution helpers for shell components
+Exports: SITE (constants object), createShellHelpers()
+Used by: shell.js Web Components
+Constants:
+  - SITE.ROOT: Root path relative to current location
+  - SITE.ASSETS: Assets folder path
+  - Navigation links data structure
+
+
+components/ (Web Components)
+============================
+
+plot-modal.js (assets/js/components/)
+-------------------------------------
+Custom element: <plot-modal>
+Purpose: Fullscreen modal for displaying visualizations on mobile devices
+Features:
+  - Fullscreen overlay with animated backdrop
+  - Close button (X icon) in top-right corner
+  - Backdrop click to close
+  - Keyboard (Escape key) to close
+  - Landscape orientation suggestion toast
+  - Smooth open/close animations (fade + scale)
+  - Integration with ScrollyVisualization via setVisualization()
+
+API:
+  - setVisualization(vizInstance): Bind visualization instance
+  - open(stepIndex): Show modal and render specific step
+  - close(): Hide modal and cleanup
+
+Shadow DOM structure:
+  <div class="modal-backdrop">
+    <button class="close-button" aria-label="Close">×</button>
+    <div id="visualization-container"></div>
+    <div class="orientation-toast">Rotate your device for better view</div>
+  </div>
+
+CSS parts (for external styling):
+  ::part(backdrop), ::part(close-button), ::part(container), ::part(toast)
+
+
+STYLESHEETS (assets/css/)
+=========================
+
+colors.css
+----------
+Purpose: Material Design 3 color tokens (CSS custom properties)
+Content: Light theme (default) and dark theme (body.dark-theme class)
+Used by: All pages
+Load order: FIRST in cascade (before style.css)
+
+Color categories:
+  - Primary colors (--primary, --on-primary, --primary-container, etc.)
+  - Secondary colors
+  - Tertiary colors
+  - Error colors
+  - Neutral colors (--surface, --on-surface, --background, etc.)
+  - Surface variants (--surface-dim, --surface-bright, --surface-container, etc.)
+  - Outline colors (--outline, --outline-variant)
+
+Usage: var(--primary), var(--surface), var(--on-surface), etc.
+Theme toggle: JavaScript adds/removes 'dark-theme' class on <body>
+
+
+style.css
+---------
+Purpose: Global base styles, typography, layout utilities
+Content:
+  - Design tokens (font families, layout variables)
+  - Base HTML element styles (body, headings, paragraphs)
+  - Typography classes (.text-large, .text-body, etc.)
+  - Layout utilities (.container, .max-width)
+  - App bar styles (top navigation)
+  - Drawer + scrim (mobile navigation)
+  - Bento grid layout (homepage)
+  - Card styles
+  - Footer styles (R2D3-inspired)
+  - Responsive breakpoints
+
+Key variables:
+  - --font-head: "Merriweather", serif (headings)
+  - --app-bar-height: 64px
+  - --max-width: 1100px
+  - --z-app-bar: 1000 (stacking context)
+  - --z-scrim: 1050
+
+Responsive: Media queries for tablet (768px) and mobile (480px)
+
+
+scrolly.css
+-----------
+Purpose: Scrollytelling layout for desktop/tablet
+Content:
+  - Split-view layout (sticky visualization + scrolling narrative)
+  - Progress dots positioning and styling
+  - Step card styles with elevation
+  - Show plot button (hidden on desktop, visible on mobile)
+  - Intro section styles
+
+Layout structure:
+  .scrolly-container: Flexbox container (row-reverse)
+  .scrolly-graphic: Sticky visualization panel (55% width, position: sticky)
+  .scrolly-text: Scrolling narrative container (45% width)
+  .scrolly-step: Individual step cards with elevation shadow
+
+Progress dots:
+  - Fixed positioning on left side
+  - Vertical dot indicators
+  - Active step highlighted with primary color
+  - Smooth transitions between steps
+
+Mobile adaptations (max-width: 1024px):
+  - Stack layout (visualization hidden, text full-width)
+  - Show plot buttons visible
+  - Progress dots hidden
+  - Cards lose elevation, become full-bleed
+
+
+SECTION-SPECIFIC FILES (papers/, authors/, research/)
+======================================================
+
+Each section follows the same pattern:
+
+[section].html
+--------------
+Purpose: Section landing page with scrollytelling narrative
+Structure:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <!-- Fonts: Google Fonts (Merriweather + Roboto) + Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather...">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded...">
+    
+    <!-- Stylesheets: colors → style → scrolly -->
+    <link rel="stylesheet" href="../assets/css/colors.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/scrolly.css">
+    
+    <!-- Material Web Components importmap -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@material/web/": "https://esm.run/@material/web/"
+        }
+      }
+    </script>
+    
+    <!-- Module scripts -->
+    <script type="module">
+      import '@material/web/all.js';
+      import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+      document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+      
+      import '../assets/js/shell.js';
+      import { initScrollyPage } from '../assets/js/scrolly-page-controller.js';
+      import { PapersVisualization } from './plots/papersVisualization.js';
+      import '../assets/js/components/plot-modal.js';
+      
+      document.addEventListener('DOMContentLoaded', async () => {
+        await initScrollyPage({ VisualizationClass: PapersVisualization });
+      });
+    </script>
+  </head>
+  
+  <body>
+    <app-header></app-header>
+    <app-drawer></app-drawer>
+    
+    <main>
+      <!-- Intro section -->
+      <section class="scrolly-intro">
+        <h1>Section Title</h1>
+        <p>Introduction text...</p>
+        <div class="scroll-indicator">
+          <span>Scroll to explore</span>
+          <md-icon>keyboard_arrow_down</md-icon>
+        </div>
+      </section>
+      
+      <!-- Scrollytelling container -->
+      <div class="scrolly-container">
+        <!-- Sticky visualization -->
+        <div class="scrolly-graphic">
+          <div id="scrolly-vis"></div>
+        </div>
+        
+        <!-- Scrolling narrative -->
+        <div class="scrolly-text">
+          <div class="scrolly-step" data-step="0">
+            <h2>Step Title</h2>
+            <p>Narrative text...</p>
+            <button class="show-plot-button">Show Plot</button>
+          </div>
+          <!-- More steps... -->
+        </div>
+      </div>
+    </main>
+    
+    <plot-modal id="plot-modal">
+      <div id="plot-modal-vis"></div>
+    </plot-modal>
+    
+    <app-footer></app-footer>
+  </body>
+  </html>
+
+
+plots/[section]Visualization.js
+-------------------------------
+Purpose: Section-specific visualization controller
+Extends: ScrollyVisualization
+Pattern:
+  import { ScrollyVisualization } from '../../assets/js/visualization-base.js';
+  import { plot1Config } from './plot1.js';
+  import { plot2Config } from './plot2.js';
+  // ... more imports
+  
+  export class PapersVisualization extends ScrollyVisualization {
+    constructor(containerId) {
+      const stepConfigs = [
+        plot1Config,
+        plot2Config,
+        // ... more configs
+      ];
+      super(containerId, stepConfigs);
+    }
+  }
+
+Responsibilities:
+  - Import all plot configurations for the section
+  - Register step configs with base class in correct order
+  - Step order must match HTML .scrolly-step data-step attributes
+
+
+plots/[plotName].js
+-------------------
+Purpose: Individual plot implementation
+Pattern:
+  import { dataArray, dataStats } from '../../data/section/plotNameData.js';
+  import { renderTitle, renderXAxis, renderYAxis, styleAxes } from '../../assets/js/chart-utils.js';
+  import { ANIMATION_DURATION, YEAR_RANGE } from '../../assets/js/chart-constants.js';
+  import { categoryColors } from '../../assets/js/color-palettes.js';
+  
+  export const plotNameConfig = {
+    data: dataArray,
+    margins: { top: 60, right: 30, bottom: 50, left: 60 },
+    render: (ctx) => {
+      const { g, svg, d3, width, height, colors, tooltip, data } = ctx;
+      
+      // 1. Render title
+      renderTitle(ctx, 'Chart Title');
+      
+      // 2. Create scales
+      const xScale = d3.scaleBand()...
+      const yScale = d3.scaleLinear()...
+      
+      // 3. Render axes
+      renderXAxis(ctx, xScale, { label: 'X Axis Label' });
+      renderYAxis(ctx, yScale, { label: 'Y Axis Label' });
+      styleAxes(ctx);
+      
+      // 4. Render data (bars, lines, circles, etc.)
+      g.selectAll('.bar')
+        .data(data)
+        .join('rect')
+        .attr('class', 'bar')
+        .attr('x', d => xScale(d.key))
+        .attr('y', height)
+        .attr('width', xScale.bandwidth())
+        .attr('height', 0)
+        .attr('fill', colors.primary)
+        .on('mouseover', (event, d) => {
+          tooltip.show(`Value: ${d.value}`, event.pageX, event.pageY);
+        })
+        .on('mouseout', () => tooltip.hide())
+        .transition()
+        .duration(ANIMATION_DURATION)
+        .attr('y', d => yScale(d.value))
+        .attr('height', d => height - yScale(d.value));
+      
+      // 5. Optional: Render legend
+      // renderLegend(ctx, legendItems, { x: width - 120, y: 20 });
+    }
+  };
+
+Best practices:
+  - Always use renderTitle() for consistency
+  - Use color-palettes.js for categorical colors
+  - Use chart-constants.js for animation durations
+  - Bind tooltip events to interactive elements
+  - Use theme-aware colors (ctx.colors) not hardcoded values
+  - Animate enter/update transitions for smooth UX
+
+
+DATA FILES (data/)
+==================
+
+Directory structure:
+data/
+├── papers/
+│   ├── papersPerYearDataModule.js
+│   ├── papersByConferenceData.js
+│   ├── papersByPublicationData.js
+│   ├── topicsTreemapData.js
+│   ├── awardsData.js
+│   ├── awardsDetailData.js
+│   └── citationsHistogramData.js
+├── authors/
+│   ├── uniqueAuthorsData.js
+│   ├── authorsPerPaperData.js
+│   ├── authorMetricsData.js
+│   └── collaborationNetworkData.js
+└── research/
+    ├── institutionsMapData.js
+    ├── institutionsTopicsData.js
+    └── institutionsCollaborationData.js
+
+Pattern:
+  // Export data array
+  export const plotNameData = [
+    { key: 'value1', value: 123 },
+    { key: 'value2', value: 456 },
+    // ...
+  ];
+  
+  // Optional: Export computed statistics
+  export const plotNameStats = {
+    total: 1234,
+    average: 45.6,
+    max: 789,
+    min: 12
+  };
+
+Benefits:
+  - Pre-processed data reduces client-side computation
+  - ES6 modules enable tree-shaking
+  - Separate stats objects simplify calculations
+  - Easy to update data without touching visualization code
+
+
+PAPERS SECTION RENDERING FLOW (STEP-BY-STEP)
+==============================================
+
+PHASE 1: PAGE LOAD & INITIALIZATION
+===================================
+
+1. Browser loads papers.html
+   - HTML parsing begins
+   - External resources queue (fonts, CSS, JS modules)
+
+2. Fonts load (Google Fonts + Material Symbols)
+   - Merriweather (serif, for headings)
+   - Roboto (sans-serif, for body text)
+   - Material Symbols Rounded (icons)
+
+3. Stylesheets load in order (cascade matters!)
+   - colors.css: Define CSS custom properties (--primary, --surface, etc.)
+   - style.css: Base styles, typography, layout utilities
+   - scrolly.css: Scrollytelling-specific layout
+
+4. JavaScript module execution begins
+   - Material Web importmap resolves @material/web/* imports
+   - <script type="module"> in <head> executes
+
+5. Module imports cascade:
+   @material/web/all.js
+   ├── Button, Icon, IconButton, etc. (Material Design components)
+   
+   shell.js
+   ├── Registers <app-header> custom element
+   ├── Registers <app-drawer> custom element
+   └── Registers <app-footer> custom element
+   
+   papersVisualization.js
+   ├── visualization-base.js (base class)
+   ├── papersPerYear.js → papersPerYearDataModule.js
+   ├── papersByConference.js → papersByConferenceData.js
+   ├── papersByPublication.js → papersByPublicationData.js
+   ├── topicsTreemap.js → topicsTreemapData.js
+   ├── awardsWaffleIcons.js → awardsData.js + awardsDetailData.js
+   └── citationsHistogram.js → citationsHistogramData.js
+   
+   plot-modal.js
+   └── Registers <plot-modal> custom element
+
+6. Web Components render
+   - <app-header> renders: Brand logo, nav links, theme toggle button
+   - <app-drawer> renders: Mobile menu (initially hidden)
+   - <app-footer> renders: Project info, team members
+
+7. DOMContentLoaded fires
+   - All HTML parsed
+   - DOM fully built
+   - Async callback executes: initScrollyPage({ VisualizationClass: PapersVisualization })
+
+
+PHASE 2: SCROLLYTELLING INITIALIZATION
+=======================================
+
+initScrollyPage() orchestrates setup:
+
+Step 1: Load D3.js
+  await loadD3()
+  - Dynamically creates <script> tag for D3 v7 CDN
+  - Returns Promise that resolves when D3 loads
+  - window.d3 now available globally
+
+Step 2: Initialize main visualization (desktop)
+  const visualization = new PapersVisualization('scrolly-vis');
+  await visualization.init();
+  
+  What happens in init():
+  - Call loadD3() to ensure D3 is available
+  - Store d3 reference: this.d3 = window.d3
+  - Get container element: document.getElementById('scrolly-vis')
+  - Get theme colors: getThemeColors() reads CSS custom properties
+  - Create SVG: this.d3.select(container).append('svg')
+  - Set up responsive sizing with ResizeObserver
+  - Create tooltip: createTooltip(container) returns { show, hide } API
+  - Set up theme observer: MutationObserver watches body.classList changes
+  - Render initial step: this.transitionToStep(0)
+
+Step 3: Initialize modal visualization (mobile)
+  const modalVis = new PapersVisualization('plot-modal-vis');
+  await modalVis.init();
+  - Same as above, but for modal container
+  - Modal is initially hidden (display: none)
+
+Step 4: Create progress dots
+  createProgressDots('.scrolly-step', '.scrolly-graphic');
+  - Query all .scrolly-step elements
+  - Create dot indicators in .progress-dots container
+  - Attach to .scrolly-graphic (sticky panel)
+  - First dot marked as active
+
+Step 5: Initialize scroll controller
+  initScrollController({
+    onStepChange: (stepIndex, stepElement) => {
+      visualization.transitionToStep(stepIndex);
+      // Update progress dots
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === stepIndex);
+      });
+    }
+  });
+  
+  Scroll controller:
+  - Query all .scrolly-step elements
+  - Set up requestAnimationFrame loop for smooth tracking
+  - Calculate viewport offset (50% = middle of screen)
+  - Detect which step is in viewport middle
+  - Fire onStepChange when step changes
+  - Return { destroy } for cleanup
+
+Step 6: Setup mobile modal integration
+  const modal = document.getElementById('plot-modal');
+  modal.setVisualization(modalVis);
+  
+  document.querySelectorAll('.show-plot-button').forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      modal.open(index);  // Show modal with step's visualization
+    });
+  });
+  
+  Modal open() method:
+  - Add 'is-open' class (display: block)
+  - Animate backdrop (opacity 0 → 1)
+  - Call modalVis.transitionToStep(stepIndex)
+  - Focus close button for accessibility
+
+
+PHASE 3: INITIAL RENDER (Step 0)
+=================================
+
+When transitionToStep(0) is called:
+
+1. Validate step index (0 ≤ index < stepConfigs.length)
+
+2. Update current step: this.currentStep = 0
+
+3. Get step config: const config = this.stepConfigs[0]
+   Example: papersPerYearConfig = {
+     data: papersPerYearData,
+     margins: { top: 60, right: 30, bottom: 50, left: 60 },
+     render: (ctx) => { /* render function */ }
+   }
+
+4. Clear previous visualization: this.g.selectAll('*').remove()
+   - Removes all child elements from main <g> group
+   - Prevents overlapping visualizations
+
+5. Recalculate dimensions with new margins:
+   const { top, right, bottom, left } = config.margins;
+   const width = svgWidth - left - right;
+   const height = svgHeight - top - bottom;
+   this.g.attr('transform', `translate(${left}, ${top})`);
+
+6. Prepare render context object:
+   const ctx = {
+     g: this.g,                  // D3 selection of main <g> group
+     svg: this.svg,              // D3 selection of <svg> element
+     d3: this.d3,                // D3 library reference
+     width,                      // Drawable width (excluding margins)
+     height,                     // Drawable height (excluding margins)
+     colors: this.colors,        // Theme colors object
+     tooltip: this.tooltip,      // Tooltip API { show, hide }
+     data: config.data           // Step's data array/object
+   };
+
+7. Call step's render function: config.render(ctx)
+   - Render function has full access to D3, data, colors, dimensions
+   - Creates axes, shapes, text, etc.
+   - Attaches event listeners for interactivity
+
+
+PHASE 4: PLOT RENDERING (Example: Papers Per Year)
+===================================================
+
+File: papers/plots/papersPerYear.js
+
+render: (ctx) => {
+  const { g, d3, tooltip, width, height, data, colors } = ctx;
+  
+  // 1. Render chart title
+  renderTitle(ctx, 'Papers Published Per Year');
+  // Creates <text> at top center, fades in over 500ms
+  
+  // 2. Prepare data
+  const years = d3.range(1990, 2025);  // [1990, 1991, ..., 2024]
+  const countByYear = new Map(data.map(d => [d.year, d.count]));
+  const fullData = years.map(y => ({
+    year: y,
+    count: countByYear.get(y) || null  // null for missing years
+  }));
+  
+  // 3. Create scales
+  const xScale = d3.scaleBand()
+    .domain(years)
+    .range([0, width])
+    .padding(0.1);  // 10% gap between bars
+  
+  const yScale = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.count)])
+    .range([height, 0]);
+  
+  // 4. Render axes
+  renderXAxis(ctx, xScale, {
+    label: 'Year',
+    tickFormat: d => d,
+    tickValues: getTickYears({ min: 1990, max: 2024 }, 5)  // Every 5 years
+  });
+  
+  renderYAxis(ctx, yScale, {
+    label: 'Number of Papers',
+    tickValues: DEFAULT_Y_TICKS  // [0, 40, 80, 120, 160]
+  });
+  
+  styleAxes(ctx);  // Apply theme-aware axis styling
+  
+  // 5. Render bars with animation
+  g.selectAll('.bar')
+    .data(fullData.filter(d => d.count !== null))  // Skip null years
+    .join('rect')
+    .attr('class', 'bar')
+    .attr('x', d => xScale(d.year))
+    .attr('y', height)  // Start from bottom
+    .attr('width', xScale.bandwidth())
+    .attr('height', 0)  // Start with 0 height
+    .attr('fill', colors.primary)
+    .attr('rx', 4)  // Rounded corners
+    .on('mouseover', (event, d) => {
+      tooltip.show(
+        `<strong>${d.year}</strong><br>${d.count} papers`,
+        event.pageX,
+        event.pageY
+      );
+      d3.select(event.target)
+        .attr('fill', colors.primaryContainer);  // Highlight on hover
+    })
+    .on('mouseout', (event) => {
+      tooltip.hide();
+      d3.select(event.target)
+        .attr('fill', colors.primary);  // Restore original color
+    })
+    .transition()
+    .duration(ANIMATION_DURATION)  // 800ms
+    .delay((d, i) => i * 20)  // Stagger animation (waterfall effect)
+    .attr('y', d => yScale(d.count))
+    .attr('height', d => height - yScale(d.count));
+  
+  // 6. Optional: Add average line
+  const avgValue = papersPerYearStats.avgPerYear;
+  g.append('line')
+    .attr('class', 'avg-line')
+    .attr('x1', 0)
+    .attr('x2', width)
+    .attr('y1', yScale(avgValue))
+    .attr('y2', yScale(avgValue))
+    .attr('stroke', colors.tertiary)
+    .attr('stroke-width', 2)
+    .attr('stroke-dasharray', '5,5')
+    .style('opacity', 0)
+    .transition()
+    .delay(ANIMATION_DURATION)
+    .duration(500)
+    .style('opacity', 0.7);
+  
+  // 7. Optional: Add average label
+  g.append('text')
+    .attr('class', 'avg-label')
+    .attr('x', width - 10)
+    .attr('y', yScale(avgValue) - 10)
+    .attr('text-anchor', 'end')
+    .attr('fill', colors.onSurface)
+    .text(`Avg: ${avgValue.toFixed(1)} papers/year`)
+    .style('opacity', 0)
+    .transition()
+    .delay(ANIMATION_DURATION)
+    .duration(500)
+    .style('opacity', 1);
+}
+
+
+PHASE 5: USER SCROLLS (Step Transition)
+========================================
+
+User scrolls down → Step 1 enters viewport middle
+
+1. Scroll controller detects change (requestAnimationFrame loop)
+   - Calculate each step's position relative to viewport
+   - Determine which step is at 50% viewport height
+   - Compare with currentStep
+   
+   if (newStep !== currentStep) {
+     currentStep = newStep;
+     onStepChange(newStep, stepElements[newStep]);
+   }
+
+2. onStepChange callback fires
+   - Update visualization: visualization.transitionToStep(1)
+   - Update progress dots:
+     document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+       dot.classList.toggle('is-active', i === 1);
+     });
+   - Update step cards:
+     document.querySelectorAll('.scrolly-step').forEach((step, i) => {
+       step.classList.toggle('is-active', i === 1);
+     });
+
+3. transitionToStep(1) executes
+   - Clear previous visualization: this.g.selectAll('*').remove()
+   - Get new config: papersByConferenceConfig
+   - Recalculate dimensions with new margins
+   - Call config.render(ctx) with new data
+   - New visualization animates in (bars, lines, etc.)
+
+4. Animation plays
+   - D3 transitions handle smooth updates
+   - Staggered delays create waterfall effects
+   - Tooltip updates for new data
+
+
+PHASE 6: MOBILE EXPERIENCE
+===========================
+
+On mobile (max-width: 1024px), CSS changes layout:
+
+1. scrolly.css media query applies:
+   .scrolly-graphic {
+     display: none;  /* Hide sticky visualization */
+   }
+   
+   .scrolly-text {
+     width: 100%;  /* Full-width narrative */
+   }
+   
+   .show-plot-button {
+     display: inline-flex;  /* Show "Show Plot" buttons */
+   }
+   
+   .progress-dots {
+     display: none;  /* Hide progress dots */
+   }
+
+2. User reads narrative and clicks "Show Plot" button
+   - Click event listener triggers
+   - Get step index from button's parent .scrolly-step data-step attribute
+   - Call modal.open(stepIndex)
+
+3. Modal opens
+   - Add 'is-open' class to <plot-modal> (display: block)
+   - Animate backdrop: opacity 0 → 1, transform scale(0.95) → scale(1)
+   - Render visualization: modalVis.transitionToStep(stepIndex)
+   - Set ARIA attributes for accessibility (aria-hidden="false")
+   - Trap focus within modal (prevent tabbing outside)
+
+4. Modal visualization renders
+   - Same render function as desktop
+   - Adapts to modal container dimensions (responsive)
+   - Tooltip works same as desktop
+   - Interactions preserved (hover, click)
+
+5. User closes modal (X button, backdrop click, or Escape key)
+   - Remove 'is-open' class
+   - Animate backdrop out: opacity 1 → 0
+   - Return focus to "Show Plot" button
+   - Clear modal visualization (optional, for performance)
+
+
+THEME SYSTEM FLOW
+=================
+
+1. Color definition (colors.css)
+   :root {
+     --primary: #00687A;
+     --surface: #F7FAFE;
+     --on-surface: #171C1E;
+     /* ... 50+ more tokens */
+   }
+   
+   body.dark-theme {
+     --primary: #85D2E7;
+     --surface: #0F1416;
+     --on-surface: #E0E3E4;
+     /* ... 50+ more tokens */
+   }
+
+2. Theme toggle (shell.js <app-header>)
+   User clicks theme toggle button:
+   - Read current theme: document.body.classList.contains('dark-theme')
+   - Toggle class: document.body.classList.toggle('dark-theme')
+   - Update icon: light_mode ↔ dark_mode
+   - Save to localStorage: localStorage.setItem('theme', 'dark')
+   
+   On page load:
+   - Read localStorage: const savedTheme = localStorage.getItem('theme')
+   - Apply class: if (savedTheme === 'dark') document.body.classList.add('dark-theme')
+   - Update icon to match
+
+3. Visualization reads colors (visualization-base.js)
+   getThemeColors():
+   - Get computed styles: window.getComputedStyle(document.body)
+   - Read CSS custom properties: getPropertyValue('--primary').trim()
+   - Build colors object with all tokens
+   - Return { primary, surface, onSurface, primaryContainer, ... }
+
+4. MutationObserver watches theme changes
+   new MutationObserver((mutations) => {
+     mutations.forEach(mutation => {
+       if (mutation.attributeName === 'class') {
+         // Theme changed, update colors and re-render
+         this.colors = getThemeColors();
+         if (this.currentStep !== -1) {
+           this.transitionToStep(this.currentStep);  // Re-render current step
+         }
+       }
+     });
+   }).observe(document.body, { attributes: true });
+
+5. Charts use theme-aware colors
+   .attr('fill', colors.primary)  // NOT '#00687A' hardcoded
+   .attr('stroke', colors.outline)
+   .style('color', colors.onSurface)
+   
+   Benefits:
+   - Automatic theme switching without reload
+   - Consistent colors across all visualizations
+   - No color values in JS (separation of concerns)
+
+
+KEY DESIGN PATTERNS
+===================
+
+1. Separation of Concerns
+   - Data (data/*.js): Pre-processed arrays/objects
+   - Presentation (plots/*.js): D3 rendering logic
+   - Styling (css/*.css): Visual appearance
+   - Controller (assets/js/*.js): Coordination and lifecycle
+
+2. Configuration over Code
+   - Step configs are declarative objects { data, margins, render }
+   - Minimal inheritance, maximal composition
+   - Easy to add new visualizations without touching base class
+
+3. ES6 Modules
+   - No bundler required (browser-native imports)
+   - Tree-shaking automatically handled by browser
+   - Clear dependency graph
+   - importmap for external dependencies (@material/web)
+
+4. Theme-First Design
+   - All colors from CSS custom properties
+   - No hardcoded hex values in JavaScript
+   - Automatic theme switching via body class
+   - MutationObserver ensures visualizations update
+
+5. Responsive by Default
+   - ResizeObserver handles window resize
+   - SVG viewBox scales proportionally
+   - Mobile-specific layout via CSS media queries
+   - Modal provides fullscreen fallback on small screens
+
+6. Web Components for Reusability
+   - Shell components (<app-header>, <app-drawer>, <app-footer>)
+   - Plot modal (<plot-modal>)
+   - Shadow DOM for style encapsulation
+   - Custom events for communication
+
+7. Progressive Enhancement
+   - Semantic HTML structure
+   - CSS-first responsive design
+   - JavaScript enhances with interactivity
+   - Fallbacks for unsupported features
+
+
+ADDING A NEW VISUALIZATION
+===========================
+
+Example: Add "Papers by Country" plot as Step 6 in Papers section
+
+1. Create data file: data/papers/papersByCountryData.js
+   export const papersByCountryData = [
+     { country: 'USA', count: 1234 },
+     { country: 'Germany', count: 567 },
+     // ...
+   ];
+
+2. Create plot file: papers/plots/papersByCountry.js
+   import { papersByCountryData } from '../../data/papers/papersByCountryData.js';
+   import { renderTitle, renderXAxis, renderYAxis, styleAxes } from '../../assets/js/chart-utils.js';
+   import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
+   
+   export const papersByCountryConfig = {
+     data: papersByCountryData,
+     margins: { top: 60, right: 30, bottom: 100, left: 60 },
+     render: (ctx) => {
+       const { g, d3, width, height, colors, tooltip, data } = ctx;
+       
+       renderTitle(ctx, 'Papers by Country');
+       
+       const xScale = d3.scaleBand()
+         .domain(data.map(d => d.country))
+         .range([0, width])
+         .padding(0.2);
+       
+       const yScale = d3.scaleLinear()
+         .domain([0, d3.max(data, d => d.count)])
+         .range([height, 0]);
+       
+       renderXAxis(ctx, xScale, { label: 'Country', rotate: -45 });
+       renderYAxis(ctx, yScale, { label: 'Number of Papers' });
+       styleAxes(ctx);
+       
+       g.selectAll('.bar')
+         .data(data)
+         .join('rect')
+         .attr('class', 'bar')
+         .attr('x', d => xScale(d.country))
+         .attr('y', height)
+         .attr('width', xScale.bandwidth())
+         .attr('height', 0)
+         .attr('fill', colors.primary)
+         .on('mouseover', (event, d) => {
+           tooltip.show(`${d.country}: ${d.count} papers`, event.pageX, event.pageY);
+         })
+         .on('mouseout', () => tooltip.hide())
+         .transition()
+         .duration(ANIMATION_DURATION)
+         .attr('y', d => yScale(d.count))
+         .attr('height', d => height - yScale(d.count));
+     }
+   };
+
+3. Register in papersVisualization.js
+   import { papersByCountryConfig } from './papersByCountry.js';
+   
+   export class PapersVisualization extends ScrollyVisualization {
+     constructor(containerId) {
+       const stepConfigs = [
+         papersPerYearConfig,         // Step 0
+         papersByConferenceConfig,    // Step 1
+         papersByPublicationConfig,   // Step 2
+         topicsTreemapConfig,         // Step 3
+         awardsWaffleIconsConfig,     // Step 4
+         citationsHistogramConfig,    // Step 5
+         papersByCountryConfig,       // Step 6 (NEW!)
+       ];
+       super(containerId, stepConfigs);
+     }
+   }
+
+4. Add HTML step in papers.html
+   <div class="scrolly-step" data-step="6">
+     <h2>Global Reach</h2>
+     <p>
+       Visualization research spans across continents. Explore which countries
+       have contributed the most papers to IEEE VIS over the past 35 years.
+     </p>
+     <button class="show-plot-button">Show Plot</button>
+   </div>
+
+Done! The new visualization will automatically:
+- Render when user scrolls to step 6
+- Appear in progress dots
+- Work in mobile modal
+- Adapt to theme changes
+- Resize responsively
+
+
+This architecture makes it easy to maintain, extend, and debug the codebase!

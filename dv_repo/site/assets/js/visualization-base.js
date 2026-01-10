@@ -101,9 +101,10 @@ export function getThemeColors() {
     secondary: styles.getPropertyValue('--md-sys-color-secondary').trim() || '#4B6269',
     secondaryContainer: styles.getPropertyValue('--md-sys-color-secondary-container').trim() || '#CEE7EF',
     
-    // Tertiary colors
+    // Tertiary colors (accent)
     tertiary: styles.getPropertyValue('--md-sys-color-tertiary').trim() || '#575C7E',
     tertiaryContainer: styles.getPropertyValue('--md-sys-color-tertiary-container').trim() || '#DEE1FF',
+    accent: styles.getPropertyValue('--md-sys-color-tertiary').trim() || '#575C7E',  // Alias for tertiary
     
     // Surface colors
     surface: styles.getPropertyValue('--md-sys-color-surface').trim() || '#F5FAFC',
@@ -348,8 +349,9 @@ export class ScrollyVisualization {
     // This ensures each step starts with a clean slate
     this.svg.on('.zoom', null);
     
-    // Remove zoom control buttons (they're added to SVG, not g)
+    // Remove zoom control buttons and fixed overlay groups (they're added to SVG, not g)
     this.svg.selectAll('.zoom-controls').remove();
+    this.svg.selectAll('.fixed-overlay').remove();
     
     // Reset transform to proper margin position (not null, as that would break positioning)
     // This clears any zoom/pan transforms while maintaining the margin offset

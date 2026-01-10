@@ -1,6 +1,13 @@
 /**
  * authors/plots/collaborationNetwork.js
  * Force-directed network graph showing author collaborations
+ * 
+ * Features:
+ * - Force-directed layout with drag interaction
+ * - Zoom and pan with buttons (wheel disabled to avoid scroll conflicts)
+ * - Fixed title and legend that don't transform with zoom
+ * - Node sizes scale inversely with zoom to reduce clutter
+ * - Interactive tooltips with collaboration counts
  */
 
 import { collaborationNetworkData, networkStats } from '../../data/authors/collaborationNetworkData.js';
@@ -8,6 +15,7 @@ import {
   renderTitle,
   styleAxes
 } from '../../assets/js/chart-utils.js';
+import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
 
 export const collaborationNetworkConfig = {
   data: collaborationNetworkData,
@@ -15,7 +23,7 @@ export const collaborationNetworkConfig = {
 
   render: (ctx) => {
     const { g, d3, width, height, colors, svg } = ctx;
-    const animationDuration = 800;
+    const animationDuration = ANIMATION_DURATION;
 
     // Group colors
     const groupColors = {
@@ -26,6 +34,22 @@ export const collaborationNetworkConfig = {
 
     // Track current zoom level for tooltip scaling
     let currentZoomLevel = 1.0;
+
+    /**
+     * Calculate adjusted node radius based on zoom level
+     * Nodes shrink significantly as user zooms in to reduce overlap/clutter
+     * Since we're zooming the SVG, nodes appear larger - compensate aggressively
+     * @param {number} collaborations - Number of collaborations (for base size)
+     * @param {number} zoomLevel - Current zoom level
+     * @returns {number} Adjusted radius
+     */
+    function getAdjustedRadius(collaborations, zoomLevel) {
+      const baseRadius = Math.sqrt(collaborations) / 2 + 3;
+      // Much more aggressive scaling to counteract SVG zoom magnification
+      // At 1x zoom = 1.0, at 5x zoom = 0.15 (85% smaller)
+      const scaleFactor = 1.0 - (zoomLevel - 1) * 0.2125; // (1.0 - 0.15) / (5 - 1) ≈ 0.2125
+      return baseRadius * Math.max(scaleFactor, 0.15);
+    }
 
     // Calculate adjusted font size based on zoom level
     function getAdjustedFontSize(baseFontSize, zoomLevel) {
@@ -63,7 +87,7 @@ export const collaborationNetworkConfig = {
     .selectAll('line')
     .data(collaborationNetworkData.links)
     .join('line')
-    .attr('stroke', '#999')
+    .attr('stroke', colors.outline)
     .attr('stroke-opacity', 0)
     .attr('stroke-width', (d) => Math.sqrt(d.value));
 
@@ -76,7 +100,7 @@ export const collaborationNetworkConfig = {
     .join('circle')
     .attr('r', 0)
     .attr('fill', (d) => groupColors[d.group])
-    .attr('stroke', '#fff')
+    .attr('stroke', colors.surfaceContainer)
     .attr('stroke-width', 2)
     .style('cursor', 'pointer')
     .on('mouseenter', function(event, d) {
@@ -95,7 +119,7 @@ export const collaborationNetworkConfig = {
         .attr('text-anchor', 'middle')
         .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
         .attr('font-weight', 'bold')
-        .attr('fill', '#333');
+        .attr('fill', colors.onSurface);
 
       text.append('tspan')
         .attr('x', d.x)
@@ -106,7 +130,7 @@ export const collaborationNetworkConfig = {
         .attr('x', d.x)
         .attr('dy', '1.2em')
         .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('fill', '#666');
+        .attr('fill', colors.onSurfaceVariant);
       detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
       detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
 
@@ -117,7 +141,7 @@ export const collaborationNetworkConfig = {
         .attr('y', bbox.y - padding / 2)
         .attr('width', bbox.width + padding * 2)
         .attr('height', bbox.height + padding)
-        .attr('fill', '#fff')
+        .attr('fill', colors.surfaceContainer)
         .attr('stroke', groupColors[d.group])
         .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
         .attr('rx', getAdjustedPadding(4, currentZoomLevel));
@@ -154,7 +178,7 @@ export const collaborationNetworkConfig = {
         .attr('text-anchor', 'middle')
         .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
         .attr('font-weight', 'bold')
-        .attr('fill', '#333');
+        .attr('fill', colors.onSurface);
 
       text.append('tspan')
         .attr('x', d.x)
@@ -165,7 +189,7 @@ export const collaborationNetworkConfig = {
         .attr('x', d.x)
         .attr('dy', '1.2em')
         .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('fill', '#666');
+        .attr('fill', colors.onSurfaceVariant);
       detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
       detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
 
@@ -176,7 +200,7 @@ export const collaborationNetworkConfig = {
         .attr('y', bbox.y - padding / 2)
         .attr('width', bbox.width + padding * 2)
         .attr('height', bbox.height + padding)
-        .attr('fill', '#fff')
+        .attr('fill', colors.surfaceContainer)
         .attr('stroke', groupColors[d.group])
         .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
         .attr('rx', getAdjustedPadding(4, currentZoomLevel));
@@ -200,15 +224,32 @@ export const collaborationNetworkConfig = {
     .attr('font-weight', 'bold')
     .attr('text-anchor', 'middle')
     .attr('dy', -12)
-    .attr('fill', '#333')
+    .attr('fill', colors.onSurface)
     .attr('opacity', 0)
     .text((d) => d.id.split(' ').pop()); // Show last name only
 
-    // Title
-    renderTitle(ctx, 'Author Collaboration Network');
+    // Title - rendered in a fixed group outside of the transforming g
+    // Create a fixed overlay group that doesn't transform with zoom
+    const margins = ctx.margins || { top: 60, right: 40, bottom: 40, left: 40 };
+    const fixedGroup = svg.append('g')
+      .attr('class', 'fixed-overlay')
+      .attr('transform', `translate(${margins.left}, ${margins.top})`);
 
-    // Legend
-    const legend = g.append('g').attr('class', 'legend').attr('opacity', 0);
+    // Render title in fixed group
+    fixedGroup.append('text')
+      .attr('class', 'chart-title')
+      .attr('x', width / 2)
+      .attr('y', -30)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '16px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.onSurface)
+      .text('Author Collaboration Network');
+
+    // Legend - rendered in fixed group
+    const legend = fixedGroup.append('g')
+      .attr('class', 'legend')
+      .attr('opacity', 0);
 
     const legendData = [
       { group: 1, label: networkStats.groups[1] },
@@ -229,7 +270,7 @@ export const collaborationNetworkConfig = {
     .attr('cy', 0)
     .attr('r', 6)
     .attr('fill', (d) => groupColors[d.group])
-    .attr('stroke', '#fff')
+    .attr('stroke', colors.surfaceContainer)
     .attr('stroke-width', 2);
 
   legendItems
@@ -237,7 +278,7 @@ export const collaborationNetworkConfig = {
     .attr('x', 15)
     .attr('y', 4)
     .attr('font-size', '12px')
-    .attr('fill', '#333')
+    .attr('fill', colors.onSurface)
     .text((d) => d.label);
 
   // Update positions on simulation tick
@@ -283,7 +324,7 @@ export const collaborationNetworkConfig = {
       .transition()
       .duration(animationDuration)
       .delay((d, i) => i * 10)
-      .attr('r', (d) => Math.sqrt(d.collaborations) / 2 + 3);
+      .attr('r', (d) => getAdjustedRadius(d.collaborations, currentZoomLevel));
 
     // Animate labels
     labels
@@ -324,8 +365,19 @@ export const collaborationNetworkConfig = {
         // Update zoom level for tooltip scaling
         currentZoomLevel = event.transform.k;
         
+        // Update node sizes to compensate for zoom (shrink as we zoom in)
+        node.attr('r', (d) => getAdjustedRadius(d.collaborations, currentZoomLevel));
+        
         // Update node stroke widths to compensate for zoom
         node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
+        
+        // Update labels to compensate for zoom
+        labels
+          .attr('font-size', `${getAdjustedFontSize(10, currentZoomLevel)}px`)
+          .attr('dy', -getAdjustedRadius(150, currentZoomLevel) - 2);  // Offset based on average node size
+        
+        // Update link stroke widths
+        link.attr('stroke-width', (d) => getAdjustedStrokeWidth(Math.sqrt(d.value), currentZoomLevel));
       });
 
     // Apply zoom behavior to SVG
@@ -339,10 +391,10 @@ export const collaborationNetworkConfig = {
       }
     });
 
-    // Add zoom control buttons
-    const zoomControls = svg.append('g')
+    // Add zoom control buttons (in fixed group so they don't transform)
+    const zoomControls = fixedGroup.append('g')
       .attr('class', 'zoom-controls')
-      .attr('transform', `translate(${width - 50}, 80)`);
+      .attr('transform', `translate(${width - 10}, 80)`);
 
     // Zoom in button
     const zoomInBtn = zoomControls.append('g')
@@ -354,7 +406,7 @@ export const collaborationNetworkConfig = {
 
     zoomInBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -377,7 +429,7 @@ export const collaborationNetworkConfig = {
 
     zoomOutBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -400,7 +452,7 @@ export const collaborationNetworkConfig = {
 
     resetBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -417,7 +469,7 @@ export const collaborationNetworkConfig = {
       .attr('y', 130)
       .attr('text-anchor', 'end')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .attr('opacity', 0)
       .text('Use buttons to zoom')
       .transition()
