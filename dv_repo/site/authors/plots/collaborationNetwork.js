@@ -80,153 +80,153 @@ export const collaborationNetworkConfig = {
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('collision', d3.forceCollide().radius(20));
 
-  // Draw links
-  const link = g
-    .append('g')
-    .attr('class', 'links')
-    .selectAll('line')
-    .data(collaborationNetworkData.links)
-    .join('line')
-    .attr('stroke', colors.outline)
-    .attr('stroke-opacity', 0)
-    .attr('stroke-width', (d) => Math.sqrt(d.value));
+    // Draw links
+    const link = g
+      .append('g')
+      .attr('class', 'links')
+      .selectAll('line')
+      .data(collaborationNetworkData.links)
+      .join('line')
+      .attr('stroke', colors.outline)
+      .attr('stroke-opacity', 0)
+      .attr('stroke-width', (d) => Math.sqrt(d.value));
 
-  // Draw nodes
-  const node = g
-    .append('g')
-    .attr('class', 'nodes')
-    .selectAll('circle')
-    .data(collaborationNetworkData.nodes)
-    .join('circle')
-    .attr('r', 0)
-    .attr('fill', (d) => groupColors[d.group])
-    .attr('stroke', colors.surfaceContainer)
-    .attr('stroke-width', 2)
-    .style('cursor', 'pointer')
-    .on('mouseenter', function(event, d) {
-      // Highlight node
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
+    // Draw nodes
+    const node = g
+      .append('g')
+      .attr('class', 'nodes')
+      .selectAll('circle')
+      .data(collaborationNetworkData.nodes)
+      .join('circle')
+      .attr('r', 0)
+      .attr('fill', (d) => groupColors[d.group])
+      .attr('stroke', colors.surfaceContainer)
+      .attr('stroke-width', 2)
+      .style('cursor', 'pointer')
+      .on('mouseenter', function (event, d) {
+        // Highlight node
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
 
-      // Show tooltip
-      const tooltip = g.append('g').attr('class', 'node-tooltip');
+        // Show tooltip
+        const tooltip = g.append('g').attr('class', 'node-tooltip');
 
-      const text = tooltip.append('text')
-        .attr('x', d.x)
-        .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
-        .attr('font-weight', 'bold')
-        .attr('fill', colors.onSurface);
+        const text = tooltip.append('text')
+          .attr('x', d.x)
+          .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
+          .attr('font-weight', 'bold')
+          .attr('fill', colors.onSurface);
 
-      text.append('tspan')
-        .attr('x', d.x)
-        .attr('dy', 0)
-        .text(d.id);
+        text.append('tspan')
+          .attr('x', d.x)
+          .attr('dy', 0)
+          .text(d.id);
 
-      const detailSpan = text.append('tspan')
-        .attr('x', d.x)
-        .attr('dy', '1.2em')
-        .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('fill', colors.onSurfaceVariant);
-      detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
-      detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
+        const detailSpan = text.append('tspan')
+          .attr('x', d.x)
+          .attr('dy', '1.2em')
+          .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
+          .attr('fill', colors.onSurfaceVariant);
+        detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
+        detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
 
-      const bbox = text.node().getBBox();
-      const padding = getAdjustedPadding(6, currentZoomLevel);
-      tooltip.insert('rect', 'text')
-        .attr('x', bbox.x - padding)
-        .attr('y', bbox.y - padding / 2)
-        .attr('width', bbox.width + padding * 2)
-        .attr('height', bbox.height + padding)
-        .attr('fill', colors.surfaceContainer)
-        .attr('stroke', groupColors[d.group])
-        .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
-        .attr('rx', getAdjustedPadding(4, currentZoomLevel));
-    })
-    .on('mouseleave', function(event, d) {
-      // Reset node
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr('stroke-width', 2);
+        const bbox = text.node().getBBox();
+        const padding = getAdjustedPadding(6, currentZoomLevel);
+        tooltip.insert('rect', 'text')
+          .attr('x', bbox.x - padding)
+          .attr('y', bbox.y - padding / 2)
+          .attr('width', bbox.width + padding * 2)
+          .attr('height', bbox.height + padding)
+          .attr('fill', colors.surfaceContainer)
+          .attr('stroke', groupColors[d.group])
+          .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
+          .attr('rx', getAdjustedPadding(4, currentZoomLevel));
+      })
+      .on('mouseleave', function (event, d) {
+        // Reset node
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('stroke-width', 2);
 
-      // Remove tooltip
-      g.selectAll('.node-tooltip').remove();
-    })
-    .on('click', function(event, d) {
-      event.stopPropagation();
-      
-      // Remove any existing tooltips
-      g.selectAll('.node-tooltip').remove();
-      
-      // Reset all nodes
-      node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
-      
-      // Highlight clicked node
-      d3.select(this)
-        .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
+        // Remove tooltip
+        g.selectAll('.node-tooltip').remove();
+      })
+      .on('click', function (event, d) {
+        event.stopPropagation();
 
-      // Show tooltip
-      const tooltip = g.append('g').attr('class', 'node-tooltip');
+        // Remove any existing tooltips
+        g.selectAll('.node-tooltip').remove();
 
-      const text = tooltip.append('text')
-        .attr('x', d.x)
-        .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
-        .attr('font-weight', 'bold')
-        .attr('fill', colors.onSurface);
+        // Reset all nodes
+        node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
 
-      text.append('tspan')
-        .attr('x', d.x)
-        .attr('dy', 0)
-        .text(d.id);
+        // Highlight clicked node
+        d3.select(this)
+          .attr('stroke-width', getAdjustedStrokeWidth(4, currentZoomLevel));
 
-      const detailSpan = text.append('tspan')
-        .attr('x', d.x)
-        .attr('dy', '1.2em')
-        .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('fill', colors.onSurfaceVariant);
-      detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
-      detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
+        // Show tooltip
+        const tooltip = g.append('g').attr('class', 'node-tooltip');
 
-      const bbox = text.node().getBBox();
-      const padding = getAdjustedPadding(6, currentZoomLevel);
-      tooltip.insert('rect', 'text')
-        .attr('x', bbox.x - padding)
-        .attr('y', bbox.y - padding / 2)
-        .attr('width', bbox.width + padding * 2)
-        .attr('height', bbox.height + padding)
-        .attr('fill', colors.surfaceContainer)
-        .attr('stroke', groupColors[d.group])
-        .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
-        .attr('rx', getAdjustedPadding(4, currentZoomLevel));
-    })
-    .call(
-      d3
-        .drag()
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended)
-    );
+        const text = tooltip.append('text')
+          .attr('x', d.x)
+          .attr('y', d.y - (Math.sqrt(d.collaborations) / 2 + 3) - 15)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
+          .attr('font-weight', 'bold')
+          .attr('fill', colors.onSurface);
 
-  // Node labels (only for highly connected authors)
-  const labels = g
-    .append('g')
-    .attr('class', 'labels')
-    .selectAll('text')
-    .data(collaborationNetworkData.nodes.filter((d) => d.collaborations > 150))
-    .join('text')
-    .attr('font-size', '10px')
-    .attr('font-weight', 'bold')
-    .attr('text-anchor', 'middle')
-    .attr('dy', -12)
-    .attr('fill', colors.onSurface)
-    .attr('opacity', 0)
-    .text((d) => d.id.split(' ').pop()); // Show last name only
+        text.append('tspan')
+          .attr('x', d.x)
+          .attr('dy', 0)
+          .text(d.id);
+
+        const detailSpan = text.append('tspan')
+          .attr('x', d.x)
+          .attr('dy', '1.2em')
+          .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
+          .attr('fill', colors.onSurfaceVariant);
+        detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
+        detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
+
+        const bbox = text.node().getBBox();
+        const padding = getAdjustedPadding(6, currentZoomLevel);
+        tooltip.insert('rect', 'text')
+          .attr('x', bbox.x - padding)
+          .attr('y', bbox.y - padding / 2)
+          .attr('width', bbox.width + padding * 2)
+          .attr('height', bbox.height + padding)
+          .attr('fill', colors.surfaceContainer)
+          .attr('stroke', groupColors[d.group])
+          .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
+          .attr('rx', getAdjustedPadding(4, currentZoomLevel));
+      })
+      .call(
+        d3
+          .drag()
+          .on('start', dragstarted)
+          .on('drag', dragged)
+          .on('end', dragended)
+      );
+
+    // Node labels (only for highly connected authors)
+    const labels = g
+      .append('g')
+      .attr('class', 'labels')
+      .selectAll('text')
+      .data(collaborationNetworkData.nodes.filter((d) => d.collaborations > 150))
+      .join('text')
+      .attr('font-size', '10px')
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'middle')
+      .attr('dy', -12)
+      .attr('fill', colors.onSurface)
+      .attr('opacity', 0)
+      .text((d) => d.id.split(' ').pop()); // Show last name only
 
     // Title - rendered in a fixed group outside of the transforming g
     // Create a fixed overlay group that doesn't transform with zoom
@@ -264,53 +264,53 @@ export const collaborationNetworkConfig = {
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(${width - 180}, ${30 + i * 25})`);
 
-  legendItems
-    .append('circle')
-    .attr('cx', 0)
-    .attr('cy', 0)
-    .attr('r', 6)
-    .attr('fill', (d) => groupColors[d.group])
-    .attr('stroke', colors.surfaceContainer)
-    .attr('stroke-width', 2);
+    legendItems
+      .append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', 6)
+      .attr('fill', (d) => groupColors[d.group])
+      .attr('stroke', colors.surfaceContainer)
+      .attr('stroke-width', 2);
 
-  legendItems
-    .append('text')
-    .attr('x', 15)
-    .attr('y', 4)
-    .attr('font-size', '12px')
-    .attr('fill', colors.onSurface)
-    .text((d) => d.label);
+    legendItems
+      .append('text')
+      .attr('x', 15)
+      .attr('y', 4)
+      .attr('font-size', '12px')
+      .attr('fill', colors.onSurface)
+      .text((d) => d.label);
 
-  // Update positions on simulation tick
-  simulation.on('tick', () => {
-    link
-      .attr('x1', (d) => d.source.x)
-      .attr('y1', (d) => d.source.y)
-      .attr('x2', (d) => d.target.x)
-      .attr('y2', (d) => d.target.y);
+    // Update positions on simulation tick
+    simulation.on('tick', () => {
+      link
+        .attr('x1', (d) => d.source.x)
+        .attr('y1', (d) => d.source.y)
+        .attr('x2', (d) => d.target.x)
+        .attr('y2', (d) => d.target.y);
 
-    node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+      node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
 
-    labels.attr('x', (d) => d.x).attr('y', (d) => d.y);
-  });
+      labels.attr('x', (d) => d.x).attr('y', (d) => d.y);
+    });
 
-  // Drag functions
-  function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
+    // Drag functions
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
 
-  function dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-  }
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
 
-  function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
 
     // Animate links
     link
@@ -343,7 +343,7 @@ export const collaborationNetworkConfig = {
     // ========================================================================
     // ZOOM AND PAN FUNCTIONALITY
     // ========================================================================
-    
+
     // Create zoom behavior
     const zoom = d3.zoom()
       .scaleExtent([0.5, 5])
@@ -361,21 +361,21 @@ export const collaborationNetworkConfig = {
       })
       .on('zoom', (event) => {
         g.attr('transform', event.transform);
-        
+
         // Update zoom level for tooltip scaling
         currentZoomLevel = event.transform.k;
-        
+
         // Update node sizes to compensate for zoom (shrink as we zoom in)
         node.attr('r', (d) => getAdjustedRadius(d.collaborations, currentZoomLevel));
-        
+
         // Update node stroke widths to compensate for zoom
         node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));
-        
+
         // Update labels to compensate for zoom
         labels
           .attr('font-size', `${getAdjustedFontSize(10, currentZoomLevel)}px`)
           .attr('dy', -getAdjustedRadius(150, currentZoomLevel) - 2);  // Offset based on average node size
-        
+
         // Update link stroke widths
         link.attr('stroke-width', (d) => getAdjustedStrokeWidth(Math.sqrt(d.value), currentZoomLevel));
       });
@@ -384,7 +384,7 @@ export const collaborationNetworkConfig = {
     svg.call(zoom);
 
     // Click on background to close tooltips (for mobile)
-    svg.on('click', function(event) {
+    svg.on('click', function (event) {
       if (event.target === this || event.target.tagName === 'rect') {
         g.selectAll('.node-tooltip').remove();
         node.attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel));

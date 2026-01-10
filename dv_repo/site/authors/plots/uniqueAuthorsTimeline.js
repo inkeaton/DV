@@ -102,10 +102,17 @@ export const uniqueAuthorsTimelineConfig = {
     // Find the first year where cumulative >= threshold
     const dataPoint = data.find(d => d.cumulative >= threshold);
     if (dataPoint) {
+      // Format label in k
+      let label;
+      if (threshold >= 1000) {
+        label = `${(threshold/1000).toString().replace(/\.0$/, '')}k+ authors`;
+      } else {
+        label = `${(threshold/1000).toFixed(1)}k+ authors`;
+      }
       return {
         year: dataPoint.year,
         cumulative: dataPoint.cumulative,
-        label: `${threshold.toLocaleString()}+ authors`
+        label
       };
     }
     return null;
@@ -130,17 +137,38 @@ export const uniqueAuthorsTimelineConfig = {
   milestoneGroup
     .append('text')
     .attr('x', (d) => xScale(d.year))
-    .attr('y', (d) => yScale(d.cumulative) - 15)
+    .attr('y', (d) => yScale(d.cumulative) - 40) // alza di più rispetto a prima
     .attr('text-anchor', 'middle')
     .attr('font-size', '11px')
     .attr('font-weight', 'bold')
     .attr('fill', colors.accent || colors.tertiary)
-    .text((d) => d.label);
+    .selectAll('tspan')
+    .data(d => d.label.split(' '))
+    .join('tspan')
+    .attr('x', (d, i, nodes) => d3.select(nodes[i].parentNode).attr('x'))
+    .attr('dy', (d, i) => i === 0 ? 0 : '1.1em')
+    .text(d => d);
 
     // Axes
     renderTitle(ctx, 'Cumulative Growth of Unique Authors');
-    renderXAxis(ctx, xScale, { label: 'Year', tickFormat: d3.format('d') });
-    renderYAxis(ctx, yScale, { label: 'Cumulative Authors', tickFormat: d3.format(',') });
+    // Calcola i tick dell'asse X includendo sempre l'ultimo anno
+    const years = data.map(d => d.year);
+    const minYear = years[0];
+    const maxYear = years[years.length - 1];
+    // Tick ogni 5 anni + sempre l'ultimo anno
+    const tickYears = [];
+    for (let y = minYear; y <= maxYear; y += 5) tickYears.push(y);
+    if (!tickYears.includes(maxYear)) tickYears.push(maxYear);
+
+    renderXAxis(ctx, xScale, {
+      label: 'Year',
+      tickFormat: d3.format('d'),
+      tickValues: tickYears
+    });
+    renderYAxis(ctx, yScale, { 
+      label: 'Cumulative Authors', 
+      tickFormat: d => d >= 1000 ? (d/1000).toFixed(0) + 'k' : d 
+    });
     styleAxes(g);
     cleanAxes(g);  // Remove axis lines, keep only tick labels
 
@@ -315,41 +343,35 @@ export const uniqueAuthorsTimelineConfig = {
       })
       .on('touchend', hideTooltip);
 
-    // Stats annotation
-    const statsAnnotation = g
-    .append('g')
-    .attr('class', 'stats-annotation')
-    .attr('opacity', 0);
 
-    statsAnnotation
-      .append('rect')
-      .attr('x', width - 180)
+      // Stats annotation semplice in alto a destra
+    g.append('text')
+      .attr('class', 'stats-annotation')
+      .attr('x', width - 10)
       .attr('y', 10)
-      .attr('width', 170)
-      .attr('height', 60)
-      .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
-      .attr('stroke-width', 2)
-      .attr('rx', 5);
+      .attr('text-anchor', 'end')
+      .attr('fill', colors.onSurfaceVariant)
+      .attr('font-size', '12px')
+      .attr('opacity', 0)
+      .text(`Total: ${uniqueAuthorsStats.total.toLocaleString()} authors`)
+      .transition()
+      .delay(animationDuration)
+      .duration(400)
+      .attr('opacity', 1);
 
-    statsAnnotation
-      .append('text')
-      .attr('x', width - 95)
-      .attr('y', 35)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '14px')
-      .attr('font-weight', 'bold')
-      .attr('fill', colors.primary)
-      .text(`Total: ${uniqueAuthorsStats.total.toLocaleString()}`);
-
-    statsAnnotation
-      .append('text')
-      .attr('x', width - 95)
-    .attr('y', 55)
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '12px')
-    .attr('fill', colors.onSurfaceVariant)
-    .text(`Avg/year: ${uniqueAuthorsStats.avgNewPerYear}`);
+    g.append('text')
+      .attr('class', 'stats-annotation')
+      .attr('x', width - 10)
+      .attr('y', 28)
+      .attr('text-anchor', 'end')
+      .attr('fill', colors.onSurfaceVariant)
+      .attr('font-size', '12px')
+      .attr('opacity', 0)
+      .text(`Average: ${uniqueAuthorsStats.avgNewPerYear} new authors per year`)
+      .transition()
+      .delay(animationDuration)
+      .duration(400)
+      .attr('opacity', 1);
 
     // Animate area
     cumulativeArea

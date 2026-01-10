@@ -15,7 +15,8 @@ import {
   renderXAxis,
   renderYAxis,
   styleAxes,
-  cleanAxes
+  cleanAxes,
+  createArrowMarker
 } from '../../assets/js/chart-utils.js';
 
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
@@ -90,7 +91,21 @@ export const authorsPerPaperConfig = {
 
     // Axes
     renderTitle(ctx, 'Average Authors per Paper Over Time');
-    renderXAxis(ctx, xScale, { label: 'Year', tickFormat: d3.format('d') });
+
+    // Calcola i tick dell'asse X includendo sempre l'ultimo anno
+    const years = data.map(d => d.year);
+    const minYear = years[0];
+    const maxYear = years[years.length - 1];
+    // Tick ogni 5 anni + sempre l'ultimo anno
+    const tickYears = [];
+    for (let y = minYear; y <= maxYear; y += 5) tickYears.push(y);
+    if (!tickYears.includes(maxYear)) tickYears.push(maxYear);
+
+    renderXAxis(ctx, xScale, {
+      label: 'Year',
+      tickFormat: d3.format('d'),
+      tickValues: tickYears
+    });
     renderYAxis(ctx, yScale, { label: 'Average Number of Authors' });
     styleAxes(g);
     cleanAxes(g);  // Remove axis lines, keep only tick labels
@@ -270,52 +285,81 @@ export const authorsPerPaperConfig = {
     // GROWTH ANNOTATION (Fixed positioning within chart bounds)
     // ========================================================================
     
-    // Calculate actual growth rate from data
+    // Create arrow marker for annotation
+    createArrowMarker(svg);
+    
+    // Find peak year (maximum average)
     const firstYear = data[0];
-    const lastYear = data[data.length - 1];
-    const growthPercent = Math.round(((lastYear.avg - firstYear.avg) / firstYear.avg) * 100);
+    const peakYear = data.reduce((max, d) => d.avg > max.avg ? d : max, data[0]);
+    const growthPercent = Math.round(((peakYear.avg - firstYear.avg) / firstYear.avg) * 100);
 
     const annotation = g
       .append('g')
       .attr('class', 'annotation')
       .attr('opacity', 0);
 
-    // Position annotation at the right side of the chart, but within bounds
-    const annotationX = Math.min(xScale(lastYear.year), width - 80);
-    const annotationY = yScale(lastYear.avg);
+    // Position annotation at the peak year
+    const annotationX = xScale(peakYear.year);
+    const annotationY = yScale(peakYear.avg);
 
-    // Vertical dashed line from annotation point upward
+    // Text position above the point
+    const textY = Math.max(annotationY - 70, 20);
+    const textX = Math.min(Math.max(annotationX, 80), width - 80);
+
+    // Annotation text (simple, no borders)
+    annotation
+      .append('text')
+      .attr('x', textX)
+      .attr('y', textY)
+      .attr('text-anchor', 'middle')
+      .attr('fill', 'rgba(0,0,0,0.78)')
+      .attr('font-size', '12px')
+      .attr('font-weight', '700')
+      .text(`Peak: +${growthPercent}% since ${firstYear.year}`);
+
+    // Arrow from text to point
     annotation
       .append('line')
-      .attr('x1', annotationX)
+      .attr('x1', textX)
+      .attr('y1', textY + 6)
       .attr('x2', annotationX)
-      .attr('y1', annotationY)
-      .attr('y2', Math.max(annotationY - 50, 10))
-      .attr('stroke', colors.accent || colors.tertiary)
+      .attr('y2', annotationY - 8)
+      .attr('stroke', 'rgba(0,0,0,0.6)')
+      .attr('stroke-width', 1.5)
+      .attr('marker-end', 'url(#arrowhead)');
+
+    // Small dot at the target point
+    annotation
+      .append('circle')
+      .attr('cx', annotationX)
+      .attr('cy', annotationY)
+      .attr('r', 3)
+      .attr('fill', 'rgba(0,0,0,0.6)');
+
+    // Evidenzia il valore massimo assoluto (max)
+    const maxValuePoint = data.reduce((max, d) => d.max > max.max ? d : max, data[0]);
+    const maxX = xScale(maxValuePoint.year);
+    const maxY = yScale(maxValuePoint.max);
+
+    // Pallino rosso
+    g.append('circle')
+      .attr('cx', maxX)
+      .attr('cy', maxY)
+      .attr('r', 6)
+      .attr('fill', 'red')
+      .attr('stroke', '#fff')
       .attr('stroke-width', 2)
-      .attr('stroke-dasharray', '4,4');
+      .attr('opacity', 0.95);
 
-    // Annotation text box
-    const annotationText = annotation
-      .append('text')
-      .attr('x', annotationX)
-      .attr('y', Math.max(annotationY - 60, 0))
+    // Label semplice sopra il punto
+    g.append('text')
+      .attr('x', maxX)
+      .attr('y', maxY - 14)
       .attr('text-anchor', 'middle')
-      .attr('font-size', '13px')
+      .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('fill', colors.accent || colors.tertiary);
-
-    annotationText.append('tspan')
-      .attr('x', annotationX)
-      .attr('dy', 0)
-      .text(`+${growthPercent}%`);
-
-    annotationText.append('tspan')
-      .attr('x', annotationX)
-      .attr('dy', '1.1em')
-      .attr('font-size', '11px')
-      .attr('font-weight', 'normal')
-      .text('since 1990');
+      .attr('fill', 'red')
+      .text(`Max value: ${maxValuePoint.max.toFixed(2)}`);
 
     // Animate error area
     errorArea
