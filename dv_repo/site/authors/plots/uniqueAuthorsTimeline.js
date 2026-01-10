@@ -1,12 +1,13 @@
 /**
  * authors/plots/uniqueAuthorsTimeline.js
  * Cumulative area chart showing unique authors growth over time
- * 
+ *
  * Features:
  * - Gradient-filled area chart with animated border line
  * - Milestone markers at key thresholds (500, 1000, 2500, 5000)
  * - Tooltip with vertical guide line on hover/touch
  * - Stats annotation box
+ * - Peak (2020) annotation with arrow + NYT-style text
  */
 
 import { uniqueAuthorsData, uniqueAuthorsStats } from '../../data/authors/uniqueAuthorsData.js';
@@ -15,7 +16,8 @@ import {
   renderXAxis,
   renderYAxis,
   styleAxes,
-  cleanAxes
+  cleanAxes,
+  createArrowMarker
 } from '../../assets/js/chart-utils.js';
 
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
@@ -47,34 +49,34 @@ export const uniqueAuthorsTimelineConfig = {
       .y1((d) => yScale(d.cumulative))
       .curve(d3.curveMonotoneX);
 
-  // Line generator for top border
-  const lineGenerator = d3
-    .line()
-    .x((d) => xScale(d.year))
-    .y((d) => yScale(d.cumulative))
-    .curve(d3.curveMonotoneX);
+    // Line generator for top border
+    const lineGenerator = d3
+      .line()
+      .x((d) => xScale(d.year))
+      .y((d) => yScale(d.cumulative))
+      .curve(d3.curveMonotoneX);
 
-  // Draw cumulative area with gradient
-  const gradient = svg
-    .append('defs')
-    .append('linearGradient')
-    .attr('id', 'area-gradient')
-    .attr('x1', '0%')
-    .attr('y1', '0%')
-    .attr('x2', '0%')
-    .attr('y2', '100%');
+    // Draw cumulative area with gradient
+    const gradient = svg
+      .append('defs')
+      .append('linearGradient')
+      .attr('id', 'area-gradient')
+      .attr('x1', '0%')
+      .attr('y1', '0%')
+      .attr('x2', '0%')
+      .attr('y2', '100%');
 
-  gradient
-    .append('stop')
-    .attr('offset', '0%')
-    .attr('stop-color', colors.primary)
-    .attr('stop-opacity', 0.8);
+    gradient
+      .append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', colors.primary)
+      .attr('stop-opacity', 0.8);
 
-  gradient
-    .append('stop')
-    .attr('offset', '100%')
-    .attr('stop-color', colors.primary)
-    .attr('stop-opacity', 0.2);
+    gradient
+      .append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', colors.primary)
+      .attr('stop-opacity', 0.2);
 
     const cumulativeArea = g
       .append('path')
@@ -88,74 +90,73 @@ export const uniqueAuthorsTimelineConfig = {
     const borderLine = g
       .append('path')
       .datum(data)
-    .attr('class', 'border-line')
-    .attr('d', lineGenerator)
-    .attr('fill', 'none')
-    .attr('stroke', colors.primary)
-    .attr('stroke-width', 2)
-    .attr('stroke-opacity', 0);
+      .attr('class', 'border-line')
+      .attr('d', lineGenerator)
+      .attr('fill', 'none')
+      .attr('stroke', colors.primary)
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0);
 
-  // Milestone markers - find years when thresholds were crossed
-  // Thresholds: 500, 1000, 2500, 5000 cumulative authors
-  const thresholds = [500, 1000, 2500, 5000];
-  const milestones = thresholds.map(threshold => {
-    // Find the first year where cumulative >= threshold
-    const dataPoint = data.find(d => d.cumulative >= threshold);
-    if (dataPoint) {
-      // Format label in k
-      let label;
-      if (threshold >= 1000) {
-        label = `${(threshold/1000).toString().replace(/\.0$/, '')}k+ authors`;
-      } else {
-        label = `${(threshold/1000).toFixed(1)}k+ authors`;
-      }
-      return {
-        year: dataPoint.year,
-        cumulative: dataPoint.cumulative,
-        label
-      };
-    }
-    return null;
-  }).filter(m => m !== null);
+    // Milestone markers - find years when thresholds were crossed
+    const thresholds = [500, 1000, 2500, 5000];
+    const milestones = thresholds
+      .map((threshold) => {
+        const dataPoint = data.find((d) => d.cumulative >= threshold);
+        if (dataPoint) {
+          let label;
+          if (threshold >= 1000) {
+            label = `${(threshold / 1000).toString().replace(/\.0$/, '')}k+ authors`;
+          } else {
+            label = `${(threshold / 1000).toFixed(1)}k+ authors`;
+          }
+          return {
+            year: dataPoint.year,
+            cumulative: dataPoint.cumulative,
+            label
+          };
+        }
+        return null;
+      })
+      .filter((m) => m !== null);
 
-  const milestoneGroup = g
-    .selectAll('.milestone')
-    .data(milestones)
-    .join('g')
-    .attr('class', 'milestone')
-    .attr('opacity', 0);
+    const milestoneGroup = g
+      .selectAll('.milestone')
+      .data(milestones)
+      .join('g')
+      .attr('class', 'milestone')
+      .attr('opacity', 0);
 
-  milestoneGroup
-    .append('circle')
-    .attr('cx', (d) => xScale(d.year))
-    .attr('cy', (d) => yScale(d.cumulative))
-    .attr('r', 6)
-    .attr('fill', colors.accent || colors.tertiary)
-    .attr('stroke', colors.surfaceContainer)
-    .attr('stroke-width', 2);
+    milestoneGroup
+      .append('circle')
+      .attr('cx', (d) => xScale(d.year))
+      .attr('cy', (d) => yScale(d.cumulative))
+      .attr('r', 6)
+      .attr('fill', colors.accent || colors.tertiary)
+      .attr('stroke', colors.surfaceContainer)
+      .attr('stroke-width', 2);
 
-  milestoneGroup
-    .append('text')
-    .attr('x', (d) => xScale(d.year))
-    .attr('y', (d) => yScale(d.cumulative) - 40) // alza di più rispetto a prima
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '11px')
-    .attr('font-weight', 'bold')
-    .attr('fill', colors.accent || colors.tertiary)
-    .selectAll('tspan')
-    .data(d => d.label.split(' '))
-    .join('tspan')
-    .attr('x', (d, i, nodes) => d3.select(nodes[i].parentNode).attr('x'))
-    .attr('dy', (d, i) => i === 0 ? 0 : '1.1em')
-    .text(d => d);
+    milestoneGroup
+      .append('text')
+      .attr('x', (d) => xScale(d.year))
+      .attr('y', (d) => yScale(d.cumulative) - 40)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '11px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.accent || colors.tertiary)
+      .selectAll('tspan')
+      .data((d) => d.label.split(' '))
+      .join('tspan')
+      .attr('x', (d, i, nodes) => d3.select(nodes[i].parentNode).attr('x'))
+      .attr('dy', (d, i) => (i === 0 ? 0 : '1.1em'))
+      .text((d) => d);
 
     // Axes
     renderTitle(ctx, 'Cumulative Growth of Unique Authors');
-    // Calcola i tick dell'asse X includendo sempre l'ultimo anno
-    const years = data.map(d => d.year);
-    const minYear = years[0];
-    const maxYear = years[years.length - 1];
-    // Tick ogni 5 anni + sempre l'ultimo anno
+
+    // X ticks (every 5y + last year)
+    const yearVals = data.map((d) => d.year);
+    const minYear = yearVals[0];
+    const maxYear = yearVals[yearVals.length - 1];
     const tickYears = [];
     for (let y = minYear; y <= maxYear; y += 5) tickYears.push(y);
     if (!tickYears.includes(maxYear)) tickYears.push(maxYear);
@@ -165,23 +166,98 @@ export const uniqueAuthorsTimelineConfig = {
       tickFormat: d3.format('d'),
       tickValues: tickYears
     });
-    renderYAxis(ctx, yScale, { 
-      label: 'Cumulative Authors', 
-      tickFormat: d => d >= 1000 ? (d/1000).toFixed(0) + 'k' : d 
+
+    renderYAxis(ctx, yScale, {
+      label: 'Cumulative Authors',
+      tickFormat: (d) => (d >= 1000 ? (d / 1000).toFixed(0) + 'k' : d)
     });
+
     styleAxes(g);
-    cleanAxes(g);  // Remove axis lines, keep only tick labels
+    cleanAxes(g);
+
+    // Arrow marker for annotations
+    createArrowMarker(svg);
+
+    // ========================================================================
+    // PEAK NEW AUTHORS ANNOTATION (2020) - arrow + NYT-style text + dot
+    // ========================================================================
+    const peakYear = uniqueAuthorsStats.peakNewYear; // 2020
+    const peakPoint = data.find((d) => d.year === peakYear);
+
+    const avgNew = uniqueAuthorsStats.avgNewPerYear;
+    const peakNew = uniqueAuthorsStats.peakNewCount;
+    const pctAboveAvg = Math.round(((peakNew - avgNew) / avgNew) * 100);
+
+    if (peakPoint) {
+      const targetX = xScale(peakPoint.year);
+      const targetY = yScale(peakPoint.cumulative);
+
+      // --- DOT (same style as milestone dots) ---
+      g.append('circle')
+        .attr('class', 'peak-dot')
+        .attr('cx', targetX)
+        .attr('cy', targetY)
+        .attr('r', 6)
+        .attr('fill', colors.accent || colors.tertiary)
+        .attr('stroke', colors.surfaceContainer)
+        .attr('stroke-width', 2)
+        .attr('opacity', 0)
+        .transition()
+        .delay(animationDuration + 250)
+        .duration(350)
+        .attr('opacity', 1);
+
+      const noteG = g
+        .append('g')
+        .attr('class', `peak-new-note note-${peakYear}`)
+        .attr('opacity', 0)
+        .style('pointer-events', 'none');
+
+      // --- MOVE TEXT: slightly lower + slightly left ---
+      // tweak these two numbers as you like:
+      const X_SHIFT = 250;  // move left (increase to go more left)
+      const Y_SHIFT = 100;  // move down (increase to go more down)
+
+      let tx = targetX - X_SHIFT;
+      tx = Math.min(Math.max(tx, 140), width - 140);
+
+      const ty = 22 + Y_SHIFT;
+
+      noteG.append('text')
+        .attr('x', tx)
+        .attr('y', ty)
+        .attr('text-anchor', 'middle')
+        .attr('fill', colors.onSurface)
+        .attr('fill-opacity', 0.78)
+        .attr('font-size', '12px')
+        .attr('font-weight', '700')
+        .text(`Peak growth in new authors — ${pctAboveAvg}% above average. A COVID effect?`);
+
+      noteG.append('line')
+        .attr('x1', tx)
+        .attr('y1', ty + 6)
+        .attr('x2', targetX)
+        .attr('y2', Math.max(8, targetY - 10))
+        .attr('stroke', colors.onSurface)
+        .attr('stroke-opacity', 0.6)
+        .attr('stroke-width', 1.5)
+        .attr('marker-end', 'url(#arrowhead)');
+
+      noteG.raise();
+
+      noteG.transition()
+        .delay(animationDuration + 250)
+        .duration(450)
+        .attr('opacity', 1);
+    }
 
     // ========================================================================
     // TOOLTIP WITH VERTICAL GUIDE LINE
     // ========================================================================
-    
-    // Create tooltip elements (hidden initially)
     const tooltipGroup = g.append('g')
       .attr('class', 'tooltip-group')
       .style('display', 'none');
 
-    // Vertical guide line
     const guideLine = tooltipGroup.append('line')
       .attr('class', 'guide-line')
       .attr('y1', 0)
@@ -191,14 +267,12 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('stroke-dasharray', '4,4')
       .attr('opacity', 0.7);
 
-    // Tooltip circle on the line
     const tooltipCircle = tooltipGroup.append('circle')
       .attr('r', 6)
       .attr('fill', colors.primary)
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
-    // Tooltip background and text
     const tooltipBg = tooltipGroup.append('rect')
       .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
@@ -210,7 +284,6 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('font-size', '12px')
       .attr('fill', colors.onSurface);
 
-    // Invisible overlay for mouse/touch tracking
     const overlay = g.append('rect')
       .attr('class', 'tooltip-overlay')
       .attr('width', width)
@@ -218,13 +291,8 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('fill', 'transparent')
       .style('cursor', 'crosshair');
 
-    /**
-     * Find the closest data point to the mouse/touch position
-     * @param {number} mouseX - X coordinate relative to chart
-     * @returns {Object} Closest data point
-     */
     function findClosestDataPoint(mouseX) {
-      const bisect = d3.bisector(d => d.year).left;
+      const bisect = d3.bisector((d) => d.year).left;
       const x0 = xScale.invert(mouseX);
       const i = bisect(data, x0, 1);
       const d0 = data[i - 1];
@@ -234,34 +302,26 @@ export const uniqueAuthorsTimelineConfig = {
       return (x0 - d0.year > d1.year - x0) ? d1 : d0;
     }
 
-    /**
-     * Show tooltip at the given data point
-     * @param {Object} d - Data point
-     */
     function showTooltip(d) {
       const x = xScale(d.year);
       const y = yScale(d.cumulative);
 
-      // Hide tooltip during updates to prevent flicker/lag
       tooltipGroup.style('visibility', 'hidden').style('display', null).raise();
-
-      // Position guide line
       guideLine.attr('x1', x).attr('x2', x);
-
-      // Position circle on line
       tooltipCircle.attr('cx', x).attr('cy', y);
 
-      // Create tooltip content
       tooltipText.selectAll('*').remove();
       tooltipText.append('tspan')
         .attr('x', 0)
         .attr('dy', 0)
         .attr('font-weight', 'bold')
         .text(d.year);
+
       tooltipText.append('tspan')
         .attr('x', 0)
         .attr('dy', '1.2em')
         .text(`Total: ${d.cumulative.toLocaleString()}`);
+
       tooltipText.append('tspan')
         .attr('x', 0)
         .attr('dy', '1.2em')
@@ -269,31 +329,20 @@ export const uniqueAuthorsTimelineConfig = {
         .attr('fill', colors.onSurfaceVariant)
         .text(`+${d.newAuthors} new authors`);
 
-      // Set a temporary position for text to measure it
       tooltipText.attr('transform', 'translate(0,0)');
-      
-      // Get bbox synchronously after text is set
+
       const bbox = tooltipText.node().getBBox();
       const padding = 8;
       const tooltipWidth = bbox.width + padding * 2;
       const tooltipHeight = bbox.height + padding * 2;
 
-      // Determine tooltip position (above or below, left or right of point)
       let tooltipX = x;
       let tooltipY = y - 20 - tooltipHeight;
 
-      // Keep tooltip within chart bounds
-      if (tooltipY < 0) {
-        tooltipY = y + 20;  // Show below if too high
-      }
-      if (tooltipX - tooltipWidth / 2 < 0) {
-        tooltipX = tooltipWidth / 2 + 5;
-      }
-      if (tooltipX + tooltipWidth / 2 > width) {
-        tooltipX = width - tooltipWidth / 2 - 5;
-      }
+      if (tooltipY < 0) tooltipY = y + 20;
+      if (tooltipX - tooltipWidth / 2 < 0) tooltipX = tooltipWidth / 2 + 5;
+      if (tooltipX + tooltipWidth / 2 > width) tooltipX = width - tooltipWidth / 2 - 5;
 
-      // Update both background and text position together
       tooltipBg
         .attr('x', tooltipX - tooltipWidth / 2)
         .attr('y', tooltipY)
@@ -301,40 +350,33 @@ export const uniqueAuthorsTimelineConfig = {
         .attr('height', tooltipHeight);
 
       tooltipText.attr('transform', `translate(${tooltipX}, ${tooltipY + padding + 10})`);
-      
-      // Show tooltip after everything is positioned
       tooltipGroup.style('visibility', 'visible');
     }
 
-    /**
-     * Hide the tooltip
-     */
     function hideTooltip() {
       tooltipGroup.style('display', 'none');
     }
 
-    // Mouse events
     overlay
-      .on('mouseenter', function() {
+      .on('mouseenter', function () {
         tooltipGroup.style('display', null);
       })
-      .on('mousemove', function(event) {
+      .on('mousemove', function (event) {
         const [mouseX] = d3.pointer(event);
         const d = findClosestDataPoint(mouseX);
         if (d) showTooltip(d);
       })
       .on('mouseleave', hideTooltip);
 
-    // Touch events for mobile support
     overlay
-      .on('touchstart', function(event) {
+      .on('touchstart', function (event) {
         event.preventDefault();
         const touch = event.touches[0];
         const [touchX] = d3.pointer(touch, this);
         const d = findClosestDataPoint(touchX);
         if (d) showTooltip(d);
       })
-      .on('touchmove', function(event) {
+      .on('touchmove', function (event) {
         event.preventDefault();
         const touch = event.touches[0];
         const [touchX] = d3.pointer(touch, this);
@@ -343,8 +385,7 @@ export const uniqueAuthorsTimelineConfig = {
       })
       .on('touchend', hideTooltip);
 
-
-      // Stats annotation semplice in alto a destra
+    // Stats annotations (top-right)
     g.append('text')
       .attr('class', 'stats-annotation')
       .attr('x', width - 10)
@@ -395,7 +436,5 @@ export const uniqueAuthorsTimelineConfig = {
       .duration(400)
       .delay((d, i) => animationDuration + i * 200)
       .attr('opacity', 1);
-
-    // Animate stats (già applicato direttamente alle annotazioni)
   }
 };

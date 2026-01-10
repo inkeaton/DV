@@ -2,18 +2,18 @@
  * authors/plots/authorMetrics.js
  * Bubble scatter chart showing author metrics
  * X-axis: papers count, Y-axis: citations (symlog scale), Bubble size: awards
- * 
+ *
  * Features:
  * - Symlog scale for Y-axis to handle wide range of citation counts
  * - Scaled bubble sizes based on awards
- * - Interactive hover effects with labels
- * - Notable authors annotations with connecting lines
+ * - Hover tooltip with full metrics + nominations (top3 by awards/citations/papers)
+ * - Labels under selected circles + subtle darker stroke for notable names
  */
 
 // Put images here:
-    // ../assets/img/authors/jeffrey-heer.jpg
-    // ../assets/img/authors/hanspeter-pfister.jpg
-    // ../assets/img/authors/john-stasko.jpg
+// ../assets/img/authors/jeffrey-heer.jpg
+// ../assets/img/authors/hanspeter-pfister.jpg
+// ../assets/img/authors/john-stasko.jpg
 
 import { authorMetricsData, authorMetricsStats } from '../../data/authors/authorMetricsData.js';
 import {
@@ -42,115 +42,273 @@ export const authorMetricsConfig = {
       emerging: colors.tertiary
     };
 
-    // Scales
+    // ---- Notable (manual) ----
+    const notableNames = [
+      'Ben Shneiderman',
+      'M. G. Bostock',
+      'Martin Wattenberg',
+      'Fernanda Viégas',
+      'Jessica Hullman',
+      'Daniel A. Keim',
+      'Thomas Ertl',
+      'Valerio Pascucci',
+      'Claudio Silva'
+    ];
+    const notableSet = new Set(notableNames);
+
+    // ---- Top 3 by: awards, citations, papers ----
+    const top3 = (arr, key) =>
+      [...arr].sort((a, b) => (b[key] ?? 0) - (a[key] ?? 0)).slice(0, 3);
+
+    const topAwards = top3(data, 'awards');
+    const topCitations = top3(data, 'citations');
+    const topPapers = top3(data, 'papers');
+
+    // Map: name -> nominations [{ metric, rank }]
+    const nominationsByName = new Map();
+    const addNomination = (d, metric, rank) => {
+      if (!d?.name) return;
+      if (!nominationsByName.has(d.name)) nominationsByName.set(d.name, []);
+      const list = nominationsByName.get(d.name);
+      if (!list.some((x) => x.metric === metric && x.rank === rank)) {
+        list.push({ metric, rank });
+      }
+    };
+
+    topAwards.forEach((d, i) => addNomination(d, 'awards', i + 1));
+    topCitations.forEach((d, i) => addNomination(d, 'citations', i + 1));
+    topPapers.forEach((d, i) => addNomination(d, 'papers', i + 1));
+
+    const nominatedSet = new Set([...nominationsByName.keys()]);
+
+    const rankLabel = (rank) => (rank === 1 ? 'Most' : rank === 2 ? '2nd Most' : '3rd Most');
+    const medalIcon = (rank) => (rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉');
+
+    // Medal colors (fixed for clarity)
+    const medalColors = {
+      1: '#DAA520', // gold
+      2: '#696969', // silver
+      3: '#B87333'  // bronze
+    };
+
+    const metricLabel = (metric) => {
+      if (metric === 'awards') return 'Awards';
+      if (metric === 'citations') return 'Citations';
+      return 'Papers';
+    };
+
+    // ---- Scales ----
     const xScale = d3
       .scaleLinear()
       .domain([0, d3.max(data, (d) => d.papers) * 1.1])
       .range([0, width]);
 
-    // Use symlog scale for Y-axis to handle wide range of citation counts
-    // Symlog handles zero values gracefully (unlike log scale)
     const yScale = d3
       .scaleSymlog()
-      .constant(1000)  // Transition point from linear to log behavior
+      .constant(1000)
       .domain([0, d3.max(data, (d) => d.citations) * 1.1])
       .range([height, 0]);
 
-  // Smaller bubble sizes to reduce overlap
-  const sizeScale = d3
-    .scaleSqrt()
-    .domain([0, authorMetricsStats.maxAwards])
-    .range([2, 18]);
+    const sizeScale = d3
+      .scaleSqrt()
+      .domain([0, authorMetricsStats.maxAwards])
+      .range([2, 18]);
 
-    // Draw bubbles
+    const fmtInt = d3.format(',');
+    const fmtCompact = d3.format('~s');
+
+    // Stroke helper: darker for notable names
+    const strokeFor = (d) => {
+      const base = categoryColors[d.category];
+      if (!notableSet.has(d.name)) return base;
+      const c = d3.color(base);
+      return c ? c.darker(0.8).formatHex() : base;
+    };
+
+    // ---- Draw bubbles ----
     const bubbles = g
       .selectAll('.bubble')
       .data(data)
-    .join('circle')
-    .attr('class', 'bubble')
-    .attr('cx', (d) => xScale(d.papers))
-    .attr('cy', (d) => yScale(d.citations))
-    .attr('r', 0)
-    .attr('fill', (d) => categoryColors[d.category])
-    .attr('fill-opacity', 0.6)
-    .attr('stroke', (d) => categoryColors[d.category])
-    .attr('stroke-width', 2)
-    .style('cursor', 'pointer');
+      .join('circle')
+      .attr('class', 'bubble')
+      .attr('cx', (d) => xScale(d.papers))
+      .attr('cy', (d) => yScale(d.citations))
+      .attr('r', 0)
+      .attr('fill', (d) => categoryColors[d.category])
+      .attr('fill-opacity', 0.6)
+      .attr('stroke', (d) => strokeFor(d))
+      .attr('stroke-width', (d) => (notableSet.has(d.name) ? 2.8 : 2))
+      .style('cursor', 'pointer');
 
-  // Hover effects
-  bubbles
-    .on('mouseenter', function (event, d) {
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr('fill-opacity', 0.9)
-        .attr('stroke-width', 3);
+    // ---- Labels under selected circles (nominated + notable) ----
+    const labelSet = new Set([...nominatedSet, ...notableSet]);
+    const labeledData = data.filter((d) => labelSet.has(d.name));
 
-      // Show label
-      const label = g
-        .append('text')
-        .attr('class', 'hover-label')
-        .attr('x', xScale(d.papers))
-        .attr('y', yScale(d.citations) - sizeScale(d.awards) - 8)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '12px')
-        .attr('font-weight', 'bold')
-        .attr('fill', colors.onSurface)
-        .text(d.name);
+    const labelsG = g.append('g').attr('class', 'bubble-labels');
 
-      const labelBBox = label.node().getBBox();
-      g.insert('rect', '.hover-label')
-        .attr('class', 'hover-label-bg')
-        .attr('x', labelBBox.x - 4)
-        .attr('y', labelBBox.y - 2)
-        .attr('width', labelBBox.width + 8)
-        .attr('height', labelBBox.height + 4)
-        .attr('fill', colors.surfaceContainer)
-        .attr('stroke', categoryColors[d.category])
-        .attr('stroke-width', 1)
-        .attr('rx', 3);
-    })
-    .on('mouseleave', function (event, d) {
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr('fill-opacity', 0.6)
-        .attr('stroke-width', 2);
+    labelsG
+      .selectAll('.bubble-name')
+      .data(labeledData)
+      .join('text')
+      .attr('class', 'bubble-name')
+      .attr('x', (d) => xScale(d.papers))
+      .attr('y', (d) => yScale(d.citations) + sizeScale(d.awards) + 14)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '10.5px')
+      .attr('font-weight', (d) => (notableSet.has(d.name) ? '700' : '600'))
+      .attr('fill', colors.onSurfaceVariant)
+      .style('pointer-events', 'none')
+      .text((d) => d.name);
 
-      g.selectAll('.hover-label').remove();
-      g.selectAll('.hover-label-bg').remove();
-    });
+    // ---- Hover tooltip ----
+    const removeTooltip = () => {
+      g.selectAll('.hover-tooltip').remove();
+    };
 
-    // Axes
+    bubbles
+      .on('mouseenter', function (event, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 0.9)
+          .attr('stroke-width', notableSet.has(d.name) ? 3.3 : 3);
+
+        removeTooltip();
+
+        const tooltip = g.append('g').attr('class', 'hover-tooltip');
+
+        const lines = [];
+        lines.push({ text: d.name, type: 'title' });
+        lines.push({ text: `Total papers: ${fmtInt(d.papers)}`, type: 'body' });
+        lines.push({ text: `Total citations: ${fmtInt(Math.round(d.citations))}`, type: 'body' });
+        if ((d.awards ?? 0) > 0) lines.push({ text: `Total awards: ${fmtInt(d.awards)}`, type: 'body' });
+
+        const nominations = nominationsByName.get(d.name);
+        if (nominations && nominations.length) {
+          const sorted = [...nominations].sort((a, b) => a.rank - b.rank || a.metric.localeCompare(b.metric));
+          lines.push({ text: '', type: 'gap' });
+          sorted.forEach((n) => {
+            lines.push({
+              text: `${medalIcon(n.rank)} ${rankLabel(n.rank)} ${metricLabel(n.metric)}`,
+              type: 'nomination',
+              rank: n.rank
+            });
+          });
+        }
+
+        const cx = xScale(d.papers);
+        const cy = yScale(d.citations);
+        const r = sizeScale(d.awards);
+
+        // Build text in local coords (0,0)
+        const text = tooltip
+          .append('text')
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '12px');
+
+        lines.forEach((line, i) => {
+          const tspan = text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('dy', i === 0 ? '0em' : '1.25em')
+            .attr('font-weight', line.type === 'title' ? '800' : '500')
+            .attr('fill', line.type === 'nomination' ? medalColors[line.rank] : colors.onSurface);
+
+          if (line.type === 'gap') {
+            tspan.attr('font-size', '9px').attr('fill', colors.onSurfaceVariant).text(' ');
+          } else {
+            tspan.text(line.text);
+          }
+        });
+
+        const padding = 8;
+        const bbox = text.node().getBBox();
+
+        // Background rect (local coords)
+        tooltip
+          .insert('rect', 'text')
+          .attr('x', bbox.x - padding)
+          .attr('y', bbox.y - padding)
+          .attr('width', bbox.width + padding * 2)
+          .attr('height', bbox.height + padding * 2)
+          .attr('rx', 8)
+          .attr('fill', colors.surfaceContainer)
+          .attr('stroke', strokeFor(d))
+          .attr('stroke-width', 1.2)
+          .attr('opacity', 0.98);
+
+        // Position (above bubble) + clamp
+        let tx = cx;
+        let ty = cy - r - 12;
+
+        const left = tx + (bbox.x - padding);
+        const right = tx + (bbox.x + bbox.width + padding);
+        const top = ty + (bbox.y - padding);
+        const bottom = ty + (bbox.y + bbox.height + padding);
+
+        if (left < 0) tx += -left + 2;
+        if (right > width) tx -= (right - width) + 2;
+        if (top < 0) ty += -top + 2;
+        if (bottom > height) ty -= (bottom - height) + 2;
+
+        tooltip.attr('transform', `translate(${tx}, ${ty})`);
+      })
+      .on('mouseleave', function (event, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('fill-opacity', 0.6)
+          .attr('stroke-width', notableSet.has(d.name) ? 2.8 : 2);
+
+        removeTooltip();
+      });
+
+    // ---- Axes ----
     renderTitle(ctx, 'Author Impact Metrics');
     renderXAxis(ctx, xScale, { label: 'Number of Papers' });
-    renderYAxis(ctx, yScale, { label: 'Total Citations', tickFormat: d3.format(',') });
-    styleAxes(g);
-    cleanAxes(g);  // Remove axis lines, keep only tick labels
 
-    // Legend - positioned in top left corner (avoiding axes)
+    // Y axis: remove "0" tick; format like 1k, 2k, ...
+    // Y axis: 1k, 2k, 3k, ...
+    // Y axis: 1k, 2k, 3k, ... (NASCONDI l’ultimo tick)
+    const maxY = yScale.domain()[1];
+    const maxK = Math.floor(maxY / 1000);
+
+    const yTicks = d3.range(1, maxK + 1).map((k) => k * 1000).slice(0, -1);
+
+    renderYAxis(ctx, yScale, {
+      label: 'Total Citations',
+      tickValues: yTicks,
+      tickFormat: (t) => `${Math.round(t / 1000)}k`
+    });
+
+
+
+
+    styleAxes(g);
+    cleanAxes(g);
+
+    // ---- Legend ----
     const legendItems = Object.entries(authorMetricsStats.categories).map(([category, description]) => ({
       color: categoryColors[category],
       label: `${category.charAt(0).toUpperCase() + category.slice(1)}: ${description}`
     }));
 
-    // Position category legend at top left, with space from axis
     renderLegend(ctx, legendItems, {
       x: 10,
       y: 0,
       itemHeight: 25
     });
 
-  // Size legend for bubble sizes - positioned in bottom right corner
-  const sizeLegend = g.append('g').attr('class', 'size-legend').attr('opacity', 0);
+    // ---- Size legend ----
+    const sizeLegend = g.append('g').attr('class', 'size-legend').attr('opacity', 0);
 
-  const sizeLegendData = [
-    { awards: 1, label: '1' },
-    { awards: 3, label: '3' },
-    { awards: 5, label: '5' },
-    { awards: 8, label: '8' },
-    { awards: 10, label: '10' }
-  ];
+    const sizeLegendData = [
+      { awards: 1, label: '1' },
+      { awards: 3, label: '3' },
+      { awards: 5, label: '5' },
+      { awards: 8, label: '8' },
+      { awards: 10, label: '10' }
+    ];
 
     sizeLegend
       .append('text')
@@ -187,56 +345,16 @@ export const authorMetricsConfig = {
       .attr('fill', colors.onSurfaceVariant)
       .text((d) => d.label);
 
-    // Notable authors annotation
-    const notableAuthors = data
-    .filter((d) => d.category === 'highly-cited')
-    .sort((a, b) => b.citations - a.citations)
-    .slice(0, 3);
-
-  const annotations = g
-    .selectAll('.annotation')
-    .data(notableAuthors)
-    .join('g')
-    .attr('class', 'annotation')
-    .attr('opacity', 0);
-
-  annotations
-    .append('line')
-    .attr('x1', (d) => xScale(d.papers))
-    .attr('y1', (d) => yScale(d.citations))
-    .attr('x2', (d) => xScale(d.papers) + 18)
-    .attr('y2', (d) => yScale(d.citations) - 18)
-    .attr('stroke', colors.accent)
-    .attr('stroke-width', 1.5)
-    .attr('stroke-dasharray', '3,3');
-
-  annotations
-    .append('text')
-    .attr('x', (d) => xScale(d.papers) + 20)
-    .attr('y', (d) => yScale(d.citations) - 18)
-    .attr('font-size', '11px')
-    .attr('font-weight', 'bold')
-    .attr('fill', colors.accent)
-    .text((d) => d.name);
-
-    // Animate bubbles
+    // ---- Animate ----
     bubbles
       .transition()
       .duration(animationDuration)
       .delay((d, i) => i * 20)
       .attr('r', (d) => sizeScale(d.awards));
 
-    // Animate size legend
     sizeLegend
       .transition()
       .delay(animationDuration)
-      .duration(400)
-      .attr('opacity', 1);
-
-    // Animate annotations
-    annotations
-      .transition()
-      .delay(1000)
       .duration(400)
       .attr('opacity', 1);
   }
