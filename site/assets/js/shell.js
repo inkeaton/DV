@@ -33,14 +33,13 @@ import { SITE, createShellHelpers } from "./shell_utils.js";
    ============================================================================ */
 class AppHeader extends HTMLElement {
   connectedCallback() {
-    const { build } = createShellHelpers();
+    const { page } = createShellHelpers();
 
-    // Build navigation paths based on current location
-    const homeHref = build("./index.html", "../index.html");
-    const datasetHref = build("./dataset/dataset.html", "../dataset/dataset.html");
-    const papersHref = build("./papers/papers.html", "../papers/papers.html");
-    const authorsHref = build("./authors/authors.html", "../authors/authors.html");
-    const researchHref = build("./research/research.html", "../research/research.html");
+    const homeHref = page("index.html");
+    const methodologyHref = page("methodology/methodology.html");
+    const papersHref = page("papers/papers.html");
+    const authorsHref = page("authors/authors.html");
+    const researchHref = page("research/research.html"); // (cartella research)
 
     this.innerHTML = `
       <header class="app-bar" role="banner">
@@ -60,7 +59,7 @@ class AppHeader extends HTMLElement {
           <!-- Desktop navigation (hidden on mobile) -->
           <nav class="desktop-nav" aria-label="Main navigation">
             <md-text-button href="${homeHref}">Home</md-text-button>
-            <md-text-button href="${datasetHref}">Dataset</md-text-button>
+            <md-text-button href="${methodologyHref}">Methodology</md-text-button>
             <md-text-button href="${papersHref}">Papers</md-text-button>
             <md-text-button href="${authorsHref}">Authors</md-text-button>
             <md-text-button href="${researchHref}">Institutions</md-text-button>
@@ -130,14 +129,14 @@ customElements.define("app-header", AppHeader);
    ============================================================================ */
 class AppDrawer extends HTMLElement {
   connectedCallback() {
-    const { build } = createShellHelpers();
+    const { page, isActive } = createShellHelpers();
 
     // Build navigation paths
-    const homeHref = build("./index.html", "../index.html");
-    const datasetHref = build("./dataset/dataset.html", "../dataset/dataset.html");
-    const papersHref = build("./papers/papers.html", "../papers/papers.html");
-    const authorsHref = build("./authors/authors.html", "../authors/authors.html");
-    const researchHref = build("./research/research.html", "../research/research.html");
+    const homeHref = page("index.html");
+    const methodologyHref = page("methodology/methodology.html");
+    const papersHref = page("papers/papers.html");
+    const authorsHref = page("authors/authors.html");
+    const researchHref = page("research/research.html");
 
     this.innerHTML = `
       <aside id="drawer" class="drawer" role="navigation" aria-label="Mobile navigation">
@@ -147,8 +146,8 @@ class AppDrawer extends HTMLElement {
             <md-icon slot="start">home</md-icon>
           </md-list-item>
 
-          <md-list-item type="link" href="${datasetHref}">
-            <div slot="headline">Dataset</div>
+          <md-list-item type="link" href="${methodologyHref}">
+            <div slot="headline">Methodology</div>
             <md-icon slot="start">dataset</md-icon>
           </md-list-item>
 
@@ -210,14 +209,13 @@ class AppDrawer extends HTMLElement {
    * Highlights the navigation link matching the current page
    */
   highlightActiveLink() {
-    const currentPath = window.location.pathname;
-    const links = this.querySelectorAll("md-list-item");
+    const { isActive } = createShellHelpers();
+    const links = this.querySelectorAll('md-list-item[type="link"]');
 
     links.forEach((link) => {
       const href = link.getAttribute("href");
-      if (href && currentPath.includes(href.replace(/^\.\.\/|\.\//, ""))) {
-        link.classList.add("active");
-      }
+      if (!href) return;
+      if (isActive(href)) link.classList.add("active");
     });
   }
 }
@@ -233,12 +231,15 @@ customElements.define("app-drawer", AppDrawer);
 class AppFooter extends HTMLElement {
   connectedCallback() {
     const year = new Date().getFullYear();
-    const { asset } = createShellHelpers();
 
-    // Build asset paths for team photos
-    const person1 = asset("./assets/img/edo.jpeg", "../assets/img/edo.jpeg");
-    const person2 = asset("./assets/img/iri.jpeg", "../assets/img/iri.jpeg");
-    const methodologyLink = asset("./methodology.html", "../methodology.html");
+    const { asset, page } = createShellHelpers();
+
+    // immagini (sempre da /assets/...)
+    const person1 = asset("assets/img/edo.jpeg");
+    const person2 = asset("assets/img/iri.jpeg");
+
+    // metodologia (nel tuo caso: methodology/methodology.html)
+    const methodologyLink = page("methodology/methodology.html");
 
     this.innerHTML = `
       <footer class="footer-r2d3" role="contentinfo">
