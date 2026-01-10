@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Methodology for VIS 35 — how we explored, cleaned, clustered, and enriched 35 years of IEEE VIS papers." />
+
+  <title>Methodology — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <!-- ========================================================================
+       PAGE-SPECIFIC STYLES
+       ======================================================================== -->
+  <style>
+    .methodology-page { padding-top: 0; }
+
+    /* Full-screen intro (same layout language as Dataset page) */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 16px;
+      min-height: calc(100vh - var(--app-bar-height));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .page-header h1 {
+      color: var(--md-sys-color-primary);
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 14px;
+    }
+    .page-header p {
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 1.05rem;
+      max-width: 760px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 42px;
+      color: var(--md-sys-color-on-surface-variant);
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* “At a glance” cards */
+    .glance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 0 0 42px;
+    }
+    .glance-card {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      padding: 18px 18px;
+      border-radius: 16px;
+      border: 1px solid color-mix(in srgb, var(--md-sys-color-on-primary-container) 10%, transparent);
+    }
+    .glance-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .glance-card p {
+      margin: 0;
+      line-height: 1.6;
+      opacity: 0.92;
+      font-size: 0.95rem;
+    }
+
+    /* Main section layout */
+    .method-section { margin-bottom: 56px; }
+    .method-section h2 {
+      color: var(--md-sys-color-on-surface);
+      font-size: 1.55rem;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--md-sys-color-primary-container);
+    }
+    .method-section .lead {
+      color: var(--md-sys-color-on-surface-variant);
+      margin: 0 0 18px;
+      line-height: 1.7;
+    }
+
+    /* Sub-cards inside each methodology block */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .method-card {
+      background: var(--md-sys-color-surface-container-low);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .method-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+    .method-card p, .method-card li {
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+    .method-card ul { margin: 10px 0 0; padding-left: 18px; }
+
+    /* Simple pipeline list */
+    .pipeline {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--md-sys-color-surface-container);
+      border: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .step .badge {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      font-weight: 700;
+      font-family: var(--font-head);
+    }
+    .step .content { min-width: 0; }
+    .step .content strong { color: var(--md-sys-color-on-surface); }
+    .step .content p { margin: 4px 0 0; }
+
+    /* Small link styling */
+    .inline-link { text-decoration: underline; text-underline-offset: 3px; }
+  </style>
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+  </script>
+</head>
+
+<body>
+  <!-- Shell -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main class="container methodology-page">
+
+    <!-- Page Header -->
+    <header class="page-header">
+      <h1>Methodology</h1>
+      <p>
+        This page summarizes how we turned 35 years (1990–2024) of IEEE VIS publication metadata into
+        analysis-ready tables: first exploring the dataset, then cleaning it, then finding research themes,
+        and finally enriching author and institution information for higher-quality insights.
+      </p>
+      <div class="scroll-indicator" aria-hidden="true">
+        <span>Scroll to read</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </header>
+
+    <!-- At a glance -->
+    <section class="glance-grid" aria-label="Methodology at a glance">
+      <div class="glance-card">
+        <div class="glance-title">Goal</div>
+        <p>
+          Build a consistent dataset that supports trustworthy statistics and topic-level views of VIS research.
+        </p>
+      </div>
+      <div class="glance-card">
+        <div class="glance-title">Key choices</div>
+        <p>
+          EDA first (to understand noise), strict cleaning (for comparability), BERTopic (themes from text),
+          OpenAlex + <code>pycountry</code> (standardized authors/institutions/countries).
+        </p>
+      </div>
+      <div class="glance-card">
+        <div class="glance-title">Main challenges</div>
+        <p>
+          Long time span, messy affiliations, name ambiguity, duplicate/old author IDs, and non-academic contributors.
+        </p>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         1) DATA SOURCES
+         ===================================================================== -->
+    <section class="method-section" id="data-sources">
+      <h2>Data sources</h2>
+      <p class="lead">
+        We combine a curated VIS publication dataset with an external scholarly graph to improve consistency
+        for authors and institutions.
+      </p>
+
+      <div class="method-grid">
+        <article class="method-card">
+          <h3>Primary dataset (VISPubData)</h3>
+          <p>
+            Public dataset of IEEE VIS publications (1990–2024), including titles, abstracts, keywords, paper types,
+            awards, and metadata about authors/affiliations.
+          </p>
+          <p>
+            Source: <a class="inline-link" href="https://www.vispubdata.org" target="_blank" rel="noopener">https://www.vispubdata.org</a>
+          </p>
+        </article>
+
+        <article class="method-card">
+          <h3>Enrichment dataset (OpenAlex)</h3>
+          <p>
+            We query OpenAlex to retrieve standardized “work”, “author”, and “institution” records (when matches exist),
+            which helps resolve inconsistent affiliation strings and adds structured institution info.
+          </p>
+        </article>
+
+        <article class="method-card">
+          <h3>Country normalization (<code>pycountry</code>)</h3>
+          <p>
+            We use <code>pycountry</code> to normalize country names and ISO codes (e.g., “USA” vs “United States”),
+            so geographic statistics are consistent across many formats and years.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         2) DATA CLEANING AND IMPUTATION
+         ===================================================================== -->
+    <section class="method-section" id="cleaning">
+      <h2>Data cleaning and imputation</h2>
+      <p class="lead">
+        Because the dataset spans 35 years, the raw metadata contains missing fields and inconsistent formatting.
+        We applied “safe” cleaning rules to keep the analysis comparable and reduce noise.
+      </p>
+
+      <div class="method-grid">
+        <article class="method-card">
+          <h3>EDA-first decision (why it matters)</h3>
+          <p>
+            We started with Exploratory Data Analysis (EDA) to see the “real picture”:
+            missing fields, changes over time, and which columns are reliable enough for downstream analysis.
+            This helped us choose practical cleaning rules instead of guessing.
+          </p>
+        </article>
+
+        <article class="method-card">
+          <h3>What we cleaned</h3>
+          <ul>
+            <li>Removed non-archival / miscellaneous entries (to keep research papers comparable).</li>
+            <li>Dropped unused or low-value columns (to simplify the dataset and avoid confusion).</li>
+            <li>Removed rows missing essential text/metadata needed for clustering and enrichment (e.g., empty abstracts or author fields).</li>
+            <li>Handled known problematic identifiers (e.g., DOI anomalies) to prevent incorrect matches.</li>
+          </ul>
+        </article>
+
+        <article class="method-card">
+          <h3>Imputation / assumptions (lightweight)</h3>
+          <ul>
+            <li>We avoid “predicting” missing values; instead we use conservative defaults (e.g., missing counts treated as 0 for plots).</li>
+            <li>If a paper cannot be matched to OpenAlex, we keep it in the dataset (no forced deletion) and rely on local metadata.</li>
+            <li>Where identifiers are missing, we generate stable internal IDs so every paper remains traceable through the pipeline.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         3) DATA PROCESSING AND ANALYSIS
+         ===================================================================== -->
+    <section class="method-section" id="processing">
+      <h2>Data processing and analysis</h2>
+      <p class="lead">
+        The pipeline is designed to move from raw metadata to analysis-ready tables, with clear outputs for charts and
+        interactive visualizations.
+      </p>
+
+      <div class="method-grid">
+        <article class="method-card">
+          <h3>Pipeline (order and rationale)</h3>
+          <ul class="pipeline">
+            <li class="step">
+              <div class="badge">1</div>
+              <div class="content">
+                <strong>EDA (first)</strong>
+                <p>We profiled the dataset (missingness, distributions, trends) to understand what is trustworthy and what is noisy.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="badge">2</div>
+              <div class="content">
+                <strong>Cleaning</strong>
+                <p>We standardize and filter data so later steps (topic modeling + enrichment) operate on consistent records.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="badge">3</div>
+              <div class="content">
+                <strong>Topic modeling (BERTopic)</strong>
+                <p>We cluster papers using text (title + abstract + keywords) to discover recurring research themes over time.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="badge">4</div>
+              <div class="content">
+                <strong>Enrichment (OpenAlex + pycountry)</strong>
+                <p>We improve author/institution/country consistency and produce clean tables for networks and geographic views.</p>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <article class="method-card">
+          <h3>Why BERTopic</h3>
+          <ul>
+            <li>Works well with scientific text by using modern language embeddings (captures meaning, not just keywords).</li>
+            <li>Produces interpretable clusters that can be labeled and grouped into broader “macro” categories.</li>
+            <li>Supports outlier handling (papers that don’t fit well into any topic are not forced into a wrong cluster).</li>
+          </ul>
+        </article>
+
+        <article class="method-card">
+          <h3>Why OpenAlex enrichment</h3>
+          <ul>
+            <li>Helps standardize author and institution entities when the raw affiliation strings are inconsistent.</li>
+            <li>Provides structured institution metadata that is easier to map geographically.</li>
+            <li>Improves collaboration analysis by enabling cleaner author–author and institution–institution networks.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4) LIMITATIONS
+         ===================================================================== -->
+    <section class="method-section" id="limitations">
+      <h2>Limitations</h2>
+      <p class="lead">
+        The methodology reduces noise, but it cannot fully eliminate ambiguity in long-term publication metadata.
+        Results should be interpreted with these constraints in mind.
+      </p>
+
+      <div class="method-grid">
+        <article class="method-card">
+          <h3>Main challenges (what makes this hard)</h3>
+          <ul>
+            <li><strong>Noisy dataset across 35 years:</strong> formats, naming conventions, and coverage change over time.</li>
+            <li><strong>Same name, different people:</strong> two different authors can share the same first/last name.</li>
+            <li><strong>Multiple IDs for one author:</strong> authors can appear with an “old” ID and a “new” ID in external systems.</li>
+            <li><strong>Affiliations written many ways:</strong> the same institution can appear in many textual variants.</li>
+            <li><strong>Same institution name, different places:</strong> some institutions share names across countries/regions.</li>
+            <li><strong>Industry/private contributors:</strong> companies may have limited public metadata, making matching harder.</li>
+          </ul>
+        </article>
+
+        <article class="method-card">
+          <h3>Methodological constraints</h3>
+          <ul>
+            <li><strong>Matching uncertainty:</strong> OpenAlex matching may fail (missing DOI) or be imperfect (title similarity).</li>
+            <li><strong>Topic modeling is not “ground truth”:</strong> clusters reflect patterns in language, not an official taxonomy.</li>
+            <li><strong>Coverage differences:</strong> not every VIS paper will have complete enrichment data (authors/institutions/geo).</li>
+            <li><strong>Geographic aggregation:</strong> even after normalization, some records may have missing or outdated country info.</li>
+          </ul>
+        </article>
+
+        <article class="method-card">
+          <h3>How to interpret results</h3>
+          <ul>
+            <li>Use trends and comparisons as <strong>signals</strong>, not exact counts in every corner case.</li>
+            <li>When focusing on individuals/institutions, expect occasional merges/splits due to identity ambiguity.</li>
+            <li>For sensitive rankings (e.g., “top authors”), consider cross-checking against original records.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</body>
+</html>
