@@ -104,6 +104,8 @@ export function getThemeColors() {
     // Tertiary colors (accent)
     tertiary: styles.getPropertyValue('--md-sys-color-tertiary').trim() || '#575C7E',
     tertiaryContainer: styles.getPropertyValue('--md-sys-color-tertiary-container').trim() || '#DEE1FF',
+    tertiaryFixedDim: styles.getPropertyValue('--md-sys-color-tertiary-fixed-dim').trim() || '#BFC4EB',
+    onTertiaryFixedVariant: styles.getPropertyValue('--md-sys-color-on-tertiary-fixed-variant').trim() || '#3F4565',
     accent: styles.getPropertyValue('--md-sys-color-tertiary').trim() || '#575C7E',  // Alias for tertiary
     
     // Surface colors

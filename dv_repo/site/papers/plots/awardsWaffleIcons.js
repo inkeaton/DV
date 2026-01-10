@@ -169,8 +169,8 @@ export const awardsWaffleIconsConfig = {
       
       // --- STILE BORDI DIFFERENZIATO ---
       .attr('stroke', d => {
-        if (d.isDual) return '#000000';      // Nero per Dual Awards
-        if (d.isReplica) return '#00C853';   // Verde brillante per Replicability
+        if (d.isDual) return colors.onSurface;      // Theme-aware for Dual Awards
+        if (d.isReplica) return '#00C853';   // Keep semantic green for Replicability
         return 'none';
       }) 
       .attr('stroke-width', d => (d.isDual || d.isReplica) ? 5 : 0) // Spessore 5 per entrambi
@@ -220,7 +220,7 @@ export const awardsWaffleIconsConfig = {
       
       // Info speciali (dual award, stamp)
       if (d.specialMsg) {
-        const noteColor = d.isReplica ? '#00C853' : (d.isDual ? '#000000' : 'inherit');
+        const noteColor = d.isReplica ? '#00C853' : (d.isDual ? colors.onSurface : 'inherit');
         lines.push(`<span style="color:${noteColor}; font-weight:bold;">${d.specialMsg}</span>`);
       }
 
@@ -358,7 +358,7 @@ export const awardsWaffleIconsConfig = {
     .attr('height', 12)
     .attr('rx', 2)
     .attr('fill', 'var(--md-sys-color-surface)')
-    .attr('stroke', '#666666')
+    .attr('stroke', colors.onSurfaceVariant)
     .attr('stroke-width', 2);
   
   dualG.append('text')

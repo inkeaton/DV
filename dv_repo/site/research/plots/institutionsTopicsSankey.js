@@ -14,6 +14,9 @@ export const institutionsTopicsSankeyConfig = {
     const { g, d3, width, height, data, colors } = ctx;
     const animationDuration = 800;
 
+    // Block interactions during animation
+    g.style('pointer-events', 'none');
+
     // Title
     renderTitle(ctx, 'Research Focus by Institution');
 
@@ -27,7 +30,7 @@ export const institutionsTopicsSankeyConfig = {
       .nodeWidth(16)
       .nodePadding(10)
       .nodeSort(null)  // Preserve order from data (grouped by region)
-      .extent([[0, 0], [width * 0.95, height * 0.9]]);
+      .extent([[0, 60], [width * 0.95, height* 1.1]]);
 
     // Generate Sankey layout
     const sankeyData = sankey({
@@ -57,7 +60,8 @@ export const institutionsTopicsSankeyConfig = {
       })
       .attr('stroke-width', 0)
       .attr('stroke-opacity', 0.3)
-      .style('cursor', 'pointer');
+      .style('cursor', 'pointer')
+      .style('pointer-events', 'none');
 
     // Link hover effects
     links
@@ -78,7 +82,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('fill', '#333');
+          .attr('fill', colors.onSurface);
         
         // Calculate percentage of this link relative to source institution's total
         const sourceTotalPapers = sourceNode.totalPapers || 1;
@@ -94,7 +98,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('y', bbox.y - 3)
           .attr('width', bbox.width + 16)
           .attr('height', bbox.height + 6)
-          .attr('fill', '#fff')
+          .attr('fill', colors.surfaceContainer)
           .attr('stroke', colors.primary)
           .attr('stroke-width', 2)
           .attr('rx', 4);
@@ -118,7 +122,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', d => d.x0)
       .attr('y', d => d.y0)
       .attr('width', 0)
-      .attr('height', d => d.y1 - d.y0)
+      .attr('height', d => Math.max(0, d.y1 - d.y0))
       .attr('fill', d => {
         if (d.type === 'institution') {
           return institutionColorScale(d.region);
@@ -126,9 +130,10 @@ export const institutionsTopicsSankeyConfig = {
           return topicColors[d.category];
         }
       })
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2)
-      .style('cursor', 'pointer');
+      .style('cursor', 'pointer')
+      .style('pointer-events', 'none');
 
     // Node hover effects
     nodes
@@ -161,7 +166,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('y', -25)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('fill', '#333');
+          .attr('fill', colors.onSurface);
         
         text.append('tspan').text(`${displayName} | `);
         text.append('tspan').attr('font-weight', 'bold').text(`${d.totalPapers} papers`);
@@ -180,7 +185,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('y', bbox.y - 4)
           .attr('width', bbox.width + 20)
           .attr('height', bbox.height + 8)
-          .attr('fill', '#fff')
+          .attr('fill', colors.surfaceContainer)
           .attr('stroke', d.type === 'institution' ? institutionColorScale(d.region) : topicColors[d.category])
           .attr('stroke-width', 2)
           .attr('rx', 4);
@@ -236,7 +241,7 @@ export const institutionsTopicsSankeyConfig = {
           .attr('text-anchor', d.type === 'institution' ? 'end' : 'start')
           .attr('font-size', '10px')
           .attr('font-weight', '500')
-          .attr('fill', '#333')
+          .attr('fill', colors.onSurface)
           .text(line);
       });
     });
@@ -246,20 +251,20 @@ export const institutionsTopicsSankeyConfig = {
 
     sectionLabels.append('text')
       .attr('x', 0)
-      .attr('y', -20)
+      .attr('y', 40)
       .attr('text-anchor', 'middle')
       .attr('font-size', '13px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Institutions');
 
     sectionLabels.append('text')
       .attr('x', width)
-      .attr('y', -20)
+      .attr('y', 40)
       .attr('text-anchor', 'middle')
       .attr('font-size', '13px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Research Topics');
 
     // Legend - Part of the World (bottom left)
@@ -270,6 +275,19 @@ export const institutionsTopicsSankeyConfig = {
 
     // Filter to only regions present in data
     const presentRegions = new Set(data.nodes.filter(n => n.type === 'institution').map(n => n.region));
+    
+    // Calculate number of connections (links) per region
+    const regionConnectionCounts = {};
+    data.links.forEach(link => {
+      const sourceNode = data.nodes.find(n => n.id === link.source);
+      if (sourceNode && sourceNode.region) {
+        if (!regionConnectionCounts[sourceNode.region]) {
+          regionConnectionCounts[sourceNode.region] = 0;
+        }
+        regionConnectionCounts[sourceNode.region]++;
+      }
+    });
+    
     const legendData = Object.entries(regionColors)
       .filter(([region]) => presentRegions.has(region));
 
@@ -285,7 +303,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('width', 16)
       .attr('height', 16)
       .attr('fill', d => d[1])
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 1.5)
       .attr('rx', 3);
 
@@ -293,8 +311,8 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', 24)
       .attr('y', 4)
       .attr('font-size', '12px')
-      .attr('fill', '#333')
-      .text(d => d[0]);
+      .attr('fill', colors.onSurface)
+      .text(d => `${d[0]}: ${regionConnectionCounts[d[0]] || 0}`);
 
     // Stats box - Info (top left)
     const statsBox = g.append('g')
@@ -305,9 +323,9 @@ export const institutionsTopicsSankeyConfig = {
     statsBox.append('rect')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 350)
-      .attr('height', 165)
-      .attr('fill', '#fff')
+      .attr('width', 170)
+      .attr('height', 150)
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
       .attr('rx', 5);
@@ -316,7 +334,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', 12)
       .attr('y', 22)
       .attr('font-size', '11px')
-      .attr('fill', '#333');
+      .attr('fill', colors.onSurface);
 
     // Total Institutions
     statsText.append('tspan')
@@ -338,7 +356,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', 12)
       .attr('dy', '1.3em')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text(`${institutionsTopicsStats.totalConnections} connections`);
 
     // Topics per institution (average)
@@ -347,7 +365,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', 12)
       .attr('dy', '1.3em')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text(`~${topicsPerInst} topics per inst.`);
 
     // Divider line
@@ -356,7 +374,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('y1', 95)
       .attr('x2', 163)
       .attr('y2', 95)
-      .attr('stroke', '#e5e5e5')
+      .attr('stroke', colors.outlineVariant)
       .attr('stroke-width', 1);
 
     // Strongest Connection label
@@ -364,7 +382,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('x', 12)
       .attr('y', 112)
       .attr('font-size', '9px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Strongest Connection');
 
     // Get region color for the strongest connection institution
@@ -383,16 +401,31 @@ export const institutionsTopicsSankeyConfig = {
     strongestText.append('tspan')
       .attr('font-weight', 'bold')
       .attr('fill', strongestRegionColor)
-      .text(`${strongestFullName}`);
+      .text(`${institutionsTopicsStats.strongestConnection.institution}`);
 
     strongestText.append('tspan')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .text(' | ');
 
     strongestText.append('tspan')
       .attr('font-weight', 'bold')
       .attr('fill', strongestRegionColor)
-      .text(`${institutionsTopicsStats.strongestConnection.papers} ${institutionsTopicsStats.strongestConnection.topic}`);
+      .text(`${institutionsTopicsStats.strongestConnection.papers} papers`);
+
+    // Add topic name on second line
+    strongestText.append('tspan')
+      .attr('x', 12)
+      .attr('dy', '1.3em')
+      .attr('font-size', '9px')
+      .attr('fill', colors.onSurfaceVariant)
+      .text(`${institutionsTopicsStats.strongestConnection.topic}`);
+
+    // Calculate the actual max animation time based on data size
+    const numLinks = sankeyData.links.length;
+    const numNodes = sankeyData.nodes.length;
+    const maxLinkDelay = (numLinks - 1) * 30 + animationDuration;
+    const maxNodeDelay = (numNodes - 1) * 50 + animationDuration;
+    const maxAnimationTime = Math.max(maxLinkDelay, maxNodeDelay, animationDuration + 700);
 
     // Animate links
     links
@@ -443,5 +476,12 @@ export const institutionsTopicsSankeyConfig = {
       .delay(animationDuration + 300)
       .duration(400)
       .attr('opacity', 1);
+
+    // Re-enable interactions after all animations complete (use timeout for accuracy)
+    setTimeout(() => {
+      g.style('pointer-events', 'auto');
+      links.style('pointer-events', 'auto');
+      nodes.style('pointer-events', 'auto');
+    }, maxAnimationTime + 100); // Add small buffer
   }
 };

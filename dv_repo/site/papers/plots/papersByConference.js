@@ -114,7 +114,8 @@ export const papersByConferenceConfig = {
         .attr('y', 0)
         .attr('width', (bx1 - bx0) + bandW)
         .attr('height', height)
-        .attr('fill', 'rgba(0,0,0,0.10)') // leggermente grigio
+        .attr('fill', colors.onSurface)
+        .attr('fill-opacity', 0.1)
         .attr('opacity', 0);
 
       band.transition()
@@ -178,16 +179,19 @@ export const papersByConferenceConfig = {
         .delay(ANIMATION_DURATION + 150)
         .duration(400)
         .attr('fill', strongColor)
-        .attr('stroke', 'rgba(0,0,0,0.40)')
+        .attr('stroke', colors.onSurface)
+        .attr('stroke-opacity', 0.4)
         .attr('stroke-width', 2);
 
       // Add note + arrow + dot (only for InfoVis/VAST)
       sel.each(function (d) {
         const xCenter = xScale(d.data.year) + xScale.bandwidth() / 2;
-        const yMid = (yScale(d[0]) + yScale(d[1])) / 2;
-
-        const targetX = xCenter + 2;
-        const targetY = yMid;
+        const segmentTop = yScale(d[1]);
+        const segmentBottom = yScale(d[0]);
+        
+        // Target point: top edge of the segment
+        const targetX = xCenter;
+        const targetY = segmentTop - 5; // 5px above the segment
 
         const noteG = g.append('g')
           .attr('class', `first-appearance-note note-${spec.year}-${spec.key}`)
@@ -195,7 +199,7 @@ export const papersByConferenceConfig = {
           .style('pointer-events', 'none');
 
         // VAST higher than InfoVis
-        const topY = Math.max(18, yMid - (spec.placement === 'center' ? 130 : 26));
+        const topY = Math.max(18, segmentTop - (spec.placement === 'center' ? 60 : 40));
 
         let tx, ty, textAnchor;
         if (spec.placement === 'left') {
@@ -211,7 +215,8 @@ export const papersByConferenceConfig = {
         noteG.append('text')
           .attr('x', tx)
           .attr('y', ty)
-          .attr('fill', 'rgba(0,0,0,0.78)')
+          .attr('fill', colors.onSurface)
+          .attr('fill-opacity', 0.78)
           .attr('font-size', '12px')
           .attr('font-weight', '700')
           .attr('text-anchor', textAnchor)
@@ -225,15 +230,24 @@ export const papersByConferenceConfig = {
           .attr('y1', arrowStartY)
           .attr('x2', targetX)
           .attr('y2', targetY)
-          .attr('stroke', 'rgba(0,0,0,0.6)')
+          .attr('stroke', colors.onSurface)
+          .attr('stroke-opacity', 0.6)
           .attr('stroke-width', 1.5)
-          .attr('marker-end', 'url(#arrowhead)');
+          .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
 
-        noteG.append('circle')
-          .attr('cx', targetX)
-          .attr('cy', targetY)
-          .attr('r', 3)
-          .attr('fill', 'rgba(0,0,0,0.6)');
+        // Create a dynamic arrowhead marker with the correct color
+        if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
+          svg.append('defs').append('marker')
+            .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
+            .attr('markerWidth', 10)
+            .attr('markerHeight', 10)
+            .attr('refX', 9)
+            .attr('refY', 3)
+            .attr('orient', 'auto')
+            .append('polygon')
+            .attr('points', '0 0, 10 3, 0 6')
+            .attr('fill', colors.onSurface);
+        }
 
         noteG.transition()
           .delay(ANIMATION_DURATION + 260)

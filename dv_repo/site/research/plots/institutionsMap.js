@@ -14,9 +14,6 @@ export const institutionsMapConfig = {
     const { g, d3, width, height, data, colors, svg } = ctx;
     const animationDuration = 800;
 
-    // Title
-    renderTitle(ctx, 'Global Distribution of Visualization Research Institutions');
-
     // Load world GeoJSON
     const worldData = await d3.json('../data/world.geojson');
 
@@ -33,8 +30,8 @@ export const institutionsMapConfig = {
       .data(worldData.features)
       .join('path')
       .attr('d', path)
-      .attr('fill', '#f5f5f5')
-      .attr('stroke', '#ddd')
+      .attr('fill', colors.onSurfaceVariant)
+      .attr('stroke', colors.outlineVariant)
       .attr('stroke-width', 0.5)
       .attr('opacity', 0)
       .transition()
@@ -50,10 +47,10 @@ export const institutionsMapConfig = {
     // As zoom increases, bubbles get relatively smaller to reduce overlap
     function getAdjustedRadius(papers, zoomLevel) {
       const baseRadius = sizeScale(papers);
-      // Scale factor: at 1x zoom = 1.0, at 8x zoom = 0.1
-      // This makes bubbles 90% smaller at maximum zoom
-      const scaleFactor = 1.0 - (zoomLevel - 1) * 0.129; // (1.0 - 0.1) / (8 - 1) ≈ 0.129
-      return baseRadius * scaleFactor;
+      // Scale factor: at 1x zoom = 1.0, at 8x zoom = smaller
+      // More aggressive scaling for higher zoom levels to reduce overlap
+      const scaleFactor = 1.0 - (zoomLevel - 1) * 0.18; // Increased from 0.129
+      return baseRadius * Math.max(scaleFactor, 0.1);
     }
 
     // Calculate adjusted font size based on zoom level
@@ -78,6 +75,18 @@ export const institutionsMapConfig = {
     // ========================================================================
     // CLUSTERING FUNCTIONS
     // ========================================================================
+    
+    // Deterministic jitter function - generates consistent offset based on name
+    function getJitter(name, axis) {
+      // Simple hash function for deterministic pseudo-random
+      let hash = 0;
+      const salt = axis === 'x' ? 17 : 31; // Different salt for x and y
+      for (let i = 0; i < name.length; i++) {
+        hash = ((hash << 5) - hash + name.charCodeAt(i) * salt) | 0;
+      }
+      // Convert to range [-1, 1] pixels
+      return ((hash % 200) / 100) - 1;
+    }
     
     // Cluster by region (zoom level 1.0 - 2.0)
     function clusterByRegion(institutions) {
@@ -156,12 +165,12 @@ export const institutionsMapConfig = {
       .selectAll('circle')
       .data(getVisibleData(currentZoomLevel), d => d.isCluster ? `cluster-${d.name}` : d.name)
       .join('circle')
-      .attr('cx', d => projection([d.lon, d.lat])[0])
-      .attr('cy', d => projection([d.lon, d.lat])[1])
+      .attr('cx', d => projection([d.lon, d.lat])[0] + (d.isCluster ? 0 : getJitter(d.name, 'x')))
+      .attr('cy', d => projection([d.lon, d.lat])[1] + (d.isCluster ? 0 : getJitter(d.name, 'y')))
       .attr('r', 0)
       .attr('fill', d => regionColors[d.region])
       .attr('fill-opacity', 0.7)
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', getAdjustedStrokeWidth(1.5, currentZoomLevel))
       .style('cursor', 'pointer');
 
@@ -173,6 +182,7 @@ export const institutionsMapConfig = {
             .transition()
             .duration(200)
             .attr('fill-opacity', 1)
+            .attr('stroke', colors.surfaceContainer)
             .attr('stroke-width', getAdjustedStrokeWidth(3, currentZoomLevel));
 
           // Show label
@@ -185,7 +195,7 @@ export const institutionsMapConfig = {
             .attr('text-anchor', 'middle')
             .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
             .attr('font-weight', 'bold')
-            .attr('fill', '#333');
+            .attr('fill', colors.onSurface);
 
           text.append('tspan')
             .attr('x', x)
@@ -200,7 +210,7 @@ export const institutionsMapConfig = {
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('fill', '#666');
+              .attr('fill', colors.onSurfaceVariant);
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
@@ -211,7 +221,7 @@ export const institutionsMapConfig = {
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('fill', '#666');
+              .attr('fill', colors.onSurfaceVariant);
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
@@ -224,16 +234,17 @@ export const institutionsMapConfig = {
             .attr('y', bbox.y - padding / 2)
             .attr('width', bbox.width + padding * 2)
             .attr('height', bbox.height + padding)
-            .attr('fill', '#fff')
+            .attr('fill', colors.surfaceContainer)
             .attr('stroke', regionColors[d.region])
             .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
             .attr('rx', getAdjustedPadding(4, currentZoomLevel));
         })
-        .on('mouseleave', function(event, d) {
+        .on('mouseleave', function() {
           d3.select(this)
             .transition()
             .duration(200)
             .attr('fill-opacity', 0.7)
+            .attr('stroke', colors.surfaceContainer)
             .attr('stroke-width', getAdjustedStrokeWidth(1.5, currentZoomLevel));
 
           g.selectAll('.hover-label').remove();
@@ -264,7 +275,7 @@ export const institutionsMapConfig = {
             .attr('text-anchor', 'middle')
             .attr('font-size', `${getAdjustedFontSize(12, currentZoomLevel)}px`)
             .attr('font-weight', 'bold')
-            .attr('fill', '#333');
+            .attr('fill', colors.onSurface);
 
           text.append('tspan')
             .attr('x', x)
@@ -279,7 +290,7 @@ export const institutionsMapConfig = {
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('fill', '#666');
+              .attr('fill', colors.onSurfaceVariant);
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
@@ -290,7 +301,7 @@ export const institutionsMapConfig = {
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('fill', '#666');
+              .attr('fill', colors.onSurfaceVariant);
             
             detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
             detailSpan.append('tspan').attr('font-weight', 'normal').text(` (${pct}%)`);
@@ -303,7 +314,7 @@ export const institutionsMapConfig = {
             .attr('y', bbox.y - padding / 2)
             .attr('width', bbox.width + padding * 2)
             .attr('height', bbox.height + padding)
-            .attr('fill', '#fff')
+            .attr('fill', colors.surfaceContainer)
             .attr('stroke', regionColors[d.region])
             .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
             .attr('rx', getAdjustedPadding(4, currentZoomLevel));
@@ -322,20 +333,20 @@ export const institutionsMapConfig = {
         .data(visibleData, d => d.isCluster ? `cluster-${d.name}` : d.name)
         .join(
           enter => enter.append('circle')
-            .attr('cx', d => projection([d.lon, d.lat])[0])
-            .attr('cy', d => projection([d.lon, d.lat])[1])
+            .attr('cx', d => projection([d.lon, d.lat])[0] + (d.isCluster ? 0 : getJitter(d.name, 'x')))
+            .attr('cy', d => projection([d.lon, d.lat])[1] + (d.isCluster ? 0 : getJitter(d.name, 'y')))
             .attr('r', 0)
             .attr('fill', d => regionColors[d.region])
             .attr('fill-opacity', 0.7)
-            .attr('stroke', '#fff')
+            .attr('stroke', colors.surfaceContainer)
             .attr('stroke-width', getAdjustedStrokeWidth(1.5, zoomLevel))
             .style('cursor', 'pointer')
             .call(enter => enter.transition().duration(400)
               .attr('r', d => getAdjustedRadius(d.papers, zoomLevel))),
           update => update
             .call(update => update.transition().duration(400)
-              .attr('cx', d => projection([d.lon, d.lat])[0])
-              .attr('cy', d => projection([d.lon, d.lat])[1])
+              .attr('cx', d => projection([d.lon, d.lat])[0] + (d.isCluster ? 0 : getJitter(d.name, 'x')))
+              .attr('cy', d => projection([d.lon, d.lat])[1] + (d.isCluster ? 0 : getJitter(d.name, 'y')))
               .attr('r', d => getAdjustedRadius(d.papers, zoomLevel))
               .attr('fill', d => regionColors[d.region])),
           exit => exit
@@ -348,10 +359,27 @@ export const institutionsMapConfig = {
       attachHoverHandlers(bubbles);
     }
 
-    // Legend - only show regions present in data
-    const legend = g.append('g')
+    // Create a fixed overlay group that doesn't transform with zoom
+    const margins = ctx.margins || { top: 40, right: 40, bottom: 40, left: 40 };
+    const fixedGroup = svg.append('g')
+      .attr('class', 'fixed-overlay')
+      .attr('transform', `translate(${margins.left}, ${margins.top})`);
+
+    // Title (in fixed group)
+    fixedGroup.append('text')
+      .attr('class', 'chart-title')
+      .attr('x', width / 2)
+      .attr('y', -20)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '16px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.onSurface)
+      .text('Global Distribution of Visualization Research Institutions');
+
+    // Legend - only show regions present in data (in fixed group)
+    const legend = fixedGroup.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(10, ${height - 120})`)
+      .attr('transform', `translate(10, ${height - 200})`)
       .attr('opacity', 0);
 
     // Filter to only regions present in data
@@ -371,7 +399,7 @@ export const institutionsMapConfig = {
       .attr('width', 16)
       .attr('height', 16)
       .attr('fill', d => d[1])
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 1.5)
       .attr('rx', 3);
 
@@ -379,7 +407,7 @@ export const institutionsMapConfig = {
       .attr('x', 22)
       .attr('y', 4)
       .attr('font-size', '11px')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .text(d => `${d[0]}: ${institutionsMapStats.regions[d[0]] || 0}`);
 
     // Size reference
@@ -388,16 +416,16 @@ export const institutionsMapConfig = {
 
     sizeRef.append('text')
       .attr('x', 0)
-      .attr('y', 0)
+      .attr('y', -10)
       .attr('font-size', '10px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Paper Count:');
 
     const sizeRefData = [50, 100, 150];
     sizeRefData.forEach((papers, i) => {
       const refGroup = sizeRef.append('g')
-        .attr('transform', `translate(${i * 45}, 15)`);
+        .attr('transform', `translate(${i * 50}, 15)`);
 
       refGroup.append('circle')
         .attr('cx', 15)
@@ -410,15 +438,15 @@ export const institutionsMapConfig = {
 
       refGroup.append('text')
         .attr('x', 15)
-        .attr('y', 20)
+        .attr('y', 40)
         .attr('text-anchor', 'middle')
         .attr('font-size', '9px')
-        .attr('fill', '#666')
+        .attr('fill', colors.onSurfaceVariant)
         .text(papers);
     });
 
-    // Stats box
-    const statsBox = g.append('g')
+    // Stats box (in fixed group)
+    const statsBox = fixedGroup.append('g')
       .attr('class', 'stats-box')
       .attr('transform', 'translate(10, 20)')
       .attr('opacity', 0);
@@ -428,7 +456,7 @@ export const institutionsMapConfig = {
       .attr('y', 0)
       .attr('width', 200)
       .attr('height', 85)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
       .attr('rx', 5);
@@ -437,7 +465,7 @@ export const institutionsMapConfig = {
       .attr('x', 12)
       .attr('y', 22)
       .attr('font-size', '11px')
-      .attr('fill', '#333');
+      .attr('fill', colors.onSurface);
 
     statsText.append('tspan')
       .attr('x', 12)
@@ -458,7 +486,7 @@ export const institutionsMapConfig = {
       .attr('y1', 52)
       .attr('x2', 188)
       .attr('y2', 52)
-      .attr('stroke', '#e5e5e5')
+      .attr('stroke', colors.outlineVariant)
       .attr('stroke-width', 1);
 
     // Top Institution label
@@ -466,7 +494,7 @@ export const institutionsMapConfig = {
       .attr('x', 12)
       .attr('y', 65)
       .attr('font-size', '9px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Top Institution');
 
     // Top Institution value
@@ -481,7 +509,7 @@ export const institutionsMapConfig = {
       .text(`${institutionsMapStats.topInstitution}`);
 
     topInstText.append('tspan')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .text(' | ');
 
     topInstText.append('tspan')
@@ -567,10 +595,10 @@ export const institutionsMapConfig = {
       }
     });
 
-    // Add zoom control buttons
-    const zoomControls = svg.append('g')
+    // Add zoom control buttons (in fixed group)
+    const zoomControls = fixedGroup.append('g')
       .attr('class', 'zoom-controls')
-      .attr('transform', `translate(${width - 50}, 80)`);
+      .attr('transform', `translate(${width - 50}, 40)`);
 
     // Zoom in button
     const zoomInBtn = zoomControls.append('g')
@@ -582,7 +610,7 @@ export const institutionsMapConfig = {
 
     zoomInBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -605,7 +633,7 @@ export const institutionsMapConfig = {
 
     zoomOutBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -628,7 +656,7 @@ export const institutionsMapConfig = {
 
     resetBtn.append('circle')
       .attr('r', 18)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2);
 
@@ -645,7 +673,7 @@ export const institutionsMapConfig = {
       .attr('y', 130)
       .attr('text-anchor', 'end')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .attr('opacity', 0)
       .text('Use buttons to zoom')
       .transition()

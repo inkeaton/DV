@@ -148,7 +148,7 @@ export const papersPerYearConfig = {
       .attr('x2', width)
       .attr('y1', avgY)
       .attr('y2', avgY)
-      .attr('stroke', '#d32f2f')
+      .attr('stroke', colors.accent)
       .attr('stroke-width', 1.5)
       .attr('stroke-dasharray', '6,6')
       .attr('opacity', 0.95);
@@ -157,7 +157,7 @@ export const papersPerYearConfig = {
       .attr('x', 6)
       .attr('y', avgY - 8)
       .attr('text-anchor', 'start')
-      .attr('fill', '#d32f2f')
+      .attr('fill', colors.accent)
       .attr('font-size', '12px')
       .text(`Average: ${avgValue} papers per year`);
 

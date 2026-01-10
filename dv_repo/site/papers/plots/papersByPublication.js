@@ -143,7 +143,8 @@ export const papersByPublicationConfig = {
           const base = publicationColors[d.key];
           return darkenHex(d3, base, 0.30);
         })
-        .attr('stroke', 'rgba(0,0,0,0.40)')
+        .attr('stroke', colors.onSurface)
+        .attr('stroke-opacity', 0.4)
         .attr('stroke-width', 2);
 
       // Arrow target = top of the full stacked bar
@@ -168,7 +169,8 @@ export const papersByPublicationConfig = {
       noteG.append('text')
         .attr('x', tx)
         .attr('y', ty)
-        .attr('fill', 'rgba(0,0,0,0.78)')
+        .attr('fill', colors.onSurface)
+        .attr('fill-opacity', 0.78)
         .attr('font-size', '12px')
         .attr('font-weight', '700')
         .attr('text-anchor', 'middle')
@@ -179,15 +181,24 @@ export const papersByPublicationConfig = {
         .attr('y1', ty + 6)
         .attr('x2', targetX)
         .attr('y2', targetY)
-        .attr('stroke', 'rgba(0,0,0,0.6)')
+        .attr('stroke', colors.onSurface)
+        .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
-        .attr('marker-end', 'url(#arrowhead)');
+        .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
 
-      noteG.append('circle')
-        .attr('cx', targetX)
-        .attr('cy', targetY)
-        .attr('r', 3)
-        .attr('fill', 'rgba(0,0,0,0.6)');
+        // Create a dynamic arrowhead marker with the correct color
+        if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
+          svg.append('defs').append('marker')
+            .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
+            .attr('markerWidth', 10)
+            .attr('markerHeight', 10)
+            .attr('refX', 9)
+            .attr('refY', 3)
+            .attr('orient', 'auto')
+            .append('polygon')
+            .attr('points', '0 0, 10 3, 0 6')
+            .attr('fill', colors.onSurface);
+        }
 
       noteG.transition()
         .delay(ANIMATION_DURATION + 260)

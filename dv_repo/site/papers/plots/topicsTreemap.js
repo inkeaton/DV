@@ -280,7 +280,7 @@ export const topicsTreemapConfig = {
       .attr('y', (d) => d.y0 + chartOffsetY + (d.y1 - d.y0) / 2)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('fill', 'white')
+      .attr('fill', colors.onSurface)
       .attr('font-size', (d) => {
         const w = d.x1 - d.x0;
         return w > 140 ? '11px' : '9px';

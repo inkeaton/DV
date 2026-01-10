@@ -26,20 +26,16 @@ export const citationsHistogramConfig = {
     const CUTOFF = 500;
     const TAIL_MAX = 4000;
 
-    // 27 colori: 20 per grafico principale (0-500) + 7 per inset (500-4000)
-    const allColors = [
-      '#EAD0EE', '#E2C5E6', '#DABBDD', '#D2B0D5', '#CAA6CC',  // 1-5
-      '#C29BC4', '#BA91BB', '#B286B3', '#AA7CAA', '#A272A2',  // 6-10
-      '#9A6799', '#925D91', '#8A5288', '#824880', '#7A3D77',  // 11-15
-      '#72336F', '#6A2966', '#621E5E', '#5A1455', '#52094D',  // 16-20 (fine main)
-      '#4A0F48', '#420C44', '#3A093F', '#32063B', '#2A0436',  // 21-25 (inset)
-      '#230233', '#1F083B'                                    // 26-27
-    ];
-
-    // Colori per grafico principale (primi 20)
-    const mainColors = allColors.slice(0, 20);
-    // Colori per inset (ultimi 7)
-    const tailColors = allColors.slice(20, 27);
+    // Generate 27-color gradient using Material Design 3 fixed color tokens
+    // Light: tertiary-fixed-dim, Dark: on-tertiary-fixed-variant
+    const lightColor = themeColors.tertiaryFixedDim;     // #BFC4EB (light mode) / #BFC4EB (dark mode)
+    const darkColor = themeColors.onTertiaryFixedVariant; // #3F4565 (light mode) / #3F4565 (dark mode)
+    
+    const colorInterpolator = d3.interpolateRgb(lightColor, darkColor);
+    
+    // Generate 27 colors: 20 for main chart (0-500) + 7 for inset (500-4000)
+    const mainColors = d3.range(20).map(i => colorInterpolator(i / 19));
+    const tailColors = d3.range(7).map(i => colorInterpolator(i / 6));
 
     // --- 2. GRAFICO PRINCIPALE (0 - 500) ---
     const mainBinWidth = 25; 
@@ -126,7 +122,7 @@ export const citationsHistogramConfig = {
 
     // Tooltip Main
     bars.on('mouseenter', function(event, d) {
-        d3.select(this).attr('fill', '#4A0F48'); 
+        d3.select(this).attr('fill', themeColors.primary); 
         const pct = ((d.length / data.length) * 100).toFixed(1);
         tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
       })
@@ -143,7 +139,7 @@ export const citationsHistogramConfig = {
     const medianLine = g.append('line')
       .attr('x1', medianX).attr('x2', medianX)
       .attr('y1', height).attr('y2', yScale(maxYMain)) 
-      .attr('stroke', '#B3261E') // Usa un rosso esplicito invece della variabile
+      .attr('stroke', themeColors.accent)
       .attr('stroke-width', 2)
       .attr('stroke-dasharray', '4,4');
 
@@ -153,7 +149,7 @@ export const citationsHistogramConfig = {
     g.append('text')
       .attr('x', medianX + 8) 
       .attr('y', yScale(maxYMain)) 
-      .attr('fill', '#B3261E') // Rosso esplicito anche qui
+      .attr('fill', themeColors.accent)
       .attr('font-size', '12px')
       .attr('font-weight', 'bold')
       .text(`Median: ${medianVal}`);
@@ -276,7 +272,7 @@ export const citationsHistogramConfig = {
             papersInBin.forEach(paper => {
               tooltipHtml += `<em>${paper.Title}</em><br>`;
               tooltipHtml += `<span style="font-weight:bold;">${paper.Year}</span><br>`;
-              tooltipHtml += `<span style="color:#B3261E;">${paper.Citations} citations</span>`;
+              tooltipHtml += `<span style="color:${themeColors.accent};">${paper.Citations} citations</span>`;
             });
           }
         }

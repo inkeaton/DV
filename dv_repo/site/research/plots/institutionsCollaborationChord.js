@@ -14,6 +14,9 @@ export const institutionsCollaborationChordConfig = {
     const { g, d3, width, height, data, colors } = ctx;
     const animationDuration = 800;
 
+    // Block interactions during animation
+    g.style('pointer-events', 'none');
+
     // Title
     renderTitle(ctx, 'Inter-Institutional Collaboration Network');
 
@@ -110,7 +113,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('fill', '#333');
+          .attr('fill', colors.onSurface);
         
         // First line: names and collaboration count
         text.append('tspan').text(`${fullName1} ↔ ${fullName2} | `);
@@ -121,7 +124,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('x', width / 2)
           .attr('dy', '1.3em')
           .attr('font-size', '12px')
-          .attr('fill', '#555');
+          .attr('fill', colors.onSurfaceVariant);
         text.append('tspan').attr('font-weight', 'bold').text(`${shortName1}`);
         text.append('tspan').attr('font-weight', 'normal').text(` (${inst1Pct}%) ↔ `);
         text.append('tspan').attr('font-weight', 'bold').text(`${shortName2}`);
@@ -133,7 +136,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('y', bbox.y - 3)
           .attr('width', bbox.width + 16)
           .attr('height', bbox.height + 6)
-          .attr('fill', '#fff')
+          .attr('fill', colors.surfaceContainer)
           .attr('stroke', isCrossRegional ? '#ef4444' : colorScale(region1))  // Red for cross-regional, region color for same-region
           .attr('stroke-width', 2)
           .attr('rx', 4);
@@ -159,7 +162,7 @@ export const institutionsCollaborationChordConfig = {
     const arcs = groups.append('path')
       .attr('d', arc)
       .attr('fill', d => colorScale(data.institutionRegions[d.index]))
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2)
       .attr('opacity', 0)
       .style('cursor', 'pointer');
@@ -200,7 +203,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('fill', '#333');
+          .attr('fill', colors.onSurface);
         
         text.append('tspan').text(`${fullName} | `);
         text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
@@ -216,7 +219,7 @@ export const institutionsCollaborationChordConfig = {
           .attr('y', bbox.y - 3)
           .attr('width', bbox.width + 16)
           .attr('height', bbox.height + 6)
-          .attr('fill', '#fff')
+          .attr('fill', colors.surfaceContainer)
           .attr('stroke', colorScale(region))
           .attr('stroke-width', 2)
           .attr('rx', 4);
@@ -247,7 +250,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('text-anchor', d => d.angle > Math.PI ? 'end' : 'start')
       .attr('font-size', '11px')
       .attr('font-weight', '500')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .attr('opacity', 0)
       .text(d => data.institutions[d.index]);  // short names
 
@@ -259,6 +262,18 @@ export const institutionsCollaborationChordConfig = {
 
     // Filter to only regions present in data
     const presentRegions = new Set(data.institutionRegions);
+    
+    // Calculate number of collaborations per region
+    const regionCollaborationCounts = {};
+    data.institutionRegions.forEach((region, i) => {
+      if (!regionCollaborationCounts[region]) {
+        regionCollaborationCounts[region] = 0;
+      }
+      // Count collaborations from this institution's row
+      const collabCount = data.matrix[i].reduce((sum, val) => sum + val, 0);
+      regionCollaborationCounts[region] += collabCount;
+    });
+    
     const legendData = Object.entries(regionColorsChord)
       .filter(([region]) => presentRegions.has(region));
 
@@ -274,7 +289,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('width', 16)
       .attr('height', 16)
       .attr('fill', d => d[1])
-      .attr('stroke', '#fff')
+      .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 1.5)
       .attr('rx', 3);
 
@@ -282,8 +297,8 @@ export const institutionsCollaborationChordConfig = {
       .attr('x', 22)
       .attr('y', 4)
       .attr('font-size', '11px')
-      .attr('fill', '#333')
-      .text(d => d[0]);
+      .attr('fill', colors.onSurface)
+      .text(d => `${d[0]}: ${regionCollaborationCounts[d[0]] || 0}`);
 
     // Stats annotation (top left)
     const stats = g.append('g')
@@ -296,7 +311,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('y', 0)
       .attr('width', 175)
       .attr('height', 135)
-      .attr('fill', '#fff')
+      .attr('fill', colors.surfaceContainer)
       .attr('stroke', colors.primary)
       .attr('stroke-width', 2)
       .attr('rx', 5);
@@ -305,7 +320,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('x', 12)
       .attr('y', 22)
       .attr('font-size', '11px')
-      .attr('fill', '#333');
+      .attr('fill', colors.onSurface);
 
     // Total Institutions
     statsText.append('tspan')
@@ -327,7 +342,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('x', 12)
       .attr('dy', '1.3em')
       .attr('font-size', '10px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text(`~${institutionsCollaborationStats.avgCollaborationsPerInstitution.toFixed(0)} per institution`);
 
     // Cross-regional percentage
@@ -344,7 +359,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('y1', 83)
       .attr('x2', 163)
       .attr('y2', 83)
-      .attr('stroke', '#e5e5e5')
+      .attr('stroke', colors.outlineVariant)
       .attr('stroke-width', 1);
 
     // Strongest Pair label
@@ -352,7 +367,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('x', 12)
       .attr('y', 97)
       .attr('font-size', '9px')
-      .attr('fill', '#666')
+      .attr('fill', colors.onSurfaceVariant)
       .text('Strongest Pair');
 
     // Strongest Pair value - highlighted
@@ -367,7 +382,7 @@ export const institutionsCollaborationChordConfig = {
       .text(`${institutionsCollaborationStats.strongestPair.inst1} ↔ ${institutionsCollaborationStats.strongestPair.inst2}`);
 
     strongestPairText.append('tspan')
-      .attr('fill', '#333')
+      .attr('fill', colors.onSurface)
       .text(` | `);
 
     strongestPairText.append('tspan')
@@ -407,6 +422,10 @@ export const institutionsCollaborationChordConfig = {
       .transition()
       .delay(animationDuration + 400)
       .duration(400)
-      .attr('opacity', 1);
+      .attr('opacity', 1)
+      .on('end', () => {
+        // Re-enable interactions after all animations complete
+        g.style('pointer-events', 'auto');
+      });
   }
 };
