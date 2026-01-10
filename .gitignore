@@ -1,6 +1,41 @@
+
 # macOS
 .DS_Store
 **/.DS_Store
 
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data outputs and cache (do not track processed/intermediate data)
+data/processed/
+!data/processed/README.md
+
+data/raw/
+!data/raw/README.md
+
 # All OpenAlex caches
 **/cache_openalex_*/
+
+# Site build artifacts (if any)
+site/data/
+!site/data/README.md
+
+# VS Code settings
+.vscode/
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+
+# Misc
+*.log
+*.tmp
+
+# Node modules (if ever used)
+node_modules/
