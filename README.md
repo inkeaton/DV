@@ -67,30 +67,37 @@ Then open **http://localhost:8000** in your browser 🌍
 
 ## 3. 🗺️ Folder Structure & Data Locations
 
-```text
+```
 DV/
+├── .github/
+│   └── workflows/                          # GitHub Actions workflows (build/deploy/CI)
 ├── data/
-│   ├── raw/                # Raw input data (e.g., vispubdata_1990_2024.csv)
-│   └── processed/          # Cleaned and enriched data, outputs from notebooks
+│   ├── raw/                                # Raw input data (e.g., vispubdata_1990_2024.csv)
+│   └── processed/                          # Cleaned/enriched data + outputs from notebooks
 │       └── outputs/
 │           └── openalex_notebook_outputs/
-│               ├── cache_openalex_institutions/  # Cached OpenAlex API responses
-│               ├── cache_openalex_works/
-│               └── tables/                      # Final CSVs for web data generation
-├── scripts/                # Jupyter notebooks for all preprocessing steps
+│               ├── cache_openalex_institutions/  # Cached OpenAlex API responses (institutions)
+│               ├── cache_openalex_works/         # Cached OpenAlex API responses (works)
+│               └── tables/                       # Final CSVs for web data generation
+├── scripts/                                # Jupyter notebooks for all preprocessing steps
 ├── site/
-│   ├── index.html          # Homepage
-│   ├── assets/             # Shared CSS, JS, images
-│   ├── data/               # JS data modules for visualizations
+│   ├── index.html                           # Homepage
+│   ├── assets/                              # Shared CSS, JS, images
+│   ├── data/                                # JS data modules for visualizations
 │   │   ├── authors/
 │   │   ├── papers/
 │   │   └── research/
-│   ├── authors/            # Authors section (HTML + plots)
-│   ├── papers/             # Papers section (HTML + plots)
-│   ├── research/           # Research section (HTML + plots)
-│   ├── dataset/            # Dataset exploration page
-│   └── methodology/        # Methodology page
-└── README.md
+│   ├── authors/                             # Authors section (HTML + plots)
+│   ├── papers/                              # Papers section (HTML + plots)
+│   ├── research/                            # Research section (HTML + plots)
+│   ├── dataset/                             # Dataset exploration page
+│   └── methodology/                         # Methodology page
+├── .gitignore
+├── CODEBASE_STRUCTURE.txt
+├── LICENSE
+├── README.md
+└── requirements.txt
+
 ```
 
 ### 📌 Where does the data for visualizations live?
