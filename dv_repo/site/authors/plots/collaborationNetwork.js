@@ -102,13 +102,13 @@ export const collaborationNetworkConfig = {
         .attr('dy', 0)
         .text(d.id);
 
-      text.append('tspan')
+      const detailSpan = text.append('tspan')
         .attr('x', d.x)
         .attr('dy', '1.2em')
         .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('font-weight', 'normal')
-        .attr('fill', '#666')
-        .text(`Group ${d.group} • ${d.collaborations} collaborations`);
+        .attr('fill', '#666');
+      detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
+      detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
 
       const bbox = text.node().getBBox();
       const padding = getAdjustedPadding(6, currentZoomLevel);
@@ -161,13 +161,13 @@ export const collaborationNetworkConfig = {
         .attr('dy', 0)
         .text(d.id);
 
-      text.append('tspan')
+      const detailSpan = text.append('tspan')
         .attr('x', d.x)
         .attr('dy', '1.2em')
         .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-        .attr('font-weight', 'normal')
-        .attr('fill', '#666')
-        .text(`Group ${d.group} • ${d.collaborations} collaborations`);
+        .attr('fill', '#666');
+      detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.collaborations}`);
+      detailSpan.append('tspan').attr('font-weight', 'normal').text(` collaborations`);
 
       const bbox = text.node().getBBox();
       const padding = getAdjustedPadding(6, currentZoomLevel);

@@ -68,7 +68,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('stroke', 'none')
       .style('cursor', 'pointer');
 
-    // Ribbon hover effects
+    // Ribbon hover effects - show full names and collaboration count
     ribbons
       .on('mouseenter', function(event, d) {
         d3.select(this)
@@ -83,16 +83,20 @@ export const institutionsCollaborationChordConfig = {
           .duration(200)
           .attr('fill-opacity', 0.05);
 
-        // Show label
+        // Show label with full names
+        const fullName1 = data.institutionsFull ? data.institutionsFull[d.source.index] : data.institutions[d.source.index];
+        const fullName2 = data.institutionsFull ? data.institutionsFull[d.target.index] : data.institutions[d.target.index];
+        
         const label = g.append('g').attr('class', 'hover-label');
         const text = label.append('text')
           .attr('x', width / 2)
           .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('font-weight', 'bold')
-          .attr('fill', '#333')
-          .text(`${data.institutions[d.source.index]} ↔ ${data.institutions[d.target.index]}: ${d.source.value} papers`);
+          .attr('fill', '#333');
+        
+        text.append('tspan').text(`${fullName1} ↔ ${fullName2} | `);
+        text.append('tspan').attr('font-weight', 'bold').text(`${d.source.value} papers`);
 
         const bbox = text.node().getBBox();
         label.insert('rect', 'text')
@@ -129,7 +133,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('opacity', 0)
       .style('cursor', 'pointer');
 
-    // Arc hover effects
+    // Arc hover effects - show full name and total papers for institution
     arcs
       .on('mouseenter', function(event, d) {
         d3.select(this)
@@ -144,6 +148,43 @@ export const institutionsCollaborationChordConfig = {
           .attr('fill-opacity', r => 
             r.source.index === d.index || r.target.index === d.index ? 0.8 : 0.1
           );
+
+        // Show institution info with full name and total papers
+        const fullName = data.institutionsFull ? data.institutionsFull[d.index] : data.institutions[d.index];
+        const totalPapers = data.institutionPapers ? data.institutionPapers[d.index] : null;
+        const region = data.institutionRegions[d.index];
+        
+        // Calculate total collaborations for this institution
+        const totalCollabs = data.matrix[d.index].reduce((sum, val) => sum + val, 0);
+        
+        const label = g.append('g').attr('class', 'hover-label');
+        
+        const text = label.append('text')
+          .attr('x', width / 2)
+          .attr('y', 10)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '13px')
+          .attr('fill', '#333');
+        
+        text.append('tspan').text(`${fullName} | `);
+        if (totalPapers !== null) {
+          text.append('tspan').attr('font-weight', 'bold').text(`${totalPapers} papers`);
+          text.append('tspan').text(` | `);
+          text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
+        } else {
+          text.append('tspan').attr('font-weight', 'bold').text(`${totalCollabs} collaborations`);
+        }
+
+        const bbox = text.node().getBBox();
+        label.insert('rect', 'text')
+          .attr('x', bbox.x - 8)
+          .attr('y', bbox.y - 3)
+          .attr('width', bbox.width + 16)
+          .attr('height', bbox.height + 6)
+          .attr('fill', '#fff')
+          .attr('stroke', colorScale(region))
+          .attr('stroke-width', 2)
+          .attr('rx', 4);
       })
       .on('mouseleave', function(event, d) {
         d3.select(this)
@@ -155,9 +196,11 @@ export const institutionsCollaborationChordConfig = {
           .transition()
           .duration(200)
           .attr('fill-opacity', 0.5);
+
+        g.selectAll('.hover-label').remove();
       });
 
-    // Institution labels
+    // Institution labels (short names by default)
     const labels = groups.append('text')
       .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
       .attr('dy', '0.35em')
@@ -171,15 +214,18 @@ export const institutionsCollaborationChordConfig = {
       .attr('font-weight', '500')
       .attr('fill', '#333')
       .attr('opacity', 0)
-      .text(d => data.institutions[d.index]);
+      .text(d => data.institutions[d.index]);  // short names
 
-    // Legend
+    // Legend - only show regions that exist in data
     const legend = g.append('g')
       .attr('class', 'legend')
       .attr('transform', `translate(10, ${height - 100})`)
       .attr('opacity', 0);
 
-    const legendData = Object.entries(regionColorsChord);
+    // Filter to only regions present in data
+    const presentRegions = new Set(data.institutionRegions);
+    const legendData = Object.entries(regionColorsChord)
+      .filter(([region]) => presentRegions.has(region));
 
     const legendItems = legend.selectAll('.legend-item')
       .data(legendData)

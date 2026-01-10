@@ -230,11 +230,17 @@ export const papersByPublicationConfig = {
       });
 
     // Legend
-    const legendItems = publicationKeys.map(key => ({
-      label: `${publicationLabels[key]}: ${totalsByKey[key].toLocaleString()} papers`,
-      color: publicationColors[key]
-    }));
+    const grandTotal = publicationKeys.reduce((sum, k) => sum + totalsByKey[k], 0);
 
-    renderLegend(ctx, legendItems, { x: width - 170, y: 0 });
+    const legendItems = publicationKeys.map(key => {
+      const count = totalsByKey[key];
+      const pct = ((count / grandTotal) * 100).toFixed(1);
+      return {
+        label: `${publicationLabels[key]}: ${count.toLocaleString()} (${pct}%)`,
+        color: publicationColors[key]
+      };
+    });
+
+    renderLegend(ctx, legendItems, { x: width - 180, y: 0 });
   }
 };

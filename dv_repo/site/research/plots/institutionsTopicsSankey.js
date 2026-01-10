@@ -3,7 +3,7 @@
  * Sankey diagram connecting institutions to research topics
  */
 
-import { institutionsTopicsData, institutionsTopicsStats, topicColors } from '../../data/research/institutionsTopicsData.js';
+import { institutionsTopicsData, institutionsTopicsStats, topicColors, regionColors } from '../../data/research/institutionsTopicsData.js';
 import { renderTitle } from '../../assets/js/chart-utils.js';
 
 export const institutionsTopicsSankeyConfig = {
@@ -21,10 +21,12 @@ export const institutionsTopicsSankeyConfig = {
     const d3Sankey = await import('https://cdn.jsdelivr.net/npm/d3-sankey@0.12/+esm');
 
     // Create Sankey generator
+    // nodeSort(null) preserves input order (sorted by region in data)
     const sankey = d3Sankey.sankey()
       .nodeId(d => d.id)
       .nodeWidth(20)
       .nodePadding(15)
+      .nodeSort(null)  // Preserve order from data (grouped by region)
       .extent([[0, 0], [width, height]]);
 
     // Generate Sankey layout
@@ -33,10 +35,10 @@ export const institutionsTopicsSankeyConfig = {
       links: data.links.map(d => ({ ...d }))
     });
 
-    // Color scale for institutions by region
+    // Color scale for institutions by region (from data)
     const institutionColorScale = d3.scaleOrdinal()
-      .domain(['North America', 'Europe', 'Asia', 'Other'])
-      .range([colors.primary, colors.secondary, colors.accent, '#9ca3af'])
+      .domain(Object.keys(regionColors))
+      .range(Object.values(regionColors))
       .unknown('#9ca3af');
 
     // Draw links
@@ -76,9 +78,10 @@ export const institutionsTopicsSankeyConfig = {
           .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
-          .attr('font-weight', 'bold')
-          .attr('fill', '#333')
-          .text(`${sourceNode.id} → ${targetNode.id}: ${d.value} papers`);
+          .attr('fill', '#333');
+        
+        text.append('tspan').text(`${sourceNode.id} → ${targetNode.id} | `);
+        text.append('tspan').attr('font-weight', 'bold').text(`${d.value} papers`);
 
         const bbox = text.node().getBBox();
         label.insert('rect', 'text')
@@ -137,6 +140,32 @@ export const institutionsTopicsSankeyConfig = {
           .attr('stroke-opacity', link =>
             link.source.id === d.id || link.target.id === d.id ? 0.7 : 0.1
           );
+
+        // Show tooltip
+        const label = g.append('g').attr('class', 'hover-label');
+        
+        const displayName = d.type === 'institution' ? d.fullName : d.category;
+        
+        const text = label.append('text')
+          .attr('x', width / 2)
+          .attr('y', -25)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '13px')
+          .attr('fill', '#333');
+        
+        text.append('tspan').text(`${displayName} | `);
+        text.append('tspan').attr('font-weight', 'bold').text(`${d.totalPapers} papers`);
+
+        const bbox = text.node().getBBox();
+        label.insert('rect', 'text')
+          .attr('x', bbox.x - 10)
+          .attr('y', bbox.y - 4)
+          .attr('width', bbox.width + 20)
+          .attr('height', bbox.height + 8)
+          .attr('fill', '#fff')
+          .attr('stroke', d.type === 'institution' ? institutionColorScale(d.region) : topicColors[d.category])
+          .attr('stroke-width', 2)
+          .attr('rx', 4);
       })
       .on('mouseleave', function (event, d) {
         d3.select(this)
@@ -148,6 +177,8 @@ export const institutionsTopicsSankeyConfig = {
           .transition()
           .duration(200)
           .attr('stroke-opacity', 0.3);
+
+        g.selectAll('.hover-label').remove();
       });
 
     // Node labels

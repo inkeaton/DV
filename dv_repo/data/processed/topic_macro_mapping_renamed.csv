@@ -1,30 +1,30 @@
 topic_id,topic_name,macro_id,macro_name,count
-4,Deep Learning & Neural Networks,0,AI & Immersive Interaction,139
-15,Augmented Reality & Immersive Environments,0,AI & Immersive Interaction,70
-23,Sketching & Creative Literacy,0,AI & Immersive Interaction,50
-27,Narrative Visualization & Storytelling,0,AI & Immersive Interaction,43
-6,Hierarchical Data & Treemaps,1,Volume Rendering & Hierarchical Data,134
-9,Direct Volume Rendering & Ray Tracing,1,Volume Rendering & Hierarchical Data,113
-24,Medical Imaging (MRI & DTI),1,Volume Rendering & Hierarchical Data,50
-28,Bibliometrics & Citation Analysis,1,Volume Rendering & Hierarchical Data,38
-0,Mesh Generation & Surface Reconstruction,2,Geometry Processing & Analytics,729
-2,Causal Inference & Analytics,2,Geometry Processing & Analytics,286
-7,Text Mining & Topic Modeling,2,Geometry Processing & Analytics,123
-8,Ensemble Simulation & Parameter Space,2,Geometry Processing & Analytics,114
-19,Vascular & Blood Flow Visualization,2,Geometry Processing & Analytics,54
-3,Parallel Coordinates & Multidimensional Data,3,High-Dimensional & Molecular Vis,186
-11,Molecular Dynamics & Chemistry,3,High-Dimensional & Molecular Vis,110
-13,InfoVis & Sensemaking,3,High-Dimensional & Molecular Vis,91
-1,Flow Visualization & CFD,4,Flow Dynamics & Temporal Analysis,366
-12,Haptic Interfaces & Feedback,4,Flow Dynamics & Temporal Analysis,93
-22,Time Series & Temporal Patterns,4,Flow Dynamics & Temporal Analysis,50
-16,Geospatial & Earth Science,5,Geospatial & Perceptual Studies,62
-17,Graphics Systems & Frameworks,5,Geospatial & Perceptual Studies,58
-26,Eye Tracking & Graphical Perception,5,Geospatial & Perceptual Studies,45
-25,Network Security & Anomaly Detection,6,Security & Anomaly Detection,47
-18,Volumetric Shadows & Illumination,7,Advanced Volume Illumination,57
-10,Topological Features & Contour Trees,8,Topological Data Analysis,111
-14,Database Interfaces & Exploration,9,Data Management & Interfaces,71
-5,Multi-Projector & Camera Calibration,10,Display Calibration & Tensor Fields,137
-21,Tensor Field Topology,10,Display Calibration & Tensor Fields,51
-20,Wavelet Transforms & Multiresolution,11,Multiresolution & Wavelets,52
+1,Dimensionality Reduction & High-Dim Data,0,High-Dimensional Data Analysis,249
+7,Simulation Ensembles & Weather,0,High-Dimensional Data Analysis,111
+22,Diffusion Tensor MRI & DTI,0,High-Dimensional Data Analysis,56
+3,Node-Link Diagrams & Graph Layouts,1,Graph Visualization & Text Mining,218
+8,Topic Modeling & Text Analytics,1,Graph Visualization & Text Mining,150
+19,Sports Analytics & Insights,1,Graph Visualization & Text Mining,80
+18,Ray Tracing & Volume Rendering,1,Graph Visualization & Text Mining,66
+0,Unstructured Meshes & Volume Rendering,2,Volume Rendering & Immersive Tech,429
+2,Flow Fields & CFD,2,Volume Rendering & Immersive Tech,238
+4,Narrative Visualization & Storytelling,2,Volume Rendering & Immersive Tech,196
+6,Vascular & Medical CT Imaging,2,Volume Rendering & Immersive Tech,145
+11,Eye Tracking & Augmented Reality,2,Volume Rendering & Immersive Tech,99
+21,3D Interaction & Haptics,2,Volume Rendering & Immersive Tech,93
+5,Dataflow & Visual Programming,3,Visual Programming & ML,176
+12,Deep Learning & Explainable ML,3,Visual Programming & ML,126
+10,Geovisualization & Cartography,3,Visual Programming & ML,109
+28,Wavelets & Multiresolution,3,Visual Programming & ML,106
+23,Social Media & Twitter Analysis,4,Social & Biomedical Analytics,77
+25,Bioinformatics & Genomics,4,Social & Biomedical Analytics,75
+16,Color Perception & Colormaps,5,Imaging & Display Technology,76
+26,Multi-Projector & Display Systems,5,Imaging & Display Technology,66
+15,Biomedical Imaging & Microscopy,5,Imaging & Display Technology,61
+27,Causality & Temporal Patterns,6,Causality & Temporal Analysis,66
+9,Graphical Perception & Uncertainty,7,Perception & Uncertainty Vis,116
+24,Tensor Fields & Topology,7,Perception & Uncertainty Vis,59
+13,Computational Topology & Contour Trees,8,Topological Data Analysis,75
+20,Network Security & Anomaly Detection,9,Network Security & Anomaltic,60
+17,Volume Graphics & Geophysics,10,Geospatial & Seismic Vis,68
+14,Molecular Dynamics & Simulation,11,Molecular Simulation,57

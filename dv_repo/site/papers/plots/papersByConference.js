@@ -273,11 +273,17 @@ export const papersByConferenceConfig = {
     // -------------------------
     // Legend (with totals)
     // -------------------------
-    const legendItems = conferenceKeys.map(key => ({
-      label: `${conferenceLabels[key]}: ${totalsByKey[key].toLocaleString()} papers`,
-      color: conferenceColors[key]
-    }));
+    const grandTotal = conferenceKeys.reduce((sum, k) => sum + totalsByKey[k], 0);
 
-    renderLegend(ctx, legendItems, { x: width - 110, y: 0 });
+    const legendItems = conferenceKeys.map(key => {
+      const count = totalsByKey[key];
+      const pct = ((count / grandTotal) * 100).toFixed(1);
+      return {
+        label: `${conferenceLabels[key]}: ${count.toLocaleString()} (${pct}%)`,
+        color: conferenceColors[key]
+      };
+    });
+
+    renderLegend(ctx, legendItems, { x: width - 130, y: 0 });
   }
 };

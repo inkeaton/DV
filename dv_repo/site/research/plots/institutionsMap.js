@@ -193,21 +193,23 @@ export const institutionsMapConfig = {
             .text(d.name);
 
           if (d.isCluster) {
-            text.append('tspan')
+            const detailSpan = text.append('tspan')
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('font-weight', 'normal')
-              .attr('fill', '#666')
-              .text(`${d.institutions} institutions • ${d.papers} papers`);
+              .attr('fill', '#666');
+            
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
           } else {
-            text.append('tspan')
+            const detailSpan = text.append('tspan')
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('font-weight', 'normal')
-              .attr('fill', '#666')
-              .text(`${d.papers} papers`);
+              .attr('fill', '#666');
+            
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
           }
 
           const bbox = text.node().getBBox();
@@ -265,21 +267,23 @@ export const institutionsMapConfig = {
             .text(d.name);
 
           if (d.isCluster) {
-            text.append('tspan')
+            const detailSpan = text.append('tspan')
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('font-weight', 'normal')
-              .attr('fill', '#666')
-              .text(`${d.institutions} institutions • ${d.papers} papers`);
+              .attr('fill', '#666');
+            
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.institutions} institutions`);
+            detailSpan.append('tspan').attr('font-weight', 'normal').text(` | `);
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
           } else {
-            text.append('tspan')
+            const detailSpan = text.append('tspan')
               .attr('x', x)
               .attr('dy', '1.2em')
               .attr('font-size', `${getAdjustedFontSize(11, currentZoomLevel)}px`)
-              .attr('font-weight', 'normal')
-              .attr('fill', '#666')
-              .text(`${d.papers} papers`);
+              .attr('fill', '#666');
+            
+            detailSpan.append('tspan').attr('font-weight', 'bold').text(`${d.papers} papers`);
           }
 
           const bbox = text.node().getBBox();
@@ -334,13 +338,16 @@ export const institutionsMapConfig = {
       attachHoverHandlers(bubbles);
     }
 
-    // Legend
+    // Legend - only show regions present in data
     const legend = g.append('g')
       .attr('class', 'legend')
       .attr('transform', `translate(${width - 150}, 20)`)
       .attr('opacity', 0);
 
-    const legendData = Object.entries(regionColors);
+    // Filter to only regions present in data
+    const presentRegions = new Set(data.map(d => d.region));
+    const legendData = Object.entries(regionColors)
+      .filter(([region]) => presentRegions.has(region));
 
     const legendItems = legend.selectAll('.legend-item')
       .data(legendData)

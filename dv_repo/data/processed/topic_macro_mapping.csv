@@ -1,30 +1,31 @@
 topic_id,topic_name,macro_id,macro_name,count
-4,deep neural networks • deep learning • deep neural • neural networks,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,139
-15,immersive environments • augmented reality • visualisations • immersive environment,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,70
-23,sketching • infovis • literacy • creativity,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,50
-27,driven storytelling • narratives • storytelling • narration,0,Macro 0: authoring • deep neural networks • deep learning • deep neural,43
-6,treemaps • treemap • volume exploration • volume illustration,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,134
-9,direct volume rendering • ray tracing • unstructured grids • tetrahedral meshes,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,113
-24,diffusion tensor • magnetic resonance imaging • tractography • mri,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,50
-28,scientific literature • citations • bibliographic • publications,1,Macro 1: direct volume rendering • treemaps • treemap • volume exploration,38
-0,meshes • triangulation • surface reconstruction • marching cubes,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,729
-2,causality • causal • chart • inference,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,286
-7,unstructured text • topic modeling • text mining • document collections,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,123
-8,simulation ensembles • parameter space exploration • ensembles • ensemble,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,114
-19,blood vessels • blood flow • angiography • vascular,2,Macro 2: meshes • triangulation • surface reconstruction • marching cubes,54
-3,parallel coordinate plots • coordinate plots • parallel coordinates • multidimensional scaling,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,186
-11,molecular dynamics • molecular • molecules • molecule,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,110
-13,visualisations • infographics • sensemaking • abstractions,3,Macro 3: infographics • parallel coordinate plots • coordinate plots • parallel coordinates,91
-1,flow field • flow fields • computational fluid dynamics • vortices,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,366
-12,haptic interface • haptic feedback • haptic • tactile,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,93
-22,line charts • chart • temporal patterns • multivariate time series,4,Macro 4: flow field • flow fields • computational fluid dynamics • vortices,50
-16,geophysical • geological • topography • earth science,5,Macro 5: geophysical • geological • topography • earth science,62
-17,visualisation tools • computer graphics • computational fluid • volume processing,5,Macro 5: geophysical • geological • topography • earth science,58
-26,eye tracking study • eye tracking • gaze • graphical perception,5,Macro 5: geophysical • geological • topography • earth science,45
-25,anomaly detection • network security • network traffic • attacks,6,Macro 6: anomaly detection • network security • network traffic • attacks,47
-18,volume illumination • volumetric shadows • direct volume rendering • rendering volume,7,Macro 7: volume illumination • volumetric shadows • direct volume rendering • rendering volume,57
-10,topological features • contour trees • contour tree • topological simplification,8,Macro 8: topological features • contour trees • contour tree • topological simplification,111
-14,interface exploration • database management • databases • database,9,Macro 9: interface exploration • database management • databases • database,71
-5,projector • calibration • camera • cameras,10,Macro 10: projector • calibration • camera • cameras,137
-21,tensor field topology • tensor fields • tensor field • fields tensor,10,Macro 10: projector • calibration • camera • cameras,51
-20,wavelet • wavelets • multiresolution • curvilinear grids,11,Macro 11: wavelet • wavelets • multiresolution • curvilinear grids,52
+-1,graphical interfaces • automatic presentation • graphic design • tableau,-1,Other,27
+1,dimensionality reduction • dimensional datasets • multidimensional scaling • high dimensional datasets,0,dimensionality reduction • dimensional datasets • multidimensional scaling • high dimensional datasets,249
+7,simulation ensembles • ensembles • ensemble • weather forecasting,0,dimensionality reduction • dimensional datasets • multidimensional scaling • high dimensional datasets,111
+22,diffusion tensor mri • tensor mri • diffusion tensor • magnetic resonance imaging,0,dimensionality reduction • dimensional datasets • multidimensional scaling • high dimensional datasets,56
+3,node link diagrams • link diagrams • graph layouts • node link diagram,1,node link diagrams • link diagrams • graph layouts • node link diagram,218
+8,topic modeling • exploratory search • information retrieval • unstructured text,1,node link diagrams • link diagrams • graph layouts • node link diagram,150
+19,sports • sport • contextualized • actionable insights,1,node link diagrams • link diagrams • graph layouts • node link diagram,80
+18,ray tracing • based rendering • rendering volume • high rendering,1,node link diagrams • link diagrams • graph layouts • node link diagram,66
+0,unstructured meshes • unstructured grids • direct volume rendering • tetrahedral meshes,2,direct volume rendering • infovis • augmented reality • virtual reality,429
+2,flow field • flow fields • vortices • computational fluid dynamics,2,direct volume rendering • infovis • augmented reality • virtual reality,238
+4,infographics • narratives • storytelling • infographic,2,direct volume rendering • infovis • augmented reality • virtual reality,196
+6,blood vessels • vascular • computed tomography • tomography,2,direct volume rendering • infovis • augmented reality • virtual reality,145
+11,graphical perception • eye tracking • statistical graphics • augmented reality,2,direct volume rendering • infovis • augmented reality • virtual reality,99
+21,3d interaction • haptic feedback • haptic • 3d graphics,2,direct volume rendering • infovis • augmented reality • virtual reality,93
+5,dataflow • developers • prototyping • graphic,3,dataflow • developers • prototyping • graphic,176
+12,explainable machine learning • deep neural networks • deep learning • deep neural,3,dataflow • developers • prototyping • graphic,126
+10,geovisualization • cartography • cartographic • flow map,3,dataflow • developers • prototyping • graphic,109
+28,wavelet • wavelet based • wavelets • based rendering,3,dataflow • developers • prototyping • graphic,106
+23,twitter • social media • media social • tweets,4,twitter • social media • media social • tweets,77
+25,bioinformatics • genomics • gene expression • microarray,4,twitter • social media • media social • tweets,75
+16,color perception • colormaps • color palette • colormap,5,biomedical image • microscopy • microscope • electron microscopy,76
+26,projector • tiled display • texture mapping • monitor,5,biomedical image • microscopy • microscope • electron microscopy,66
+15,biomedical image • microscopy • microscope • electron microscopy,5,biomedical image • microscopy • microscope • electron microscopy,61
+27,causality • causal • correlations • temporal patterns,6,causality • causal • correlations • temporal patterns,66
+9,graphical perception • bar charts • visualizing uncertainty • bar chart,7,graphical perception • bar charts • visualizing uncertainty • bar chart,116
+24,tensor fields • tensor field topology • tensor field • fields tensor,7,graphical perception • bar charts • visualizing uncertainty • bar chart,59
+13,computational topology • topological features • contour trees • morse smale complex,8,computational topology • topological features • contour trees • morse smale complex,75
+20,network security • network traffic • anomaly detection • organizing maps,9,network security • network traffic • anomaly detection • organizing maps,60
+17,volume graphics • topography • geophysical • seismic,10,volume graphics • topography • geophysical • seismic,68
+14,molecular modeling • molecular dynamics md • molecular dynamics • molecular,11,molecular modeling • molecular dynamics md • molecular dynamics • molecular,57
