@@ -396,11 +396,6 @@ export const uniqueAuthorsTimelineConfig = {
       .delay((d, i) => animationDuration + i * 200)
       .attr('opacity', 1);
 
-    // Animate stats
-    statsAnnotation
-      .transition()
-      .delay(1200)
-      .duration(400)
-      .attr('opacity', 1);
+    // Animate stats (già applicato direttamente alle annotazioni)
   }
 };
