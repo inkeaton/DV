@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIS 35 Research - Explore research topics, methods, and trends in visualization papers">
+  
+  <link rel="icon" href="../assets/img/logo.png" />
+  <title>Research — VIS 35</title>
+
+  <!-- ========================================================================
+       FONTS
+       ======================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <!-- ========================================================================
+       STYLESHEETS
+       ======================================================================== -->
+  <link rel="stylesheet" href="../assets/css/colors.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/scrolly.css">
+
+  <!-- ========================================================================
+       MATERIAL WEB COMPONENTS
+       ======================================================================== -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    // Import Material Web Components
+    import '@material/web/all.js';
+    import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+
+    // Import shell components (navbar, drawer, footer)
+    import '../assets/js/shell.js';
+
+    // Import page controller and visualization
+    import { initScrollyPage } from '../assets/js/scrolly-page-controller.js';
+    import { ResearchVisualization } from './plots/researchVisualization.js';
+    import '../assets/js/components/plot-modal.js';
+
+    // ========================================================================
+    // INITIALIZE SCROLLYTELLING (simplified using page controller)
+    // ========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initScrollyPage({
+        VisualizationClass: ResearchVisualization
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       SHELL COMPONENTS (Navbar + Drawer)
+       ======================================================================== -->
+  <app-header></app-header>
+  <app-drawer></app-drawer>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main>
+    <!-- ====================================================================
+         INTRO SECTION
+         ==================================================================== -->
+    <section class="scrolly-intro">
+      <h1>The Research</h1>
+      <p>
+        Where does visualization research happen? Who collaborates with whom? 
+        Explore the global geography and institutional networks behind 35 years 
+        of IEEE VIS papers.
+      </p>
+      <p>
+        From leading research universities to international collaborations, 
+        discover the institutions shaping the field.
+      </p>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <md-icon>keyboard_arrow_down</md-icon>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLLYTELLING CONTAINER
+         ==================================================================== -->
+    <div class="scrolly-container">
+      <!-- Sticky visualization panel -->
+      <div class="scrolly-graphic">
+        <div id="scrolly-vis" class="scrolly-vis"></div>
+      </div>
+
+      <!-- Scrolling narrative text -->
+      <div class="scrolly-text">
+        
+        <!-- Step 0: Global Institution Map -->
+        <div class="scrolly-step" data-step="0">
+          <div class="scrolly-step-content">
+            <h2>A Global Community</h2>
+            <p>
+              <strong>55 leading institutions</strong> span six continents, from 
+              Massachusetts to Beijing. North America and Europe dominate with 
+              62% of papers, but Asia's presence is growing rapidly.
+            </p>
+            <p>
+              University of Washington leads with 134 papers, followed by Harvard 
+              and MIT. Research concentrates in tech hubs: <em>Boston, Bay Area, 
+              London, Beijing</em>.
+            </p>
+          </div>
+          <button class="show-plot-btn" data-step="0">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
+        </div>
+
+        <!-- Step 1: Institution-Topic Sankey -->
+        <div class="scrolly-step" data-step="1">
+          <div class="scrolly-step-content">
+            <h2>Institutional Specializations</h2>
+            <p>
+              Top institutions show distinct <strong>research profiles</strong>. 
+              University of Washington excels in InfoVis (52 papers), while 
+              UBC and University of Oxford lead in SciVis.
+            </p>
+            <p>
+              Stanford and MIT contribute broadly across all topics, while Georgia Tech 
+              and NYU specialize in <em>Visual Analytics and Interaction</em>.
+            </p>
+          </div>
+          <button class="show-plot-btn" data-step="1">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
+        </div>
+
+        <!-- Step 2: Collaboration Chord Diagram -->
+        <div class="scrolly-step" data-step="2">
+          <div class="scrolly-step-content">
+            <h2>Collaboration Networks</h2>
+            <p>
+              <strong>561 collaborations</strong> connect the top 15 institutions. 
+              University of Washington and Harvard lead with 45 and 42 joint papers, 
+              while MIT collaborates with 12 different institutions.
+            </p>
+            <p>
+              Cross-regional partnerships are common (32% of collaborations), 
+              especially between <em>North America and Europe</em>. UBC bridges 
+              continents with 38 international collaborations.
+            </p>
+          </div>
+          <button class="show-plot-btn" data-step="2">
+            <md-icon>bar_chart</md-icon>
+            <span>View Visualization</span>
+          </button>
+        </div>
+
+        <!-- Spacer for final step visibility -->
+        <div class="scrolly-spacer"></div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CONCLUSION
+         ==================================================================== -->
+    <section class="scrolly-conclusion">
+      <h2>Key Takeaways</h2>
+      <ol>
+        <li>InfoVis, SciVis, and VA form a balanced trifecta of research focus</li>
+        <li>User studies are now <strong>expected</strong>, not optional</li>
+        <li>Healthcare and climate are driving applied visualization research</li>
+        <li>Data complexity has grown exponentially — 80 dimensions is now normal</li>
+        <li><strong>Open science</strong> has transformed from exception to norm</li>
+      </ol>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FULLSCREEN PLOT MODAL (Mobile only - Web Component)
+       ======================================================================== -->
+  <plot-modal id="plot-modal"></plot-modal>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <app-footer></app-footer>
+
+</body>
+</html>
