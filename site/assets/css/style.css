@@ -366,7 +366,6 @@ main {
   margin-bottom: -8px;
 }
 
-
 /* ============================================================================
    8) FOOTER (R2D3-style, mobile friendly)
    ============================================================================ */
@@ -377,16 +376,19 @@ main {
   margin-top: auto;
   border-top: 6px solid var(--footer-border, #00687A);
 
+  /* Spaziatura reattiva */
   padding: clamp(2.5rem, 6vw, 5rem) 10% clamp(3.5rem, 10vw, 7rem);
+  
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* Due colonne uguali su Desktop */
   gap: clamp(2rem, 5vw, 4rem);
 }
 
+/* --- COLONNA SINISTRA --- */
 .f-left {
   min-width: 0;
   padding-right: clamp(0rem, 2vw, 2rem);
-  border-right: 1px solid var(--footer-divider);
+  border-right: 1px solid var(--footer-divider, rgba(255,255,255,0.1));
 }
 
 .f-brand-box {
@@ -405,7 +407,7 @@ main {
 
 .f-year {
   margin: 0.5rem 0 0 0;
-  color: var(--footer-muted);
+  color: var(--footer-muted, #b2b2b2);
   font-size: 0.9rem;
 }
 
@@ -417,15 +419,16 @@ main {
 }
 
 .f-desc a {
-  color: var(--footer-link);
+  color: var(--footer-link, #4DD0E1);
   text-decoration: underline;
-  text-decoration-color: var(--footer-link-underline);
+  text-decoration-color: var(--footer-link-underline, rgba(77, 208, 225, 0.4));
   text-underline-offset: 3px;
 }
 
+.f-methodology h2, 
 .f-methodology h4 {
   color: var(--footer-text);
-  border-bottom: 1px solid var(--footer-divider);
+  border-bottom: 1px solid var(--footer-divider, rgba(255,255,255,0.1));
   padding-bottom: 0.4rem;
   margin: 0 0 0.75rem;
   font-size: 1.05rem;
@@ -434,7 +437,7 @@ main {
 .f-methodology p,
 .f-methodology ul {
   font-size: 0.95rem;
-  color: var(--footer-muted);
+  color: var(--footer-muted, #b2b2b2);
 }
 
 .f-methodology p {
@@ -460,17 +463,21 @@ main {
 }
 
 .f-cta-link {
-  color: var(--footer-link);
+  color: var(--footer-link, #4DD0E1);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-/* Right column: team blocks */
+/* --- COLONNA DESTRA (TEAM) --- */
 .f-right {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 4vw, 3rem);
+  
+  /* FIX CENTRATURA VERTICALE */
+  justify-content: center; 
+  height: 100%;
 }
 
 .footer-team-row {
@@ -512,7 +519,7 @@ main {
   text-transform: uppercase;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
-  color: var(--footer-muted);
+  color: var(--footer-muted, #b2b2b2);
   display: block;
   margin-bottom: 0.6rem;
 }
@@ -520,7 +527,7 @@ main {
 .footer-team-bio {
   font-size: 0.95rem;
   line-height: 1.45;
-  color: var(--footer-muted);
+  color: var(--footer-muted, #b2b2b2);
   margin: 0 0 0.65rem;
 }
 
@@ -532,9 +539,9 @@ main {
 
 .footer-team-links a {
   font-size: 0.9rem;
-  color: var(--footer-link);
+  color: var(--footer-link, #4DD0E1);
   text-decoration: none;
-  border-bottom: 1px dotted var(--footer-link-underline);
+  border-bottom: 1px dotted var(--footer-link-underline, rgba(77, 208, 225, 0.4));
   padding-bottom: 2px;
 }
 
@@ -545,6 +552,28 @@ main {
   outline: 2px solid var(--footer-border);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+/* ============================================================================
+   MOBILE RESPONSIVENESS (IMPORTANTE)
+   ============================================================================ */
+@media (max-width: 850px) {
+  .footer-r2d3 {
+    grid-template-columns: 1fr; /* Una colonna singola */
+    padding: 3rem 5%;
+    gap: 3rem;
+  }
+
+  .f-left {
+    border-right: none; /* Rimuove la linea divisoria verticale */
+    border-bottom: 1px solid var(--footer-divider, rgba(255,255,255,0.1));
+    padding-right: 0;
+    padding-bottom: 2rem;
+  }
+  
+  .f-right {
+    justify-content: flex-start; /* Su mobile non serve centrare verticalmente */
+  }
 }
 
 
