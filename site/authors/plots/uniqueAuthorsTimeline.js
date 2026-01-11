@@ -215,7 +215,7 @@ export const uniqueAuthorsTimelineConfig = {
 
       // --- MOVE TEXT: slightly lower + slightly left ---
       // tweak these two numbers as you like:
-      const X_SHIFT = 250;  // move left (increase to go more left)
+      const X_SHIFT = 100;  // move left (increase to go more left)
       const Y_SHIFT = 100;  // move down (increase to go more down)
 
       let tx = targetX - X_SHIFT;
@@ -231,17 +231,37 @@ export const uniqueAuthorsTimelineConfig = {
         .attr('fill-opacity', 0.78)
         .attr('font-size', '12px')
         .attr('font-weight', '700')
-        .text(`Peak growth in new authors — ${pctAboveAvg}% above average. A COVID effect?`);
+        .selectAll('tspan')
+        .data([`${pctAboveAvg}% above average.`, 'A Covid effect?'])
+        .join('tspan')
+        .attr('x', tx)
+        .attr('dy', (d, i) => (i === 0 ? 0 : '1.2em'))
+        .text(d => d);
 
       noteG.append('line')
-        .attr('x1', tx)
+        .attr('x1', tx + 50)
         .attr('y1', ty + 6)
-        .attr('x2', targetX)
-        .attr('y2', Math.max(8, targetY - 10))
+        .attr('x2', targetX-10)
+        .attr('y2', targetY-6)
         .attr('stroke', colors.onSurface)
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
-        .attr('marker-end', 'url(#arrowhead)');
+        .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
+
+        // Ensure colored arrowhead exists (same pattern as other charts)
+    if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
+      svg.append('defs').append('marker')
+        .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
+        .attr('markerWidth', 10)
+        .attr('markerHeight', 10)
+        .attr('refX', 9)
+        .attr('refY', 3)
+        .attr('orient', 'auto')
+        .append('polygon')
+        .attr('points', '0 0, 10 3, 0 6')
+        .attr('fill', colors.onSurface);
+    }
+
 
       noteG.raise();
 
@@ -256,7 +276,8 @@ export const uniqueAuthorsTimelineConfig = {
     // ========================================================================
     const tooltipGroup = g.append('g')
       .attr('class', 'tooltip-group')
-      .style('display', 'none');
+      .style('display', 'none')
+      .style('pointer-events', 'none');
 
     const guideLine = tooltipGroup.append('line')
       .attr('class', 'guide-line')

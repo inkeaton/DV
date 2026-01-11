@@ -138,6 +138,27 @@ export const authorsPerPaperConfig = {
       .attr('stroke-opacity', 0);
 
     // -------------------------
+    // Draw linear trend line (first to last data point)
+    // -------------------------
+    const firstPoint = data[0];
+    const lastPoint = data[data.length - 1];
+
+    const trendLine = g
+      .append('line')
+      .attr('class', 'trend-line')
+      .attr('x1', xScale(firstPoint.year))
+      .attr('y1', yScale(firstPoint.avg))
+      .attr('x2', xScale(lastPoint.year))
+      .attr('y2', yScale(lastPoint.avg))
+      .attr('stroke', colors.onSurfaceVariant)
+      .attr('stroke-width', 2)
+      .attr('stroke-dasharray', '6,4')
+      .attr('opacity', 0);
+
+    // Send trend line behind the average line
+    trendLine.lower();
+
+    // -------------------------
     // Draw circles for data points (every 5th year)
     // -------------------------
     const circles = g
@@ -157,7 +178,8 @@ export const authorsPerPaperConfig = {
     // ========================================================================
     const tooltipGroup = g.append('g')
       .attr('class', 'tooltip-group')
-      .style('display', 'none');
+      .style('display', 'none')
+      .style('pointer-events', 'none');
 
     const guideLine = tooltipGroup.append('line')
       .attr('class', 'guide-line')
@@ -302,32 +324,32 @@ export const authorsPerPaperConfig = {
     const textY = Math.max(annotationY - 70, 20);
     const textX = Math.min(Math.max(annotationX, 80), width - 80);
 
-    annotation
-      .append('text')
-      .attr('x', textX)
-      .attr('y', textY)
-      .attr('text-anchor', 'middle')
-      .attr('fill', 'rgba(0,0,0,0.78)')
-      .attr('font-size', '12px')
-      .attr('font-weight', '700')
-      .text(`Peak: +${growthPercent}% since ${firstYear.year}`);
+    // annotation
+    //   .append('text')
+    //   .attr('x', textX)
+    //   .attr('y', textY)
+    //   .attr('text-anchor', 'middle')
+    //   .attr('fill', 'rgba(0,0,0,0.78)')
+    //   .attr('font-size', '12px')
+    //   .attr('font-weight', '700')
+    //   .text(`Peak: +${growthPercent}% since ${firstYear.year}`);
 
-    annotation
-      .append('line')
-      .attr('x1', textX)
-      .attr('y1', textY + 6)
-      .attr('x2', annotationX)
-      .attr('y2', annotationY - 8)
-      .attr('stroke', 'rgba(0,0,0,0.6)')
-      .attr('stroke-width', 1.5)
-      .attr('marker-end', 'url(#arrowhead)');
+    // annotation
+    //   .append('line')
+    //   .attr('x1', textX)
+    //   .attr('y1', textY + 6)
+    //   .attr('x2', annotationX)
+    //   .attr('y2', annotationY - 8)
+    //   .attr('stroke', 'rgba(0,0,0,0.6)')
+    //   .attr('stroke-width', 1.5)
+    //   .attr('marker-end', 'url(#arrowhead)');
 
-    annotation
-      .append('circle')
-      .attr('cx', annotationX)
-      .attr('cy', annotationY)
-      .attr('r', 3)
-      .attr('fill', 'rgba(0,0,0,0.6)');
+    // annotation
+    //   .append('circle')
+    //   .attr('cx', annotationX)
+    //   .attr('cy', annotationY)
+    //   .attr('r', 3)
+    //   .attr('fill', 'rgba(0,0,0,0.6)');
 
     // ========================================================================
     // COVID PLATEAU ANNOTATION (text + arrow, no box)
@@ -349,7 +371,7 @@ export const authorsPerPaperConfig = {
     const targetY = yScale(yRef) - 6;
 
     // Place text near top of band, but always inside bounds
-    const noteY = 22; // top area
+    const noteY = 270; // top area
     let noteX = targetX;
     noteX = Math.min(Math.max(noteX, 110), width - 110);
 
@@ -361,7 +383,14 @@ export const authorsPerPaperConfig = {
       .attr('fill-opacity', 0.78)
       .attr('font-size', '12px')
       .attr('font-weight', '700')
-      .text('First COVID year: a plateau as work shifts online');
+      .append('tspan')
+      .attr('x', noteX)
+      .attr('dy', 0)
+      .text('Plateau')
+      .insert('tspan', ':first-child')
+      .attr('x', noteX)
+      .attr('dy', '-1.2em')
+      .text('Covid 19');
 
     covidNote.append('line')
       .attr('x1', noteX)
@@ -419,6 +448,12 @@ export const authorsPerPaperConfig = {
       .transition()
       .duration(animationDuration)
       .attr('fill-opacity', 0.2);
+
+    // Animate trend line (fade in)
+    trendLine
+      .transition()
+      .duration(animationDuration)
+      .attr('opacity', 0.4);
 
     const lineLength = avgLine.node().getTotalLength();
     avgLine

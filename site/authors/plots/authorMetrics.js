@@ -157,6 +157,10 @@ export const authorMetricsConfig = {
       .attr('font-size', '10.5px')
       .attr('font-weight', (d) => (notableSet.has(d.name) ? '700' : '600'))
       .attr('fill', colors.onSurfaceVariant)
+      .attr('paint-order', 'stroke')
+      .attr('stroke', colors.surface)
+      .attr('stroke-width', 3)
+      .attr('stroke-linejoin', 'round')
       .style('pointer-events', 'none')
       .text((d) => d.name);
 
@@ -175,7 +179,9 @@ export const authorMetricsConfig = {
 
         removeTooltip();
 
-        const tooltip = g.append('g').attr('class', 'hover-tooltip');
+        const tooltip = g.append('g')
+          .attr('class', 'hover-tooltip')
+          .style('pointer-events', 'none');
 
         const lines = [];
         lines.push({ text: d.name, type: 'title' });

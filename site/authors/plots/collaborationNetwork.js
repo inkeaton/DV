@@ -172,7 +172,9 @@ export const collaborationNetworkConfig = {
     function showTooltip(d) {
       removeTooltip();
 
-      const tooltip = g.append('g').attr('class', 'node-tooltip');
+      const tooltip = g.append('g')
+        .attr('class', 'node-tooltip')
+        .style('pointer-events', 'none');
       const r = getAdjustedRadius(d.collaborations, currentZoomLevel);
       const baseY = d.y - r - getAdjustedPadding(14, currentZoomLevel);
 
