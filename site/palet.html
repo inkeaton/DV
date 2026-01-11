@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIS 35 — Official Design System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    /* ========================================================================
+       1. VARIABLES & TOKENS
+       ======================================================================== */
+    :root {
+      /* UI Base */
+      --bg-body: #F0F4F8;       
+      --bg-app: #F5FAFC;        
+      --bg-card: #FFFFFF;
+      --text-head: #171C1E;
+      --text-body: #4B6269;
+      --border: rgba(0,0,0,0.06);
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+      --shadow-float: 0 20px 50px rgba(0,0,0,0.1);
+
+      /* 6 CORE COLORS */
+      --c-cyan: #26C6DA;      
+      --c-lavender: #7E57C2;  
+      --c-mint: #66BB6A;      
+      --c-coral: #FF7043;     
+      --c-amber: #FFCA28;     
+      --c-pink: #EC407A;      
+
+      /* Awards */
+      --aw-gold: #FFC107;
+      --aw-silver: #BDBDBD;
+      --aw-bronze: #A1887F;
+    }
+
+    /* DARK MODE */
+    [data-theme="dark"] {
+      --bg-body: #050505;
+      --bg-app: #0F1416;
+      --bg-card: #1B2022;
+      --text-head: #E0F7FA;
+      --text-body: #B0BEC5;
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 4px 20px rgba(0,0,0,0.3);
+      --shadow-float: 0 20px 50px rgba(0,0,0,0.5);
+
+      /* Boost luminosity */
+      --c-cyan: #4DD0E1; 
+      --c-lavender: #9575CD;
+      --c-mint: #81C784;
+      --c-coral: #FF8A65;
+      --c-amber: #FFD54F;
+      --c-pink: #F06292;
+    }
+
+    /* ========================================================================
+       2. LAYOUT
+       ======================================================================== */
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-head);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; 
+    }
+
+    /* The Main Stage */
+    .app-stage {
+      width: 95vw;
+      max-width: 1400px;
+      height: 90vh; /* Leggermente più compatto verticalmente */
+      background-color: var(--bg-app);
+      border-radius: 24px;
+      box-shadow: var(--shadow-float);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Header */
+    header {
+      padding: 20px 32px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    h1 { font-family: 'Merriweather', serif; font-size: 1.5rem; margin: 0; }
+    
+    .btn {
+      padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-app); color: var(--text-head); cursor: pointer;
+      font-weight: 500; display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: var(--border); }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* FIX: Abbassato il pannello sinistro per coerenza */
+    .main-panel {
+      flex: 1;
+      padding: 60px 40px 40px 40px; /* Top padding aumentato a 60px */
+      overflow-y: auto;
+    }
+
+    .side-panel {
+      width: 360px;
+      background: var(--bg-card);
+      border-left: 1px solid var(--border);
+      padding: 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 5;
+    }
+
+    /* BENTO GRID */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); }
+
+    h2 { 
+      font-size: 0.85rem; font-weight: 700; text-transform: uppercase; 
+      letter-spacing: 0.5px; color: var(--text-body); margin: 0 0 16px 0; 
+      border-bottom: 1px solid var(--border); padding-bottom: 8px; 
+    }
+
+    /* COMPONENTS */
+    .chip { width: 48px; height: 48px; border-radius: 10px; margin-bottom: 6px; }
+    .color-label { font-size: 0.8rem; font-weight: 500; }
+    
+    .ramp-group { margin-bottom: 16px; }
+    .ramp-meta { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px; color: var(--text-body); }
+    .ramp-track { display: flex; height: 32px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .ramp-cell { flex: 1; height: 100%; }
+
+  </style>
+</head>
+<body data-theme="light">
+
+  <div class="app-stage">
+    
+    <header>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="width:36px; height:36px; background:var(--c-cyan); border-radius:8px;"></div>
+        <div>
+          <h1>VIS 35 Design System</h1>
+          <span style="font-size:0.8rem; color:var(--text-body)">6 Core Hues | Dual Mode</span>
+        </div>
+      </div>
+      <div>
+        <button class="btn" onclick="toggleTheme()">
+          <span class="material-symbols-rounded">contrast</span> Switch Theme
+        </button>
+      </div>
+    </header>
+
+    <div class="content-area">
+      
+      <div class="main-panel">
+        <div class="bento-grid">
+          
+          <div class="card" style="grid-column: span 2;">
+            <h2>Core Palette</h2>
+            <div style="display: flex; gap: 16px; justify-content: space-between;" id="core-palette"></div>
+          </div>
+
+          <div class="card" style="grid-column: span 2;">
+            <h2>Waffle & Awards</h2>
+            <div style="display: flex; gap: 16px;" id="award-palette"></div>
+          </div>
+
+          <div class="card" style="grid-column: span 3; grid-row: span 2;">
+            <h2>Split Histogram Variants (Ink Tail Test)</h2>
+            <p style="font-size:0.85rem; color:var(--text-body); margin-top:-8px; margin-bottom: 16px;">
+              Testing the "Fade to Black" outlier effect on the top 3 categorical colors.
+            </p>
+            
+            <div class="ramp-group">
+              <div class="ramp-meta"><strong>Option A: Cyan</strong> <span>Tail > 500</span></div>
+              <div class="ramp-track" id="ramp-cyan"></div>
+            </div>
+            <div class="ramp-group">
+              <div class="ramp-meta"><strong>Option B: Lavender (Recommended)</strong> <span>Tail > 500</span></div>
+              <div class="ramp-track" id="ramp-lavender"></div>
+            </div>
+            <div class="ramp-group">
+              <div class="ramp-meta"><strong>Option C: Mint</strong> <span>Tail > 500</span></div>
+              <div class="ramp-track" id="ramp-mint"></div>
+            </div>
+          </div>
+
+          <div class="card" style="grid-column: span 1; grid-row: span 2;">
+            <h2>Styles</h2>
+            
+            <div style="margin-bottom:24px;">
+              <div class="ramp-meta">Avg Line</div>
+              <div style="height:36px; background:rgba(38, 198, 218, 0.2); border-top:4px solid var(--c-cyan)"></div>
+            </div>
+            <div style="margin-bottom:24px;">
+              <div class="ramp-meta">Growth</div>
+              <div style="height:36px; background:rgba(126, 87, 194, 0.2); border-top:4px solid var(--c-lavender)"></div>
+            </div>
+            <div>
+              <div class="ramp-meta">Map Regions</div>
+              <div style="display:flex; height:32px; border-radius:6px; overflow:hidden;" id="map-strip"></div>
+            </div>
+          </div>
+
+          <div class="card" style="grid-column: span 4;">
+            <h2>Treemap (12 Spectral Pastels)</h2>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;" id="treemap-palette"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <h2 style="width:100%; text-align:center; margin-bottom: 32px;">Coherence Check</h2>
+        <div id="flower-viz" style="width:300px; height:300px;"></div>
+        <p style="text-align:center; font-size:0.9rem; color:var(--text-body); margin-top:32px; line-height:1.6; max-width: 280px;">
+          The <strong>Ink Tails</strong> (Black) provide a common visual anchor for all pastel ramps, ensuring high contrast outliers regardless of the base hue.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ========================================================================
+    // DATA CONFIG
+    // ========================================================================
+    const coreColors = [
+      { n: "Cyan", v: "var(--c-cyan)" },
+      { n: "Lavender", v: "var(--c-lavender)" },
+      { n: "Mint", v: "var(--c-mint)" },
+      { n: "Coral", v: "var(--c-coral)" },
+      { n: "Amber", v: "var(--c-amber)" },
+      { n: "Pink", v: "var(--c-pink)" }
+    ];
+
+    const awardColors = [
+      { n: "Gold", v: "var(--aw-gold)" },
+      { n: "Silver", v: "var(--aw-silver)" },
+      { n: "Bronze", v: "var(--aw-bronze)" }
+    ];
+
+    const treemapHex = [
+      "#EF9A9A", "#F48FB1", "#CE93D8", "#B39DDB", 
+      "#9FA8DA", "#90CAF9", "#81D4FA", "#80DEEA", 
+      "#80CBC4", "#A5D6A7", "#C5E1A5", "#FFF59D"
+    ];
+
+    // ========================================================================
+    // RENDER FUNCTIONS
+    // ========================================================================
+
+    function renderChips(id, data, simple=false) {
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.innerHTML = "";
+      
+      if(simple) {
+        data.forEach(c => {
+          const d = document.createElement("div");
+          d.style.background = c.v || c;
+          if(id === "map-strip") d.style.flex = "1";
+          else { d.style.width="56px"; d.style.height="56px"; d.style.borderRadius="12px"; }
+          el.appendChild(d);
+        });
+      } else {
+        data.forEach(c => {
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = `
+            <div class="chip" style="background:${c.v}"></div>
+            <div class="color-label">${c.n}</div>
+          `;
+          el.appendChild(wrapper);
+        });
+      }
+    }
+
+    function renderRamp(id, startHex, midHex) {
+      const el = document.getElementById(id);
+      if(!el) return;
+      
+      const s1 = d3.scaleLinear().domain([0, 19]).range([startHex, midHex]).interpolate(d3.interpolateRgb);
+      const s2 = d3.scaleLinear().domain([0, 6]).range([midHex, "#000000"]).interpolate(d3.interpolateRgb);
+      
+      // Part A
+      for(let i=0; i<20; i++) {
+        const d = document.createElement("div");
+        d.className = "ramp-cell"; d.style.backgroundColor = s1(i);
+        el.appendChild(d);
+      }
+      // Divider
+      const sep = document.createElement("div");
+      sep.style.width="3px"; sep.style.background="var(--bg-card)";
+      el.appendChild(sep);
+      // Part B
+      for(let i=0; i<7; i++) {
+        const d = document.createElement("div");
+        d.className = "ramp-cell"; d.style.backgroundColor = s2(i);
+        el.appendChild(d);
+      }
+    }
+
+    function drawFlower(containerId) {
+      const el = document.getElementById(containerId);
+      if(!el) return;
+      el.innerHTML = "";
+      const w = el.clientWidth; 
+      const h = el.clientHeight;
+      
+      const svg = d3.select(el).append("svg").attr("width", w).attr("height", h)
+        .append("g").attr("transform", `translate(${w/2},${h/2})`);
+
+      const petals = [
+        {c: "#26C6DA"}, {c: "#7E57C2"}, {c: "#66BB6A"}, 
+        {c: "#FF7043"}, {c: "#FFCA28"}, {c: "#EC407A"},
+        {c: "#000000"} 
+      ];
+      
+      const angleStep = (Math.PI*2)/petals.length;
+      
+      petals.forEach((p, i) => {
+        const angle = i*angleStep;
+        const scale = d3.scaleLinear().domain([0, 5]).range(["#ffffff", p.c]);
+        
+        for(let j=0; j<6; j++) {
+          const arc = d3.arc().innerRadius(25+j*18).outerRadius(25+(j+1)*18-1)
+            .startAngle(angle).endAngle(angle+angleStep-0.1).cornerRadius(4);
+          svg.append("path").attr("d", arc).attr("fill", scale(j+1));
+        }
+      });
+      
+      svg.append("text").text("VIS 35").attr("text-anchor","middle").attr("dy","0.35em")
+         .style("font-family","Merriweather").style("font-weight","900").style("fill","var(--text-head)");
+    }
+
+    // ========================================================================
+    // INIT
+    // ========================================================================
+
+    function toggleTheme() {
+      const b = document.body;
+      b.setAttribute("data-theme", b.getAttribute("data-theme")==="dark"?"light":"dark");
+      drawFlower("flower-viz"); 
+    }
+
+    // Initial Render
+    renderChips("core-palette", coreColors);
+    renderChips("award-palette", awardColors);
+    renderChips("treemap-palette", treemapHex, true);
+    renderChips("map-strip", coreColors, true);
+
+    renderRamp("ramp-cyan", "#E0F7FA", "#26C6DA");
+    renderRamp("ramp-lavender", "#EDE7F6", "#7E57C2");
+    renderRamp("ramp-mint", "#E8F5E9", "#66BB6A");
+
+    drawFlower("flower-viz");
+    window.addEventListener("resize", () => drawFlower("flower-viz"));
+
+  </script>
+</body>
+</html>
