@@ -3,7 +3,8 @@
  * Chord diagram showing inter-institutional collaborations
  */
 
-import { institutionsCollaborationData, institutionsCollaborationStats, regionColorsChord } from '../../data/research/institutionsCollaborationData.js';
+import { institutionsCollaborationData, institutionsCollaborationStats } from '../../data/research/institutionsCollaborationData.js';
+import { regionColors } from '../../assets/js/color-palettes.js';
 import { renderTitle } from '../../assets/js/chart-utils.js';
 
 export const institutionsCollaborationChordConfig = {
@@ -56,8 +57,8 @@ export const institutionsCollaborationChordConfig = {
 
     // Color scale by region
     const colorScale = d3.scaleOrdinal()
-      .domain(Object.keys(regionColorsChord))
-      .range(Object.values(regionColorsChord));
+      .domain(Object.keys(regionColors))
+      .range(Object.values(regionColors).map(rc => rc.default));
 
     // Draw chords (ribbons)
     const ribbons = centerGroup.append('g')
@@ -78,12 +79,17 @@ export const institutionsCollaborationChordConfig = {
         const region1 = data.institutionRegions[d.source.index];
         const region2 = data.institutionRegions[d.target.index];
         const isCrossRegional = region1 !== region2;
-        
-        d3.select(this)
-          .transition()
+
+        const el = d3.select(this);
+        if (!this.__origFill) this.__origFill = el.attr('fill');
+        const isDark = document.body.classList.contains('dark-theme');
+        const hoverFill = (regionColors[region1] ? (isDark ? regionColors[region1].hoverDark : regionColors[region1].hoverLight) : colorScale(region1));
+
+        el.transition()
           .duration(200)
           .attr('fill-opacity', 0.8)
-          .attr('stroke', isCrossRegional ? '#ef4444' : colorScale(region1))  // Red for cross-regional, region color for same-region
+          .attr('fill', hoverFill)
+          .attr('stroke', isCrossRegional ? '#ef4444' : hoverFill)
           .attr('stroke-width', 2);
 
         // Dim other ribbons
@@ -137,17 +143,18 @@ export const institutionsCollaborationChordConfig = {
           .attr('width', bbox.width + 16)
           .attr('height', bbox.height + 6)
           .attr('fill', colors.surfaceContainer)
-          .attr('stroke', isCrossRegional ? '#ef4444' : colorScale(region1))  // Red for cross-regional, region color for same-region
+          .attr('stroke', isCrossRegional ? '#ef4444' : hoverFill)
           .attr('stroke-width', 2)
           .attr('rx', 4);
       })
       .on('mouseleave', function(event, d) {
-        ribbons
-          .transition()
+        const el = d3.select(this);
+        el.transition()
           .duration(200)
           .attr('fill-opacity', 0.5)
           .attr('stroke', 'none')
-          .attr('stroke-width', 0);
+          .attr('stroke-width', 0)
+          .attr('fill', this.__origFill || colorScale(data.institutionRegions[d.source.index]));
 
         g.selectAll('.hover-label').remove();
       });
@@ -283,7 +290,7 @@ export const institutionsCollaborationChordConfig = {
       regionCollaborationCounts[region] += collabCount;
     });
     
-    const legendData = Object.entries(regionColorsChord)
+    const legendData = Object.entries(regionColors)
       .filter(([region]) => presentRegions.has(region));
 
     const legendItems = legend.selectAll('.legend-item')
@@ -297,7 +304,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('y', -8)
       .attr('width', 16)
       .attr('height', 16)
-      .attr('fill', d => d[1])
+      .attr('fill', d => (d[1] && d[1].default) ? d[1].default : '#9ca3af')
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 1.5)
       .attr('rx', 3);

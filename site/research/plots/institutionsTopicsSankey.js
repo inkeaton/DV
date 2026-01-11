@@ -3,7 +3,8 @@
  * Sankey diagram connecting institutions to research topics
  */
 
-import { institutionsTopicsData, institutionsTopicsStats, topicColors, regionColors } from '../../data/research/institutionsTopicsData.js';
+import { institutionsTopicsData, institutionsTopicsStats } from '../../data/research/institutionsTopicsData.js';
+import { topicColors, topicNameKeyMap, regionColors } from '../../assets/js/color-palettes.js';
 import { renderTitle } from '../../assets/js/chart-utils.js';
 
 export const institutionsTopicsSankeyConfig = {
@@ -41,7 +42,7 @@ export const institutionsTopicsSankeyConfig = {
     // Color scale for institutions by region (from data)
     const institutionColorScale = d3.scaleOrdinal()
       .domain(Object.keys(regionColors))
-      .range(Object.values(regionColors))
+      .range(Object.values(regionColors).map(rc => rc.default))
       .unknown('#9ca3af');
 
     // Draw links
@@ -54,9 +55,9 @@ export const institutionsTopicsSankeyConfig = {
       .attr('fill', 'none')
       .attr('stroke', d => {
         const sourceNode = sankeyData.nodes.find(n => n.id === d.source.id);
-        return sourceNode.type === 'institution'
-          ? institutionColorScale(sourceNode.region)
-          : topicColors[d.target.category];
+        if (sourceNode.type === 'institution') return institutionColorScale(sourceNode.region);
+        const topicKey = topicNameKeyMap[d.target.category] || d.target.category;
+        return (topicColors[topicKey] && topicColors[topicKey].default) ? topicColors[topicKey].default : '#9ca3af';
       })
       .attr('stroke-width', 0)
       .attr('stroke-opacity', 0.3)
@@ -66,16 +67,28 @@ export const institutionsTopicsSankeyConfig = {
     // Link hover effects
     links
       .on('mouseenter', function (event, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('stroke-opacity', 0.7)
-          .attr('stroke-width', d.width);
+        const el = d3.select(this);
+        if (!this.__origStroke) this.__origStroke = el.attr('stroke');
 
-        // Show tooltip
         const sourceNode = sankeyData.nodes.find(n => n.id === d.source.id);
         const targetNode = sankeyData.nodes.find(n => n.id === d.target.id);
 
+        if (sourceNode && sourceNode.type === 'institution') {
+          const isDark = document.body.classList.contains('dark-theme');
+          const hoverStroke = (regionColors[sourceNode.region] ? (isDark ? regionColors[sourceNode.region].hoverDark : regionColors[sourceNode.region].hoverLight) : (this.__origStroke || '#9ca3af'));
+          el.transition()
+            .duration(200)
+            .attr('stroke-opacity', 0.7)
+            .attr('stroke-width', d.width)
+            .attr('stroke', hoverStroke);
+        } else {
+          el.transition()
+            .duration(200)
+            .attr('stroke-opacity', 0.7)
+            .attr('stroke-width', d.width);
+        }
+
+        // Show tooltip
         const label = g.append('g').attr('class', 'hover-label');
         const text = label.append('text')
           .attr('x', width / 2)
@@ -104,11 +117,12 @@ export const institutionsTopicsSankeyConfig = {
           .attr('rx', 4);
       })
       .on('mouseleave', function (event, d) {
-        d3.select(this)
-          .transition()
+        const el = d3.select(this);
+        el.transition()
           .duration(200)
           .attr('stroke-opacity', 0.3)
-          .attr('stroke-width', d.width);
+          .attr('stroke-width', d.width)
+          .attr('stroke', this.__origStroke || el.attr('stroke'));
 
         g.selectAll('.hover-label').remove();
       });
@@ -127,7 +141,8 @@ export const institutionsTopicsSankeyConfig = {
         if (d.type === 'institution') {
           return institutionColorScale(d.region);
         } else {
-          return topicColors[d.category];
+          const topicKey = topicNameKeyMap[d.category] || d.category;
+          return (topicColors[topicKey] && topicColors[topicKey].default) ? topicColors[topicKey].default : '#9ca3af';
         }
       })
       .attr('stroke', colors.surfaceContainer)
@@ -138,10 +153,21 @@ export const institutionsTopicsSankeyConfig = {
     // Node hover effects
     nodes
       .on('mouseenter', function (event, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('fill-opacity', 1);
+        const el = d3.select(this);
+        if (!this.__origFill) this.__origFill = el.attr('fill');
+
+        if (d.type === 'institution') {
+          const isDark = document.body.classList.contains('dark-theme');
+          const hoverFill = (regionColors[d.region] ? (isDark ? regionColors[d.region].hoverDark : regionColors[d.region].hoverLight) : institutionColorScale(d.region));
+          el.transition()
+            .duration(200)
+            .attr('fill-opacity', 1)
+            .attr('fill', hoverFill);
+        } else {
+          el.transition()
+            .duration(200)
+            .attr('fill-opacity', 1);
+        }
 
         // Highlight connected links
         links
@@ -186,15 +212,16 @@ export const institutionsTopicsSankeyConfig = {
           .attr('width', bbox.width + 20)
           .attr('height', bbox.height + 8)
           .attr('fill', colors.surfaceContainer)
-          .attr('stroke', d.type === 'institution' ? institutionColorScale(d.region) : topicColors[d.category])
+          .attr('stroke', d.type === 'institution' ? (regionColors[d.region] ? regionColors[d.region].default : institutionColorScale(d.region)) : ( (topicColors[topicNameKeyMap[d.category] || d.category] && topicColors[topicNameKeyMap[d.category] || d.category].default) ? topicColors[topicNameKeyMap[d.category] || d.category].default : '#9ca3af' ))
           .attr('stroke-width', 2)
           .attr('rx', 4);
       })
       .on('mouseleave', function (event, d) {
-        d3.select(this)
-          .transition()
+        const el = d3.select(this);
+        el.transition()
           .duration(200)
-          .attr('fill-opacity', 0.8);
+          .attr('fill-opacity', 0.8)
+          .attr('fill', this.__origFill || el.attr('fill'));
 
         links
           .transition()
@@ -302,7 +329,7 @@ export const institutionsTopicsSankeyConfig = {
       .attr('y', -8)
       .attr('width', 16)
       .attr('height', 16)
-      .attr('fill', d => d[1])
+      .attr('fill', d => (d[1] && d[1].default) ? d[1].default : '#9ca3af')
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 1.5)
       .attr('rx', 3);

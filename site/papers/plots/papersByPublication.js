@@ -23,7 +23,7 @@ import {
 } from '../../assets/js/chart-utils.js';
 
 import { ANIMATION_DURATION, YEAR_RANGE, DEFAULT_Y_TICKS } from '../../assets/js/chart-constants.js';
-import { publicationColors } from '../../assets/js/color-palettes.js';
+import { publicationColors, publicationStateColors } from '../../assets/js/color-palettes.js';
 
 export const papersByPublicationConfig = {
   data: papersByPublicationData,
@@ -166,30 +166,37 @@ export const papersByPublicationConfig = {
       const tx = xCenter;
       const ty = topY;
 
-      noteG.append('text')
+      const textEl = noteG.append('text')
         .attr('x', tx)
         .attr('y', ty)
-        .attr('fill', colors.onSurface)
+        .attr('fill', colors.accent)
         .attr('fill-opacity', 0.78)
         .attr('font-size', '12px')
-        .attr('font-weight', '700')
         .attr('text-anchor', 'middle')
         .text(highlightBarSpec.label);
 
+      const textNode = textEl.node && textEl.node();
+      const textWidth = (textNode && textNode.getComputedTextLength) ? textNode.getComputedTextLength() : 0;
+
+      // Start the arrow from the center of the text
+      const arrowStartX = tx;
+      const arrowStartY = ty + 6;
+
       noteG.append('line')
-        .attr('x1', tx)
-        .attr('y1', ty + 6)
+        .attr('x1', arrowStartX)
+        .attr('y1', arrowStartY)
         .attr('x2', targetX)
         .attr('y2', targetY)
-        .attr('stroke', colors.onSurface)
+        .attr('stroke', colors.accent)
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
-        .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
+        .attr('stroke-dasharray', '6,6')
+        .attr('marker-end', `url(#arrowhead-${colors.accent.replace('#', '')})`);
 
         // Create a dynamic arrowhead marker with the correct color
-        if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
+        if (!svg.select(`#arrowhead-${colors.accent.replace('#', '')}`).node()) {
           svg.append('defs').append('marker')
-            .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
+            .attr('id', `arrowhead-${colors.accent.replace('#', '')}`)
             .attr('markerWidth', 10)
             .attr('markerHeight', 10)
             .attr('refX', 9)
@@ -197,7 +204,7 @@ export const papersByPublicationConfig = {
             .attr('orient', 'auto')
             .append('polygon')
             .attr('points', '0 0, 10 3, 0 6')
-            .attr('fill', colors.onSurface);
+            .attr('fill', colors.accent);
         }
 
       noteG.transition()
@@ -208,13 +215,17 @@ export const papersByPublicationConfig = {
       noteG.raise();
     }
 
-    // Tooltip
+    // Tooltip + hover color (match papersPerYear behavior)
     bars
       .on('mouseenter', function (event, d) {
-        d3.select(this)
-          .transition()
+        const el = d3.select(this);
+        // store original fill so we can restore it
+        this.__origFill = el.attr('fill');
+
+        el.transition()
           .duration(150)
-          .attr('opacity', 0.8);
+          .attr('fill', (publicationStateColors && publicationStateColors[d.key] && publicationStateColors[d.key].hoverLight) || publicationColors[d.key])
+          .attr('opacity', 0.95);
 
         const value = d.data[d.key] || 0;
         tooltip.show(
@@ -231,10 +242,12 @@ export const papersByPublicationConfig = {
           colors
         );
       })
-      .on('mouseleave', function () {
-        d3.select(this)
-          .transition()
+      .on('mouseleave', function (event, d) {
+        const el = d3.select(this);
+        const restore = this.__origFill || publicationColors[d.key];
+        el.transition()
           .duration(150)
+          .attr('fill', restore)
           .attr('opacity', 1);
 
         tooltip.hide();

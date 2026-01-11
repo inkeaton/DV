@@ -17,30 +17,54 @@
  * Colors for VIS conference tracks
  */
 export const trackColors = {
-  infovis: '#4285F4',  // Blue
-  scivis: '#34A853',   // Green
-  vast: '#FBBC04'      // Yellow/Gold
+  infovis: '#64B5F6',  // Pastel Blue
+  scivis: '#66BB6A',   // Pastel Green
+  vast: '#FFB74D',    // Pastel Orange
+  vis: '#AB47BC',      // Pastel Purple
 };
 
 /**
- * Labels for VIS conference tracks
+ * State-aware variants for track colors to support hover and dark-mode
  */
-export const trackLabels = {
-  infovis: 'InfoVis',
-  scivis: 'SciVis',
-  vast: 'VAST', 
-  vis: 'VIS'
+export const trackStateColors = {
+  infovis: {
+    default: '#64B5F6',
+    dark: '#8AB4F8',
+    hoverLight: '#AECBFA',
+    hoverDark: '#64B5F6',
+  },
+  scivis: {
+    default: '#66BB6A',
+    dark: '#A5D6A7',
+    hoverLight: '#DCE775',
+    hoverDark: '#66BB6A',
+  },
+  vast: {
+    default: '#FFB74D',
+    dark: '#FFD54F',
+    hoverLight: '#FFE0B2',
+    hoverDark: '#FFB74D',
+  },
+  vis: {
+    default: '#AB47BC', 
+    dark: '#F48FB1',
+    hoverLight: '#E1BEE7',
+    hoverDark: '#AB47BC',
+  }
 };
 
 /**
- * Conference colors (alias for trackColors for clarity)
+ * Alias for track colors used in conference plots. Kept for backward
+ * compatibility with modules that import `conferenceColors`.
  */
 export const conferenceColors = {
-  infovis: '#7c4dff',  // Blue
-  scivis: '#34A853',   // Green
-  vast: '#FBBC04' ,     // Yellow/Gold
-  vis: '#4285F4'       // Purple
+  infovis: trackColors.infovis,
+  scivis: trackColors.scivis,
+  vast: trackColors.vast,
+  vis: trackColors.vis
 };
+
+
 
 // ============================================================================
 // PUBLICATION TYPE COLORS (Papers section)
@@ -49,9 +73,41 @@ export const conferenceColors = {
 /**
  * Colors for publication types
  */
+// Material Design Pastel Tokens: Cyan 300 & Green 300
+// Questi colori sono più morbidi ("Pastel") rispetto alla versione precedente
 export const publicationColors = {
-  journal: '#6750a4',      // Primary purple
-  conference: '#4285F4',   // Blue
+  journal: '#4DD0E1',      // Cyan 300 (Pastel Blue/Cyan)
+  conference: '#81C784',   // Green 300 (Soft Mint)
+};
+
+// Configurazione avanzata per interazioni
+export const publicationStateColors = {
+  journal: {
+    default: '#4DD0E1',    // BASE (Pastel)
+    dark: '#80DEEA',       // DARK MODE (Lighter: Cyan 200)
+    hoverLight: '#00BCD4', // HOVER LIGHT (Saturated: Cyan 500)
+    hoverDark: '#B2EBF2'   // HOVER DARK (Glow: Cyan 100)
+  },
+  conference: {
+    default: '#81C784',    // BASE (Mint Pastel)
+    dark: '#A5D6A7',       // DARK MODE (Lighter: Green 200)
+    hoverLight: '#4CAF50', // HOVER LIGHT (Saturated: Green 500)
+    hoverDark: '#C8E6C9'   // HOVER DARK (Glow: Green 100)
+  }
+};
+
+// ============================================================================
+// STORY COLOR (used by Papers Per Year highlight)
+// ============================================================================
+/**
+ * Single token with state variants for the 'story' color used to highlight
+ * narrative annotations and the peak bar in the timeline.
+ */
+export const storyColor = {
+  default: '#F48FB1',    // Pink 300 (The Perfect Pink)
+  dark: '#F8BBD0',       // Pink 200
+  hoverLight: '#E91E63', // Pink 500
+  hoverDark: '#FCE4EC'   // Pink 50 (Misty Rose)
 };
 
 // ============================================================================
@@ -255,10 +311,191 @@ export function getColorScale(d3, domain, paletteName = 'categorical6') {
     sequential: sequentialPalette,
     diverging: divergingPalette
   };
-  
+
   const palette = palettes[paletteName] || categoricalPalette6;
-  
+
   return d3.scaleOrdinal()
     .domain(domain)
     .range(palette);
 }
+
+// ============================================================================
+// LAVENDER SEQUENTIAL PALETTES (used by citationsHistogram)
+// ============================================================================
+
+/**
+ * Generate lavender-themed palettes for main and tail bins.
+ * Returns arrays: { mainColors (20), tailColors (7) }
+ * @param {Object} d3 - D3 reference (for interpolators)
+ */
+export function generateLavenderPalettes(d3) {
+  const COLOR_START = '#EDE7F6'; // Light Lavender
+  const COLOR_MID = '#9575CD';
+  const COLOR_END = '#311B92';
+
+  const scaleHead = d3.scaleLinear()
+    .domain([0, 19])
+    .range([COLOR_START, COLOR_MID])
+    .interpolate(d3.interpolateRgb);
+
+  const scaleTail = d3.scaleLinear()
+    .domain([0, 6])
+    .range([COLOR_MID, COLOR_END])
+    .interpolate(d3.interpolateRgb);
+
+  const mainColors = d3.range(20).map(i => scaleHead(i));
+  const tailColors = d3.range(7).map(i => scaleTail(i));
+
+  return { mainColors, tailColors };
+}
+
+// ============================================================================
+// TOPIC COLOR PALETTE (12 categories)
+// ============================================================================
+/**
+ * Topic color tokens with state variants for hover and dark mode.
+ * Keys are short identifiers; mapping from full macro names is provided
+ * by `topicNameKeyMap`.
+ */
+export const topicColors = {
+  highDimensional: {
+    default: '#E57373',
+    dark: '#EF9A9A',
+    hoverLight: '#F44336',
+    hoverDark: '#FFCDD2'
+  },
+  graphText: {
+    default: '#F06292',
+    dark: '#F48FB1',
+    hoverLight: '#E91E63',
+    hoverDark: '#F8BBD0'
+  },
+  volumeImmersive: {
+    default: '#BA68C8',
+    dark: '#CE93D8',
+    hoverLight: '#9C27B0',
+    hoverDark: '#E1BEE7'
+  },
+  visProgML: {
+    default: '#9575CD',
+    dark: '#B39DDB',
+    hoverLight: '#673AB7',
+    hoverDark: '#D1C4E9'
+  },
+  socialBiomed: {
+    default: '#7986CB',
+    dark: '#9FA8DA',
+    hoverLight: '#3F51B5',
+    hoverDark: '#C5CAE9'
+  },
+  imagingDisplay: {
+    default: '#64B5F6',
+    dark: '#90CAF9',
+    hoverLight: '#2196F3',
+    hoverDark: '#BBDEFB'
+  },
+  causalityTemporal: {
+    default: '#4FC3F7',
+    dark: '#81D4FA',
+    hoverLight: '#03A9F4',
+    hoverDark: '#B3E5FC'
+  },
+  perceptionUncertainty: {
+    default: '#4DD0E1',
+    dark: '#80DEEA',
+    hoverLight: '#00BCD4',
+    hoverDark: '#B2EBF2'
+  },
+  topological: {
+    default: '#4DB6AC',
+    dark: '#80CBC4',
+    hoverLight: '#009688',
+    hoverDark: '#B2DFDB'
+  },
+  networkSecurity: {
+    default: '#81C784',
+    dark: '#A5D6A7',
+    hoverLight: '#4CAF50',
+    hoverDark: '#C8E6C9'
+  },
+  geoSeismic: {
+    default: '#AED581',
+    dark: '#C5E1A5',
+    hoverLight: '#8BC34A',
+    hoverDark: '#DCEDC8'
+  },
+  molecular: {
+    default: '#FFF176',
+    dark: '#FFF59D',
+    hoverLight: '#FFEB3B',
+    hoverDark: '#FFF9C4'
+  }
+};
+
+/**
+ * Mapping from full macro category names (as used in data) to the short keys
+ * used in `topicColors` above.
+ */
+export const topicNameKeyMap = {
+  'High-Dimensional Data Analysis': 'highDimensional',
+  'Graph Visualization & Text Mining': 'graphText',
+  'Volume Rendering & Immersive Tech': 'volumeImmersive',
+  'Visual Programming & ML': 'visProgML',
+  'Social & Biomedical Analytics': 'socialBiomed',
+  'Imaging & Display Technology': 'imagingDisplay',
+  'Causality & Temporal Analysis': 'causalityTemporal',
+  'Perception & Uncertainty Vis': 'perceptionUncertainty',
+  'Topological Data Analysis': 'topological',
+  'Network Security & Anomaltic': 'networkSecurity',
+  'Geospatial & Seismic Vis': 'geoSeismic',
+  'Molecular Simulation': 'molecular'
+};
+
+// ============================================================================
+// REGION COLORS (7 Continents/Areas)
+// Logic: Base (300) -> Dark Mode (200) -> Hover Light (500) -> Hover Dark (100)
+// ============================================================================
+export const regionColors = {
+  "North America": {
+    default: '#64B5F6',    // Blue 300
+    dark: '#90CAF9',       // Blue 200
+    hoverLight: '#2196F3', // Blue 500
+    hoverDark: '#BBDEFB'   // Blue 100
+  },
+  "Europe": {
+    default: '#81C784',    // Green 300
+    dark: '#A5D6A7',       // Green 200
+    hoverLight: '#4CAF50', // Green 500
+    hoverDark: '#C8E6C9'   // Green 100
+  },
+  "Asia": {
+    default: '#FFD54F',    // Amber 300
+    dark: '#FFE082',       // Amber 200
+    hoverLight: '#FFC107', // Amber 500
+    hoverDark: '#FFECB3'   // Amber 100
+  },
+  "Oceania": {
+    default: '#9575CD',    // Deep Purple 300
+    dark: '#B39DDB',       // Deep Purple 200
+    hoverLight: '#673AB7', // Deep Purple 500
+    hoverDark: '#D1C4E9'   // Deep Purple 100
+  },
+  "South America": {
+    default: '#E57373',    // Red 300
+    dark: '#EF9A9A',       // Red 200
+    hoverLight: '#F44336', // Red 500
+    hoverDark: '#FFCDD2'   // Red 100
+  },
+  "Africa": {
+    default: '#F06292',    // Pink 300
+    dark: '#F48FB1',       // Pink 200
+    hoverLight: '#E91E63', // Pink 500
+    hoverDark: '#F8BBD0'   // Pink 100
+  },
+  "Other": {
+    default: '#90A4AE',    // Blue Grey 300
+    dark: '#B0BEC5',       // Blue Grey 200
+    hoverLight: '#607D8B', // Blue Grey 500
+    hoverDark: '#CFD8DC'   // Blue Grey 100
+  }
+};

@@ -17,7 +17,7 @@ import {
   darkenHex
 } from '../../assets/js/chart-utils.js';
 import { ANIMATION_DURATION, YEAR_RANGE, DEFAULT_Y_TICKS } from '../../assets/js/chart-constants.js';
-import { conferenceColors } from '../../assets/js/color-palettes.js';
+import { conferenceColors, trackStateColors } from '../../assets/js/color-palettes.js';
 
 export const papersByConferenceConfig = {
   data: papersByConferenceData,
@@ -215,10 +215,9 @@ export const papersByConferenceConfig = {
         noteG.append('text')
           .attr('x', tx)
           .attr('y', ty)
-          .attr('fill', colors.onSurface)
+          .attr('fill', colors.accent)
           .attr('fill-opacity', 0.78)
           .attr('font-size', '12px')
-          .attr('font-weight', '700')
           .attr('text-anchor', textAnchor)
           .text(spec.label);
 
@@ -230,15 +229,16 @@ export const papersByConferenceConfig = {
           .attr('y1', arrowStartY)
           .attr('x2', targetX)
           .attr('y2', targetY)
-          .attr('stroke', colors.onSurface)
+          .attr('stroke', colors.accent)
           .attr('stroke-opacity', 0.6)
           .attr('stroke-width', 1.5)
-          .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
+          .attr('stroke-dasharray', '6,6')
+          .attr('marker-end', `url(#arrowhead-${colors.accent.replace('#', '')})`);
 
         // Create a dynamic arrowhead marker with the correct color
-        if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
+        if (!svg.select(`#arrowhead-${colors.accent.replace('#', '')}`).node()) {
           svg.append('defs').append('marker')
-            .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
+            .attr('id', `arrowhead-${colors.accent.replace('#', '')}`)
             .attr('markerWidth', 10)
             .attr('markerHeight', 10)
             .attr('refX', 9)
@@ -246,7 +246,7 @@ export const papersByConferenceConfig = {
             .attr('orient', 'auto')
             .append('polygon')
             .attr('points', '0 0, 10 3, 0 6')
-            .attr('fill', colors.onSurface);
+            .attr('fill', colors.accent);
         }
 
         noteG.transition()
@@ -259,14 +259,25 @@ export const papersByConferenceConfig = {
     });
 
     // -------------------------
-    // Tooltip interactions
+    // Tooltip interactions + hover color state
     // -------------------------
+    // Detect dark mode dynamically from document body class so theme
+    // toggles after render still yield correct hover colors.
+    const isDark = () => document && document.body && document.body.classList && document.body.classList.contains('dark-theme');
+
     bars
       .on('mouseenter', function (event, d) {
-        d3.select(this)
-          .transition()
+        const el = d3.select(this);
+        // store original fill so we can restore it
+        this.__origFill = this.__origFill || el.attr('fill');
+
+        const hoverVariant = (trackStateColors && trackStateColors[d.key]) || null;
+        const hoverFill = hoverVariant ? (isDark() ? hoverVariant.hoverDark || hoverVariant.default : hoverVariant.hoverLight || hoverVariant.default) : conferenceColors[d.key];
+
+        el.transition()
           .duration(150)
-          .attr('opacity', 0.8);
+          .attr('fill', hoverFill)
+          .attr('opacity', 0.95);
 
         const value = d.data[d.key] || 0;
         tooltip.show(event, `<strong>${d.data.year}</strong><br>${conferenceLabels[d.key]}: ${value} papers`, colors);
@@ -275,10 +286,12 @@ export const papersByConferenceConfig = {
         const value = d.data[d.key] || 0;
         tooltip.show(event, `<strong>${d.data.year}</strong><br>${conferenceLabels[d.key]}: ${value} papers`, colors);
       })
-      .on('mouseleave', function () {
-        d3.select(this)
-          .transition()
+      .on('mouseleave', function (event, d) {
+        const el = d3.select(this);
+        const restore = this.__origFill || conferenceColors[d.key];
+        el.transition()
           .duration(150)
+          .attr('fill', restore)
           .attr('opacity', 1);
 
         tooltip.hide();

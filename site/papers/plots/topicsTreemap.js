@@ -10,7 +10,8 @@
 
 import { renderTitle, wrapText } from '../../assets/js/chart-utils.js';
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
-import { topicsTreemapData, topicColors } from '../../data/papers/topicsTreemapData.js';
+import { topicsTreemapData } from '../../data/papers/topicsTreemapData.js';
+import { topicColors, topicNameKeyMap } from '../../assets/js/color-palettes.js';
 
 
 /** -----------------------------
@@ -211,7 +212,8 @@ export const topicsTreemapConfig = {
       .attr('height', 0)
       .attr('fill', (d) => {
         const parentName = d.parent.data.name;
-        return topicColors[parentName] || 'var(--md-sys-color-primary)';
+        const key = topicNameKeyMap[parentName];
+        return (key && topicColors[key] && topicColors[key].default) ? topicColors[key].default : 'var(--md-sys-color-primary)';
       })
       .attr('opacity', 0.8)
       .attr('rx', 3);

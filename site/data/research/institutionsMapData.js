@@ -11377,13 +11377,3 @@ export const institutionsMapStats = {
   "topInstitution": "University of Utah",
   "topInstitutionPapers": 152
 };
-
-export const regionColors = {
-  "North America": "#3b82f6",
-  "Europe": "#10b981",
-  "Asia": "#f59e0b",
-  "Oceania": "#8b5cf6",
-  "South America": "#ef4444",
-  "Africa": "#ec4899",
-  "Other": "#9ca3af"
-};

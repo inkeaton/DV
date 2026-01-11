@@ -11,6 +11,7 @@ import {
 } from '../../data/papers/citationsHistogramData.js';
 
 import { renderTitle } from '../../assets/js/chart-utils.js';
+import { generateLavenderPalettes } from '../../assets/js/color-palettes.js';
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
 
 export const citationsHistogramConfig = {
@@ -22,21 +23,14 @@ export const citationsHistogramConfig = {
     
     renderTitle(ctx, 'Citation Distribution');
 
-    // --- 1. CONFIGURAZIONE E COLORI ---
+  // --- 1. CONFIGURAZIONE E COLORI (FIXED) ---
     const CUTOFF = 500;
     const TAIL_MAX = 4000;
 
-    // Generate 27-color gradient using Material Design 3 fixed color tokens
-    // Light: tertiary-fixed-dim, Dark: on-tertiary-fixed-variant
-    const lightColor = themeColors.tertiaryFixedDim;     // #BFC4EB (light mode) / #BFC4EB (dark mode)
-    const darkColor = themeColors.onTertiaryFixedVariant; // #3F4565 (light mode) / #3F4565 (dark mode)
+    // Lavender palettes (moved to central color-palettes.js)
+    const { mainColors, tailColors } = generateLavenderPalettes(d3);
     
-    const colorInterpolator = d3.interpolateRgb(lightColor, darkColor);
     
-    // Generate 27 colors: 20 for main chart (0-500) + 7 for inset (500-4000)
-    const mainColors = d3.range(20).map(i => colorInterpolator(i / 19));
-    const tailColors = d3.range(7).map(i => colorInterpolator(i / 6));
-
     // --- 2. GRAFICO PRINCIPALE (0 - 500) ---
     const mainBinWidth = 25; 
     const mainGenerator = d3.bin()
@@ -140,8 +134,9 @@ export const citationsHistogramConfig = {
       .attr('x1', medianX).attr('x2', medianX)
       .attr('y1', height).attr('y2', yScale(maxYMain)) 
       .attr('stroke', themeColors.accent)
-      .attr('stroke-width', 2)
-      .attr('stroke-dasharray', '4,4');
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '6,6')
+      .attr('stroke-opacity', 0.95);
 
     // Porta la linea in primo piano sopra le barre
     medianLine.raise(); 
@@ -151,7 +146,7 @@ export const citationsHistogramConfig = {
       .attr('y', yScale(maxYMain)) 
       .attr('fill', themeColors.accent)
       .attr('font-size', '12px')
-      .attr('font-weight', 'bold')
+      .attr('font-weight', '400')
       .text(`Median: ${medianVal}`);
 
 
@@ -176,12 +171,12 @@ export const citationsHistogramConfig = {
       .attr('stroke', 'var(--md-sys-color-outline-variant)')
       .attr('stroke-width', 1);
 
-    // Titolo Inset
+    // Titolo Inset (match Median style)
     insetG.append('text')
       .attr('x', 15).attr('y', 25)
       .attr('font-size', '14px')
-      .attr('font-weight', 'bold')
-      .attr('fill', 'var(--md-sys-color-on-surface)')
+      .attr('font-weight', '400')
+      .attr('fill', themeColors.accent)
       .text('Tail Zoom (500+ Citations)');
 
     // Dati Tail
@@ -291,24 +286,27 @@ export const citationsHistogramConfig = {
     const endX = insetX + 5; 
     const endY = insetY + insetH - 10; 
 
+    const arrowMarkerId = `arrowhead-${themeColors.accent.replace('#', '')}`;
     g.append('defs').append('marker')
-      .attr('id', 'arrowhead')
+      .attr('id', arrowMarkerId)
       .attr('viewBox', '0 -5 10 10')
       .attr('refX', 8).attr('refY', 0)
       .attr('markerWidth', 6).attr('markerHeight', 6)
       .attr('orient', 'auto')
       .append('path')
       .attr('d', 'M0,-5L10,0L0,5')
-      .attr('fill', 'var(--md-sys-color-on-surface-variant)');
+      .attr('fill', themeColors.accent);
 
     const curvePath = `M ${startX},${startY} C ${startX + 60},${startY - 40} ${endX - 40},${endY + 60} ${endX},${endY}`;
 
     const arrow = g.append('path')
       .attr('d', curvePath)
       .attr('fill', 'none')
-      .attr('stroke', 'var(--md-sys-color-on-surface-variant)')
+      .attr('stroke', themeColors.accent)
+      .attr('stroke-opacity', 0.6)
       .attr('stroke-width', 1.5)
-      .attr('marker-end', 'url(#arrowhead)')
+      .attr('stroke-dasharray', '6,6')
+      .attr('marker-end', `url(#${arrowMarkerId})`)
       .attr('opacity', 0);
 
     arrow.transition()

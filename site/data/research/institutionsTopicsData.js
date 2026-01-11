@@ -863,28 +863,3 @@ export const institutionsTopicsStats = {
     "Asia"
   ]
 };
-
-export const topicColors = {
-  "High-Dimensional Data Analysis": "#8E24AA",
-  "Graph Visualization & Text Mining": "#D32F2F",
-  "Volume Rendering & Immersive Tech": "#1E88E5",
-  "Visual Programming & ML": "#388E3C",
-  "Social & Biomedical Analytics": "#00897B",
-  "Imaging & Display Technology": "#FB8C00",
-  "Causality & Temporal Analysis": "#C2185B",
-  "Perception & Uncertainty Vis": "#5E35B1",
-  "Topological Data Analysis": "#F57C00",
-  "Network Security & Anomaltic": "#455A64",
-  "Geospatial & Seismic Vis": "#6D4C41",
-  "Molecular Simulation": "#E91E63"
-};
-
-export const regionColors = {
-  "North America": "#3b82f6",
-  "Europe": "#10b981",
-  "Asia": "#f59e0b",
-  "Oceania": "#8b5cf6",
-  "South America": "#ef4444",
-  "Africa": "#ec4899",
-  "Other": "#9ca3af"
-};
