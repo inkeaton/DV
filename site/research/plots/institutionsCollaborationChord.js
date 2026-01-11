@@ -257,8 +257,17 @@ export const institutionsCollaborationChordConfig = {
     // Legend - only show regions that exist in data
     const legend = g.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(10, ${height - 100})`)
+      .attr('transform', `translate(10, ${height - 120})`)
       .attr('opacity', 0);
+
+    // Legend title
+    legend.append('text')
+      .attr('x', 0)
+      .attr('y', -15)
+      .attr('font-size', '11px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.onSurface)
+      .text('Collaborations per Region');
 
     // Filter to only regions present in data
     const presentRegions = new Set(data.institutionRegions);
@@ -300,95 +309,50 @@ export const institutionsCollaborationChordConfig = {
       .attr('fill', colors.onSurface)
       .text(d => `${d[0]}: ${regionCollaborationCounts[d[0]] || 0}`);
 
-    // Stats annotation (top left)
-    const stats = g.append('g')
+    // Calculate inter-regional collaborations count
+    const interRegionalCount = Math.round(institutionsCollaborationStats.totalCollaborations * institutionsCollaborationStats.crossRegionalRate);
+
+    // Inter-regional legend item
+    const interRegionalItem = legend.append('g')
+      .attr('class', 'legend-item')
+      .attr('transform', `translate(0, ${legendData.length * 22})`);
+
+    interRegionalItem.append('rect')
+      .attr('x', 0)
+      .attr('y', -8)
+      .attr('width', 16)
+      .attr('height', 16)
+      .attr('fill', '#ef4444')
+      .attr('stroke', colors.surfaceContainer)
+      .attr('stroke-width', 1.5)
+      .attr('rx', 3);
+
+    interRegionalItem.append('text')
+      .attr('x', 22)
+      .attr('y', 4)
+      .attr('font-size', '11px')
+      .attr('fill', colors.onSurface)
+      .text(`Inter-regional: ${interRegionalCount}`);
+
+    // Stats annotation (top right, plain text), plain text)
+    const statsText = g.append('g')
       .attr('class', 'stats')
-      .attr('transform', `translate(10, 10)`)
+      .attr('transform', `translate(${width - 60}, 30)`)
       .attr('opacity', 0);
 
-    stats.append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('width', 175)
-      .attr('height', 135)
-      .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
-      .attr('stroke-width', 2)
-      .attr('rx', 5);
-
-    const statsText = stats.append('text')
-      .attr('x', 12)
-      .attr('y', 22)
-      .attr('font-size', '11px')
-      .attr('fill', colors.onSurface);
-
-    // Total Institutions
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', 0)
+    statsText.append('text')
+      .attr('text-anchor', 'end')
+      .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('font-size', '13px')
+      .attr('fill', colors.onSurface)
       .text(`${institutionsCollaborationStats.totalInstitutions} institutions`);
 
-    // Total Collaborations
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.5em')
+    statsText.append('text')
+      .attr('y', 16)
+      .attr('text-anchor', 'end')
       .attr('font-size', '11px')
+      .attr('fill', colors.onSurfaceVariant)
       .text(`${institutionsCollaborationStats.totalCollaborations} collaborations`);
-
-    // Average per institution
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.3em')
-      .attr('font-size', '10px')
-      .attr('fill', colors.onSurfaceVariant)
-      .text(`~${institutionsCollaborationStats.avgCollaborationsPerInstitution.toFixed(0)} per institution`);
-
-    // Cross-regional percentage
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.3em')
-      .attr('font-size', '10px')
-      .attr('fill', '#ef4444')  // Red color for cross-regional
-      .text(`${(institutionsCollaborationStats.crossRegionalRate * 100).toFixed(0)}% cross-regional`);
-
-    // Divider line
-    stats.append('line')
-      .attr('x1', 12)
-      .attr('y1', 83)
-      .attr('x2', 163)
-      .attr('y2', 83)
-      .attr('stroke', colors.outlineVariant)
-      .attr('stroke-width', 1);
-
-    // Strongest Pair label
-    stats.append('text')
-      .attr('x', 12)
-      .attr('y', 97)
-      .attr('font-size', '9px')
-      .attr('fill', colors.onSurfaceVariant)
-      .text('Strongest Pair');
-
-    // Strongest Pair value - highlighted
-    const strongestPairText = stats.append('text')
-      .attr('x', 12)
-      .attr('y', 115)
-      .attr('font-size', '11px');
-
-    strongestPairText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', '#f59e0b')  // Gold/amber color for highlight
-      .text(`${institutionsCollaborationStats.strongestPair.inst1} ↔ ${institutionsCollaborationStats.strongestPair.inst2}`);
-
-    strongestPairText.append('tspan')
-      .attr('fill', colors.onSurface)
-      .text(` | `);
-
-    strongestPairText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', '#f59e0b')
-      .text(`${institutionsCollaborationStats.strongestPair.papers} papers`);
 
     // Animate arcs
     arcs
@@ -418,7 +382,7 @@ export const institutionsCollaborationChordConfig = {
       .attr('opacity', 1);
 
     // Animate stats
-    stats
+    statsText
       .transition()
       .delay(animationDuration + 400)
       .duration(400)

@@ -163,7 +163,7 @@ export const institutionsTopicsSankeyConfig = {
         
         const text = label.append('text')
           .attr('x', width / 2)
-          .attr('y', -25)
+          .attr('y', 10)
           .attr('text-anchor', 'middle')
           .attr('font-size', '13px')
           .attr('fill', colors.onSurface);
@@ -259,7 +259,7 @@ export const institutionsTopicsSankeyConfig = {
       .text('Institutions');
 
     sectionLabels.append('text')
-      .attr('x', width)
+      .attr('x', width - 50)
       .attr('y', 40)
       .attr('text-anchor', 'middle')
       .attr('font-size', '13px')
@@ -270,7 +270,7 @@ export const institutionsTopicsSankeyConfig = {
     // Legend - Part of the World (bottom left)
     const legend = g.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(-210, ${height * 0.9 + 25})`)
+      .attr('transform', `translate(-190, ${height * 0.9 + 25})`)
       .attr('opacity', 0);
 
     // Filter to only regions present in data
@@ -314,111 +314,45 @@ export const institutionsTopicsSankeyConfig = {
       .attr('fill', colors.onSurface)
       .text(d => `${d[0]}: ${regionConnectionCounts[d[0]] || 0}`);
 
-    // Stats box - Info (top left)
-    const statsBox = g.append('g')
-      .attr('class', 'stats-box')
-      .attr('transform', `translate(-210, -90)`)
+    // Legend title
+    legend.append('text')
+      .attr('x', 0)
+      .attr('y', -15)
+      .attr('font-size', '10px')
+      .attr('font-weight', 'bold')
+      .attr('fill', colors.onSurfaceVariant)
+      .text('Connections per Region');
+
+    // Stats text (top-right corner, no background)
+    const statsText = g.append('g')
+      .attr('class', 'stats-text')
+      .attr('transform', `translate(${width +140}, -50)`)
       .attr('opacity', 0);
 
-    statsBox.append('rect')
+    statsText.append('text')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 170)
-      .attr('height', 150)
-      .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
-      .attr('stroke-width', 2)
-      .attr('rx', 5);
-
-    const statsText = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 22)
-      .attr('font-size', '11px')
-      .attr('fill', colors.onSurface);
-
-    // Total Institutions
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', 0)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('font-size', '13px')
+      .attr('fill', colors.onSurface)
       .text(`${institutionsTopicsStats.topInstitutions} institutions`);
 
-    // Total Topics
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.5em')
+    statsText.append('text')
+      .attr('x', 0)
+      .attr('y', 18)
+      .attr('text-anchor', 'end')
       .attr('font-size', '11px')
+      .attr('fill', colors.onSurfaceVariant)
       .text(`${institutionsTopicsStats.topTopics} topics`);
 
-    // Total Connections
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.3em')
-      .attr('font-size', '10px')
+    statsText.append('text')
+      .attr('x', 0)
+      .attr('y', 36)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '11px')
       .attr('fill', colors.onSurfaceVariant)
       .text(`${institutionsTopicsStats.totalConnections} connections`);
-
-    // Topics per institution (average)
-    const topicsPerInst = (institutionsTopicsStats.totalConnections / institutionsTopicsStats.topInstitutions).toFixed(1);
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.3em')
-      .attr('font-size', '10px')
-      .attr('fill', colors.onSurfaceVariant)
-      .text(`~${topicsPerInst} topics per inst.`);
-
-    // Divider line
-    statsBox.append('line')
-      .attr('x1', 12)
-      .attr('y1', 95)
-      .attr('x2', 163)
-      .attr('y2', 95)
-      .attr('stroke', colors.outlineVariant)
-      .attr('stroke-width', 1);
-
-    // Strongest Connection label
-    statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 112)
-      .attr('font-size', '9px')
-      .attr('fill', colors.onSurfaceVariant)
-      .text('Strongest Connection');
-
-    // Get region color for the strongest connection institution
-    const strongestInst = data.nodes.find(n => n.id === institutionsTopicsStats.strongestConnection.institution);
-    const strongestRegionColor = strongestInst ? regionColors[strongestInst.region] : '#3b82f6';
-    
-    // Get full institution name
-    const strongestFullName = strongestInst ? strongestInst.fullName : institutionsTopicsStats.strongestConnection.institution;
-
-    // Strongest Connection value - highlighted (same style as map top institution)
-    const strongestText = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 130)
-      .attr('font-size', '10px');
-
-    strongestText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', strongestRegionColor)
-      .text(`${institutionsTopicsStats.strongestConnection.institution}`);
-
-    strongestText.append('tspan')
-      .attr('fill', colors.onSurface)
-      .text(' | ');
-
-    strongestText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', strongestRegionColor)
-      .text(`${institutionsTopicsStats.strongestConnection.papers} papers`);
-
-    // Add topic name on second line
-    strongestText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.3em')
-      .attr('font-size', '9px')
-      .attr('fill', colors.onSurfaceVariant)
-      .text(`${institutionsTopicsStats.strongestConnection.topic}`);
 
     // Calculate the actual max animation time based on data size
     const numLinks = sankeyData.links.length;
@@ -470,8 +404,8 @@ export const institutionsTopicsSankeyConfig = {
       .duration(400)
       .attr('opacity', 1);
 
-    // Animate stats box
-    statsBox
+    // Animate stats text
+    statsText
       .transition()
       .delay(animationDuration + 300)
       .duration(400)

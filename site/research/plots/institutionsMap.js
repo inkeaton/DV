@@ -369,7 +369,7 @@ export const institutionsMapConfig = {
     fixedGroup.append('text')
       .attr('class', 'chart-title')
       .attr('x', width / 2)
-      .attr('y', -20)
+      .attr('y', 20)
       .attr('text-anchor', 'middle')
       .attr('font-size', '16px')
       .attr('font-weight', 'bold')
@@ -410,112 +410,37 @@ export const institutionsMapConfig = {
       .attr('fill', colors.onSurface)
       .text(d => `${d[0]}: ${institutionsMapStats.regions[d[0]] || 0}`);
 
-    // Size reference
-    const sizeRef = legend.append('g')
-      .attr('transform', `translate(0, ${legendData.length * 22 + 15})`);
-
-    sizeRef.append('text')
+    // Legend title
+    legend.append('text')
       .attr('x', 0)
-      .attr('y', -10)
+      .attr('y', -15)
       .attr('font-size', '10px')
       .attr('font-weight', 'bold')
       .attr('fill', colors.onSurfaceVariant)
-      .text('Paper Count:');
+      .text('Institutions per Region');
 
-    const sizeRefData = [50, 100, 150];
-    sizeRefData.forEach((papers, i) => {
-      const refGroup = sizeRef.append('g')
-        .attr('transform', `translate(${i * 50}, 15)`);
-
-      refGroup.append('circle')
-        .attr('cx', 15)
-        .attr('cy', 0)
-        .attr('r', sizeScale(papers))
-        .attr('fill', colors.primary)
-        .attr('fill-opacity', 0.3)
-        .attr('stroke', colors.primary)
-        .attr('stroke-width', 1.5);
-
-      refGroup.append('text')
-        .attr('x', 15)
-        .attr('y', 40)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '9px')
-        .attr('fill', colors.onSurfaceVariant)
-        .text(papers);
-    });
-
-    // Stats box (in fixed group)
-    const statsBox = fixedGroup.append('g')
-      .attr('class', 'stats-box')
-      .attr('transform', 'translate(10, 20)')
+    // Stats text (in fixed group, top-right corner, no background)
+    const statsText = fixedGroup.append('g')
+      .attr('class', 'stats-text')
+      .attr('transform', `translate(${width - 90}, 30)`)
       .attr('opacity', 0);
 
-    statsBox.append('rect')
+    statsText.append('text')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 200)
-      .attr('height', 85)
-      .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
-      .attr('stroke-width', 2)
-      .attr('rx', 5);
-
-    const statsText = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 22)
-      .attr('font-size', '11px')
-      .attr('fill', colors.onSurface);
-
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', 0)
+      .attr('text-anchor', 'end')
+      .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('font-size', '13px')
+      .attr('fill', colors.onSurface)
       .text(`${institutionsMapStats.totalInstitutions} institutions`);
 
-    statsText.append('tspan')
-      .attr('x', 12)
-      .attr('dy', '1.4em')
+    statsText.append('text')
+      .attr('x', 0)
+      .attr('y', 18)
+      .attr('text-anchor', 'end')
       .attr('font-size', '11px')
-      .text(`${institutionsMapStats.totalPapers.toLocaleString()} total papers`);
-
-    // Divider line
-    statsBox.append('line')
-      .attr('x1', 12)
-      .attr('y1', 52)
-      .attr('x2', 188)
-      .attr('y2', 52)
-      .attr('stroke', colors.outlineVariant)
-      .attr('stroke-width', 1);
-
-    // Top Institution label
-    statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 65)
-      .attr('font-size', '9px')
       .attr('fill', colors.onSurfaceVariant)
-      .text('Top Institution');
-
-    // Top Institution value
-    const topInstText = statsBox.append('text')
-      .attr('x', 12)
-      .attr('y', 78)
-      .attr('font-size', '11px');
-
-    topInstText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', regionColors['North America'])  // Utah is in North America
-      .text(`${institutionsMapStats.topInstitution}`);
-
-    topInstText.append('tspan')
-      .attr('fill', colors.onSurface)
-      .text(' | ');
-
-    topInstText.append('tspan')
-      .attr('font-weight', 'bold')
-      .attr('fill', regionColors['North America'])
-      .text(`${institutionsMapStats.topInstitutionPapers} papers`);
+      .text(`${institutionsMapStats.totalPapers.toLocaleString()} papers`);
 
     // Animate bubbles
     bubbles
@@ -531,8 +456,8 @@ export const institutionsMapConfig = {
       .duration(400)
       .attr('opacity', 1);
 
-    // Animate stats box
-    statsBox
+    // Animate stats text
+    statsText
       .transition()
       .delay(animationDuration + 200)
       .duration(400)
@@ -666,19 +591,5 @@ export const institutionsMapConfig = {
       .attr('font-size', '14px')
       .attr('fill', colors.primary)
       .text('⟲');
-
-    // Instruction hint
-    zoomControls.append('text')
-      .attr('x', -10)
-      .attr('y', 130)
-      .attr('text-anchor', 'end')
-      .attr('font-size', '10px')
-      .attr('fill', colors.onSurfaceVariant)
-      .attr('opacity', 0)
-      .text('Use buttons to zoom')
-      .transition()
-      .delay(1500)
-      .duration(400)
-      .attr('opacity', 1);
   }
 };

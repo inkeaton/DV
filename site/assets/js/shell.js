@@ -289,7 +289,7 @@ class AppFooter extends HTMLElement {
         contributed to the website design and structure.
       </p>
       <div class="footer-team-links">
-        <a href="#" rel="noopener">LinkedIn</a>
+        <a href="https://linkedin.com/in/inkeaton" rel="noopener">LinkedIn</a>
         <a href="https://github.com/inkeaton" rel="noopener">GitHub</a>
       </div>
     </div>
@@ -307,7 +307,7 @@ class AppFooter extends HTMLElement {
         trends, and designed the scrollytelling experience.
       </p>
       <div class="footer-team-links">
-        <a href="#" rel="noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/iryna-savchuk-0497a1225/" rel="noopener">LinkedIn</a>
         <a href="https://github.com/IRYNASAVCHUK" rel="noopener">GitHub</a>
       </div>
     </div>
