@@ -26,13 +26,21 @@
       --shadow: 0 4px 20px rgba(0,0,0,0.05);
       --shadow-float: 0 20px 50px rgba(0,0,0,0.1);
 
-      /* 6 CORE COLORS */
+      /* 6 CORE COLORS (VIBRANT) */
       --c-cyan: #26C6DA;      
       --c-lavender: #7E57C2;  
       --c-mint: #66BB6A;      
       --c-coral: #FF7043;     
       --c-amber: #FFCA28;     
-      --c-pink: #EC407A;      
+      --c-pink: #EC407A;
+
+      /* 6 CORE COLORS (PASTEL VARIANTS) */
+      --c-cyan-light: #B2EBF2;
+      --c-lavender-light: #D1C4E9;
+      --c-mint-light: #C8E6C9;
+      --c-coral-light: #FFCCBC;
+      --c-amber-light: #FFECB3;
+      --c-pink-light: #F8BBD0;
 
       /* Awards */
       --aw-gold: #FFC107;
@@ -58,6 +66,14 @@
       --c-coral: #FF8A65;
       --c-amber: #FFD54F;
       --c-pink: #F06292;
+
+      /* Dark mode pastels (slightly muted to avoid glare) */
+      --c-cyan-light: #006064;
+      --c-lavender-light: #4527A0;
+      --c-mint-light: #1B5E20;
+      --c-coral-light: #BF360C;
+      --c-amber-light: #FF6F00;
+      --c-pink-light: #880E4F;
     }
 
     /* ========================================================================
@@ -75,11 +91,10 @@
       overflow: hidden; 
     }
 
-    /* The Main Stage */
     .app-stage {
       width: 95vw;
       max-width: 1400px;
-      height: 90vh; /* Leggermente più compatto verticalmente */
+      height: 90vh;
       background-color: var(--bg-app);
       border-radius: 24px;
       box-shadow: var(--shadow-float);
@@ -89,7 +104,6 @@
       position: relative;
     }
 
-    /* Header */
     header {
       padding: 20px 32px;
       background: var(--bg-card);
@@ -108,17 +122,15 @@
     }
     .btn:hover { background: var(--border); }
 
-    /* Content Area */
     .content-area {
       flex: 1;
       display: flex;
       overflow: hidden;
     }
 
-    /* FIX: Abbassato il pannello sinistro per coerenza */
     .main-panel {
       flex: 1;
-      padding: 60px 40px 40px 40px; /* Top padding aumentato a 60px */
+      padding: 60px 40px 40px 40px; 
       overflow-y: auto;
     }
 
@@ -131,7 +143,6 @@
       z-index: 5;
     }
 
-    /* BENTO GRID */
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -157,7 +168,9 @@
 
     /* COMPONENTS */
     .chip { width: 48px; height: 48px; border-radius: 10px; margin-bottom: 6px; }
-    .color-label { font-size: 0.8rem; font-weight: 500; }
+    .chip-sm { width: 48px; height: 24px; border-radius: 6px; margin-bottom: 6px; opacity: 0.8; }
+    .color-label { font-size: 0.75rem; font-weight: 500; text-align: center; }
+    .col-group { display: flex; flex-direction: column; align-items: center; }
     
     .ramp-group { margin-bottom: 16px; }
     .ramp-meta { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px; color: var(--text-body); }
@@ -175,7 +188,7 @@
         <div style="width:36px; height:36px; background:var(--c-cyan); border-radius:8px;"></div>
         <div>
           <h1>VIS 35 Design System</h1>
-          <span style="font-size:0.8rem; color:var(--text-body)">6 Core Hues | Dual Mode</span>
+          <span style="font-size:0.8rem; color:var(--text-body)">6 Core Hues • Pastels • Ink Tails • Dual Mode</span>
         </div>
       </div>
       <div>
@@ -191,8 +204,8 @@
         <div class="bento-grid">
           
           <div class="card" style="grid-column: span 2;">
-            <h2>Core Palette</h2>
-            <div style="display: flex; gap: 16px; justify-content: space-between;" id="core-palette"></div>
+            <h2>Core Palette (Vibrant & Pastel)</h2>
+            <div style="display: flex; gap: 12px; justify-content: space-between;" id="core-palette"></div>
           </div>
 
           <div class="card" style="grid-column: span 2;">
@@ -224,12 +237,12 @@
             <h2>Styles</h2>
             
             <div style="margin-bottom:24px;">
-              <div class="ramp-meta">Avg Line</div>
-              <div style="height:36px; background:rgba(38, 198, 218, 0.2); border-top:4px solid var(--c-cyan)"></div>
+              <div class="ramp-meta">Avg Line (Pastel Fill)</div>
+              <div style="height:36px; background:var(--c-cyan-light); border-top:4px solid var(--c-cyan)"></div>
             </div>
             <div style="margin-bottom:24px;">
-              <div class="ramp-meta">Growth</div>
-              <div style="height:36px; background:rgba(126, 87, 194, 0.2); border-top:4px solid var(--c-lavender)"></div>
+              <div class="ramp-meta">Growth (Pastel Fill)</div>
+              <div style="height:36px; background:var(--c-lavender-light); border-top:4px solid var(--c-lavender)"></div>
             </div>
             <div>
               <div class="ramp-meta">Map Regions</div>
@@ -261,12 +274,12 @@
     // DATA CONFIG
     // ========================================================================
     const coreColors = [
-      { n: "Cyan", v: "var(--c-cyan)" },
-      { n: "Lavender", v: "var(--c-lavender)" },
-      { n: "Mint", v: "var(--c-mint)" },
-      { n: "Coral", v: "var(--c-coral)" },
-      { n: "Amber", v: "var(--c-amber)" },
-      { n: "Pink", v: "var(--c-pink)" }
+      { n: "Cyan", v: "var(--c-cyan)", p: "var(--c-cyan-light)" },
+      { n: "Lavender", v: "var(--c-lavender)", p: "var(--c-lavender-light)" },
+      { n: "Mint", v: "var(--c-mint)", p: "var(--c-mint-light)" },
+      { n: "Coral", v: "var(--c-coral)", p: "var(--c-coral-light)" },
+      { n: "Amber", v: "var(--c-amber)", p: "var(--c-amber-light)" },
+      { n: "Pink", v: "var(--c-pink)", p: "var(--c-pink-light)" }
     ];
 
     const awardColors = [
@@ -284,6 +297,23 @@
     // ========================================================================
     // RENDER FUNCTIONS
     // ========================================================================
+
+    function renderCorePalette() {
+      const el = document.getElementById("core-palette");
+      if(!el) return;
+      el.innerHTML = "";
+      
+      coreColors.forEach(c => {
+        const group = document.createElement("div");
+        group.className = "col-group";
+        group.innerHTML = `
+          <div class="chip" style="background:${c.v}" title="Vibrant"></div>
+          <div class="chip-sm" style="background:${c.p}" title="Pastel"></div>
+          <div class="color-label">${c.n}</div>
+        `;
+        el.appendChild(group);
+      });
+    }
 
     function renderChips(id, data, simple=false) {
       const el = document.getElementById(id);
@@ -317,17 +347,14 @@
       const s1 = d3.scaleLinear().domain([0, 19]).range([startHex, midHex]).interpolate(d3.interpolateRgb);
       const s2 = d3.scaleLinear().domain([0, 6]).range([midHex, "#000000"]).interpolate(d3.interpolateRgb);
       
-      // Part A
       for(let i=0; i<20; i++) {
         const d = document.createElement("div");
         d.className = "ramp-cell"; d.style.backgroundColor = s1(i);
         el.appendChild(d);
       }
-      // Divider
       const sep = document.createElement("div");
       sep.style.width="3px"; sep.style.background="var(--bg-card)";
       el.appendChild(sep);
-      // Part B
       for(let i=0; i<7; i++) {
         const d = document.createElement("div");
         d.className = "ramp-cell"; d.style.backgroundColor = s2(i);
@@ -378,8 +405,7 @@
       drawFlower("flower-viz"); 
     }
 
-    // Initial Render
-    renderChips("core-palette", coreColors);
+    renderCorePalette(); // New dedicated renderer
     renderChips("award-palette", awardColors);
     renderChips("treemap-palette", treemapHex, true);
     renderChips("map-strip", coreColors, true);

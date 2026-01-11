@@ -59,7 +59,7 @@ class AppHeader extends HTMLElement {
           <!-- Desktop navigation (hidden on mobile) -->
           <nav class="desktop-nav" aria-label="Main navigation">
             <md-text-button href="${homeHref}">Home</md-text-button>
-            <md-text-button href="${methodologyHref}">Methodology</md-text-button>
+        
             <md-text-button href="${papersHref}">Papers</md-text-button>
             <md-text-button href="${authorsHref}">Authors</md-text-button>
             <md-text-button href="${researchHref}">Institutions</md-text-button>
@@ -144,11 +144,6 @@ class AppDrawer extends HTMLElement {
           <md-list-item type="link" href="${homeHref}">
             <div slot="headline">Home</div>
             <md-icon slot="start">home</md-icon>
-          </md-list-item>
-
-          <md-list-item type="link" href="${methodologyHref}">
-            <div slot="headline">Methodology</div>
-            <md-icon slot="start">dataset</md-icon>
           </md-list-item>
 
           <md-list-item type="link" href="${papersHref}">
