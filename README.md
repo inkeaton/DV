@@ -90,7 +90,6 @@ DV/
 │   ├── authors/                             # Authors section (HTML + plots)
 │   ├── papers/                              # Papers section (HTML + plots)
 │   ├── research/                            # Research section (HTML + plots)
-│   ├── dataset/                             # Dataset exploration page
 │   └── methodology/                         # Methodology page
 ├── .gitignore
 ├── CODEBASE_STRUCTURE.txt
