@@ -1,12 +1,13 @@
 VIS 35 CODE STRUCTURE DOCUMENTATION
 =====================================
-Last Updated: January 10, 2026
+Last Updated: January 11, 2026
 
 OVERALL ARCHITECTURE
 ====================
 
 The codebase follows a modular scrollytelling architecture where:
-- Each section (papers, authors, research) is independent
+- Each scrollytelling section (papers, authors, research) is independent
+- A standalone methodology page complements the scrollytelling pages
 - Shared utilities are centralized in `assets/`
 - Visualizations extend a base class for consistency
 - ES6 modules with no build step required
@@ -17,31 +18,36 @@ The codebase follows a modular scrollytelling architecture where:
 DIRECTORY STRUCTURE
 ===================
 
-site/
-├── assets/              # Shared resources across all pages
-│   ├── css/            # Stylesheets (colors, style, scrolly)
-│   ├── js/             # JavaScript modules
-│   │   └── components/ # Web Components (plot-modal)
-│   └── img/            # Images
-├── data/               # Data files organized by section
-│   ├── papers/         # Papers section data modules
-│   ├── authors/        # Authors section data modules
-│   └── research/       # Research section data modules
-├── papers/             # Papers section
-│   ├── papers.html     # Papers page HTML
-│   └── plots/          # Papers-specific visualizations
-├── authors/            # Authors section (same structure)
-│   ├── authors.html
-│   └── plots/
-├── research/           # Research section (same structure)
-│   ├── research.html
-│   └── plots/
-├── dataset/            # Dataset exploration page
-│   ├── dataset.html
-│   ├── conferenceData.csv
-│   ├── countryData.csv
-│   └── plots/          # Dataset-specific visualizations
-└── index.html          # Homepage with bento grid layout
+repo root/
+├── CODEBASE_STRUCTURE.txt
+├── README.md
+├── requirements.txt
+├── data/               # Pipeline inputs/outputs (raw + processed tables)
+├── scripts/            # Data pipeline notebooks (cleaning, BERTopic, OpenAlex)
+└── site/               # Static website (no build step)
+  ├── assets/         # Shared resources across all pages
+  │   ├── css/        # Stylesheets (colors, style, scrolly)
+  │   ├── js/         # JavaScript modules
+  │   │   └── components/ # Web Components (plot-modal)
+  │   └── img/        # Images
+  ├── data/           # Client-side data modules (ESM) + geojson
+  │   ├── papers/
+  │   ├── authors/
+  │   ├── research/
+  │   └── world.geojson
+  ├── papers/
+  │   ├── papers.html
+  │   └── plots/
+  ├── authors/
+  │   ├── authors.html
+  │   └── plots/
+  ├── research/
+  │   ├── research.html
+  │   └── plots/
+  ├── methodology/
+  │   └── methodology.html
+  ├── index.html      # Homepage with bento grid layout
+  └── (misc)          # Design refs/screenshots (e.g., mockups, palette)
 
 
 FILE-BY-FILE BREAKDOWN
