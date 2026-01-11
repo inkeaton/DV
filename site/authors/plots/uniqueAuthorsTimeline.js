@@ -4,10 +4,10 @@
  *
  * Features:
  * - Gradient-filled area chart with animated border line
- * - Milestone markers at key thresholds (500, 1000, 2500, 5000)
+ * - Milestone markers at key thresholds (0.5k, 1k, 2.5k, 5k) using ACCENT color
  * - Tooltip with vertical guide line on hover/touch
  * - Stats annotation box
- * - Peak (2020) annotation with arrow + NYT-style text
+ * - Peak (2020) annotation with DASHED arrow + text using ACCENT color
  */
 
 import { uniqueAuthorsData, uniqueAuthorsStats } from '../../data/authors/uniqueAuthorsData.js';
@@ -21,6 +21,7 @@ import {
 } from '../../assets/js/chart-utils.js';
 
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
+import { purpleTheme } from '../../assets/js/color-palettes.js';
 
 export const uniqueAuthorsTimelineConfig = {
   data: uniqueAuthorsData,
@@ -29,6 +30,34 @@ export const uniqueAuthorsTimelineConfig = {
   render: (ctx) => {
     const { g, d3, width, height, data, colors, svg } = ctx;
     const animationDuration = ANIMATION_DURATION;
+
+    // -------------------------
+    // Helpers
+    // -------------------------
+    const ensureArrowheadMarker = (svgSel, color) => {
+      const safe = String(color).replace(/[^a-zA-Z0-9_-]/g, '');
+      const id = `arrowhead-${safe}`;
+
+      let defs = svgSel.select('defs');
+      if (defs.empty()) defs = svgSel.append('defs');
+
+      let marker = defs.select(`#${id}`);
+      if (marker.empty()) {
+        marker = defs.append('marker')
+          .attr('id', id)
+          .attr('markerWidth', 10)
+          .attr('markerHeight', 10)
+          .attr('refX', 9)
+          .attr('refY', 3)
+          .attr('orient', 'auto');
+
+        marker.append('polygon')
+          .attr('points', '0 0, 10 3, 0 6')
+          .attr('fill', color);
+      }
+
+      return id;
+    };
 
     // Scales
     const xScale = d3
@@ -56,48 +85,86 @@ export const uniqueAuthorsTimelineConfig = {
       .y((d) => yScale(d.cumulative))
       .curve(d3.curveMonotoneX);
 
-    // Draw cumulative area with gradient
-    const gradient = svg
-      .append('defs')
+    // Axes + Title
+    renderTitle(ctx, 'Cumulative Growth of Unique Authors');
+
+    // X ticks (every 5y + last year)
+    const yearVals = data.map((d) => d.year);
+    const minYear = yearVals[0];
+    const maxYear = yearVals[yearVals.length - 1];
+    const tickYears = [];
+    for (let y = minYear; y <= maxYear; y += 5) tickYears.push(y);
+    if (!tickYears.includes(maxYear)) tickYears.push(maxYear);
+
+    renderXAxis(ctx, xScale, {
+      label: 'Year',
+      tickFormat: d3.format('d'),
+      tickValues: tickYears
+    });
+
+    renderYAxis(ctx, yScale, {
+      label: 'Cumulative Authors',
+      tickFormat: (d) => (d >= 1000 ? (d / 1000).toFixed(0) + 'k' : d)
+    });
+
+    styleAxes(g);
+    cleanAxes(g);
+
+    // Arrow marker defs (base)
+    createArrowMarker(svg);
+
+    // -------------------------
+    // Gradient-filled area (Purple Theme)
+    // -------------------------
+    const gradientId = 'unique-authors-area-gradient';
+
+    // make sure defs exists
+    let defs = svg.select('defs');
+    if (defs.empty()) defs = svg.append('defs');
+
+    // remove old gradient if re-rendered
+    defs.select(`#${gradientId}`).remove();
+
+    const gradient = defs
       .append('linearGradient')
-      .attr('id', 'area-gradient')
+      .attr('id', gradientId)
       .attr('x1', '0%')
       .attr('y1', '0%')
       .attr('x2', '0%')
       .attr('y2', '100%');
 
-    gradient
-      .append('stop')
+    gradient.append('stop')
       .attr('offset', '0%')
-      .attr('stop-color', colors.primary)
-      .attr('stop-opacity', 0.8);
+      .attr('stop-color', purpleTheme.prm)
+      .attr('stop-opacity', 0.75);
 
-    gradient
-      .append('stop')
+    gradient.append('stop')
       .attr('offset', '100%')
-      .attr('stop-color', colors.primary)
-      .attr('stop-opacity', 0.2);
+      .attr('stop-color', purpleTheme.surf)
+      .attr('stop-opacity', 0.20);
 
     const cumulativeArea = g
       .append('path')
       .datum(data)
       .attr('class', 'cumulative-area')
       .attr('d', areaGenerator)
-      .attr('fill', 'url(#area-gradient)')
+      .attr('fill', `url(#${gradientId})`)
       .attr('opacity', 0);
 
-    // Draw top border line
+    // Top border line (Purple Theme)
     const borderLine = g
       .append('path')
       .datum(data)
       .attr('class', 'border-line')
       .attr('d', lineGenerator)
       .attr('fill', 'none')
-      .attr('stroke', colors.primary)
+      .attr('stroke', purpleTheme.prm)
       .attr('stroke-width', 2)
       .attr('stroke-opacity', 0);
 
-    // Milestone markers - find years when thresholds were crossed
+    // -------------------------
+    // Milestones (ACCENT COLOR)
+    // -------------------------
     const thresholds = [500, 1000, 2500, 5000];
     const milestones = thresholds
       .map((threshold) => {
@@ -131,7 +198,7 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('cx', (d) => xScale(d.year))
       .attr('cy', (d) => yScale(d.cumulative))
       .attr('r', 6)
-      .attr('fill', colors.accent || colors.tertiary)
+      .attr('fill', colors.accent) // COLOR CHANGE: Accent
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
@@ -142,7 +209,7 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('text-anchor', 'middle')
       .attr('font-size', '11px')
       .attr('font-weight', 'bold')
-      .attr('fill', colors.accent || colors.tertiary)
+      .attr('fill', colors.accent) // COLOR CHANGE: Accent
       .selectAll('tspan')
       .data((d) => d.label.split(' '))
       .join('tspan')
@@ -150,36 +217,8 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('dy', (d, i) => (i === 0 ? 0 : '1.1em'))
       .text((d) => d);
 
-    // Axes
-    renderTitle(ctx, 'Cumulative Growth of Unique Authors');
-
-    // X ticks (every 5y + last year)
-    const yearVals = data.map((d) => d.year);
-    const minYear = yearVals[0];
-    const maxYear = yearVals[yearVals.length - 1];
-    const tickYears = [];
-    for (let y = minYear; y <= maxYear; y += 5) tickYears.push(y);
-    if (!tickYears.includes(maxYear)) tickYears.push(maxYear);
-
-    renderXAxis(ctx, xScale, {
-      label: 'Year',
-      tickFormat: d3.format('d'),
-      tickValues: tickYears
-    });
-
-    renderYAxis(ctx, yScale, {
-      label: 'Cumulative Authors',
-      tickFormat: (d) => (d >= 1000 ? (d / 1000).toFixed(0) + 'k' : d)
-    });
-
-    styleAxes(g);
-    cleanAxes(g);
-
-    // Arrow marker for annotations
-    createArrowMarker(svg);
-
     // ========================================================================
-    // PEAK NEW AUTHORS ANNOTATION (2020) - arrow + NYT-style text + dot
+    // PEAK NEW AUTHORS ANNOTATION (2020) - ACCENT COLOR + DASHED ARROW
     // ========================================================================
     const peakYear = uniqueAuthorsStats.peakNewYear; // 2020
     const peakPoint = data.find((d) => d.year === peakYear);
@@ -192,13 +231,13 @@ export const uniqueAuthorsTimelineConfig = {
       const targetX = xScale(peakPoint.year);
       const targetY = yScale(peakPoint.cumulative);
 
-      // --- DOT (same style as milestone dots) ---
+      // DOT (Accent)
       g.append('circle')
         .attr('class', 'peak-dot')
         .attr('cx', targetX)
         .attr('cy', targetY)
         .attr('r', 6)
-        .attr('fill', colors.accent || colors.tertiary)
+        .attr('fill', colors.accent) // COLOR CHANGE: Accent
         .attr('stroke', colors.surfaceContainer)
         .attr('stroke-width', 2)
         .attr('opacity', 0)
@@ -213,22 +252,21 @@ export const uniqueAuthorsTimelineConfig = {
         .attr('opacity', 0)
         .style('pointer-events', 'none');
 
-      // --- MOVE TEXT: slightly lower + slightly left ---
-      // tweak these two numbers as you like:
-      const X_SHIFT = 100;  // move left (increase to go more left)
-      const Y_SHIFT = 100;  // move down (increase to go more down)
+      const X_SHIFT = 170;
+      const Y_SHIFT = 90;
 
       let tx = targetX - X_SHIFT;
       tx = Math.min(Math.max(tx, 140), width - 140);
 
       const ty = 22 + Y_SHIFT;
 
+      // TEXT (Accent)
       noteG.append('text')
         .attr('x', tx)
         .attr('y', ty)
         .attr('text-anchor', 'middle')
-        .attr('fill', colors.onSurface)
-        .attr('fill-opacity', 0.78)
+        .attr('fill', colors.accent) // COLOR CHANGE: Accent
+        .attr('fill-opacity', 0.9)
         .attr('font-size', '12px')
         .attr('font-weight', '700')
         .selectAll('tspan')
@@ -238,30 +276,20 @@ export const uniqueAuthorsTimelineConfig = {
         .attr('dy', (d, i) => (i === 0 ? 0 : '1.2em'))
         .text(d => d);
 
+      // Marker setup (Accent)
+      const markerId = ensureArrowheadMarker(svg, colors.accent);
+
+      // ARROW (Accent + Dashed)
       noteG.append('line')
         .attr('x1', tx + 50)
         .attr('y1', ty + 6)
-        .attr('x2', targetX-10)
-        .attr('y2', targetY-6)
-        .attr('stroke', colors.onSurface)
+        .attr('x2', targetX - 10)
+        .attr('y2', targetY - 6)
+        .attr('stroke', colors.accent) // COLOR CHANGE: Accent
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
-        .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
-
-        // Ensure colored arrowhead exists (same pattern as other charts)
-    if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
-      svg.append('defs').append('marker')
-        .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
-        .attr('markerWidth', 10)
-        .attr('markerHeight', 10)
-        .attr('refX', 9)
-        .attr('refY', 3)
-        .attr('orient', 'auto')
-        .append('polygon')
-        .attr('points', '0 0, 10 3, 0 6')
-        .attr('fill', colors.onSurface);
-    }
-
+        .attr('stroke-dasharray', '6,6') // STYLE CHANGE: Dashed
+        .attr('marker-end', `url(#${markerId})`);
 
       noteG.raise();
 
@@ -272,7 +300,7 @@ export const uniqueAuthorsTimelineConfig = {
     }
 
     // ========================================================================
-    // TOOLTIP WITH VERTICAL GUIDE LINE
+    // TOOLTIP WITH VERTICAL GUIDE LINE (Purple Theme)
     // ========================================================================
     const tooltipGroup = g.append('g')
       .attr('class', 'tooltip-group')
@@ -283,20 +311,20 @@ export const uniqueAuthorsTimelineConfig = {
       .attr('class', 'guide-line')
       .attr('y1', 0)
       .attr('y2', height)
-      .attr('stroke', colors.primary)
+      .attr('stroke', purpleTheme.prm)
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '4,4')
       .attr('opacity', 0.7);
 
     const tooltipCircle = tooltipGroup.append('circle')
       .attr('r', 6)
-      .attr('fill', colors.primary)
+      .attr('fill', purpleTheme.prm)
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
     const tooltipBg = tooltipGroup.append('rect')
       .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
+      .attr('stroke', purpleTheme.prm)
       .attr('stroke-width', 1.5)
       .attr('rx', 4);
 

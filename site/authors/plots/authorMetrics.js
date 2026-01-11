@@ -36,10 +36,10 @@ export const authorMetricsConfig = {
 
     // Category colors
     const categoryColors = {
-      prolific: colors.primary,
-      'highly-cited': colors.accent,
-      steady: colors.secondary,
-      emerging: colors.tertiary
+      prolific: '#81C784',
+      'highly-cited': '#F06292',
+      steady: '#4FC3F7',
+      emerging: '#FFB74D'
     };
 
     // ---- Notable (manual) ----
@@ -156,7 +156,7 @@ export const authorMetricsConfig = {
       .attr('text-anchor', 'middle')
       .attr('font-size', '10.5px')
       .attr('font-weight', (d) => (notableSet.has(d.name) ? '700' : '600'))
-      .attr('fill', colors.onSurfaceVariant)
+      .attr('fill', colors.accent)
       .attr('paint-order', 'stroke')
       .attr('stroke', colors.surface)
       .attr('stroke-width', 3)
@@ -287,23 +287,56 @@ export const authorMetricsConfig = {
       tickFormat: (t) => `${Math.round(t / 1000)}k`
     });
 
-
-
-
     styleAxes(g);
     cleanAxes(g);
-
-    // ---- Legend ----
+    
+    // ---- Legend (Custom with Circles) ----
     const legendItems = Object.entries(authorMetricsStats.categories).map(([category, description]) => ({
       color: categoryColors[category],
       label: `${category.charAt(0).toUpperCase() + category.slice(1)}: ${description}`
     }));
 
-    renderLegend(ctx, legendItems, {
-      x: 10,
-      y: 0,
-      itemHeight: 25
-    });
+    // 1. Crea un gruppo per la legenda posizionato dove vuoi (es. in alto a destra)
+    const legendGroup = g.append('g')
+      .attr('class', 'chart-legend')
+      .attr('transform', `translate(${width - 250}, 0)`); // Regola 250 per spostare destra/sinistra
+
+    // 2. Crea le righe per ogni elemento
+    const legendRows = legendGroup.selectAll('.legend-row')
+      .data(legendItems)
+      .join('g')
+      .attr('class', 'legend-row')
+      .attr('transform', (d, i) => `translate(0, ${i * 25})`); // 25px è lo spazio verticale tra le righe
+
+    // 3. DISEGNA IL CERCHIO (invece del quadrato)
+    legendRows.append('circle')
+      .attr('cx', 6)      // Centro X
+      .attr('cy', 6)      // Centro Y (per allinearlo al testo)
+      .attr('r', 6)       // Raggio del cerchio (dimensione)
+      .attr('fill', d => d.color)
+      .attr('stroke', 'none'); // O aggiungi un bordo se serve
+
+    // 4. Aggiungi il testo accanto
+    legendRows.append('text')
+      .attr('x', 20)      // Spazio tra cerchio e testo
+      .attr('y', 10)      // Allineamento verticale visivo (circa metà altezza riga)
+      .attr('font-size', '12px')
+      .attr('fill', colors.onSurfaceVariant) // Usa il colore del testo corretto
+      .text(d => d.label);
+
+    // ---------------------------------------------------------
+    // SE NON TI SERVE LA "SIZE LEGEND" (Award Bubble), 
+    // CANCELLA TUTTO IL CODICE SOTTO QUESTA RIGA FINO A "ANIMATE"
+    // ---------------------------------------------------------
+
+    // (Qui c'era il codice const sizeLegend = ... che devi rimuovere se non vuoi la legenda delle bolle)
+
+    // ---- Animate (Resta uguale) ----
+    bubbles
+      .transition()
+      .duration(animationDuration)
+      .delay((d, i) => i * 20)
+      .attr('r', (d) => sizeScale(d.awards));
 
     // ---- Size legend ----
     const sizeLegend = g.append('g').attr('class', 'size-legend').attr('opacity', 0);
@@ -337,9 +370,9 @@ export const authorMetricsConfig = {
       .attr('cx', 0)
       .attr('cy', 0)
       .attr('r', (d) => sizeScale(d.awards))
-      .attr('fill', colors.primary)
+      .attr('fill', colors.accent)
       .attr('fill-opacity', 0.3)
-      .attr('stroke', colors.primary)
+      .attr('stroke', colors.accent)
       .attr('stroke-width', 2);
 
     sizeLegendItems

@@ -8,7 +8,7 @@
  * - Tooltip with vertical guide line on hover/touch
  * - Growth annotation positioned within chart bounds
  * - Grey band highlighting 2020–2021 (COVID period)
- * - COVID plateau annotation (arrow + text)
+ * - COVID plateau annotation (dashed arrow + text)
  */
 
 import { authorsPerPaperData, authorsPerPaperStats } from '../../data/authors/authorsPerPaperData.js';
@@ -22,6 +22,7 @@ import {
 } from '../../assets/js/chart-utils.js';
 
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
+import { cyanTheme } from '../../assets/js/color-palettes.js';
 
 export const authorsPerPaperConfig = {
   data: authorsPerPaperData,
@@ -31,7 +32,37 @@ export const authorsPerPaperConfig = {
     const { g, d3, width, height, data, colors, svg } = ctx;
     const animationDuration = ANIMATION_DURATION;
 
+    // -------------------------
+    // Helpers
+    // -------------------------
+    const ensureArrowheadMarker = (svgSel, color) => {
+      const safe = String(color).replace(/[^a-zA-Z0-9_-]/g, '');
+      const id = `arrowhead-${safe}`;
+
+      let defs = svgSel.select('defs');
+      if (defs.empty()) defs = svgSel.append('defs');
+
+      let marker = defs.select(`#${id}`);
+      if (marker.empty()) {
+        marker = defs.append('marker')
+          .attr('id', id)
+          .attr('markerWidth', 10)
+          .attr('markerHeight', 10)
+          .attr('refX', 9)
+          .attr('refY', 3)
+          .attr('orient', 'auto');
+
+        marker.append('polygon')
+          .attr('points', '0 0, 10 3, 0 6')
+          .attr('fill', color);
+      }
+
+      return id;
+    };
+
+    // -------------------------
     // Scales
+    // -------------------------
     const xScale = d3
       .scaleLinear()
       .domain(d3.extent(data, (d) => d.year))
@@ -81,51 +112,23 @@ export const authorsPerPaperConfig = {
     styleAxes(g);
     cleanAxes(g);
 
-    // Arrow marker for annotations
+    // Arrow marker defs (base)
     createArrowMarker(svg);
 
     // -------------------------
-    // Grey band 2020–2021 (behind everything)
-    // -------------------------
-    const bandStart = 2020;
-    const bandEnd = 2021;
-
-    const bx0 = xScale(bandStart);
-    const bx1 = xScale(bandEnd);
-
-    if (bx0 != null && bx1 != null) {
-      const band = g.append('rect')
-        .attr('class', 'note-band')
-        .attr('x', bx0)
-        .attr('y', 0)
-        .attr('width', (bx1 - bx0))
-        .attr('height', height)
-        .attr('fill', colors.onSurface)
-        .attr('fill-opacity', 0.10)
-        .attr('opacity', 0);
-
-      band.transition()
-        .duration(600)
-        .delay(250)
-        .attr('opacity', 1);
-
-      band.lower();
-    }
-
-    // -------------------------
-    // Draw error area
+    // Draw error area  (SFUMATURA = cyanTheme.surf)
     // -------------------------
     const errorArea = g
       .append('path')
       .datum(data)
       .attr('class', 'error-area')
       .attr('d', areaGenerator)
-      .attr('fill', colors.primary)
+      .attr('fill', cyanTheme.surf) // Assicurati che cyanTheme.surf esista o usa colors.surfaceContainer
       .attr('fill-opacity', 0)
       .attr('stroke', 'none');
 
     // -------------------------
-    // Draw average line
+    // Draw average line (LINEA = cyanTheme.prm)
     // -------------------------
     const avgLine = g
       .append('path')
@@ -133,7 +136,7 @@ export const authorsPerPaperConfig = {
       .attr('class', 'avg-line')
       .attr('d', lineGenerator)
       .attr('fill', 'none')
-      .attr('stroke', colors.primary)
+      .attr('stroke', cyanTheme.prm) // Assicurati che cyanTheme.prm esista o usa colors.primary
       .attr('stroke-width', 3)
       .attr('stroke-opacity', 0);
 
@@ -155,7 +158,6 @@ export const authorsPerPaperConfig = {
       .attr('stroke-dasharray', '6,4')
       .attr('opacity', 0);
 
-    // Send trend line behind the average line
     trendLine.lower();
 
     // -------------------------
@@ -169,7 +171,7 @@ export const authorsPerPaperConfig = {
       .attr('cx', (d) => xScale(d.year))
       .attr('cy', (d) => yScale(d.avg))
       .attr('r', 0)
-      .attr('fill', colors.primary)
+      .attr('fill', cyanTheme.prm)
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
@@ -185,20 +187,20 @@ export const authorsPerPaperConfig = {
       .attr('class', 'guide-line')
       .attr('y1', 0)
       .attr('y2', height)
-      .attr('stroke', colors.primary)
+      .attr('stroke', cyanTheme.prm)
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '4,4')
       .attr('opacity', 0.7);
 
     const tooltipCircle = tooltipGroup.append('circle')
       .attr('r', 6)
-      .attr('fill', colors.primary)
+      .attr('fill', cyanTheme.prm)
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
     const tooltipBg = tooltipGroup.append('rect')
       .attr('fill', colors.surfaceContainer)
-      .attr('stroke', colors.primary)
+      .attr('stroke', cyanTheme.prm)
       .attr('stroke-width', 1.5)
       .attr('rx', 4);
 
@@ -307,79 +309,37 @@ export const authorsPerPaperConfig = {
       .on('touchend', hideTooltip);
 
     // ========================================================================
-    // GROWTH ANNOTATION
+    // GROWTH ANNOTATION (kept)
     // ========================================================================
     const firstYear = data[0];
     const peakYear = data.reduce((max, d) => d.avg > max.avg ? d : max, data[0]);
-    const growthPercent = Math.round(((peakYear.avg - firstYear.avg) / firstYear.avg) * 100);
-
-    const annotation = g
-      .append('g')
-      .attr('class', 'annotation')
-      .attr('opacity', 0);
-
-    const annotationX = xScale(peakYear.year);
-    const annotationY = yScale(peakYear.avg);
-
-    const textY = Math.max(annotationY - 70, 20);
-    const textX = Math.min(Math.max(annotationX, 80), width - 80);
-
-    // annotation
-    //   .append('text')
-    //   .attr('x', textX)
-    //   .attr('y', textY)
-    //   .attr('text-anchor', 'middle')
-    //   .attr('fill', 'rgba(0,0,0,0.78)')
-    //   .attr('font-size', '12px')
-    //   .attr('font-weight', '700')
-    //   .text(`Peak: +${growthPercent}% since ${firstYear.year}`);
-
-    // annotation
-    //   .append('line')
-    //   .attr('x1', textX)
-    //   .attr('y1', textY + 6)
-    //   .attr('x2', annotationX)
-    //   .attr('y2', annotationY - 8)
-    //   .attr('stroke', 'rgba(0,0,0,0.6)')
-    //   .attr('stroke-width', 1.5)
-    //   .attr('marker-end', 'url(#arrowhead)');
-
-    // annotation
-    //   .append('circle')
-    //   .attr('cx', annotationX)
-    //   .attr('cy', annotationY)
-    //   .attr('r', 3)
-    //   .attr('fill', 'rgba(0,0,0,0.6)');
 
     // ========================================================================
-    // COVID PLATEAU ANNOTATION (text + arrow, no box)
-    // Context: avg authors per paper did not change much in 2020–2021
+    // COVID PLATEAU ANNOTATION (DASHED ARROW + text)
     // ========================================================================
     const covidNote = g.append('g')
       .attr('class', 'covid-plateau-note')
       .attr('opacity', 0)
       .style('pointer-events', 'none');
 
-    // Target: mid of the band at year 2020.5, using interpolated y from nearby point
     const targetYear = 2020.5;
     const targetX = xScale(targetYear);
 
-    // Find closest datapoint to 2020 (or 2021) for y positioning
     const d2020 = data.find(d => d.year === 2020);
     const d2021 = data.find(d => d.year === 2021);
     const yRef = d2020?.avg ?? d2021?.avg ?? peakYear.avg;
     const targetY = yScale(yRef) - 6;
 
-    // Place text near top of band, but always inside bounds
-    const noteY = 270; // top area
-    let noteX = targetX;
+    const noteY = 200;
+    const NOTE_X_SHIFT = -200; // negativo = va a sinistra (prova -10 / -20 / -30)
+    let noteX = targetX + NOTE_X_SHIFT;
     noteX = Math.min(Math.max(noteX, 110), width - 110);
 
     covidNote.append('text')
       .attr('x', noteX)
       .attr('y', noteY)
       .attr('text-anchor', 'middle')
-      .attr('fill', colors.onSurface)
+      .attr('fill', colors.accent)
       .attr('fill-opacity', 0.78)
       .attr('font-size', '12px')
       .attr('font-weight', '700')
@@ -392,29 +352,20 @@ export const authorsPerPaperConfig = {
       .attr('dy', '-1.2em')
       .text('Covid 19');
 
+    // Create marker with accent color
+    const covidMarkerId = ensureArrowheadMarker(svg, colors.accent);
+
+    // Draw the DASHED arrow line matching the marker color
     covidNote.append('line')
       .attr('x1', noteX)
       .attr('y1', noteY + 6)
       .attr('x2', targetX)
       .attr('y2', Math.max(8, targetY))
-      .attr('stroke', colors.onSurface)
+      .attr('stroke', colors.accent)      // Color matches marker-end
       .attr('stroke-opacity', 0.6)
       .attr('stroke-width', 1.5)
-      .attr('marker-end', `url(#arrowhead-${colors.onSurface.replace('#', '')})`);
-
-    // Ensure colored arrowhead exists (same pattern as other charts)
-    if (!svg.select(`#arrowhead-${colors.onSurface.replace('#', '')}`).node()) {
-      svg.append('defs').append('marker')
-        .attr('id', `arrowhead-${colors.onSurface.replace('#', '')}`)
-        .attr('markerWidth', 10)
-        .attr('markerHeight', 10)
-        .attr('refX', 9)
-        .attr('refY', 3)
-        .attr('orient', 'auto')
-        .append('polygon')
-        .attr('points', '0 0, 10 3, 0 6')
-        .attr('fill', colors.onSurface);
-    }
+      .attr('stroke-dasharray', '6,6')    // DASHED STYLE APPLIED HERE
+      .attr('marker-end', `url(#${covidMarkerId})`);
 
     covidNote.raise();
 
@@ -425,20 +376,19 @@ export const authorsPerPaperConfig = {
 
     g.append('circle')
       .attr('cx', maxX)
-      .attr('cy', maxY)
+      .attr('cy', maxY -5)
       .attr('r', 6)
-      .attr('fill', 'red')
-      .attr('stroke', '#fff')
+      .attr('fill', colors.accent)
+      .attr('stroke', colors.accent)
       .attr('stroke-width', 2)
       .attr('opacity', 0.95);
 
     g.append('text')
       .attr('x', maxX)
-      .attr('y', maxY - 14)
+      .attr('y', maxY - 30)
       .attr('text-anchor', 'middle')
       .attr('font-size', '12px')
-      .attr('font-weight', 'bold')
-      .attr('fill', 'red')
+      .attr('fill', colors.accent)
       .text(`Max value: ${maxValuePoint.max.toFixed(2)}`);
 
     // -------------------------
@@ -447,9 +397,8 @@ export const authorsPerPaperConfig = {
     errorArea
       .transition()
       .duration(animationDuration)
-      .attr('fill-opacity', 0.2);
+      .attr('fill-opacity', 0.75);
 
-    // Animate trend line (fade in)
     trendLine
       .transition()
       .duration(animationDuration)
@@ -470,13 +419,8 @@ export const authorsPerPaperConfig = {
       .delay((d, i) => i * 50)
       .attr('r', 5);
 
-    annotation
-      .transition()
-      .delay(animationDuration)
-      .duration(400)
-      .attr('opacity', 1);
+    // annotation.transition()... (removed/not used)
 
-    // Show COVID note after main animation (like other annotations)
     covidNote
       .transition()
       .delay(animationDuration + 200)

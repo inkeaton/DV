@@ -77,19 +77,19 @@ export const conferenceColors = {
 // Questi colori sono più morbidi ("Pastel") rispetto alla versione precedente
 export const publicationColors = {
   journal: '#80DEEA',       // Cyan 300 (Pastel Blue/Cyan)
-  conference:  '#A5D6A7',     // Green 300 (Soft Mint)
+  conference: '#A5D6A7',     // Green 300 (Soft Mint)
 };
 
 // Configurazione avanzata per interazioni
 export const publicationStateColors = {
   journal: {
-    default:  '#80DEEA',    // BASE (Pastel)
-    dark:   '#4DD0E1',   // DARK MODE (Lighter: Cyan 200)
+    default: '#80DEEA',    // BASE (Pastel)
+    dark: '#4DD0E1',   // DARK MODE (Lighter: Cyan 200)
     hoverLight: '#00BCD4', // HOVER LIGHT (Saturated: Cyan 500)
     hoverDark: '#B2EBF2'   // HOVER DARK (Glow: Cyan 100)
   },
   conference: {
-    default:   '#A5D6A7',     // BASE (Mint Pastel)
+    default: '#A5D6A7',     // BASE (Mint Pastel)
     dark: '#81C784',   // DARK MODE (Lighter: Green 200)
     hoverLight: '#4CAF50', // HOVER LIGHT (Saturated: Green 500)
     hoverDark: '#C8E6C9'   // HOVER DARK (Glow: Green 100)
@@ -455,13 +455,20 @@ export const topicNameKeyMap = {
 // REGION COLORS (7 Continents/Areas)
 // Logic: Base (300) -> Dark Mode (200) -> Hover Light (500) -> Hover Dark (100)
 // ============================================================================
+// 1. Definisci il tema Blu una volta sola (Single Source of Truth)
+const blueRegionStyle = {
+  default: '#64B5F6',    // Blue 300
+  dark: '#90CAF9',       // Blue 200
+  hoverLight: '#2196F3', // Blue 500
+  hoverDark: '#BBDEFB'   // Blue 100
+};
+
+// 2. Esporta l'oggetto regionColors
 export const regionColors = {
-  "North America": {
-    default: '#64B5F6',    // Blue 300
-    dark: '#90CAF9',       // Blue 200
-    hoverLight: '#2196F3', // Blue 500
-    hoverDark: '#BBDEFB'   // Blue 100
-  },
+  // Entrambi usano la variabile 'blueRegionStyle'
+  "North America": blueRegionStyle,
+  "Americas": blueRegionStyle,
+
   "Europe": {
     default: '#81C784',    // Green 300
     dark: '#A5D6A7',       // Green 200
@@ -498,4 +505,19 @@ export const regionColors = {
     hoverLight: '#607D8B', // Blue Grey 500
     hoverDark: '#CFD8DC'   // Blue Grey 100
   }
+};
+// authorsPerPaper
+export const cyanTheme = {
+  surf: "#B2EBF2",
+  prm: "#00BCD4",
+  surfaceContainer: "#E0F7FA",   // Cyan 50 (Sfondo Azzurro ghiaccio)
+  primary: "#26C6DA",            // Cyan 400 (Cian Vibrante)
+  onSurface: "#006064",          // Cyan 900 (Testo scuro "Petrolio")
+  onSurfaceVariant: "#4DD0E1"    // Cyan 300 (Testo secondario)
+};
+
+// uniqueAuthorsTimeline theme
+export const purpleTheme = {
+  surf: '#9575CD',
+  prm: '#7E57C2'
 };

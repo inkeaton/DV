@@ -17,7 +17,7 @@
  */
 export function renderTitle(ctx, text, options = {}) {
   const { g, width, colors } = ctx;
-  const { y = -25, fontSize = '18px', fontWeight = '600' } = options;
+  const { y = -45, fontSize = '18px', fontWeight = '600' } = options;
 
   g.append('text')
     .attr('class', 'chart-title')

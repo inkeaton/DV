@@ -13,10 +13,15 @@
  * - Full-name labels for TOP 10 most collaborative authors (by d.collaborations)
  * - Tooltip nomination for TOP 3 with medal icons + highlighted text
  * - TOP 3 nodes have slightly darker stroke (and slightly thicker stroke)
+ *
+ * UPDATE:
+ * - Uses regionColors from assets/js/color-palettes.js for node + legend colors
+ *   (default/dark + hoverLight/hoverDark)
  */
 
 import { collaborationNetworkData, networkStats } from '../../data/authors/collaborationNetworkData.js';
 import { ANIMATION_DURATION } from '../../assets/js/chart-constants.js';
+import { regionColors } from '../../assets/js/color-palettes.js';
 
 export const collaborationNetworkConfig = {
   data: collaborationNetworkData,
@@ -30,6 +35,13 @@ export const collaborationNetworkConfig = {
     // Helpers
     // -----------------------------
     let currentZoomLevel = 1.0;
+
+    const isDark = () => (
+      typeof document !== 'undefined' &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains('dark-theme')
+    );
 
     function getAdjustedRadius(collaborations, zoomLevel) {
       const c = Number.isFinite(Number(collaborations)) ? Number(collaborations) : 0;
@@ -68,21 +80,42 @@ export const collaborationNetworkConfig = {
     }
 
     // -----------------------------
-    // Group colors (dynamic)
+    // Region coloring (uses regionColors)
     // -----------------------------
-    const groupIds = Array.from(
-      new Set(collaborationNetworkData.nodes.map((n) => n.group))
-    ).sort((a, b) => Number(a) - Number(b));
+    const regionOrder = [
+      'Americas',
+      'Europe',
+      'Asia',
+      'Oceania',
+      'Africa',
+      'Other'
+    ];
 
-    const palette = d3.schemeTableau10 || d3.schemeCategory10 || null;
+    const groupsObj = networkStats?.groups || {};
 
-    const groupColorScale = d3.scaleOrdinal()
-      .domain(groupIds)
-      .range(
-        palette
-          ? groupIds.map((_, i) => palette[i % palette.length])
-          : groupIds.map((_, i) => d3.interpolateRainbow(i / Math.max(groupIds.length, 1)))
-      );
+    function getRegionKey(d) {
+      // Prefer explicit region on node (if present)
+      const direct = (d && d.region != null) ? String(d.region).trim() : '';
+      if (direct && regionColors[direct]) return direct;
+
+      // Fallback: map group -> label and try to match a region key
+      const groupLabel = groupsObj?.[d?.group];
+      if (groupLabel && regionColors[groupLabel]) return groupLabel;
+
+      return 'Other';
+    }
+
+    function regionBaseColor(d) {
+      const key = getRegionKey(d);
+      const spec = regionColors[key] || regionColors.Other;
+      return isDark() ? spec.dark : spec.default;
+    }
+
+    function regionHoverColor(d) {
+      const key = getRegionKey(d);
+      const spec = regionColors[key] || regionColors.Other;
+      return isDark() ? spec.hoverDark : spec.hoverLight;
+    }
 
     // -----------------------------
     // Ranking: TOP 10 labels + TOP 3 nominations (by collaborations)
@@ -175,6 +208,7 @@ export const collaborationNetworkConfig = {
       const tooltip = g.append('g')
         .attr('class', 'node-tooltip')
         .style('pointer-events', 'none');
+
       const r = getAdjustedRadius(d.collaborations, currentZoomLevel);
       const baseY = d.y - r - getAdjustedPadding(14, currentZoomLevel);
 
@@ -276,7 +310,7 @@ export const collaborationNetworkConfig = {
         .attr('width', bbox.width + padding * 2)
         .attr('height', bbox.height + padding)
         .attr('fill', colors.surfaceContainer)
-        .attr('stroke', groupColorScale(d.group))
+        .attr('stroke', darken(regionBaseColor(d), 0.35))
         .attr('stroke-width', getAdjustedStrokeWidth(2, currentZoomLevel))
         .attr('rx', getAdjustedPadding(4, currentZoomLevel));
     }
@@ -291,27 +325,33 @@ export const collaborationNetworkConfig = {
       .data(collaborationNetworkData.nodes)
       .join('circle')
       .attr('r', 0)
-      .attr('fill', (d) => groupColorScale(d.group))
+      .attr('fill', (d) => regionBaseColor(d))
       .attr('stroke', (d) => {
         const isTop3 = top3Map.has(d.id);
         if (!isTop3) return colors.surfaceContainer;
-        return darken(groupColorScale(d.group), 0.35);
+        return darken(regionBaseColor(d), 0.35);
       })
       .attr('stroke-width', (d) => (top3Map.has(d.id) ? 2.5 : 2))
       .style('cursor', 'pointer')
       .on('mouseenter', function (event, d) {
+        // hover fill from regionColors
         d3.select(this)
+          .interrupt()
           .transition()
-          .duration(200)
+          .duration(160)
+          .attr('fill', regionHoverColor(d))
           .attr('stroke-width', getAdjustedStrokeWidth(top3Map.has(d.id) ? 4.5 : 4, currentZoomLevel));
 
         showTooltip(d);
       })
       .on('mouseleave', function () {
         const d = this.__data__;
+
         d3.select(this)
+          .interrupt()
           .transition()
-          .duration(200)
+          .duration(160)
+          .attr('fill', regionBaseColor(d))
           .attr('stroke-width', getAdjustedStrokeWidth(top3Map.has(d?.id) ? 2.5 : 2, currentZoomLevel));
 
         removeTooltip();
@@ -320,10 +360,12 @@ export const collaborationNetworkConfig = {
         event.stopPropagation();
         removeTooltip();
 
+        // reset strokes
         node.attr('stroke-width', (nd) =>
           getAdjustedStrokeWidth(top3Map.has(nd.id) ? 2.5 : 2, currentZoomLevel)
         );
 
+        // keep clicked one emphasized
         d3.select(this)
           .attr('stroke-width', getAdjustedStrokeWidth(top3Map.has(d.id) ? 4.5 : 4, currentZoomLevel));
 
@@ -348,7 +390,7 @@ export const collaborationNetworkConfig = {
       .attr('font-size', '11px')
       .attr('font-weight', 'bold')
       .attr('text-anchor', 'start')
-      .attr('fill', colors.onSurface)
+      .attr('fill', colors.accent)
       .attr('opacity', 0)
       .text((d) => safeText(d.id));
 
@@ -370,19 +412,22 @@ export const collaborationNetworkConfig = {
       .attr('fill', colors.onSurface)
       .text('Author Collaboration Network');
 
-    // Legend (dynamic groups)
+    // -----------------------------
+    // Legend (REGIONS)
+    // -----------------------------
     const legend = fixedGroup.append('g')
       .attr('class', 'legend')
       .attr('opacity', 0);
 
-    const groupsObj = networkStats?.groups || {};
-    const legendData = Object.keys(groupsObj)
-      .map((k) => ({ group: Number(k), label: groupsObj[k] }))
-      .sort((a, b) => a.group - b.group);
+    // detect which regions exist in data
+    const regionSet = new Set(collaborationNetworkData.nodes.map(getRegionKey));
+    const legendRegions = regionOrder.filter((r) => regionSet.has(r));
+    // ensure "Other" shows if there are unknowns
+    if (!legendRegions.length) legendRegions.push('Other');
 
     const legendItems = legend
       .selectAll('.legend-item')
-      .data(legendData)
+      .data(legendRegions.map((r) => ({ region: r })))
       .join('g')
       .attr('class', 'legend-item')
       .attr('transform', (d, i) => `translate(${width - 260}, ${30 + i * 22})`);
@@ -391,7 +436,10 @@ export const collaborationNetworkConfig = {
       .attr('cx', 0)
       .attr('cy', 0)
       .attr('r', 6)
-      .attr('fill', (d) => groupColorScale(d.group))
+      .attr('fill', (d) => {
+        const spec = regionColors[d.region] || regionColors.Other;
+        return isDark() ? spec.dark : spec.default;
+      })
       .attr('stroke', colors.surfaceContainer)
       .attr('stroke-width', 2);
 
@@ -400,7 +448,7 @@ export const collaborationNetworkConfig = {
       .attr('y', 4)
       .attr('font-size', '12px')
       .attr('fill', colors.onSurface)
-      .text((d) => d.label);
+      .text((d) => d.region);
 
     // -----------------------------
     // Tick update
