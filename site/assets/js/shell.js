@@ -260,7 +260,7 @@ class AppFooter extends HTMLElement {
   
 
   <p>
-    We use <a href="https://www.vispubdata.org" target="_blank" rel="noopener">VISpubdata</a> (1990–2024),
+    We use the <a href="https://www.vispubdata.org" target="_blank" rel="noopener">VISpubdata</a> (1990–2024) dataset,
     enriched with structured metadata via the <strong>OpenAlex API</strong>.
     After an initial EDA pass to understand the dataset, we cleaned and standardized key fields, then extracted themes
     using BERTopic to support topic-based exploration.
@@ -282,11 +282,10 @@ class AppFooter extends HTMLElement {
     <img src="${person1}" class="footer-team-pic" alt="Edoardo Vassallo" loading="lazy" decoding="async">
     <div class="footer-team-text">
       <h3>Edoardo Vassallo</h3>
-      <span class="footer-team-role">Data Engineering, Analysis &amp; Web Design</span>
+      <span class="footer-team-role">Software Engineering &amp; Web Design</span>
       <p class="footer-team-bio">
         M.Sc. student in <strong>Data Science &amp; Engineering (Artificial Intelligence)</strong> at the
-        <strong>University of Genoa</strong>. Built the end-to-end Python pipeline (cleaning, enrichment, NLP) and
-        contributed to the website design and structure.
+        <strong>University of Genoa</strong>. Designed the website's codebase and contributed to the plots creation.
       </p>
       <div class="footer-team-links">
         <a href="https://linkedin.com/in/inkeaton" rel="noopener">LinkedIn</a>

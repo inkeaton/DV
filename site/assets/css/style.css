@@ -476,7 +476,7 @@ main {
 .footer-team-row {
   display: flex;
   gap: 16px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .footer-team-pic {
