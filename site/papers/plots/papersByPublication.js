@@ -32,6 +32,14 @@ export const papersByPublicationConfig = {
   render: (ctx) => {
     const { g, d3, tooltip, width, height, data, colors, svg } = ctx;
 
+    // helper: detect dark theme
+    const isDark = () => (
+      typeof document !== 'undefined' &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains('dark-theme')
+    );
+
     // Years domain
     const years = d3.range(YEAR_RANGE.min, YEAR_RANGE.max + 1);
 
@@ -117,7 +125,9 @@ export const papersByPublicationConfig = {
       .attr('y', height)
       .attr('width', xScale.bandwidth())
       .attr('height', 0)
-      .attr('rx', 2);
+      .attr('rx', 2)
+      // IMPORTANT: set base fill explicitly so hover can restore correctly
+      .attr('fill', d => publicationColors[d.key]);
 
     // Animate
     bars.transition()
@@ -166,7 +176,7 @@ export const papersByPublicationConfig = {
       const tx = xCenter;
       const ty = topY;
 
-      const textEl = noteG.append('text')
+      noteG.append('text')
         .attr('x', tx)
         .attr('y', ty)
         .attr('fill', colors.accent)
@@ -175,12 +185,26 @@ export const papersByPublicationConfig = {
         .attr('text-anchor', 'middle')
         .text(highlightBarSpec.label);
 
-      const textNode = textEl.node && textEl.node();
-      const textWidth = (textNode && textNode.getComputedTextLength) ? textNode.getComputedTextLength() : 0;
-
-      // Start the arrow from the center of the text
       const arrowStartX = tx;
       const arrowStartY = ty + 6;
+
+      const markerId = `arrowhead-${String(colors.accent).replace(/[^a-zA-Z0-9_-]/g, '')}`;
+      let defs = svg.select('defs');
+      if (defs.empty()) defs = svg.append('defs');
+
+      if (!defs.select(`#${markerId}`).node()) {
+        const m = defs.append('marker')
+          .attr('id', markerId)
+          .attr('markerWidth', 10)
+          .attr('markerHeight', 10)
+          .attr('refX', 9)
+          .attr('refY', 3)
+          .attr('orient', 'auto');
+
+        m.append('polygon')
+          .attr('points', '0 0, 10 3, 0 6')
+          .attr('fill', colors.accent);
+      }
 
       noteG.append('line')
         .attr('x1', arrowStartX)
@@ -191,21 +215,7 @@ export const papersByPublicationConfig = {
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
         .attr('stroke-dasharray', '6,6')
-        .attr('marker-end', `url(#arrowhead-${colors.accent.replace('#', '')})`);
-
-        // Create a dynamic arrowhead marker with the correct color
-        if (!svg.select(`#arrowhead-${colors.accent.replace('#', '')}`).node()) {
-          svg.append('defs').append('marker')
-            .attr('id', `arrowhead-${colors.accent.replace('#', '')}`)
-            .attr('markerWidth', 10)
-            .attr('markerHeight', 10)
-            .attr('refX', 9)
-            .attr('refY', 3)
-            .attr('orient', 'auto')
-            .append('polygon')
-            .attr('points', '0 0, 10 3, 0 6')
-            .attr('fill', colors.accent);
-        }
+        .attr('marker-end', `url(#${markerId})`);
 
       noteG.transition()
         .delay(ANIMATION_DURATION + 260)
@@ -215,22 +225,36 @@ export const papersByPublicationConfig = {
       noteG.raise();
     }
 
-    // Tooltip + hover color (match papersPerYear behavior)
+    // ---------------------------------------------------------
+    // Tooltip + HOVER COLOR (LIGHT MODE uses hoverLight)
+    // ---------------------------------------------------------
     bars
       .on('mouseenter', function (event, d) {
         const el = d3.select(this);
-        // store original fill so we can restore it
-        this.__origFill = el.attr('fill');
+        const key = d.key;
 
-        el.transition()
+        // store original fill once so we can restore after hover
+        this.__origFill = this.__origFill ?? el.attr('fill');
+
+        // pick hover color:
+        // - in LIGHT mode -> hoverLight
+        // - in DARK mode  -> hoverDark
+        const hoverFill =
+          (publicationStateColors &&
+            publicationStateColors[key] &&
+            (isDark() ? publicationStateColors[key].hoverDark : publicationStateColors[key].hoverLight)) ||
+          publicationColors[key];
+
+        el.interrupt()
+          .transition()
           .duration(150)
-          .attr('fill', (publicationStateColors && publicationStateColors[d.key] && publicationStateColors[d.key].hoverLight) || publicationColors[d.key])
+          .attr('fill', hoverFill)
           .attr('opacity', 0.95);
 
-        const value = d.data[d.key] || 0;
+        const value = d.data[key] || 0;
         tooltip.show(
           event,
-          `<strong>${d.data.year}</strong><br>${publicationLabels[d.key]}: ${value} papers`,
+          `<strong>${d.data.year}</strong><br>${publicationLabels[key]}: ${value} papers`,
           colors
         );
       })
@@ -244,8 +268,13 @@ export const papersByPublicationConfig = {
       })
       .on('mouseleave', function (event, d) {
         const el = d3.select(this);
-        const restore = this.__origFill || publicationColors[d.key];
-        el.transition()
+        const key = d.key;
+
+        // restore original fill (handles also the highlighted year correctly)
+        const restore = this.__origFill || publicationColors[key];
+
+        el.interrupt()
+          .transition()
           .duration(150)
           .attr('fill', restore)
           .attr('opacity', 1);

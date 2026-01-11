@@ -329,9 +329,9 @@ export const institutionsCollaborationChordConfig = {
       .attr('y', -8)
       .attr('width', 16)
       .attr('height', 16)
-      .attr('fill', '#ef4444')
-      .attr('stroke', colors.surfaceContainer)
-      .attr('stroke-width', 1.5)
+      .attr('fill', 'none')
+      .attr('stroke', '#ef4444')
+      .attr('stroke-width', 2)
       .attr('rx', 3);
 
     interRegionalItem.append('text')

@@ -17,10 +17,10 @@
  * Colors for VIS conference tracks
  */
 export const trackColors = {
-  infovis: '#64B5F6',  // Pastel Blue
-  scivis: '#66BB6A',   // Pastel Green
-  vast: '#FFB74D',    // Pastel Orange
-  vis: '#AB47BC',      // Pastel Purple
+  infovis: '#F48FB1',  // Pastel Blue
+  scivis: '#A5D6A7',   // Pastel Green
+  vast: '#FFD54F',    // Pastel Orange
+  vis: '#8AB4F8',   // Pastel Purple
 };
 
 /**
@@ -28,28 +28,28 @@ export const trackColors = {
  */
 export const trackStateColors = {
   infovis: {
-    default: '#64B5F6',
-    dark: '#8AB4F8',
-    hoverLight: '#AECBFA',
-    hoverDark: '#64B5F6',
+    default: '#F48FB1',
+    dark: '#AB47BC',
+    hoverLight: '#AB47BC',
+    hoverDark: '#E1BEE7',
   },
   scivis: {
-    default: '#66BB6A',
-    dark: '#A5D6A7',
-    hoverLight: '#DCE775',
-    hoverDark: '#66BB6A',
+    default: '#A5D6A7',
+    dark: '#66BB6A',
+    hoverLight: '#66BB6A',
+    hoverDark: '#DCE775'
   },
   vast: {
-    default: '#FFB74D',
-    dark: '#FFD54F',
+    default: '#FFD54F',
+    dark: '#FFE0B2',
     hoverLight: '#FFE0B2',
     hoverDark: '#FFB74D',
   },
   vis: {
-    default: '#AB47BC', 
-    dark: '#F48FB1',
-    hoverLight: '#E1BEE7',
-    hoverDark: '#AB47BC',
+    default: '#8AB4F8',
+    dark: '#64B5F6',
+    hoverLight: '#64B5F6',
+    hoverDark: '#AECBFA',
   }
 };
 
@@ -76,21 +76,21 @@ export const conferenceColors = {
 // Material Design Pastel Tokens: Cyan 300 & Green 300
 // Questi colori sono più morbidi ("Pastel") rispetto alla versione precedente
 export const publicationColors = {
-  journal: '#4DD0E1',      // Cyan 300 (Pastel Blue/Cyan)
-  conference: '#81C784',   // Green 300 (Soft Mint)
+  journal: '#80DEEA',       // Cyan 300 (Pastel Blue/Cyan)
+  conference:  '#A5D6A7',     // Green 300 (Soft Mint)
 };
 
 // Configurazione avanzata per interazioni
 export const publicationStateColors = {
   journal: {
-    default: '#4DD0E1',    // BASE (Pastel)
-    dark: '#80DEEA',       // DARK MODE (Lighter: Cyan 200)
+    default:  '#80DEEA',    // BASE (Pastel)
+    dark:   '#4DD0E1',   // DARK MODE (Lighter: Cyan 200)
     hoverLight: '#00BCD4', // HOVER LIGHT (Saturated: Cyan 500)
     hoverDark: '#B2EBF2'   // HOVER DARK (Glow: Cyan 100)
   },
   conference: {
-    default: '#81C784',    // BASE (Mint Pastel)
-    dark: '#A5D6A7',       // DARK MODE (Lighter: Green 200)
+    default:   '#A5D6A7',     // BASE (Mint Pastel)
+    dark: '#81C784',   // DARK MODE (Lighter: Green 200)
     hoverLight: '#4CAF50', // HOVER LIGHT (Saturated: Green 500)
     hoverDark: '#C8E6C9'   // HOVER DARK (Glow: Green 100)
   }
@@ -346,7 +346,7 @@ export function generateLavenderPalettes(d3) {
   const mainColors = d3.range(20).map(i => scaleHead(i));
   const tailColors = d3.range(7).map(i => scaleTail(i));
 
-  return { mainColors, tailColors };
+  return { mainColors, tailColors, COLOR_MID, COLOR_END };
 }
 
 // ============================================================================

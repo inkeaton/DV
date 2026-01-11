@@ -10,8 +10,7 @@ import {
   styleAxes,
   cleanAxes,
   getTickYears,
-  createArrowMarker
-  ,
+  createArrowMarker,
   darkenHex
 } from '../../assets/js/chart-utils.js';
 
@@ -91,20 +90,49 @@ export const papersPerYearConfig = {
     styleAxes(g);
     cleanAxes(g);
 
-    // Arrow marker for annotations (same approach as papersByConference)
+    // Arrow marker defs (base)
     createArrowMarker(svg);
 
     // -------------------------
-    // Colors: single fill for all bars driven by centralized `storyColor`.
-    // Peak bar uses the story hover token and a soft grey border.
+    // Helpers
+    // -------------------------
+    const isDark = () => (
+      typeof document !== 'undefined' &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains('dark-theme')
+    );
+
+    // Ensure we have a usable arrowhead marker id even if colors.accent is not a hex
+    const ensureArrowheadMarker = (svg, color) => {
+      const safe = String(color).replace(/[^a-zA-Z0-9_-]/g, '');
+      const id = `arrowhead-${safe}`;
+
+      let defs = svg.select('defs');
+      if (defs.empty()) defs = svg.append('defs');
+
+      let marker = defs.select(`#${id}`);
+      if (marker.empty()) {
+        marker = defs.append('marker')
+          .attr('id', id)
+          .attr('markerWidth', 10)
+          .attr('markerHeight', 10)
+          .attr('refX', 9)
+          .attr('refY', 3)
+          .attr('orient', 'auto');
+
+        marker.append('polygon')
+          .attr('points', '0 0, 10 3, 0 6')
+          .attr('fill', color);
+      }
+
+      return id;
+    };
+
+    // -------------------------
+    // Colors
     // -------------------------
     const normalFill = storyColor.default;
-
-    // helper to detect dark theme dynamically
-    const isDark = () => (document && document.body && document.body.classList && document.body.classList.contains('dark-theme'));
-
-    // (no separate peak fill variable — compute a darkened peak fill to match other charts)
-    const peakDarkFill = darkenHex(d3, storyColor.default, 0.30);
 
     // -------------------------
     // Bars
@@ -133,43 +161,55 @@ export const papersPerYearConfig = {
       .attr('y', d => (d.count == null ? height : yScale(d.count)))
       .attr('height', d => (d.count == null ? 0 : Math.max(0, height - yScale(d.count))));
 
-    // After animation, pop the peak year bar (darker fill + soft grey border)
-    const peakYear = stats.peakYear;
-    const peakSel = g.selectAll(`.bar[data-year="${peakYear}"]`);
-    if (!peakSel.empty()) {
-      peakSel
+    // -------------------------
+    // Highlight bar (ASSIGNED) + same logic as papersByPublication
+    // -------------------------
+    const highlightBarSpec = {
+      year: stats.peakYear, // <-- cambia qui se vuoi assegnare un anno fisso (es. 2020)
+      label: 'COVID impact? Peak publication year'
+    };
+
+    const highlightYear = +highlightBarSpec.year; // force number (xScale domain is numbers)
+    const highlightFill = darkenHex(d3, storyColor.default, 0.30);
+
+    const highlightSel = g.selectAll(`.bar[data-year="${highlightYear}"]`);
+    if (!highlightSel.empty()) {
+      highlightSel
         .raise()
         .transition()
         .delay(ANIMATION_DURATION + 150)
         .duration(400)
-        .attr('fill', d => (d.count == null ? 'transparent' : peakDarkFill))
+        .attr('fill', d => (d.count == null ? 'transparent' : highlightFill))
         .attr('stroke', colors.onSurface)
         .attr('stroke-opacity', 0.4)
         .attr('stroke-width', 2);
     }
 
     // -------------------------
-    // Tooltip
+    // Tooltip + hover
     // -------------------------
     bars
       .on('mouseenter', function (event, d) {
-        const isPeak = d.year === stats.peakYear;
         const el = d3.select(this);
+        const isHighlight = d.year === highlightYear;
 
-        // store original fill so we can restore it on mouseleave
-        this.__origFill = this.__origFill || el.attr('fill');
+        // store originals once
+        this.__origFill = this.__origFill ?? el.attr('fill');
 
-        if (isPeak) {
-          // emphasize border for peak year (stronger on hover)
+        if (isHighlight) {
+          // stronger border on hover, keep highlight fill
           el.transition()
             .duration(150)
             .attr('opacity', 1)
+            .attr('fill', highlightFill)
             .attr('stroke', colors.onSurface)
             .attr('stroke-width', 3)
             .attr('stroke-opacity', 0.85);
         } else {
-          // subtle hover for regular bars: use storyColor hover variant based on theme
-          const hoverFill = isDark() ? (storyColor.hoverDark || storyColor.default) : (storyColor.hoverLight || storyColor.default);
+          const hoverFill = isDark()
+            ? (storyColor.hoverDark || storyColor.default)
+            : (storyColor.hoverLight || storyColor.default);
+
           el.transition()
             .duration(150)
             .attr('fill', hoverFill)
@@ -181,25 +221,28 @@ export const papersPerYearConfig = {
       .on('mousemove', function (event, d) {
         tooltip.show(event, `<strong>${d.year}</strong><br>${d.count} papers`, colors);
       })
-      .on('mouseleave', function (event, d) {
-        const isPeak = d.year === stats.peakYear;
+      .on('mouseleave', function () {
         const el = d3.select(this);
+        const year = +el.attr('data-year');
+        const isHighlight = year === highlightYear;
 
-        if (isPeak) {
-          // restore border to default soft border and keep peak fill (story default)
+        if (isHighlight) {
+          // restore highlight style (soft border + darkened fill)
           el.transition()
             .duration(150)
+            .attr('fill', highlightFill)
             .attr('stroke', colors.onSurface)
             .attr('stroke-width', 2)
             .attr('stroke-opacity', 0.4)
-            .attr('fill', storyColor.default)
             .attr('opacity', 1);
         } else {
-          // restore original fill (or fallback to normal fill)
           const restoreFill = this.__origFill || normalFill;
           el.transition()
             .duration(150)
             .attr('fill', restoreFill)
+            .attr('stroke', 'none')
+            .attr('stroke-width', 0)
+            .attr('stroke-opacity', 0)
             .attr('opacity', 1);
         }
 
@@ -236,26 +279,25 @@ export const papersPerYearConfig = {
     avgGroup.raise();
 
     // -------------------------
-    // Peak-year annotation (arrow + text) like papersByConference
+    // Highlight-year annotation (arrow + text) – points to ASSIGNED bar
     // -------------------------
-    
-    const peakCount = stats.peakValue ?? countByYear.get(peakYear);
+    const highlightCount = countByYear.get(highlightYear);
+    const hx0 = xScale(highlightYear);
 
-    const peakX0 = xScale(peakYear);
-    if (peakX0 != null && peakCount != null) {
-      const xCenter = peakX0 + xScale.bandwidth() / 2;
-      const barTopY = yScale(peakCount);
+    if (hx0 != null && highlightCount != null) {
+      const xCenter = hx0 + xScale.bandwidth() / 2;
+      const barTopY = yScale(highlightCount);
 
-      // Target point: a bit above the bar
+      // target exactly at bar top
       const targetX = xCenter;
-      const targetY = Math.max(6, barTopY - 6);
+      const targetY = barTopY;
 
       const noteG = g.append('g')
-        .attr('class', `peak-year-note note-${peakYear}`)
+        .attr('class', `highlight-year-note note-${highlightYear}`)
         .attr('opacity', 0)
         .style('pointer-events', 'none');
 
-      // Positioning: place the note further left of the bar
+      // Position: left of bar
       const ty = Math.max(18, barTopY - 55);
       const tx = Math.max(10, xCenter - 120);
 
@@ -266,10 +308,13 @@ export const papersPerYearConfig = {
         .attr('fill-opacity', 0.78)
         .attr('font-size', '12px')
         .attr('text-anchor', 'start')
-        .text('COVID impact? Peak publication year');
+        .text(highlightBarSpec.label);
 
       const arrowStartX = tx + 6;
       const arrowStartY = ty + 6;
+
+      // create marker BEFORE using it
+      const markerId = ensureArrowheadMarker(svg, colors.accent);
 
       noteG.append('line')
         .attr('x1', arrowStartX)
@@ -280,21 +325,7 @@ export const papersPerYearConfig = {
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
         .attr('stroke-dasharray', '6,6')
-        .attr('marker-end', `url(#arrowhead-${colors.accent.replace('#', '')})`);
-
-      // Create a dynamic arrowhead marker with the correct color (same as papersByConference)
-      if (!svg.select(`#arrowhead-${colors.accent.replace('#', '')}`).node()) {
-        svg.append('defs').append('marker')
-          .attr('id', `arrowhead-${colors.accent.replace('#', '')}`)
-          .attr('markerWidth', 10)
-          .attr('markerHeight', 10)
-          .attr('refX', 9)
-          .attr('refY', 3)
-          .attr('orient', 'auto')
-          .append('polygon')
-          .attr('points', '0 0, 10 3, 0 6')
-          .attr('fill', colors.accent);
-      }
+        .attr('marker-end', `url(#${markerId})`);
 
       noteG.transition()
         .delay(ANIMATION_DURATION + 260)

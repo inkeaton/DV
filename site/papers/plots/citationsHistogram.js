@@ -20,26 +20,33 @@ export const citationsHistogramConfig = {
 
   render: (ctx) => {
     const { g, d3, tooltip, width, height, data, colors: themeColors } = ctx;
-    
+
     renderTitle(ctx, 'Citation Distribution');
 
-  // --- 1. CONFIGURAZIONE E COLORI (FIXED) ---
+    // --- 1. CONFIGURAZIONE E COLORI (FIXED) ---
     const CUTOFF = 500;
     const TAIL_MAX = 4000;
 
     // Lavender palettes (moved to central color-palettes.js)
-    const { mainColors, tailColors } = generateLavenderPalettes(d3);
-    
-    
+    const { mainColors, tailColors, COLOR_MID, COLOR_END } = generateLavenderPalettes(d3);
+
+    const isDark = () => (
+      typeof document !== 'undefined' &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains('dark-theme')
+    );
+    const hoverFill = isDark() ? COLOR_END : COLOR_MID;
+
     // --- 2. GRAFICO PRINCIPALE (0 - 500) ---
-    const mainBinWidth = 25; 
+    const mainBinWidth = 25;
     const mainGenerator = d3.bin()
       .domain([0, CUTOFF])
       .thresholds(d3.range(0, CUTOFF + mainBinWidth, mainBinWidth));
 
     const mainDataPoints = data.filter(d => d <= CUTOFF);
     const mainBins = mainGenerator(mainDataPoints);
-    
+
     const maxYMain = d3.max(mainBins, d => d.length);
 
     const xScale = d3.scaleLinear()
@@ -47,36 +54,36 @@ export const citationsHistogramConfig = {
       .range([0, width]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, maxYMain]) 
+      .domain([0, maxYMain])
       .range([height, 0]);
 
     // --- ASSI GRAFICO GRANDE ---
     const xAxis = d3.axisBottom(xScale)
       // Parte da 50 per evitare lo 0 sovrapposto
-      .tickValues(d3.range(50, 501, 50)) 
+      .tickValues(d3.range(50, 501, 50))
       .tickFormat(d => d);
 
     const yAxis = d3.axisLeft(yScale)
-      .ticks(5); 
+      .ticks(5);
 
     const xAxisG = g.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
-    
-    xAxisG.select('.domain').remove(); 
-    xAxisG.selectAll('.tick line').remove(); 
+
+    xAxisG.select('.domain').remove();
+    xAxisG.selectAll('.tick line').remove();
     xAxisG.selectAll('.tick text')
       .attr('text-anchor', 'middle')
-      .attr('dy', '10px') 
+      .attr('dy', '10px')
       .style('font-size', '11px');
 
     const yAxisG = g.append('g')
       .call(yAxis);
-      
-    yAxisG.select('.domain').remove(); 
-    yAxisG.selectAll('.tick line').remove(); 
+
+    yAxisG.select('.domain').remove();
+    yAxisG.selectAll('.tick line').remove();
     yAxisG.selectAll('.tick text').style('font-size', '11px');
-    
+
     // Etichette Assi
     g.append('text')
       .attr('x', width / 2)
@@ -101,12 +108,12 @@ export const citationsHistogramConfig = {
       .enter()
       .append('rect')
       .attr('class', 'bar-main')
-      .attr('x', d => xScale(d.x0) + 1) 
+      .attr('x', d => xScale(d.x0) + 1)
       .attr('width', d => Math.max(0, xScale(d.x1) - xScale(d.x0) - 2))
-      .attr('y', height) 
+      .attr('y', height)
       .attr('height', 0)
       .attr('fill', (d, i) => mainColors[i])
-      .attr('rx', 2); 
+      .attr('rx', 2);
 
     bars.transition()
       .duration(ANIMATION_DURATION)
@@ -115,16 +122,34 @@ export const citationsHistogramConfig = {
       .attr('height', d => height - yScale(d.length));
 
     // Tooltip Main
-    bars.on('mouseenter', function(event, d) {
-        d3.select(this).attr('fill', themeColors.primary); 
-        const pct = ((d.length / data.length) * 100).toFixed(1);
-        tooltip.show(event, `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`, themeColors);
-      })
-      .on('mouseleave', function(event, d) {
+    // Tooltip Main (FIX: use fixed hover colors instead of theme/system)
+    bars.on('mouseenter', function (event, d) {
+      const hoverFill = isDark() ? COLOR_END : COLOR_MID;
+
+      d3.select(this)
+        .interrupt()
+        .transition()
+        .duration(120)
+        .attr('fill', hoverFill);
+
+      const pct = ((d.length / data.length) * 100).toFixed(1);
+      tooltip.show(
+        event,
+        `<strong>${d.x0}-${d.x1} Citations</strong><br>${d.length} papers (${pct}%)`,
+        themeColors
+      );
+    })
+      .on('mouseleave', function (event, d) {
         const i = mainBins.indexOf(d);
-        d3.select(this).attr('fill', mainColors[i]);
+        d3.select(this)
+          .interrupt()
+          .transition()
+          .duration(120)
+          .attr('fill', mainColors[i]);
+
         tooltip.hide();
       });
+
 
     // --- LINEA MEDIANA (FIXED) ---
     const medianVal = citationStats && citationStats.median ? citationStats.median : 39;
@@ -132,18 +157,18 @@ export const citationsHistogramConfig = {
 
     const medianLine = g.append('line')
       .attr('x1', medianX).attr('x2', medianX)
-      .attr('y1', height).attr('y2', yScale(maxYMain)) 
+      .attr('y1', height).attr('y2', yScale(maxYMain))
       .attr('stroke', themeColors.accent)
       .attr('stroke-width', 1.5)
       .attr('stroke-dasharray', '6,6')
       .attr('stroke-opacity', 0.95);
 
     // Porta la linea in primo piano sopra le barre
-    medianLine.raise(); 
+    medianLine.raise();
 
     g.append('text')
-      .attr('x', medianX + 8) 
-      .attr('y', yScale(maxYMain)) 
+      .attr('x', medianX + 8)
+      .attr('y', yScale(maxYMain))
       .attr('fill', themeColors.accent)
       .attr('font-size', '12px')
       .attr('font-weight', '400')
@@ -153,11 +178,11 @@ export const citationsHistogramConfig = {
     // =========================================================
     // --- 3. INSET (PICCOLO GRAFICO) ---
     // =========================================================
-    
-    const insetW = 560; 
-    const insetH = 300; 
-    const insetX = width - insetW; 
-    const insetY = 100; 
+
+    const insetW = 560;
+    const insetH = 300;
+    const insetX = width - insetW;
+    const insetY = 100;
 
     const insetG = g.append('g')
       .attr('transform', `translate(${insetX}, ${insetY})`);
@@ -167,7 +192,7 @@ export const citationsHistogramConfig = {
       .attr('width', insetW)
       .attr('height', insetH)
       .attr('rx', 8)
-      .attr('fill', 'var(--md-sys-color-surface-container-high)') 
+      .attr('fill', 'var(--md-sys-color-surface-container-high)')
       .attr('stroke', 'var(--md-sys-color-outline-variant)')
       .attr('stroke-width', 1);
 
@@ -181,10 +206,10 @@ export const citationsHistogramConfig = {
 
     // Dati Tail
     const tailDataPoints = data.filter(d => d > CUTOFF);
-    const tailMax = TAIL_MAX; 
-    
-    const iPad = { l: 40, r: 20, t: 40, b: 30 }; 
-    
+    const tailMax = TAIL_MAX;
+
+    const iPad = { l: 40, r: 20, t: 40, b: 30 };
+
     const insetXScale = d3.scaleLinear()
       .domain([CUTOFF, tailMax])
       .range([iPad.l, insetW - iPad.r]);
@@ -192,32 +217,32 @@ export const citationsHistogramConfig = {
     const tailBinWidth = 500;
     const tailGenerator = d3.bin()
       .domain([CUTOFF, tailMax])
-      .thresholds(d3.range(CUTOFF, tailMax + tailBinWidth, tailBinWidth)); 
+      .thresholds(d3.range(CUTOFF, tailMax + tailBinWidth, tailBinWidth));
 
     const tailBins = tailGenerator(tailDataPoints);
     const maxYInset = d3.max(tailBins, d => d.length);
 
     // Scala Y Inset
     const insetYScale = d3.scaleLinear()
-      .domain([0, maxYInset]) 
-      .nice() 
+      .domain([0, maxYInset])
+      .nice()
       .range([insetH - iPad.b, iPad.t]);
 
     // --- ASSI INSET ---
     const axisB = d3.axisBottom(insetXScale)
       .tickValues([500, 1000, 2000, 3000, 4000])
-      .tickFormat(d3.format('.1s')); 
+      .tickFormat(d3.format('.1s'));
 
     const axisL = d3.axisLeft(insetYScale)
       // Manualmente fermiamo a 30 per evitare il 40
-      .tickValues([0, 10, 20, 30]); 
+      .tickValues([0, 10, 20, 30]);
 
     const axisBG = insetG.append('g')
       .attr('transform', `translate(0, ${insetH - iPad.b})`)
       .call(axisB);
 
-    axisBG.select('.domain').remove(); 
-    axisBG.selectAll('.tick line').remove(); 
+    axisBG.select('.domain').remove();
+    axisBG.selectAll('.tick line').remove();
     axisBG.selectAll('.tick text')
       .attr('dy', '8px')
       .style('font-size', '10px');
@@ -251,12 +276,12 @@ export const citationsHistogramConfig = {
       .attr('height', d => (insetH - iPad.b) - insetYScale(d.length))
       .attr('fill', (d, i) => tailColors[i])
       .attr('rx', 1)
-      .on('mouseenter', function(event, d) {
+      .on('mouseenter', function (event, d) {
         d3.select(this).attr('fill', '#EAD0EE');
         const pct = ((d.length / data.length) * 100).toFixed(2);
         const binLabel = compactBinLabel(d.x0, d.x1);
         let tooltipHtml = `<strong>${binLabel} Citations</strong><br>${d.length} papers (${pct}%)`;
-        
+
         // Show top cited papers for bins 3.5k-4k (contains max 3795) and 2k-2.5k (contains 2238)
         const showPaperDetails = (d.x0 === 3500 || d.x0 === 2000);
         if (showPaperDetails && topCitedPapers && topCitedPapers.length > 0) {
@@ -273,7 +298,7 @@ export const citationsHistogramConfig = {
         }
         tooltip.show(event, tooltipHtml, themeColors);
       })
-      .on('mouseleave', function(event, d) {
+      .on('mouseleave', function (event, d) {
         const i = tailBins.indexOf(d);
         d3.select(this).attr('fill', tailColors[i]);
         tooltip.hide();
@@ -281,10 +306,10 @@ export const citationsHistogramConfig = {
 
     // --- 4. FRECCIA ---
     const startX = xScale(CUTOFF);
-    const startY = height; 
+    const startY = height;
 
-    const endX = insetX + 5; 
-    const endY = insetY + insetH - 10; 
+    const endX = insetX + 5;
+    const endY = insetY + insetH - 10;
 
     const arrowMarkerId = `arrowhead-${themeColors.accent.replace('#', '')}`;
     g.append('defs').append('marker')
