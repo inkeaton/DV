@@ -17,10 +17,10 @@
  * Colors for VIS conference tracks
  */
 export const trackColors = {
-  infovis:  '#E1BEE7',  // Pastel Blue
-  scivis: '#FFAB40',   // Pastel Green
-  vast: '#F48FB1',    // Pastel Orange
-  vis: ' #69F0AE',   // Pastel Purple
+  infovis:  '#9FA8DA',  // Pastel Blue
+  scivis: '#BCAAA4',   // Pastel Green
+  vast: '#80DEEA',    // Pastel Orange
+  vis: ' #64B5F6',   // Pastel Purple
 };
 
 /**
@@ -28,28 +28,28 @@ export const trackColors = {
  */
 export const trackStateColors = {
   infovis: {
-    default: '#E1BEE7',
-    dark: '#4A148C',
-    hoverLight: '#4A148C',
-    hoverDark: '#E1BEE7',
+    default: '#9FA8DA',
+    dark: '#283593',
+    hoverLight: '#283593',
+    hoverDark: '#9FA8DA',
   },
   scivis: {
-    default: '#FFAB40',
-    dark: '#E65100',
-    hoverLight: '#E65100',
-    hoverDark: '#FFAB40'
+    default: '#BCAAA4',
+    dark: '#3E2723',
+    hoverLight: '#3E2723',
+    hoverDark: '#BCAAA4'
   },
   vast: {
-    default: '#F48FB1',
-    dark: '#AD1457',
-    hoverLight: '#AD1457',
-    hoverDark: '#F48FB1',
+    default: '#80DEEA',
+    dark: '#006064',
+    hoverLight: '#006064',
+    hoverDark: '#80DEEA',
   },
   vis: {
-    default: ' #69F0AE',
-    dark: ' #1B5E20',
-    hoverLight: ' #1B5E20',
-    hoverDark: ' #69F0AE',
+    default: ' #64B5F6',
+    dark: ' #0D47A1',
+    hoverLight: '#0D47A1',
+    hoverDark: ' #64B5F6',
   }
 };
 
@@ -104,10 +104,10 @@ export const publicationStateColors = {
  * narrative annotations and the peak bar in the timeline.
  */
 export const storyColor = {
-  default: '#80DEEA',    // Pink 300 (The Perfect Pink)
-  dark: '#006064',       // Pink 200
+  default: '#ADECFF',    // Pink 300 (The Perfect Pink)
+  dark: '#004E5D',       // Pink 200
   hoverLight: '#006064', // Pink 500
-  hoverDark: '#80DEEA'   // Pink 50 (Misty Rose)
+  hoverDark: '#ADECFF'   // Pink 50 (Misty Rose)
 };
 
 // ============================================================================
