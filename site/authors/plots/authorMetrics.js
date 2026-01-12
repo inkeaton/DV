@@ -35,11 +35,12 @@ export const authorMetricsConfig = {
     const animationDuration = ANIMATION_DURATION;
 
     // Category colors
+    // darkmode friendly palette
     const categoryColors = {
-      prolific: '#81C784',
-      'highly-cited': '#F06292',
-      steady: '#4FC3F7',
-      emerging: '#FFB74D'
+      prolific: '#64B5F6',// #0D47A1
+      'highly-cited': '#80DEEA',// #006064
+      steady: '#C5CAE9',//#1A237E
+      emerging: '#BCAAA4'//#3E2723
     };
 
     // ---- Notable (manual) ----

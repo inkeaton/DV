@@ -17,10 +17,10 @@
  * Colors for VIS conference tracks
  */
 export const trackColors = {
-  infovis: '#F48FB1',  // Pastel Blue
-  scivis: '#A5D6A7',   // Pastel Green
-  vast: '#FFD54F',    // Pastel Orange
-  vis: '#8AB4F8',   // Pastel Purple
+  infovis:  '#E1BEE7',  // Pastel Blue
+  scivis: '#FFAB40',   // Pastel Green
+  vast: '#F48FB1',    // Pastel Orange
+  vis: ' #69F0AE',   // Pastel Purple
 };
 
 /**
@@ -28,28 +28,28 @@ export const trackColors = {
  */
 export const trackStateColors = {
   infovis: {
-    default: '#F48FB1',
-    dark: '#AB47BC',
-    hoverLight: '#AB47BC',
+    default: '#E1BEE7',
+    dark: '#4A148C',
+    hoverLight: '#4A148C',
     hoverDark: '#E1BEE7',
   },
   scivis: {
-    default: '#A5D6A7',
-    dark: '#66BB6A',
-    hoverLight: '#66BB6A',
-    hoverDark: '#DCE775'
+    default: '#FFAB40',
+    dark: '#E65100',
+    hoverLight: '#E65100',
+    hoverDark: '#FFAB40'
   },
   vast: {
-    default: '#FFD54F',
-    dark: '#FFE0B2',
-    hoverLight: '#FFE0B2',
-    hoverDark: '#FFB74D',
+    default: '#F48FB1',
+    dark: '#AD1457',
+    hoverLight: '#AD1457',
+    hoverDark: '#F48FB1',
   },
   vis: {
-    default: '#8AB4F8',
-    dark: '#64B5F6',
-    hoverLight: '#64B5F6',
-    hoverDark: '#AECBFA',
+    default: ' #69F0AE',
+    dark: ' #1B5E20',
+    hoverLight: ' #1B5E20',
+    hoverDark: ' #69F0AE',
   }
 };
 
@@ -76,23 +76,23 @@ export const conferenceColors = {
 // Material Design Pastel Tokens: Cyan 300 & Green 300
 // Questi colori sono più morbidi ("Pastel") rispetto alla versione precedente
 export const publicationColors = {
-  journal: '#80DEEA',       // Cyan 300 (Pastel Blue/Cyan)
-  conference: '#A5D6A7',     // Green 300 (Soft Mint)
+  journal: '#90CAF9',       // Cyan 300 (Pastel Blue/Cyan)
+  conference: '#FFAB91'    // Green 300 (Soft Mint)
 };
 
 // Configurazione avanzata per interazioni
 export const publicationStateColors = {
   journal: {
-    default: '#80DEEA',    // BASE (Pastel)
-    dark: '#4DD0E1',   // DARK MODE (Lighter: Cyan 200)
-    hoverLight: '#00BCD4', // HOVER LIGHT (Saturated: Cyan 500)
-    hoverDark: '#B2EBF2'   // HOVER DARK (Glow: Cyan 100)
+    default: '#90CAF9',    // BASE (Pastel)
+    dark: '#1565C0',   // DARK MODE (Lighter: Cyan 200)
+    hoverLight: '#1565C0', // HOVER LIGHT (Saturated: Cyan 500)
+    hoverDark: '#90CAF9'   // HOVER DARK (Glow: Cyan 100)
   },
   conference: {
-    default: '#A5D6A7',     // BASE (Mint Pastel)
-    dark: '#81C784',   // DARK MODE (Lighter: Green 200)
-    hoverLight: '#4CAF50', // HOVER LIGHT (Saturated: Green 500)
-    hoverDark: '#C8E6C9'   // HOVER DARK (Glow: Green 100)
+    default: '#FFAB91',     // BASE (Mint Pastel)
+    dark: '#D84315',   // DARK MODE (Lighter: Green 200)
+    hoverLight: '#D84315', // HOVER LIGHT (Saturated: Green 500)
+    hoverDark: '#FFAB91'   // HOVER DARK (Glow: Green 100)
   }
 };
 
@@ -104,10 +104,10 @@ export const publicationStateColors = {
  * narrative annotations and the peak bar in the timeline.
  */
 export const storyColor = {
-  default: '#F48FB1',    // Pink 300 (The Perfect Pink)
-  dark: '#F8BBD0',       // Pink 200
-  hoverLight: '#E91E63', // Pink 500
-  hoverDark: '#FCE4EC'   // Pink 50 (Misty Rose)
+  default: '#80DEEA',    // Pink 300 (The Perfect Pink)
+  dark: '#006064',       // Pink 200
+  hoverLight: '#006064', // Pink 500
+  hoverDark: '#80DEEA'   // Pink 50 (Misty Rose)
 };
 
 // ============================================================================
@@ -359,76 +359,76 @@ export function generateLavenderPalettes(d3) {
  */
 export const topicColors = {
   highDimensional: {
-    default: '#E57373',
-    dark: '#EF9A9A',
-    hoverLight: '#F44336',
-    hoverDark: '#FFCDD2'
+    default: '#DEE1FF',
+    dark: '#3F4565',
+    hoverLight: '#3F4565',
+    hoverDark: '#DEE1FF'
   },
   graphText: {
-    default: '#F06292',
-    dark: '#F48FB1',
-    hoverLight: '#E91E63',
-    hoverDark: '#F8BBD0'
-  },
-  volumeImmersive: {
-    default: '#BA68C8',
-    dark: '#CE93D8',
-    hoverLight: '#9C27B0',
+    default: '#E1BEE7',
+    dark: '#4A148C',
+    hoverLight: '#4A148C',
     hoverDark: '#E1BEE7'
   },
+  volumeImmersive: {
+    default: '#F8BBD0',
+    dark: '#880E4F',
+    hoverLight: '#880E4F',
+    hoverDark: '#F8BBD0'
+  },
   visProgML: {
-    default: '#9575CD',
-    dark: '#B39DDB',
-    hoverLight: '#673AB7',
-    hoverDark: '#D1C4E9'
+    default: '#FFCDD2',
+    dark: '#B71C1C',
+    hoverLight: '#B71C1C',
+    hoverDark: '#FFCDD2'
   },
   socialBiomed: {
-    default: '#7986CB',
-    dark: '#9FA8DA',
-    hoverLight: '#3F51B5',
-    hoverDark: '#C5CAE9'
+    default: '#FFCCBC',
+    dark: '#BF360C',
+    hoverLight: '#BF360C',
+    hoverDark: '#FFCCBC'
   },
   imagingDisplay: {
-    default: '#64B5F6',
-    dark: '#90CAF9',
-    hoverLight: '#2196F3',
-    hoverDark: '#BBDEFB'
+    default: '#FFAB91',
+    dark: '#D84315',
+    hoverLight: '#D84315',
+    hoverDark: '#FFAB91'
   },
   causalityTemporal: {
-    default: '#4FC3F7',
-    dark: '#81D4FA',
-    hoverLight: '#03A9F4',
-    hoverDark: '#B3E5FC'
+    default: '#D1C4E9',
+    dark: '#4527A0',
+    hoverLight: '#4527A0',
+    hoverDark: '#D1C4E9'
   },
   perceptionUncertainty: {
-    default: '#4DD0E1',
-    dark: '#80DEEA',
-    hoverLight: '#00BCD4',
-    hoverDark: '#B2EBF2'
+    default: '#9FA8DA',
+    dark: '#283593',
+    hoverLight: '#283593',
+    hoverDark: '#9FA8DA'
   },
   topological: {
-    default: '#4DB6AC',
-    dark: '#80CBC4',
-    hoverLight: '#009688',
-    hoverDark: '#B2DFDB'
+    default: '#F48FB1',
+    dark: '#AD1457',
+    hoverLight: '#AD1457',
+    hoverDark: '#F48FB1'
   },
   networkSecurity: {
-    default: '#81C784',
-    dark: '#A5D6A7',
-    hoverLight: '#4CAF50',
-    hoverDark: '#C8E6C9'
+    default: '#CE93D8',
+    dark: '#6A1B9A',
+    hoverLight: '#6A1B9A',
+    hoverDark: '#CE93D8'
   },
   geoSeismic: {
-    default: '#AED581',
-    dark: '#C5E1A5',
-    hoverLight: '#8BC34A',
-    hoverDark: '#DCEDC8'
+    default: '#FFAB40',
+    dark: '#E65100',
+    hoverLight: '#E65100',
+    hoverDark: '#FFAB40'
   },
   molecular: {
-    default: '#FFF176',
-    dark: '#FFF59D',
-    hoverLight: '#FFEB3B',
-    hoverDark: '#FFF9C4'
+    default: '#D7CCC8',
+    dark: '#5D4037',
+    hoverLight: '#5D4037',
+    hoverDark: '#D7CCC8'
   }
 };
 
@@ -457,10 +457,10 @@ export const topicNameKeyMap = {
 // ============================================================================
 // 1. Definisci il tema Blu una volta sola (Single Source of Truth)
 const blueRegionStyle = {
-  default: '#64B5F6',    // Blue 300
-  dark: '#90CAF9',       // Blue 200
-  hoverLight: '#2196F3', // Blue 500
-  hoverDark: '#BBDEFB'   // Blue 100
+  default: '#4DD0E1',    // Blue 300
+  dark: '#006064',       // Blue 200
+  hoverLight: '#006064', // Blue 500
+  hoverDark: '#4DD0E1'   // Blue 100
 };
 
 // 2. Esporta l'oggetto regionColors
@@ -470,54 +470,50 @@ export const regionColors = {
   "Americas": blueRegionStyle,
 
   "Europe": {
-    default: '#81C784',    // Green 300
-    dark: '#A5D6A7',       // Green 200
-    hoverLight: '#4CAF50', // Green 500
-    hoverDark: '#C8E6C9'   // Green 100
+    default: ' #64B5F9',    // Green 300
+    dark: '#0D47A1',       // Green 200
+    hoverLight: '#0D47A1', // Green 500
+    hoverDark: ' #64B5F9'   // Green 100
   },
   "Asia": {
-    default: '#FFD54F',    // Amber 300
-    dark: '#FFE082',       // Amber 200
-    hoverLight: '#FFC107', // Amber 500
-    hoverDark: '#FFECB3'   // Amber 100
+    default: '#69F0AE',    // Amber 300
+    dark: '#1B5E20',       // Amber 200
+    hoverLight: '#1B5E20', // Amber 500
+    hoverDark: '#69F0AE'   // Amber 100
   },
   "Oceania": {
-    default: '#9575CD',    // Deep Purple 300
-    dark: '#B39DDB',       // Deep Purple 200
-    hoverLight: '#673AB7', // Deep Purple 500
-    hoverDark: '#D1C4E9'   // Deep Purple 100
+    default: '#FFAB40',    // Deep Purple 300
+    dark: '#E65100',       // Deep Purple 200
+    hoverLight: '#E65100', // Deep Purple 500
+    hoverDark: '#FFAB40'   // Deep Purple 100
   },
   "South America": {
-    default: '#E57373',    // Red 300
-    dark: '#EF9A9A',       // Red 200
-    hoverLight: '#F44336', // Red 500
-    hoverDark: '#FFCDD2'   // Red 100
+    default: '#DEE1FF',    // Red 300
+    dark: '#3F4565',       // Red 200
+    hoverLight: '#3F4565', // Red 500
+    hoverDark: '#DEE1FF'   // Red 100
   },
   "Africa": {
-    default: '#F06292',    // Pink 300
-    dark: '#F48FB1',       // Pink 200
-    hoverLight: '#E91E63', // Pink 500
-    hoverDark: '#F8BBD0'   // Pink 100
+    default: '#FFCDD2',    // Pink 300
+    dark: '#B71C1C',       // Pink 200
+    hoverLight: '#B71C1C', // Pink 500
+    hoverDark: '#FFCDD2'   // Pink 100
   },
   "Other": {
-    default: '#90A4AE',    // Blue Grey 300
-    dark: '#B0BEC5',       // Blue Grey 200
-    hoverLight: '#607D8B', // Blue Grey 500
-    hoverDark: '#CFD8DC'   // Blue Grey 100
+    default: '#D7CCC8',    // Blue Grey 300
+    dark: '#5D4037',       // Blue Grey 200
+    hoverLight: '#5D4037', // Blue Grey 500
+    hoverDark: '#D7CCC8'   // Blue Grey 100
   }
 };
 // authorsPerPaper
 export const cyanTheme = {
-  surf: "#B2EBF2",
-  prm: "#00BCD4",
-  surfaceContainer: "#E0F7FA",   // Cyan 50 (Sfondo Azzurro ghiaccio)
-  primary: "#26C6DA",            // Cyan 400 (Cian Vibrante)
-  onSurface: "#006064",          // Cyan 900 (Testo scuro "Petrolio")
-  onSurfaceVariant: "#4DD0E1"    // Cyan 300 (Testo secondario)
+  surf: "#DEE1FF",
+  prm: "#3F4565",   // Cyan 300 (Testo secondario)
 };
 
 // uniqueAuthorsTimeline theme
 export const purpleTheme = {
-  surf: '#9575CD',
-  prm: '#7E57C2'
+  surf: '#B9F6CA',
+  prm: '#005035'
 };

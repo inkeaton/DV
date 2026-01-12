@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>36 Color Families • Enterprise System</title>
+    <style>
+        :root {
+            --font: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --bg-app: #121212;
+            --text-main: #ffffff;
+
+            /* =========================================
+               1. PRIMARY (THE BLUES & GREENS)
+               Logic: Fresh, Tech, Action
+               ========================================= */
+            /* 1-8 (Previous) */
+            --p01-l: #ADECFF; --p01-d: #004E5D; /* Base Azure */
+            --p02-l: #B9F6CA; --p02-d: #005035; /* Mint */
+            --p03-l: #80DEEA; --p03-d: #006064; /* Cyan */
+            --p04-l: #A7FFEB; --p04-d: #004D40; /* Turquoise */
+            --p05-l: #B3E5FC; --p05-d: #01579B; /* Sky */
+            --p06-l: #B2DFDB; --p06-d: #004D40; /* Teal */
+            --p07-l: #C5CAE9; --p07-d: #1A237E; /* Ice Indigo */
+            --p08-l: #BBDEFB; --p08-d: #0D47A1; /* Powder */
+            /* 9-12 (NEW) */
+            --p09-l: #64B5F6; --p09-d: #0D47A1; /* Ocean Blue (Saturated) */
+            --p10-l: #69F0AE; --p10-d: #1B5E20; /* Spring Green (Vivid) */
+            --p11-l: #90CAF9; --p11-d: #1565C0; /* Cornflower (Soft Blue) */
+            --p12-l: #4DD0E1; --p12-d: #006064; /* Electric Aqua */
+
+            /* =========================================
+               2. SECONDARY (THE PURPLES & PINKS)
+               Logic: Creative, Warmth, Accent
+               ========================================= */
+            /* 1-8 (Previous) */
+            --s01-l: #DEE1FF; --s01-d: #3F4565; /* Base Lilac */
+            --s02-l: #E1BEE7; --s02-d: #4A148C; /* Lavender */
+            --s03-l: #F8BBD0; --s03-d: #880E4F; /* Baby Pink */
+            --s04-l: #FFCDD2; --s04-d: #B71C1C; /* Soft Rose */
+            --s05-l: #FFCCBC; --s05-d: #BF360C; /* Peach */
+            --s06-l: #FFAB91; --s06-d: #D84315; /* Coral */
+            --s07-l: #D1C4E9; --s07-d: #4527A0; /* Mauve */
+            --s08-l: #9FA8DA; --s08-d: #283593; /* Periwinkle */
+            /* 9-12 (NEW) */
+            --s09-l: #F48FB1; --s09-d: #AD1457; /* Magenta (Vivid) */
+            --s10-l: #CE93D8; --s10-d: #6A1B9A; /* Orchid (Deep Purple) */
+            --s11-l: #FFAB40; --s11-d: #E65100; /* Amber (Warm Accent) */
+            --s12-l: #D7CCC8; --s12-d: #5D4037; /* Blush/Nude (Neutral Pink) */
+
+            /* =========================================
+               3. NEUTRAL (THE GREYS & EARTHS)
+               Logic: Structure, Text, Backgrounds
+               ========================================= */
+            /* 1-8 (Previous) */
+            --n01-l: #CEE7EF; --n01-d: #334A51; /* Base Blue-Grey */
+            --n02-l: #CFD8DC; --n02-d: #263238; /* Sage */
+            --n03-l: #E6EE9C; --n03-d: #827717; /* Olive */
+            --n04-l: #E0E0E0; --n04-d: #424242; /* Storm */
+            --n05-l: #D7CCC8; --n05-d: #4E342E; /* Taupe */
+            --n06-l: #F5F5F5; --n06-d: #616161; /* Sand */
+            --n07-l: #B0BEC5; --n07-d: #37474F; /* Slate */
+            --n08-l: #EFEBE9; --n08-d: #3E2723; /* Stone */
+            /* 9-12 (NEW) */
+            --n09-l: #9E9E9E; --n09-d: #212121; /* Charcoal (Pure Neutral) */
+            --n10-l: #EEEEEE; --n10-d: #263238; /* Mist (Cool Light) */
+            --n11-l: #BCAAA4; --n11-d: #3E2723; /* Clay (Warm Earth) */
+            --n12-l: #78909C; --n12-d: #263238; /* Steel (Metallic) */
+        }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+        }
+
+        h1 { font-weight: 300; letter-spacing: 2px; margin-bottom: 10px; }
+        p { opacity: 0.6; margin-bottom: 50px; max-width: 600px; }
+
+        .category-section { margin-bottom: 60px; }
+        .cat-title { 
+            font-size: 1.2rem; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .grid-12 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+
+        /* THE DUAL COLOR CHIP */
+        .color-chip {
+            background: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 120px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .color-chip:hover { transform: translateY(-5px); z-index: 10; }
+
+        .chip-light {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: #000;
+            font-weight: bold;
+            position: relative;
+        }
+        .chip-dark {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: #fff;
+            font-weight: bold;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .label-new {
+            position: absolute;
+            top: 5px; right: 5px;
+            background: #000;
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 2px 5px;
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        /* Stats */
+        .hex-code { opacity: 0.8; font-family: monospace; }
+        .role-label { 
+            font-size: 0.6rem; text-transform: uppercase; 
+            letter-spacing: 1px; opacity: 0.5; margin-bottom: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>System 36</h1>
+    <p>La collezione completa. 12 famiglie per categoria. Ogni chip mostra la variante Light (sopra) e Dark (sotto) per garantire consistenza visiva.</p>
+
+    <div class="category-section">
+        <div class="cat-title">
+            <span>01. Primary (Blues, Cyans, Teals)</span>
+            <span style="font-size: 0.8rem; opacity: 0.5;">Action & Tech</span>
+        </div>
+        <div class="grid-12">
+            <div class="color-chip"><div class="chip-light" style="background:var(--p01-l)">AZURE</div><div class="chip-dark" style="background:var(--p01-d)">#004E5D</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p02-l)">MINT</div><div class="chip-dark" style="background:var(--p02-d)">#005035</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p03-l)">CYAN</div><div class="chip-dark" style="background:var(--p03-d)">#006064</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p04-l)">TURQ</div><div class="chip-dark" style="background:var(--p04-d)">#004D40</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p05-l)">SKY</div><div class="chip-dark" style="background:var(--p05-d)">#01579B</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p06-l)">TEAL</div><div class="chip-dark" style="background:var(--p06-d)">#004D40</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p07-l)">INDIGO</div><div class="chip-dark" style="background:var(--p07-d)">#1A237E</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--p08-l)">POWDER</div><div class="chip-dark" style="background:var(--p08-d)">#0D47A1</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--p09-l)">OCEAN</div><div class="chip-dark" style="background:var(--p09-d)">#0D47A1</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--p10-l)">SPRING</div><div class="chip-dark" style="background:var(--p10-d)">#1B5E20</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--p11-l)">CORN</div><div class="chip-dark" style="background:var(--p11-d)">#1565C0</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--p12-l)">AQUA</div><div class="chip-dark" style="background:var(--p12-d)">#006064</div></div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="cat-title">
+            <span>02. Secondary (Purples, Pinks, Corals)</span>
+            <span style="font-size: 0.8rem; opacity: 0.5;">Creativity & Alerts</span>
+        </div>
+        <div class="grid-12">
+            <div class="color-chip"><div class="chip-light" style="background:var(--s01-l)">LILAC</div><div class="chip-dark" style="background:var(--s01-d)">#3F4565</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s02-l)">LAVEND</div><div class="chip-dark" style="background:var(--s02-d)">#4A148C</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s03-l)">PINK</div><div class="chip-dark" style="background:var(--s03-d)">#880E4F</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s04-l)">ROSE</div><div class="chip-dark" style="background:var(--s04-d)">#B71C1C</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s05-l)">PEACH</div><div class="chip-dark" style="background:var(--s05-d)">#BF360C</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s06-l)">CORAL</div><div class="chip-dark" style="background:var(--s06-d)">#D84315</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s07-l)">MAUVE</div><div class="chip-dark" style="background:var(--s07-d)">#4527A0</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--s08-l)">PERI</div><div class="chip-dark" style="background:var(--s08-d)">#283593</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--s09-l)">MAGENTA</div><div class="chip-dark" style="background:var(--s09-d)">#AD1457</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--s10-l)">ORCHID</div><div class="chip-dark" style="background:var(--s10-d)">#6A1B9A</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--s11-l)">AMBER</div><div class="chip-dark" style="background:var(--s11-d)">#E65100</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--s12-l)">BLUSH</div><div class="chip-dark" style="background:var(--s12-d)">#5D4037</div></div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="cat-title">
+            <span>03. Neutral (Greys, Earths, Slates)</span>
+            <span style="font-size: 0.8rem; opacity: 0.5;">Structure & Surface</span>
+        </div>
+        <div class="grid-12">
+            <div class="color-chip"><div class="chip-light" style="background:var(--n01-l)">BLUEGR</div><div class="chip-dark" style="background:var(--n01-d)">#334A51</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n02-l)">SAGE</div><div class="chip-dark" style="background:var(--n02-d)">#263238</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n03-l)">OLIVE</div><div class="chip-dark" style="background:var(--n03-d)">#827717</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n04-l)">STORM</div><div class="chip-dark" style="background:var(--n04-d)">#424242</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n05-l)">TAUPE</div><div class="chip-dark" style="background:var(--n05-d)">#4E342E</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n06-l)">SAND</div><div class="chip-dark" style="background:var(--n06-d)">#616161</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n07-l)">SLATE</div><div class="chip-dark" style="background:var(--n07-d)">#37474F</div></div>
+            <div class="color-chip"><div class="chip-light" style="background:var(--n08-l)">STONE</div><div class="chip-dark" style="background:var(--n08-d)">#3E2723</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--n09-l)">CHARC</div><div class="chip-dark" style="background:var(--n09-d)">#212121</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--n10-l)">MIST</div><div class="chip-dark" style="background:var(--n10-d)">#263238</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--n11-l)">CLAY</div><div class="chip-dark" style="background:var(--n11-d)">#3E2723</div></div>
+            <div class="color-chip"><div class="label-new">NEW</div><div class="chip-light" style="background:var(--n12-l)">STEEL</div><div class="chip-dark" style="background:var(--n12-d)">#263238</div></div>
+        </div>
+    </div>
+    <h3>C. Sankey & Complex Sets (7 vs 12)</h3>
+        <p style="font-size: 0.8rem; margin-bottom: 20px; opacity: 0.7;">
+            Per il Sankey Diagram: Usa la colonna sinistra (7 colori) per le Regioni/Origini. 
+            Usa la colonna destra (12 colori freddi) per le Categorie/Destinazioni. 
+            Il contrasto Caldo/Freddo rende il diagramma leggibile.
+        </p>
+        
+        <div class="grid-12" style="grid-template-columns: 1fr; gap: 30px;">
+            
+            <div class="sankey-container">
+                <div class="sankey-column">
+                    <div class="plot-label">7 SOURCE NODES (Global/Map)</div>
+                    <div class="node-list">
+                        <div class="node" style="background: var(--p09-l); color: white;">N. America</div>
+                        <div class="node" style="background: var(--p10-l); color: white;">S. America</div>
+                        <div class="node" style="background: var(--s07-l); color: white;">Europe</div>
+                        <div class="node" style="background: var(--s11-l); color: white;">Africa</div>
+                        <div class="node" style="background: var(--s04-l); color: white;">Asia</div>
+                        <div class="node" style="background: var(--p12-l); color: black;">Oceania</div>
+                        <div class="node" style="background: var(--n07-l); color: white;">Antartica</div>
+                    </div>
+                </div>
+
+                <div class="sankey-arrow">➜ FLOWS INTO ➜</div>
+
+                <div class="sankey-column">
+                    <div class="plot-label">12 DESTINATION NODES (The Cool 12)</div>
+                    <div class="palette-strip">
+                        <span class="mini-block" style="background: var(--p01-l)" title="Azure"></span>
+                        <span class="mini-block" style="background: var(--p02-l)" title="Mint"></span>
+                        <span class="mini-block" style="background: var(--p03-l)" title="Cyan"></span>
+                        <span class="mini-block" style="background: var(--p04-l)" title="Turq"></span>
+                        <span class="mini-block" style="background: var(--p05-l)" title="Sky"></span>
+                        <span class="mini-block" style="background: var(--p06-l)" title="Teal"></span>
+                        <span class="mini-block" style="background: var(--p08-l)" title="Powder"></span>
+                        <span class="mini-block" style="background: var(--p09-l)" title="Ocean"></span>
+                        <span class="mini-block" style="background: var(--p10-l)" title="Spring"></span>
+                        <span class="mini-block" style="background: var(--p11-l)" title="Corn"></span>
+                        <span class="mini-block" style="background: var(--p12-l)" title="Aqua"></span>
+                        <span class="mini-block" style="background: var(--n12-l)" title="Steel"></span>
+                    </div>
+                    <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">
+                        Ho scelto questi 12 (Tutti i Primary + Steel) perché sono freddi e ordinati. Ricevono bene i colori vivaci delle mappe.
+                    </p>
+                </div>
+            </div>
+
+            <div class="sankey-container">
+                <div class="sankey-column">
+                    <div class="plot-label">7 SOURCE NODES (Secondary/Warm)</div>
+                    <div class="node-list">
+                        <div class="node" style="background: var(--s09-l); color: white;">Magenta</div>
+                        <div class="node" style="background: var(--s01-l); color: black;">Lilac</div>
+                        <div class="node" style="background: var(--s06-l); color: black;">Coral</div>
+                        <div class="node" style="background: var(--s05-l); color: black;">Peach</div>
+                        <div class="node" style="background: var(--s10-l); color: white;">Orchid</div>
+                        <div class="node" style="background: var(--s04-l); color: black;">Rose</div>
+                        <div class="node" style="background: var(--s12-l); color: black;">Blush</div>
+                    </div>
+                </div>
+
+                <div class="sankey-arrow">➜ FLOWS INTO ➜</div>
+
+                <div class="sankey-column">
+                    <div class="plot-label">12 DESTINATION NODES (The Cool 12)</div>
+                    <div class="palette-strip">
+                        <span class="mini-block" style="background: var(--p01-l)"></span>
+                        <span class="mini-block" style="background: var(--p02-l)"></span>
+                        <span class="mini-block" style="background: var(--p03-l)"></span>
+                        <span class="mini-block" style="background: var(--p04-l)"></span>
+                        <span class="mini-block" style="background: var(--p05-l)"></span>
+                        <span class="mini-block" style="background: var(--p06-l)"></span>
+                        <span class="mini-block" style="background: var(--p08-l)"></span>
+                        <span class="mini-block" style="background: var(--p09-l)"></span>
+                        <span class="mini-block" style="background: var(--p10-l)"></span>
+                        <span class="mini-block" style="background: var(--p11-l)"></span>
+                        <span class="mini-block" style="background: var(--p12-l)"></span>
+                        <span class="mini-block" style="background: var(--n12-l)"></span>
+                    </div>
+                    <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 5px;">
+                        Anche qui, il contrasto "Caldo (Sinistra) vs Freddo (Destra)" è perfetto per la leggibilità.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+<div class="category-section" style="border-top: 1px solid #333; padding-top: 40px; margin-top: 60px;">
+        <div class="cat-title">
+            <span>04. Data Viz Sets (Light Mode)</span>
+            <span style="font-size: 0.8rem; opacity: 0.5;">Optimized for Charts & Plots</span>
+        </div>
+        <p>Combinazioni testate per garantire contrasto e armonia nei grafici su sfondo chiaro.</p>
+
+        <h3>A. Comparison Sets (2 Colors)</h3>
+        <div class="grid-12" style="margin-bottom: 40px;">
+            
+            <div class="plot-card">
+                <div class="plot-label">Contrast Pair (Blue vs Coral)</div>
+                <div class="mini-chart">
+                    <div class="bar" style="height: 60%; background: var(--p11-l);"></div> <div class="bar" style="height: 85%; background: var(--s06-l);"></div> </div>
+                <div class="legend">
+                    <span class="dot" style="background: var(--p11-l)"></span> A
+                    <span class="dot" style="background: var(--s06-l)"></span> B
+                </div>
+            </div>
+
+            <div class="plot-card">
+                <div class="plot-label">Harmony Pair (Mint vs Lilac)</div>
+                <div class="mini-chart">
+                    <div class="bar" style="height: 50%; background: var(--p02-l);"></div> <div class="bar" style="height: 75%; background: var(--s01-l);"></div> </div>
+                <div class="legend">
+                    <span class="dot" style="background: var(--p02-l)"></span> A
+                    <span class="dot" style="background: var(--s01-l)"></span> B
+                </div>
+            </div>
+        </div>
+
+
+        <h3>B. Categorical Sets (4 Colors)</h3>
+        <div class="grid-12" style="margin-bottom: 40px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+            
+            <div class="plot-card">
+                <div class="plot-label">Corporate (Blue, Cyan, Teal, Slate)</div>
+                <div class="mini-chart">
+                    <div class="bar" style="height: 40%; background: var(--p09-l);"></div> <div class="bar" style="height: 70%; background: var(--p03-l);"></div> <div class="bar" style="height: 55%; background: var(--p06-l);"></div> <div class="bar" style="height: 90%; background: var(--n12-l);"></div> </div>
+                <div class="legend">
+                    <span class="dot" style="background: var(--p09-l)"></span> Q1
+                    <span class="dot" style="background: var(--p03-l)"></span> Q2
+                    <span class="dot" style="background: var(--p06-l)"></span> Q3
+                    <span class="dot" style="background: var(--n12-l)"></span> Q4
+                </div>
+            </div>
+
+            <div class="plot-card">
+                <div class="plot-label">Vibrant (Purple, Orange, Pink, Mint)</div>
+                <div class="mini-chart">
+                    <div class="bar" style="height: 80%; background: var(--s02-l);"></div> <div class="bar" style="height: 45%; background: var(--s11-l);"></div> <div class="bar" style="height: 60%; background: var(--s09-l);"></div> <div class="bar" style="height: 30%; background: var(--p10-l);"></div> </div>
+                <div class="legend">
+                    <span class="dot" style="background: var(--s02-l)"></span> A
+                    <span class="dot" style="background: var(--s11-l)"></span> B
+                    <span class="dot" style="background: var(--s09-l)"></span> C
+                    <span class="dot" style="background: var(--p10-l)"></span> D
+                </div>
+            </div>
+        </div>
+
+
+        <h3>C. Geo/Complex Sets (7 Colors)</h3>
+        <div class="grid-12" style="grid-template-columns: 1fr;">
+            
+            <div class="plot-card" style="height: auto;">
+                <div class="plot-label">Global Map (Distinct Hues for Continents)</div>
+                <div class="mini-chart" style="height: 150px; align-items: flex-end; gap: 4px;">
+                    <div class="bar" style="height: 60%; background: var(--p09-l);"></div>
+                    <div class="bar" style="height: 40%; background: var(--p10-l);"></div>
+                    <div class="bar" style="height: 80%; background: var(--s07-l);"></div>
+                    <div class="bar" style="height: 50%; background: var(--s11-l);"></div>
+                    <div class="bar" style="height: 90%; background: var(--s04-l);"></div>
+                    <div class="bar" style="height: 30%; background: var(--p12-l);"></div>
+                    <div class="bar" style="height: 20%; background: var(--n07-l);"></div>
+                </div>
+                <div class="legend" style="flex-wrap: wrap;">
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--p09-l)"></span> N.Am</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--p10-l)"></span> S.Am</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--s07-l)"></span> Eur</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--s11-l)"></span> Afr</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--s04-l)"></span> Asia</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--p12-l)"></span> Oce</div>
+                    <div style="display:flex; align-items:center; margin-right:10px;"><span class="dot" style="background: var(--n07-l)"></span> Ant</div>
+                </div>
+            </div>
+
+            <div class="plot-card" style="height: auto;">
+                <div class="plot-label">Secondary Spectrum (Soft Warm & Floral)</div>
+                <div class="mini-chart" style="height: 150px; align-items: flex-end; gap: 4px;">
+                    <div class="bar" style="height: 75%; background: var(--s09-l);"></div>
+                    <div class="bar" style="height: 60%; background: var(--s01-l);"></div>
+                    <div class="bar" style="height: 45%; background: var(--s06-l);"></div>
+                    <div class="bar" style="height: 85%; background: var(--s05-l);"></div>
+                    <div class="bar" style="height: 55%; background: var(--s10-l);"></div>
+                    <div class="bar" style="height: 35%; background: var(--s04-l);"></div>
+                    <div class="bar" style="height: 25%; background: var(--s12-l);"></div>
+                </div>
+                <div class="legend" style="flex-wrap: wrap;">
+                    <span style="opacity:0.7; font-size:0.7rem; margin-right:10px;">Ideale per Heatmaps o categorie "Lifestyle":</span>
+                    <span class="dot" style="background: var(--s09-l)"></span>
+                    <span class="dot" style="background: var(--s01-l)"></span>
+                    <span class="dot" style="background: var(--s06-l)"></span>
+                    <span class="dot" style="background: var(--s05-l)"></span>
+                    <span class="dot" style="background: var(--s10-l)"></span>
+                    <span class="dot" style="background: var(--s04-l)"></span>
+                    <span class="dot" style="background: var(--s12-l)"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <style>
+        /* CSS AGGIUNTIVO PER I GRAFICI */
+        .plot-card {
+            background: #252526;
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .plot-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+        }
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 100px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 5px;
+        }
+        .bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+        .bar:hover { opacity: 0.8; }
+        .legend {
+            display: flex;
+            gap: 15px;
+            font-size: 0.75rem;
+            color: #ddd;
+        }
+        .dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* STILI SPECIFICI PER SANKEY PREVIEW */
+        .sankey-container {
+            background: #252526;
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sankey-column { flex: 1; }
+        .sankey-arrow { 
+            padding: 0 20px; color: #666; font-size: 0.8rem; font-weight: bold; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .node-list { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
+        .node {
+            padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;
+            text-align: center;
+        }
+
+        .palette-strip {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .mini-block {
+            height: 25px;
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>
