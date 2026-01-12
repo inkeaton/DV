@@ -320,7 +320,7 @@ export const papersPerYearConfig = {
         .attr('x1', arrowStartX)
         .attr('y1', arrowStartY)
         .attr('x2', targetX)
-        .attr('y2', targetY)
+        .attr('y2', targetY+35)
         .attr('stroke', colors.accent)
         .attr('stroke-opacity', 0.6)
         .attr('stroke-width', 1.5)
