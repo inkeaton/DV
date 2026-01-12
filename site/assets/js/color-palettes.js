@@ -329,7 +329,7 @@ export function getColorScale(d3, domain, paletteName = 'categorical6') {
  * @param {Object} d3 - D3 reference (for interpolators)
  */
 export function generateLavenderPalettes(d3) {
-  const COLOR_START = '#EDE7F6'; // Light Lavender
+  const COLOR_START = '#d8c8f2ff'; // Light Lavender
   const COLOR_MID = '#9575CD';
   const COLOR_END = '#311B92';
 
